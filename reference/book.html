@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>byteleaf — Book a call</title>
+<!-- REFERENCE BUILD generated from design/Book.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.navlink{color:#33405A;font-size:15px;font-weight:500;padding:10px 14px;border-radius:999px;transition:background .2s,color .2s}
+.navlink:hover{background:#EEF4FE;color:#0B1220}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;font-weight:600;font-size:16px;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s,color .25s,opacity .25s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:#0F5FCC;color:#FFFFFF;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(22,111,229,.7)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{color:#0B1220;border:1px solid #D5DEEB;background:#FFFFFF}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.arr{transition:transform .25s}.btn:hover .arr{transform:translateX(4px)}
+.opt{font:inherit;text-align:left;cursor:pointer;width:100%;border-radius:16px;padding:18px;display:flex;gap:14px;align-items:flex-start;transition:all .25s}
+.opt:hover{transform:translateY(-2px)}
+.day{font:inherit;cursor:pointer;aspect-ratio:1;border-radius:12px;font-size:15px;font-weight:500;display:grid;place-items:center;transition:all .2s;min-height:44px}
+.day:hover:not(:disabled){transform:scale(1.06)}
+.day:disabled{cursor:default}
+.slot{font:inherit;cursor:pointer;min-height:48px;border-radius:12px;font-size:15px;font-weight:500;transition:all .2s}
+.slot:hover{transform:translateY(-2px)}
+.icon-btn{font:inherit;cursor:pointer;width:44px;height:44px;border-radius:50%;border:1px solid #D5DEEB;background:#FFFFFF;color:#0B1220;display:grid;place-items:center;transition:all .2s}
+.icon-btn:hover:not(:disabled){border-color:#166FE5;color:#166FE5}
+.icon-btn:disabled{opacity:.35;cursor:default}
+.field{font:inherit;font-size:16px;color:#0B1220;width:100%;box-sizing:border-box;min-height:52px;padding:12px 16px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:focus{outline:none;border-color:#166FE5;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.field::placeholder{color:#6B7891}
+.flink{color:#B7C3D9}.flink:hover{color:#FFFFFF}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}
+@keyframes slide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.slide{animation:slide .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+.popin{animation:pop .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes draw{from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+.draw{stroke-dasharray:30;animation:draw .6s ease .35s both}
+.mnav{display:none}
+.menu-btn{list-style:none;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid #D5DEEB;display:grid;place-items:center;color:#0B1220;background:#FFFFFF}
+.menu-btn::-webkit-details-marker{display:none}
+.mnav[open] .menu-btn{border-color:#166FE5;color:#166FE5}
+.mnav .i-close{display:none}.mnav[open] .i-close{display:block}.mnav[open] .i-open{display:none}
+.mpanel{position:absolute;left:0;right:0;top:100%;background:#FFFFFF;border-bottom:1px solid #E8EDF5;box-shadow:0 24px 40px -24px rgba(11,18,32,.25);padding:12px 20px 20px;display:flex;flex-direction:column;gap:4px;animation:rise .35s cubic-bezier(.2,.8,.2,1) both}
+.mlink{display:flex;align-items:center;min-height:52px;padding:0 12px;border-radius:12px;font-size:18px;font-weight:500;color:#0B1220;border-bottom:1px solid #F1F4F9}
+.mlink:hover{background:#EEF4FE;color:#166FE5}
+@media (max-width: 760px){.dnav,.dcta{display:none!important}.mnav{display:block}}
+@media (max-width: 640px){section[style*="padding: 120px 24px"]{padding-top:64px!important;padding-bottom:64px!important}section[style*="24px 120px"]{padding-bottom:64px!important}section[style*="padding: 96px"],section[style*="padding: 88px"],section[style*="padding: 80px"]{padding-top:56px!important}section[style*="padding: 72px 24px"]{padding-top:44px!important;padding-bottom:44px!important}.hide-sm{display:none}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; background: #FFFFFF; overflow-x: hidden">
+
+<header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid #E8EDF5">
+<nav aria-label="Main" style="max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="home.html" aria-label="byteleaf home" style="display: flex; align-items: center; gap: 10px; color: #0B1220; font-weight: 700; font-size: 22px; letter-spacing: -0.04em">
+<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byte<span style="color: #1877F2">leaf</span></span>
+</a>
+<div class="dnav" style="display: flex; flex-wrap: wrap; align-items: center; gap: 2px">
+<a class="navlink" href="services.html">Services</a>
+<a class="navlink" href="process.html">Process</a>
+<a class="navlink" href="projects.html">Projects</a>
+<a class="navlink" href="contact.html">Contact</a>
+</div>
+<a class="btn btn-primary dcta" href="book.html" aria-current="page" style="min-height: 44px; padding: 0 20px; font-size: 15px">Book a call</a>
+<details class="mnav">
+<summary class="menu-btn" aria-label="Menu"><svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></summary>
+<div class="mpanel">
+<a class="mlink" href="services.html">Services</a>
+<a class="mlink" href="process.html">Process</a>
+<a class="mlink" href="projects.html">Projects</a>
+<a class="mlink" href="contact.html">Contact</a>
+<a class="btn btn-primary" href="book.html" style="justify-content: center; margin-top: 12px">Book a call</a>
+</div>
+</details>
+</nav>
+</header>
+
+<section style="padding: 80px 24px 120px; background-color: #FBFCFE; background-image: linear-gradient(#EEF2F8 1px, transparent 1px), linear-gradient(90deg, #EEF2F8 1px, transparent 1px); background-size: 48px 48px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px">
+<div style="display: flex; flex-direction: column; gap: 18px; max-width: 760px">
+<span class="rise mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">BOOK A MEETING</span>
+<h1 class="rise d1" style="margin: 0; font-size: clamp(42px, 5.2vw, 70px); line-height: 1; letter-spacing: -0.045em; font-weight: 600; text-wrap: balance">Pick a time that <span style="color: #1877F2">suits you.</span></h1>
+<p class="rise d2" style="margin: 0; font-size: 19px; line-height: 1.55; color: #4B5872">Choose a meeting type, a day and a slot. All times are in South African Standard Time (UTC+2).</p>
+</div>
+
+<sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+<div class="slide" style="border-radius: 28px; background: #FFFFFF; border: 1px solid #E3E9F2; padding: clamp(32px, 6vw, 72px); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; box-shadow: 0 40px 80px -60px rgba(11,18,32,0.4)">
+<span class="popin" style="width: 96px; height: 96px; border-radius: 50%; background: #166FE5; display: grid; place-items: center"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" d="M5 12l5 5L20 7"></path></svg></span>
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.035em; font-weight: 600">You're booked in.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #4B5872; max-width: 520px">{{typeName}} · {{dateLabel}} at {{time}} SAST. A calendar invite with the meeting link is on its way to your inbox.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; padding-top: 8px">
+<a class="btn btn-primary" href="home.html">Back to home</a>
+<button type="button" class="btn btn-ghost" onClick="{{restart}}">Book another</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{notDone}}" hint-placeholder-val="{{ true }}">
+<div class="rise d3" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<div style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 16px">
+<div style="border-radius: 24px; background: #FFFFFF; border: 1px solid #E3E9F2; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span class="mono" style="font-size: 12px; color: #4B5872; letter-spacing: 0.08em">1 · MEETING TYPE</span>
+<sc-for list="{{types}}" as="t" hint-placeholder-count="3">
+<button type="button" class="opt" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="{{t.style}}">
+<span style="flex: none; width: 22px; height: 22px; border-radius: 50%; margin-top: 2px; box-sizing: border-box; {{t.radio}}"></span>
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 17px; font-weight: 600">{{t.name}}</span>
+<span style="font-size: 14px; line-height: 1.5; color: #4B5872">{{t.text}}</span>
+<span class="mono" style="font-size: 12px; color: #0B4FB3; padding-top: 4px">{{t.meta}}</span>
+</span>
+</button>
+</sc-for>
+</div>
+<div style="border-radius: 24px; background: #07101F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">YOUR BOOKING</span>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: #B7C3D9">Meeting</span><span style="text-align: right">{{typeName}}</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: #B7C3D9">Date</span><span style="text-align: right">{{dateLabel}}</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: #B7C3D9">Time</span><span style="text-align: right">{{timeLabel}}</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: #B7C3D9">Where</span><span style="text-align: right">{{where}}</span></div>
+</div>
+</div>
+</div>
+
+<div style="flex: 999 1 600px; min-width: 0; border-radius: 24px; background: #FFFFFF; border: 1px solid #E3E9F2; padding: clamp(20px, 3vw, 36px); box-sizing: border-box; display: flex; flex-direction: column; gap: 32px; box-shadow: 0 40px 80px -60px rgba(11,18,32,0.4)">
+<div style="display: flex; flex-wrap: wrap; gap: 32px">
+<div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<span class="mono" style="font-size: 12px; color: #4B5872; letter-spacing: 0.08em; white-space: nowrap">2 · DATE</span>
+<div style="display: flex; align-items: center; gap: 8px">
+<button type="button" class="icon-btn" onClick="{{prev}}" disabled="{{atStart}}" aria-label="Previous month"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<span style="min-width: 140px; text-align: center; font-size: 17px; font-weight: 600">{{monthLabel}}</span>
+<button type="button" class="icon-btn" onClick="{{next}}" aria-label="Next month"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+</div>
+<div class="mono" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; font-size: 12px; color: #4B5872; text-align: center">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{cells}}" as="c" hint-placeholder-count="35">
+<button type="button" class="day" onClick="{{c.pick}}" disabled="{{c.disabled}}" aria-label="{{c.aria}}" aria-pressed="{{c.pressed}}" style="{{c.style}}">{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 16px">
+<span class="mono" style="font-size: 12px; color: #4B5872; letter-spacing: 0.08em; min-height: 44px; display: flex; align-items: center">3 · TIME (SAST)</span>
+<sc-if value="{{hasDay}}" hint-placeholder-val="{{ false }}">
+<div class="slide" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px">
+<sc-for list="{{slots}}" as="s" hint-placeholder-count="6">
+<button type="button" class="slot" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" style="{{s.style}}">{{s.t}}</button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{noDay}}" hint-placeholder-val="{{ true }}">
+<div style="flex: 1; min-height: 200px; border: 1px dashed #D5DEEB; border-radius: 16px; display: grid; place-items: center; padding: 20px; text-align: center; font-size: 15px; color: #4B5872">Pick a weekday to see available times.</div>
+</sc-if>
+</div>
+</div>
+
+<form onSubmit="{{submit}}" style="display: flex; flex-direction: column; gap: 18px; padding-top: 28px; border-top: 1px solid #EEF2F8">
+<span class="mono" style="font-size: 12px; color: #4B5872; letter-spacing: 0.08em">4 · YOUR DETAILS</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-name" style="font-size: 14px; font-weight: 500; color: #33405A">Name</label><input id="b-name" class="field" type="text" placeholder="Your name" required></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-email" style="font-size: 14px; font-weight: 500; color: #33405A">Work email</label><input id="b-email" class="field" type="email" placeholder="you@company.co.za" required></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-co" style="font-size: 14px; font-weight: 500; color: #33405A">Company</label><input id="b-co" class="field" type="text" placeholder="Company name"></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-notes" style="font-size: 14px; font-weight: 500; color: #33405A">Anything we should know beforehand?</label><textarea id="b-notes" class="field" rows="3" placeholder="Systems you use, what's not working, links…" style="resize: vertical; min-height: 96px"></textarea></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<span style="font-size: 14px; color: #4B5872">{{hint}}</span>
+<button type="submit" class="btn btn-primary" disabled="{{cantBook}}">Confirm booking<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</div>
+</form>
+</div>
+</div>
+</sc-if>
+</div>
+</section>
+
+<footer style="background: #07101F; color: #FFFFFF; padding: 56px 24px 40px">
+<div class="mono" style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 13px; color: #8A98B3">
+<span style="display: flex; align-items: center; gap: 10px; font-family: 'Geist', system-ui, sans-serif; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>byteleaf</span>
+<div style="display: flex; flex-wrap: wrap; gap: 20px"><a class="flink" href="services.html">Services</a><a class="flink" href="process.html">Process</a><a class="flink" href="projects.html">Projects</a><a class="flink" href="contact.html">Contact</a></div>
+<span>© 2026 byteleaf · Johannesburg</span>
+</div>
+</footer>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+const now = new Date();
+const firstOpen = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+while (firstOpen.getDay() === 0 || firstOpen.getDay() === 6) firstOpen.setDate(firstOpen.getDate() + 1);
+this.state = { type: 0, y: firstOpen.getFullYear(), m: firstOpen.getMonth(), day: null, time: null, done: false };
+}
+renderVals() {
+const st = this.state;
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const types = [
+{ name: 'Discovery call', text: 'Tell us about your business and what you need. No prep required.', meta: '30 min · Free · Video call', where: 'Video call' },
+{ name: 'Technical deep-dive', text: 'Walk us through an existing system, codebase or problem in detail.', meta: '60 min · Video call', where: 'Video call' },
+{ name: 'In-person meeting', text: 'Meet the team at your office or ours in Johannesburg.', meta: '60 min · Johannesburg', where: 'Johannesburg' }
+];
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const first = new Date(st.y, st.m, 1);
+const offset = (first.getDay() + 6) % 7;
+const daysIn = new Date(st.y, st.m + 1, 0).getDate();
+const cells = [];
+for (let i = 0; i < offset; i++) cells.push({ label: '', disabled: true, aria: 'Empty', pressed: 'false', style: 'border: 0; background: transparent;', pick: () => {} });
+for (let d = 1; d <= daysIn; d++) {
+const date = new Date(st.y, st.m, d);
+const wd = date.getDay();
+const off = wd === 0 || wd === 6 || date <= today;
+const sel = st.day && st.day.getTime() === date.getTime();
+cells.push({
+label: String(d),
+disabled: off,
+aria: DAYS[wd] + ' ' + d + ' ' + MONTHS[st.m],
+pressed: sel ? 'true' : 'false',
+style: sel ? 'border: 1px solid #166FE5; background: #166FE5; color: #FFFFFF; box-shadow: 0 10px 20px -10px rgba(22,111,229,0.8);' : off ? 'border: 1px solid transparent; background: transparent; color: #A9B4C6;' : 'border: 1px solid #D6E5FC; background: #EEF4FE; color: #0B4FB3;',
+pick: () => { if (!off) this.setState({ day: date, time: null }); }
+});
+}
+const slotTimes = ['09:00', '10:00', '11:30', '13:00', '14:30', '16:00'];
+const t = types[st.type];
+const dateLabel = st.day ? DAYS[st.day.getDay()] + ' ' + st.day.getDate() + ' ' + MONTHS[st.day.getMonth()] : '—';
+const atStart = st.y < now.getFullYear() || (st.y === now.getFullYear() && st.m <= now.getMonth());
+const shift = (n) => { const d = new Date(st.y, st.m + n, 1); this.setState({ y: d.getFullYear(), m: d.getMonth() }); };
+return {
+done: st.done,
+notDone: !st.done,
+types: types.map((x, i) => {
+const on = i === st.type;
+return Object.assign({}, x, {
+pressed: on ? 'true' : 'false',
+style: on ? 'border: 1.5px solid #166FE5; background: #F3F8FF; color: #0B1220;' : 'border: 1.5px solid #E3E9F2; background: #FFFFFF; color: #0B1220;',
+radio: on ? 'border: 6px solid #166FE5; background: #FFFFFF;' : 'border: 2px solid #A9B8CF; background: #FFFFFF;',
+pick: () => this.setState({ type: i })
+});
+}),
+typeName: t.name,
+where: t.where,
+dateLabel: dateLabel,
+time: st.time,
+timeLabel: st.time ? st.time + ' SAST' : '—',
+monthLabel: MONTHS[st.m] + ' ' + st.y,
+atStart: atStart,
+prev: () => { if (!atStart) shift(-1); },
+next: () => shift(1),
+cells: cells,
+hasDay: !!st.day,
+noDay: !st.day,
+slots: slotTimes.map((s) => {
+const on = s === st.time;
+return {
+t: s,
+pressed: on ? 'true' : 'false',
+style: on ? 'border: 1px solid #166FE5; background: #166FE5; color: #FFFFFF;' : 'border: 1px solid #D5DEEB; background: #FFFFFF; color: #0B1220;',
+pick: () => this.setState({ time: s })
+};
+}),
+cantBook: !(st.day && st.time),
+hint: st.day && st.time ? 'Looks good — just add your details.' : 'Choose a date and time to continue.',
+submit: (e) => { if (e && e.preventDefault) e.preventDefault(); if (st.day && st.time) this.setState({ done: true }); },
+restart: () => this.setState({ done: false, day: null, time: null })
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

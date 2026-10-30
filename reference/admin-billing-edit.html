@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>byteleaf admin — Create quote or invoice</title>
+<!-- REFERENCE BUILD generated from design/AdminBillingEdit.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:44px;padding:10px 12px;border:1px solid #D5DEEB;border-radius:10px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:#166FE5;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.field::placeholder{color:#6B7891}
+.num{text-align:right;font-family:'Geist Mono',ui-monospace,monospace;font-size:14px}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.seg{font:inherit;cursor:pointer;min-height:40px;padding:0 18px;border:0;border-radius:999px;font-size:14px;font-weight:600;transition:all .2s}
+.qchip{font:inherit;cursor:pointer;min-height:36px;padding:0 12px;border-radius:999px;border:1px dashed #A9C7F5;background:#F3F8FF;color:#0B4FB3;font-size:13px;font-weight:500;transition:all .15s}
+.qchip:hover{border-style:solid;background:#EEF4FE}
+.rm{font:inherit;cursor:pointer;width:36px;height:36px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.rm:hover{color:#B42318;border-color:#F1C9C5;background:#FEF3F2}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes rowin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.rowin{animation:rowin .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 640px){.ihead{display:none!important}.irow{grid-template-columns:1fr 1fr!important}.irow .idesc{grid-column:1 / -1}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+
+<aside class="side" style="flex: 0 0 256px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; box-sizing: border-box">
+<a href="admin-dashboard.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<nav aria-label="Admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="6">
+<a class="{{n.cls}}" href="{{n.href}}" aria-current="{{n.current}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">{{n.badge}}<span class="sr"> new</span></span></sc-if></a>
+</sc-for>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="home.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>View website</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="admin-login.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<a class="mono" href="admin-billing.html" style="font-size: 12px; color: #4B5872; display: inline-flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>Quotes &amp; invoices</a>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">New {{kindLower}} <span class="mono" style="font-size: 15px; font-weight: 500; color: #4B5872">{{docNo}}</span></h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<div role="group" aria-label="Document type" style="display: flex; gap: 4px; padding: 4px; background: #F4F7FB; border: 1px solid #E3E9F2; border-radius: 999px">
+<button type="button" class="seg" aria-pressed="{{isQuoteA}}" onClick="{{toQuote}}" style="{{quoteSeg}}">Quote</button>
+<button type="button" class="seg" aria-pressed="{{isInvA}}" onClick="{{toInvoice}}" style="{{invSeg}}">Invoice</button>
+</div>
+<button type="button" class="btn btn-ghost" onClick="{{saveDraft}}">Save draft</button>
+<a class="btn btn-ghost" href="billing-document-pdf.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>PDF</a>
+<button type="button" class="btn btn-primary" onClick="{{send}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"></path></svg>Send to client</button>
+</div>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; box-sizing: border-box; width: 100%; max-width: 1440px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<form style="flex: 999 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<section class="panel rise" aria-labelledby="h-cl" style="padding: 22px; display: flex; flex-direction: column; gap: 16px">
+<h2 id="h-cl" style="margin: 0; font-size: 17px; font-weight: 600">Client &amp; details</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-cl" class="lbl">Bill to</label>
+<select id="c-cl" class="field" onChange="{{onClient}}"><sc-for list="{{clientOpts}}" as="o" hint-placeholder-count="5"><option value="{{o.i}}">{{o.label}}</option></sc-for><option value="new">+ New client…</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-ref" class="lbl">Project / reference</label><input id="c-ref" class="field" type="text" value="{{refTitle}}" onInput="{{onRef}}"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-iss" class="lbl">Issue date</label><input id="c-iss" class="field" type="date" value="2026-10-30"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-due" class="lbl">{{dueLabel}}</label>
+<select id="c-due" class="field" onChange="{{onDue}}"><sc-for list="{{dueOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}">{{o.label}}</option></sc-for></select></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 12px 14px; border-radius: 12px; background: #F8FAFD; border: 1px solid #EEF2F8; font-size: 14px; color: #33405A">
+<span><span style="color: #4B5872">Contact:</span> {{client.contact}}</span>
+<span><span style="color: #4B5872">Email:</span> {{client.email}}</span>
+<span><span style="color: #4B5872">Address:</span> [Client address]</span>
+</div>
+</section>
+
+<section class="panel rise d1" aria-labelledby="h-li" style="padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+<h2 id="h-li" style="margin: 0; font-size: 17px; font-weight: 600">Line items</h2>
+<span class="hint">Amounts in rand (ZAR)</span>
+</div>
+<div class="ihead mono" style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 120px 120px 36px; gap: 10px; font-size: 11px; letter-spacing: 0.06em; color: #4B5872; padding: 0 2px">
+<span>DESCRIPTION</span><span style="text-align: right">QTY</span><span style="text-align: right">RATE</span><span style="text-align: right">AMOUNT</span><span></span>
+</div>
+<sc-for list="{{items}}" as="it" hint-placeholder-count="3">
+<div class="irow rowin" style="display: grid; grid-template-columns: minmax(0, 1fr) 72px 120px 120px 36px; gap: 10px; align-items: center">
+<div class="idesc" style="min-width: 0"><label for="{{it.dId}}" class="sr">Description, line {{it.n}}</label><input id="{{it.dId}}" class="field" type="text" value="{{it.desc}}" placeholder="What are you charging for?" onInput="{{it.onDesc}}"></div>
+<div><label for="{{it.qId}}" class="sr">Quantity, line {{it.n}}</label><input id="{{it.qId}}" class="field num" type="number" min="0" step="0.5" value="{{it.qty}}" onInput="{{it.onQty}}"></div>
+<div><label for="{{it.rId}}" class="sr">Rate, line {{it.n}}</label><input id="{{it.rId}}" class="field num" type="number" min="0" step="50" value="{{it.rate}}" onInput="{{it.onRate}}"></div>
+<span class="mono" style="text-align: right; font-size: 14px; font-weight: 500">{{it.amount}}</span>
+<button type="button" class="rm" onClick="{{it.remove}}" aria-label="Remove line {{it.n}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"></path></svg></button>
+</div>
+</sc-for>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 6px">
+<button type="button" class="btn btn-ghost" onClick="{{addLine}}" style="min-height: 36px; padding: 0 14px; font-size: 14px">+ Add line</button>
+<span class="hint" style="margin-left: 6px">Quick add:</span>
+<sc-for list="{{presets}}" as="p" hint-placeholder-count="4"><button type="button" class="qchip" onClick="{{p.add}}">{{p.label}}</button></sc-for>
+</div>
+</section>
+
+<section class="panel rise d2" aria-labelledby="h-tot" style="padding: 22px; display: flex; flex-direction: column; gap: 16px">
+<h2 id="h-tot" style="margin: 0; font-size: 17px; font-weight: 600">Totals &amp; terms</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="t-disc" class="lbl">Discount (%)</label><input id="t-disc" class="field num" type="number" min="0" max="100" value="{{discount}}" onInput="{{onDisc}}"></div>
+<sc-if value="{{isQuote}}" hint-placeholder-val="{{ true }}"><div style="display: flex; flex-direction: column; gap: 8px"><label for="t-dep" class="lbl">Deposit to start (%)</label><input id="t-dep" class="field num" type="number" min="0" max="100" value="{{deposit}}" onInput="{{onDep}}"></div></sc-if>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px; border: 1px solid #EEF2F8; border-radius: 12px">
+<span style="display: flex; flex-direction: column; gap: 2px"><span id="vat-l" style="font-size: 15px; font-weight: 500">Charge VAT (15%)</span><span class="hint">Only switch on once byteleaf is VAT-registered — invoices then become "Tax invoices".</span></span>
+<button type="button" class="sw" role="switch" aria-checked="{{vatAria}}" aria-labelledby="vat-l" onClick="{{toggleVat}}" style="background: {{vatBg}}"><span class="knob" style="left: {{vatKnob}}"></span></button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="t-notes" class="lbl">Notes &amp; terms (shown on the document)</label><textarea id="t-notes" class="field" rows="3" style="resize: vertical">{{notes}}</textarea></div>
+</section>
+</form>
+
+<aside aria-label="Live preview" style="flex: 1 1 440px; min-width: 0; max-width: 100%; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 15px; font-weight: 600">Preview</span><span class="mono" style="font-size: 11px; color: #4B5872">A4 · UPDATES AS YOU TYPE</span></div>
+<article class="rise d1" style="background: #FFFFFF; border-radius: 6px; box-shadow: 0 30px 60px -30px rgba(11,18,32,0.35), 0 0 0 1px #E3E9F2; padding: 32px 30px; display: flex; flex-direction: column; gap: 22px; font-size: 11px; line-height: 1.5; color: #0B1220">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px">
+<span style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; letter-spacing: -0.04em"><svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>byteleaf</span>
+<span style="text-align: right; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 18px; font-weight: 600; letter-spacing: 0.02em; color: #1877F2">{{docTitle}}</span><span class="mono" style="font-size: 10px; color: #4B5872">{{docNo}}</span></span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0; overflow-wrap: anywhere"><span class="mono" style="font-size: 8.5px; letter-spacing: 0.08em; color: #4B5872">BILL TO</span><span style="font-weight: 600">{{client.company}}</span><span>{{client.contact}}</span><span style="color: #4B5872">{{client.email}}</span></span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0; overflow-wrap: anywhere"><span class="mono" style="font-size: 8.5px; letter-spacing: 0.08em; color: #4B5872">FROM</span><span style="font-weight: 600">byteleaf</span><span>Johannesburg, South Africa</span><span style="color: #4B5872">[Reg. no.]</span><sc-if value="{{vat}}" hint-placeholder-val="{{ false }}"><span style="color: #4B5872">VAT no. [VAT number]</span></sc-if></span>
+<span style="display: flex; flex-direction: column; gap: 2px; text-align: right"><span class="mono" style="font-size: 8.5px; letter-spacing: 0.08em; color: #4B5872">ISSUED</span><span>30 Oct 2026</span><span class="mono" style="font-size: 8.5px; letter-spacing: 0.08em; color: #4B5872; padding-top: 4px">{{dueLabelUpper}}</span><span>{{dueDate}}</span></span>
+</div>
+<div style="padding: 8px 10px; border-radius: 6px; background: #F4F7FB"><span style="color: #4B5872">Re:</span> <span style="font-weight: 600">{{refTitle}}</span></div>
+<div style="display: flex; flex-direction: column">
+<div class="mono" style="display: grid; grid-template-columns: minmax(0, 1fr) 36px 80px 84px; gap: 8px; padding: 6px 0; border-bottom: 1.5px solid #0B1220; font-size: 8.5px; letter-spacing: 0.08em; color: #4B5872"><span>DESCRIPTION</span><span style="text-align: right">QTY</span><span style="text-align: right">RATE</span><span style="text-align: right">AMOUNT</span></div>
+<sc-for list="{{items}}" as="it" hint-placeholder-count="3"><div style="display: grid; grid-template-columns: minmax(0, 1fr) 36px 80px 84px; gap: 8px; padding: 8px 0; border-bottom: 1px solid #EEF2F8"><span>{{it.descShow}}</span><span class="mono" style="text-align: right">{{it.qty}}</span><span class="mono" style="text-align: right">{{it.rateFmt}}</span><span class="mono" style="text-align: right">{{it.amount}}</span></div></sc-for>
+</div>
+<div style="display: flex; justify-content: flex-end">
+<div style="width: 240px; max-width: 100%; display: flex; flex-direction: column; gap: 5px">
+<div style="display: flex; justify-content: space-between"><span style="color: #4B5872">Subtotal</span><span class="mono">{{subtotal}}</span></div>
+<sc-if value="{{hasDisc}}" hint-placeholder-val="{{ false }}"><div style="display: flex; justify-content: space-between"><span style="color: #4B5872">Discount ({{discount}}%)</span><span class="mono">−{{discAmt}}</span></div></sc-if>
+<sc-if value="{{vat}}" hint-placeholder-val="{{ false }}"><div style="display: flex; justify-content: space-between"><span style="color: #4B5872">VAT (15%)</span><span class="mono">{{vatAmt}}</span></div></sc-if>
+<div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 8px; margin-top: 3px; border-top: 1.5px solid #0B1220"><span style="font-weight: 600; font-size: 12px">Total due</span><span class="mono" style="font-size: 15px; font-weight: 500; color: #166FE5">{{total}}</span></div>
+<sc-if value="{{showDep}}" hint-placeholder-val="{{ false }}"><div style="display: flex; justify-content: space-between; padding: 6px 8px; margin-top: 4px; border-radius: 6px; background: #EEF4FE; color: #0B4FB3"><span>Deposit to start ({{deposit}}%)</span><span class="mono">{{depAmt}}</span></div></sc-if>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 14px; padding-top: 14px; border-top: 1px solid #EEF2F8">
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 8.5px; letter-spacing: 0.08em; color: #4B5872">PAYMENT DETAILS</span><span>[Bank] · [Account name]</span><span>Acc [Account number] · Branch [Code]</span><span>Reference: <span class="mono">{{docNo}}</span></span></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 8.5px; letter-spacing: 0.08em; color: #4B5872">NOTES</span><span style="white-space: pre-line; color: #33405A">{{notes}}</span></span>
+</div>
+</article>
+</aside>
+</div>
+</main>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 24px 48px -16px rgba(11,18,32,0.5); max-width: calc(100% - 48px)">
+<span style="width: 24px; height: 24px; border-radius: 50%; background: #0B7A55; display: grid; place-items: center; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+<span>{{toast}}</span>
+<a href="admin-billing.html" style="color: #6FAEFF; font-weight: 600">View all</a>
+</div>
+</sc-if>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = {
+kind: 'quote', client: 0, due: 30, ref: 'Shopify ↔ warehouse stock sync', discount: 0, deposit: 50, vat: false, toast: '', uid: 4,
+items: [
+{ id: 1, desc: 'Discovery & technical scoping', qty: 1, rate: 6500 },
+{ id: 2, desc: 'Stock sync integration — build & testing', qty: 1, rate: 36000 },
+{ id: 3, desc: 'Handover documentation & training', qty: 1, rate: 5500 }
+]
+};
+}
+renderVals() {
+const st = this.state;
+const NAV = [
+['dashboard', 'Dashboard', 'AdminDashboard.dc.html', 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z'],
+['bookings', 'Bookings', 'AdminBookings.dc.html', 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4'],
+['messages', 'Messages', 'AdminMessages.dc.html', 'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13L22 12v7H2v-7z'],
+['billing', 'Quotes & invoices', 'AdminBilling.dc.html', 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4'],
+['projects', 'Projects', 'AdminProjects.dc.html', 'M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5'],
+['settings', 'Settings', 'AdminSettings.dc.html', 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6']
+];
+const R = (n) => 'R ' + (Math.round(n * 100) / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const CLIENTS = [
+{ company: 'Karoo Outdoor Co.', contact: 'Pieter van Wyk', email: 'pieter@karooutdoor.co.za' },
+{ company: 'Patel & Sons Pharmacy', contact: 'Ayesha Patel', email: 'ayesha@patelpharmacy.co.za' },
+{ company: 'Mokoena Logistics', contact: 'Thandi Mokoena', email: 'thandi@mokoenalogistics.co.za' },
+{ company: 'Botha Engineering', contact: 'Johan Botha', email: 'johan@bothaeng.co.za' },
+{ company: 'Ubuntu Fitness', contact: 'Sipho Dlamini', email: 'sipho@ubuntufitness.co.za' }
+];
+const isQ = st.kind === 'quote';
+const client = CLIENTS[st.client] || CLIENTS[0];
+const num = (v) => { const x = parseFloat(v); return isNaN(x) ? 0 : x; };
+const setItem = (id, k, v) => this.setState({ items: st.items.map((it) => (it.id === id ? Object.assign({}, it, { [k]: v }) : it)) });
+const sub = st.items.reduce((a, it) => a + num(it.qty) * num(it.rate), 0);
+const disc = sub * Math.min(100, Math.max(0, num(st.discount))) / 100;
+const net = sub - disc;
+const vatAmt = st.vat ? net * 0.15 : 0;
+const total = net + vatAmt;
+const issue = new Date(2026, 9, 30);
+const dueD = new Date(issue.getFullYear(), issue.getMonth(), issue.getDate() + st.due);
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const add = (desc, rate) => this.setState({ items: st.items.concat([{ id: st.uid, desc: desc, qty: 1, rate: rate }]), uid: st.uid + 1 });
+const sw = st.vat;
+const segOn = 'background: #FFFFFF; color: #0B1220; box-shadow: 0 1px 3px rgba(11,18,32,0.15);';
+const segOff = 'background: transparent; color: #4B5872;';
+return {
+nav: NAV.map((n) => ({ cls: n[0] === 'billing' ? 'snav on' : 'snav', label: n[1], href: n[2], icon: n[3], current: n[0] === 'billing' ? 'page' : 'false', badge: n[0] === 'bookings' ? '2' : n[0] === 'messages' ? '3' : '' })),
+kindLower: isQ ? 'quote' : 'invoice',
+docNo: isQ ? 'Q-2026-016' : 'INV-2026-035',
+docTitle: isQ ? 'QUOTE' : (st.vat ? 'TAX INVOICE' : 'INVOICE'),
+isQuote: isQ, isQuoteA: isQ ? 'true' : 'false', isInvA: isQ ? 'false' : 'true',
+quoteSeg: isQ ? segOn : segOff, invSeg: isQ ? segOff : segOn,
+toQuote: () => this.setState({ kind: 'quote', due: 30 }),
+toInvoice: () => this.setState({ kind: 'invoice', due: 14 }),
+clientOpts: CLIENTS.map((c, i) => ({ i: String(i), label: c.company + ' — ' + c.contact })),
+onClient: (e) => { if (e.target.value !== 'new') this.setState({ client: parseInt(e.target.value, 10) }); },
+client: client,
+refTitle: st.ref,
+onRef: (e) => this.setState({ ref: e.target.value }),
+dueLabel: isQ ? 'Valid for' : 'Payment due',
+dueLabelUpper: isQ ? 'VALID UNTIL' : 'DUE',
+dueOpts: (isQ ? [30, 14, 60] : [14, 7, 30, 0]).map((d) => ({ v: String(d), label: d === 0 ? 'On receipt' : d + ' days' })),
+onDue: (e) => this.setState({ due: parseInt(e.target.value, 10) }),
+dueDate: st.due === 0 ? 'On receipt' : dueD.getDate() + ' ' + MON[dueD.getMonth()] + ' ' + dueD.getFullYear(),
+items: st.items.map((it, i) => ({
+n: String(i + 1), dId: 'd' + it.id, qId: 'q' + it.id, rId: 'r' + it.id,
+desc: it.desc, descShow: it.desc || '—', qty: String(it.qty), rate: String(it.rate),
+rateFmt: R(num(it.rate)), amount: R(num(it.qty) * num(it.rate)),
+onDesc: (e) => setItem(it.id, 'desc', e.target.value),
+onQty: (e) => setItem(it.id, 'qty', e.target.value),
+onRate: (e) => setItem(it.id, 'rate', e.target.value),
+remove: () => this.setState({ items: st.items.filter((x) => x.id !== it.id) })
+})),
+addLine: () => add('', 0),
+presets: [
+['Care plan (monthly)', 'Maintenance contract — monthly care plan'],
+['Development (hourly)', 'Development — per hour'],
+['Bug fix', 'Bug investigation & fix'],
+['Design sprint', 'UX / UI design sprint']
+].map((p) => ({ label: p[0], add: () => add(p[1], 0) })),
+discount: String(st.discount),
+onDisc: (e) => this.setState({ discount: e.target.value }),
+deposit: String(st.deposit),
+onDep: (e) => this.setState({ deposit: e.target.value }),
+vat: st.vat, vatAria: sw ? 'true' : 'false', vatBg: sw ? '#166FE5' : '#C9D3E3', vatKnob: sw ? '21px' : '3px',
+toggleVat: () => this.setState({ vat: !st.vat }),
+subtotal: R(sub), hasDisc: disc > 0, discAmt: R(disc), vatAmt: R(vatAmt), total: R(total),
+showDep: isQ && num(st.deposit) > 0, depAmt: R(total * num(st.deposit) / 100),
+notes: isQ ? 'This quote is valid for the period shown. Work starts once the deposit is received. Accept by replying to the email or signing below.' : 'Please use the invoice number as your payment reference. Thank you for your business.',
+saveDraft: () => this.setState({ toast: (isQ ? 'Quote' : 'Invoice') + ' saved as draft.' }),
+send: () => this.setState({ toast: (isQ ? 'Quote Q-2026-016' : 'Invoice INV-2026-035') + ' emailed to ' + client.contact + ' as a PDF.' }),
+toast: st.toast
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>byteleaf — Process</title>
+<!-- REFERENCE BUILD generated from design/Process.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.navlink{color:#33405A;font-size:15px;font-weight:500;padding:10px 14px;border-radius:999px;transition:background .2s,color .2s}
+.navlink:hover{background:#EEF4FE;color:#0B1220}
+.navlink.on{background:#EEF4FE;color:#166FE5}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;font-weight:600;font-size:16px;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s,color .25s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(22,111,229,.7)}
+.btn-light{background:#FFFFFF;color:#0B1220}
+.btn-light:hover{color:#0B1220;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(0,0,0,.5)}
+.arr{transition:transform .25s}.btn:hover .arr{transform:translateX(4px)}
+.step{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s}
+.step:hover{transform:translateX(6px);box-shadow:0 28px 50px -30px rgba(11,18,32,.35);border-color:#B9D2F8}
+.step:hover .num{background:#166FE5;color:#FFFFFF}
+.num{transition:background .3s,color .3s}
+.flink{color:#B7C3D9}.flink:hover{color:#FFFFFF}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.growY{transform-origin:top;animation:growY 3s cubic-bezier(.6,0,.2,1) .4s both}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 30s linear infinite;transform-origin:center}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.orbit{animation:orbit 8s linear infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(24,119,242,.55)}100%{box-shadow:0 0 0 14px rgba(24,119,242,0)}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.mnav{display:none}
+.menu-btn{list-style:none;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid #D5DEEB;display:grid;place-items:center;color:#0B1220;background:#FFFFFF}
+.menu-btn::-webkit-details-marker{display:none}
+.mnav[open] .menu-btn{border-color:#166FE5;color:#166FE5}
+.mnav .i-close{display:none}.mnav[open] .i-close{display:block}.mnav[open] .i-open{display:none}
+.mpanel{position:absolute;left:0;right:0;top:100%;background:#FFFFFF;border-bottom:1px solid #E8EDF5;box-shadow:0 24px 40px -24px rgba(11,18,32,.25);padding:12px 20px 20px;display:flex;flex-direction:column;gap:4px;animation:rise .35s cubic-bezier(.2,.8,.2,1) both}
+.mlink{display:flex;align-items:center;min-height:52px;padding:0 12px;border-radius:12px;font-size:18px;font-weight:500;color:#0B1220;border-bottom:1px solid #F1F4F9}
+.mlink:hover{background:#EEF4FE;color:#166FE5}
+@media (max-width: 760px){.dnav,.dcta{display:none!important}.mnav{display:block}}
+@media (max-width: 640px){section[style*="padding: 120px 24px"]{padding-top:64px!important;padding-bottom:64px!important}section[style*="24px 120px"]{padding-bottom:64px!important}section[style*="padding: 96px"],section[style*="padding: 88px"],section[style*="padding: 80px"]{padding-top:56px!important}section[style*="padding: 72px 24px"]{padding-top:44px!important;padding-bottom:44px!important}.hide-sm{display:none}}
+@media (max-width: 640px){.tl-li{gap:14px!important}.num{width:48px!important;height:48px!important;font-size:14px!important}.tl-line{left:23px!important}.step{padding:22px 20px!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; background: #FFFFFF; overflow-x: hidden">
+
+<header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid #E8EDF5">
+<nav aria-label="Main" style="max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="home.html" aria-label="byteleaf home" style="display: flex; align-items: center; gap: 10px; color: #0B1220; font-weight: 700; font-size: 22px; letter-spacing: -0.04em">
+<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byte<span style="color: #1877F2">leaf</span></span>
+</a>
+<div class="dnav" style="display: flex; flex-wrap: wrap; align-items: center; gap: 2px">
+<a class="navlink" href="services.html">Services</a>
+<a class="navlink on" href="process.html" aria-current="page">Process</a>
+<a class="navlink" href="projects.html">Projects</a>
+<a class="navlink" href="contact.html">Contact</a>
+</div>
+<a class="btn btn-primary dcta" href="book.html" style="min-height: 44px; padding: 0 20px; font-size: 15px">Book a call<svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<details class="mnav">
+<summary class="menu-btn" aria-label="Menu"><svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></summary>
+<div class="mpanel">
+<a class="mlink" href="services.html">Services</a>
+<a class="mlink" href="process.html">Process</a>
+<a class="mlink" href="projects.html">Projects</a>
+<a class="mlink" href="contact.html">Contact</a>
+<a class="btn btn-primary" href="book.html" style="justify-content: center; margin-top: 12px">Book a call</a>
+</div>
+</details>
+</nav>
+</header>
+
+<section style="position: relative; padding: 96px 24px 64px; background-color: #FFFFFF; background-image: linear-gradient(#EEF2F8 1px, transparent 1px), linear-gradient(90deg, #EEF2F8 1px, transparent 1px); background-size: 48px 48px">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 30% 30%, rgba(255,255,255,0) 0%, #FFFFFF 70%)"></div>
+<div style="position: relative; max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; align-items: flex-start">
+<span class="rise mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">OUR PROCESS</span>
+<h1 class="rise d1" style="margin: 0; max-width: 960px; font-size: clamp(44px, 5.6vw, 76px); line-height: 1; letter-spacing: -0.045em; font-weight: 600; text-wrap: balance">From first call to <span style="color: #1877F2">long-term care.</span></h1>
+<p class="rise d2" style="margin: 0; max-width: 620px; font-size: 20px; line-height: 1.55; color: #4B5872">Six clear stages, so you always know what's happening, what it costs and what comes next.</p>
+</div>
+</section>
+
+<section style="padding: 48px 24px 120px">
+<div style="position: relative; max-width: 1040px; margin: 0 auto">
+<div aria-hidden="true" class="tl-line" style="position: absolute; left: 31px; top: 32px; bottom: 32px; width: 2px; background: #E3E9F2"></div>
+<div aria-hidden="true" class="growY tl-line" style="position: absolute; left: 31px; top: 32px; bottom: 32px; width: 2px; background: #1877F2"></div>
+<ol style="position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 24px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+<li class="tl-li" style="display: flex; gap: 28px; align-items: flex-start">
+<span class="mono num" style="flex: none; width: 64px; height: 64px; border-radius: 50%; background: #FFFFFF; border: 2px solid #1877F2; display: grid; place-items: center; font-size: 17px; font-weight: 500; color: #166FE5; box-sizing: border-box">{{s.n}}</span>
+<article class="step" style="flex: 1; min-width: 0; border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px 30px; background: #FFFFFF; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px">
+<h2 style="margin: 0; font-size: 28px; letter-spacing: -0.03em; font-weight: 600">{{s.title}}</h2>
+<span class="mono" style="font-size: 12px; color: #4B5872; padding: 6px 12px; background: #F4F7FB; border-radius: 999px">{{s.who}}</span>
+</div>
+<p style="margin: 0; font-size: 17px; line-height: 1.65; color: #33405A; max-width: 720px">{{s.text}}</p>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<span class="mono" style="font-size: 12px; color: #4B5872; margin-right: 4px">YOU GET</span>
+<sc-for list="{{s.get}}" as="g" hint-placeholder-count="3"><span style="font-size: 14px; padding: 6px 12px; border-radius: 8px; background: #EEF4FE; color: #0B4FB3; font-weight: 500">{{g}}</span></sc-for>
+</div>
+</article>
+</li>
+</sc-for>
+</ol>
+</div>
+</section>
+
+<section style="position: relative; padding: 120px 24px; background: #07101F; color: #FFFFFF; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 28px 28px"></div>
+<div style="position: relative; max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(460px, 100%), 1fr)); gap: 64px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<span class="mono" style="font-size: 13px; color: #6FAEFF; letter-spacing: 0.08em">AFTER LAUNCH</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">The care loop, every month.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #B7C3D9">On a maintenance contract your systems never sit unattended. Each month runs through the same four beats.</p>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; padding-top: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="mono" style="font-size: 12px; color: #6FAEFF">A · MONITOR</span><span style="font-size: 15px; line-height: 1.55; color: #D6DEEC">Uptime, errors, security alerts and backups.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="mono" style="font-size: 12px; color: #6FAEFF">B · TRIAGE</span><span style="font-size: 15px; line-height: 1.55; color: #D6DEEC">Issues and requests ranked with you by impact.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="mono" style="font-size: 12px; color: #6FAEFF">C · IMPROVE</span><span style="font-size: 15px; line-height: 1.55; color: #D6DEEC">Fixes, updates and small features shipped.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="mono" style="font-size: 12px; color: #6FAEFF">D · REPORT</span><span style="font-size: 15px; line-height: 1.55; color: #D6DEEC">A plain-language summary and next month's plan.</span></div>
+</div>
+</div>
+<div aria-hidden="true" style="position: relative; width: min(440px, 100%); aspect-ratio: 1; margin: 0 auto">
+<svg class="spin" viewBox="0 0 200 200" width="100%" height="100%" style="position: absolute; inset: 0"><circle cx="100" cy="100" r="86" fill="none" stroke="#1C2B47" stroke-width="1.5"></circle><circle cx="100" cy="100" r="86" fill="none" stroke="#1877F2" stroke-width="1.5" stroke-dasharray="3 7"></circle></svg>
+<div class="orbit" style="position: absolute; inset: 7%">
+<span class="pulse" style="position: absolute; top: -7px; left: calc(50% - 7px); width: 14px; height: 14px; border-radius: 50%; background: #1877F2"></span>
+</div>
+<span class="mono" style="position: absolute; top: 3%; left: 50%; transform: translateX(-50%); padding: 8px 14px; border-radius: 999px; background: #0B1730; border: 1px solid #2C5BA8; font-size: 13px; color: #FFFFFF">Monitor</span>
+<span class="mono" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 8px 14px; border-radius: 999px; background: #0B1730; border: 1px solid #2C5BA8; font-size: 13px; color: #FFFFFF">Triage</span>
+<span class="mono" style="position: absolute; bottom: 3%; left: 50%; transform: translateX(-50%); padding: 8px 14px; border-radius: 999px; background: #0B1730; border: 1px solid #2C5BA8; font-size: 13px; color: #FFFFFF">Improve</span>
+<span class="mono" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); padding: 8px 14px; border-radius: 999px; background: #0B1730; border: 1px solid #2C5BA8; font-size: 13px; color: #FFFFFF">Report</span>
+<div style="position: absolute; inset: 30%; border-radius: 50%; background: #1877F2; display: grid; place-items: center; text-align: center">
+<svg width="56" height="56" viewBox="0 0 32 32"><path d="M6 26C6 14 14 6 26 6C26 18 18 26 6 26Z" fill="#FFFFFF"></path><path d="M6.5 25.5L19 13M12 20h5M15 17v-4" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding: 120px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 720px">
+<span class="mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">STAYING IN TOUCH</span>
+<h2 style="margin: 0; font-size: clamp(32px, 3.6vw, 46px); line-height: 1.06; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">You'll never wonder what we're working on.</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 20px">
+<div style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px"><span class="mono" style="font-size: 30px; font-weight: 500; color: #1877F2; letter-spacing: -0.03em">[X] hrs</span><h3 style="margin: 0; font-size: 19px; font-weight: 600">Response time</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">For urgent production issues on a care contract, during business hours.</p></div>
+<div style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px"><span class="mono" style="font-size: 30px; font-weight: 500; color: #1877F2; letter-spacing: -0.03em">Weekly</span><h3 style="margin: 0; font-size: 19px; font-weight: 600">Progress updates</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">A short written update and a demo link while a project is in build.</p></div>
+<div style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px"><span class="mono" style="font-size: 30px; font-weight: 500; color: #1877F2; letter-spacing: -0.03em">1 channel</span><h3 style="margin: 0; font-size: 19px; font-weight: 600">Shared workspace</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">Slack, Teams, WhatsApp or email — whatever your team already uses.</p></div>
+<div style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px"><span class="mono" style="font-size: 30px; font-weight: 500; color: #1877F2; letter-spacing: -0.03em">SAST</span><h3 style="margin: 0; font-size: 19px; font-weight: 600">Your time zone</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">Based in Johannesburg, working the same hours you do.</p></div>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 24px 120px">
+<div style="position: relative; max-width: 1240px; margin: 0 auto; border-radius: 28px; background: #1877F2; color: #FFFFFF; padding: clamp(40px, 6vw, 80px); box-sizing: border-box; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px">
+<svg aria-hidden="true" width="420" height="420" viewBox="0 0 32 32" style="position: absolute; right: -60px; bottom: -120px; opacity: 0.14"><path d="M4 28C4 14 14 4 28 4C28 18 18 28 4 28Z" fill="#FFFFFF"></path></svg>
+<div style="position: relative; display: flex; flex-direction: column; gap: 14px; max-width: 640px">
+<h2 style="margin: 0; font-size: clamp(32px, 4vw, 52px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">Step one is a conversation.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #FFFFFF">Book a free 30-minute discovery call and we'll take it from there.</p>
+</div>
+<a class="btn btn-light" href="book.html" style="position: relative">Book a call<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</section>
+
+<footer style="background: #07101F; color: #FFFFFF; padding: 72px 24px 40px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: -0.04em"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>byteleaf</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #B7C3D9">Design, frontend, backend and AI integrations for established businesses.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">COMPANY</span>
+<a class="flink" href="services.html">Services</a><a class="flink" href="process.html">Process</a><a class="flink" href="projects.html">Projects</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">GET IN TOUCH</span>
+<a class="flink" href="contact.html">Contact</a><a class="flink" href="book.html">Book a call</a><span style="color: #B7C3D9">[hello@yourdomain.co.za]</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">STUDIO</span>
+<span style="color: #B7C3D9; line-height: 1.6">Johannesburg<br>South Africa</span>
+</div>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 28px; border-top: 1px solid #1C2840; font-size: 12px; color: #8A98B3">
+<span>© 2026 byteleaf</span><span>Made in Jozi</span>
+</div>
+</div>
+</footer>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+renderVals() {
+return {
+steps: [
+{ n: '01', title: 'Discover', who: 'Free · 30-min call', text: 'We learn how your business runs, which systems you depend on and what is getting in the way. No jargon, no pressure.', get: ['Shared understanding', 'Next-step recommendation'] },
+{ n: '02', title: 'Audit & scope', who: 'Before any build', text: 'We review your existing code, hosting and tools, then write up exactly what we propose — with a fixed quote or a retainer that fits.', get: ['Written proposal', 'Clear quote', 'Risk list'] },
+{ n: '03', title: 'Design', who: 'You sign off', text: 'User flows, screens and technical architecture, shaped with your team and approved before a line of production code is written.', get: ['Clickable prototype', 'Architecture plan'] },
+{ n: '04', title: 'Build', who: 'Short cycles', text: 'We build in small increments on a staging site you can use, with regular demos so feedback lands early and nothing surprises you.', get: ['Staging link', 'Regular demos', 'Weekly updates'] },
+{ n: '05', title: 'Launch', who: 'Planned release', text: 'A careful go-live with backups and a rollback plan, followed by handover documents and training for the people who will use it.', get: ['Live release', 'Handover docs', 'Team training'] },
+{ n: '06', title: 'Care', who: 'Ongoing', text: 'On a maintenance contract, we keep things updated, secure and improving, and report back every month.', get: ['Monitoring', 'Monthly report', 'Priority support'] }
+]
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

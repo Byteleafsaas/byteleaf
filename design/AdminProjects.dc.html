@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>byteleaf admin — Projects</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.search{font:inherit;font-size:15px;width:260px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:#166FE5;background:#FFFFFF;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.search::placeholder{color:#6B7891}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.prow{transition:background .15s}
+.prow:hover{background:#F8FAFD}
+.prow:hover .thumb{transform:scale(1.04)}
+.thumb{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.act{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.act:hover{border-color:#D5DEEB;background:#FFFFFF;color:#166FE5}
+.act.del:hover{color:#B42318;border-color:#F1C9C5}
+.star{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:0;background:transparent;display:grid;place-items:center;transition:transform .2s}
+.star:hover{transform:scale(1.15)}
+.sw{font:inherit;cursor:pointer;position:relative;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.col-cat,.col-upd,.thead{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+
+<aside class="side" style="flex: 0 0 256px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; box-sizing: border-box">
+<a href="AdminDashboard.dc.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<nav aria-label="Admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="6">
+<a class="{{n.cls}}" href="{{n.href}}" aria-current="{{n.current}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">{{n.badge}}<span class="sr"> new</span></span></sc-if></a>
+</sc-for>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="Main.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>View website</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="AdminLogin.dc.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Admin / Projects</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Projects</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<div style="position: relative">
+<label for="q" class="sr">Search projects</label>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4B5872" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 13px"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+<input id="q" class="search" type="search" placeholder="Search projects…" onInput="{{onSearch}}">
+</div>
+<a class="btn btn-primary" href="AdminProjectEdit.dc.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add project</a>
+</div>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; width: 100%; max-width: 1320px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div role="tablist" aria-label="Filter projects" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 999px; max-width: 100%; box-sizing: border-box">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button type="button" role="tab" class="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}<span class="mono" style="font-size: 11px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; display: grid; place-items: center; box-sizing: border-box; {{t.countStyle}}">{{t.count}}</span></button>
+</sc-for>
+</div>
+<span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #4B5872"><svg width="16" height="16" viewBox="0 0 24 24" fill="#C27C0E" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>Featured project shows first on the Projects page</span>
+</div>
+
+<section class="panel rise" aria-label="Project list" style="overflow: hidden">
+<div class="mono thead" style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; border-bottom: 1px solid #EEF2F8; background: #FBFCFE; font-size: 11px; letter-spacing: 0.06em; color: #4B5872">
+<span style="flex: 1 1 260px">PROJECT</span><span style="width: 190px">CATEGORIES</span><span style="width: 120px">ON WEBSITE</span><span style="width: 96px">UPDATED</span><span style="width: 128px; text-align: right">ACTIONS</span>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{rows}}" as="p" hint-placeholder-count="6">
+<li class="prow" style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid #EEF2F8">
+<div style="flex: 1 1 260px; min-width: 0; display: flex; align-items: center; gap: 14px">
+<span aria-hidden="true" style="width: 72px; height: 52px; border-radius: 10px; overflow: hidden; flex: none"><span class="thumb" style="display: block; width: 100%; height: 100%; {{p.bg}}"></span></span>
+<span style="min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600">{{p.name}}<sc-if value="{{p.featured}}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 10px; padding: 2px 7px; border-radius: 999px; background: #FFF4E0; color: #8A5200">FEATURED</span></sc-if></span>
+<span style="font-size: 13px; color: #4B5872">{{p.type}} · {{p.client}}</span>
+</span>
+</div>
+<div class="col-cat" style="width: 190px; display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{p.cats}}" as="c" hint-placeholder-count="2"><span class="mono" style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: #EEF4FE; color: #0B4FB3">{{c}}</span></sc-for></div>
+<div style="width: 120px; display: flex; align-items: center; gap: 10px">
+<button type="button" class="sw" role="switch" aria-checked="{{p.liveAria}}" aria-label="Show {{p.name}} on website" onClick="{{p.toggleLive}}" style="background: {{p.swBg}}"><span class="knob" style="left: {{p.knob}}"></span></button>
+<span style="font-size: 13px; font-weight: 500; color: {{p.liveColor}}">{{p.liveLabel}}</span>
+</div>
+<span class="col-upd mono" style="width: 96px; font-size: 12px; color: #4B5872">{{p.updated}}</span>
+<div style="width: 128px; display: flex; justify-content: flex-end; gap: 2px; margin-left: auto">
+<button type="button" class="star" onClick="{{p.feature}}" aria-pressed="{{p.featAria}}" aria-label="Make {{p.name}} the featured project"><svg width="20" height="20" viewBox="0 0 24 24" fill="{{p.starFill}}" stroke="{{p.starStroke}}" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg></button>
+<a class="act" href="AdminProjectEdit.dc.html" aria-label="Edit {{p.name}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg></a>
+<button type="button" class="act del" onClick="{{p.remove}}" aria-label="Delete {{p.name}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"></path></svg></button>
+</div>
+</li>
+</sc-for>
+</ul>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 48px 20px; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center">
+<span style="font-size: 16px; font-weight: 600">No projects here yet</span>
+<a class="btn btn-primary" href="AdminProjectEdit.dc.html">Add your first project</a>
+</div>
+</sc-if>
+</section>
+</div>
+</main>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 24px 48px -16px rgba(11,18,32,0.5); max-width: calc(100% - 48px)">
+<span>{{toast}}</span>
+<sc-if value="{{canUndo}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{undo}}" style="font: inherit; cursor: pointer; border: 0; background: transparent; color: #6FAEFF; font-weight: 600; min-height: 32px; padding: 0 8px; border-radius: 8px">Undo</button></sc-if>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = {
+tab: 'all', q: '', toast: '', trash: null,
+items: [
+{ id: 'p1', name: 'Online store rebuild', client: '[Client name]', type: 'E-commerce storefront', cats: ['Design', 'Frontend', 'Backend'], live: true, featured: true, updated: '28 Oct', v: 0 },
+{ id: 'p2', name: 'Invoice reading assistant', client: '[Client name]', type: 'AI document assistant', cats: ['AI', 'Backend'], live: true, featured: false, updated: '21 Oct', v: 1 },
+{ id: 'p3', name: 'Dispatch app care plan', client: '[Client name]', type: 'Maintenance contract', cats: ['Backend', 'Frontend'], live: true, featured: false, updated: '14 Oct', v: 2 },
+{ id: 'p4', name: 'Member portal redesign', client: '[Client name]', type: 'Customer portal redesign', cats: ['Design', 'Frontend'], live: true, featured: false, updated: '2 Oct', v: 0 },
+{ id: 'p5', name: 'ERP ↔ CRM sync', client: '[Client name]', type: 'Systems integration', cats: ['Backend'], live: true, featured: false, updated: '19 Sep', v: 1 },
+{ id: 'p6', name: 'Quote approvals bot', client: '[Client name]', type: 'Workflow automation', cats: ['AI', 'Backend'], live: false, featured: false, updated: 'Draft', v: 2 }
+]
+};
+}
+renderVals() {
+const st = this.state;
+const NAV = [
+['dashboard', 'Dashboard', 'AdminDashboard.dc.html', 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z'],
+['bookings', 'Bookings', 'AdminBookings.dc.html', 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4'],
+['messages', 'Messages', 'AdminMessages.dc.html', 'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13L22 12v7H2v-7z'],
+['billing', 'Quotes & invoices', 'AdminBilling.dc.html', 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4'],
+['projects', 'Projects', 'AdminProjects.dc.html', 'M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5'],
+['settings', 'Settings', 'AdminSettings.dc.html', 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6']
+];
+const BG = [
+'background-color: #1877F2; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 10px);',
+'background-color: #0B1220; background-image: radial-gradient(rgba(111,174,255,0.45) 1px, transparent 1px); background-size: 8px 8px;',
+'background-color: #EEF4FE; background-image: linear-gradient(#C9DCF9 1px, transparent 1px), linear-gradient(90deg, #C9DCF9 1px, transparent 1px); background-size: 10px 10px;'
+];
+const all = st.items;
+const groups = { all: () => true, live: (p) => p.live, draft: (p) => !p.live };
+const q = st.q.trim().toLowerCase();
+const rows = all.filter(groups[st.tab]).filter((p) => !q || (p.name + ' ' + p.type).toLowerCase().indexOf(q) > -1);
+const set = (items, toast, trash) => this.setState({ items: items, toast: toast || '', trash: trash || null });
+return {
+nav: NAV.map((n) => ({ cls: n[0] === 'projects' ? 'snav on' : 'snav', label: n[1], href: n[2], icon: n[3], current: n[0] === 'projects' ? 'page' : 'false', badge: n[0] === 'bookings' ? '2' : n[0] === 'messages' ? '3' : '' })),
+onSearch: (e) => this.setState({ q: e.target.value }),
+tabs: [['all', 'All'], ['live', 'On website'], ['draft', 'Hidden']].map((l) => {
+const on = st.tab === l[0];
+return {
+label: l[1], count: String(all.filter(groups[l[0]]).length), selected: on ? 'true' : 'false',
+style: on ? 'border: 0; background: #0B1220; color: #FFFFFF;' : 'border: 0; background: transparent; color: #4B5872;',
+countStyle: on ? 'background: rgba(255,255,255,0.18); color: #FFFFFF;' : 'background: #EEF2F8; color: #33405A;',
+pick: () => this.setState({ tab: l[0] })
+};
+}),
+rows: rows.map((p) => Object.assign({}, p, {
+bg: BG[p.v],
+liveAria: p.live ? 'true' : 'false',
+swBg: p.live ? '#166FE5' : '#C9D3E3',
+knob: p.live ? '21px' : '3px',
+liveLabel: p.live ? 'Visible' : 'Hidden',
+liveColor: p.live ? '#0B6B4B' : '#4B5872',
+featAria: p.featured ? 'true' : 'false',
+starFill: p.featured ? '#C27C0E' : 'none',
+starStroke: p.featured ? '#C27C0E' : '#6B7891',
+toggleLive: () => set(all.map((x) => (x.id === p.id ? Object.assign({}, x, { live: !x.live, updated: 'Just now' }) : x)), p.live ? p.name + ' is now hidden from the website.' : p.name + ' is now live on the website.'),
+feature: () => set(all.map((x) => Object.assign({}, x, { featured: x.id === p.id })), p.name + ' is now the featured project.'),
+remove: () => set(all.filter((x) => x.id !== p.id), p.name + ' deleted.', { item: p, index: all.indexOf(p) })
+})),
+noRows: rows.length === 0,
+toast: st.toast,
+canUndo: !!st.trash,
+undo: () => { const t = st.trash; const items = all.slice(); items.splice(t.index, 0, t.item); set(items, 'Restored ' + t.item.name + '.'); }
+};
+}
+}
+</script>
+</body>
+</html>

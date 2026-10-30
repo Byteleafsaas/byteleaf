@@ -1,0 +1,12 @@
+.root { position: relative; }
+.trigger { display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left; cursor: pointer; }
+.trigger span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chev { flex: none; color: var(--muted); transition: transform .25s var(--ease-out); }
+.trigger[aria-expanded="true"] { border-color: var(--blue-600); box-shadow: 0 0 0 4px rgba(24, 119, 242, .15); }
+.trigger[aria-expanded="true"] .chev { transform: rotate(180deg); color: var(--blue-600); }
+
+.list { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 8px); margin: 0; padding: 6px; list-style: none; max-height: 300px; overflow-y: auto; background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: 0 24px 48px -20px rgba(11, 18, 32, .35); animation: slide .2s var(--ease-out) both; }
+.opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: var(--r-md); font-size: 15px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: background .15s, color .15s; }
+.active { background: var(--blue-50); color: var(--ink); }
+.opt[aria-selected="true"] { color: var(--blue-600); }
+.opt svg { flex: none; }

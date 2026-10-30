@@ -1,0 +1,46 @@
+.hero { padding: 96px var(--gutter) 48px; }
+.heroIn { max-width: var(--container); margin: 0 auto; display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
+.heroIn h1 { max-width: 900px; }
+.heroIn p { max-width: 620px; }
+@media (max-width: 640px) { .hero { padding-top: 56px; } }
+
+.featWrap { padding: 0 var(--gutter) 72px; }
+.feat { max-width: var(--container); margin: 0 auto; border: 1px solid var(--line); border-radius: var(--r-3xl); overflow: hidden; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(480px, 100%), 1fr)); background: #fff; }
+.featImg { min-height: 420px; overflow: hidden; background: var(--navy-900); }
+.featShot { position: relative; height: 100%; min-height: 420px; background-color: var(--navy-900); background-image: radial-gradient(rgba(111, 174, 255, .3) 1.2px, transparent 1.2px); background-size: 20px 20px; display: grid; place-items: center; transition: transform .6s var(--ease-out); }
+.feat:hover .featShot, .card:hover .shot { transform: scale(1.05); }
+.featLabel { font-family: var(--font-mono); font-size: 14px; color: #fff; border: 1px dashed rgba(255, 255, 255, .6); padding: 10px 16px; border-radius: 10px; }
+.featBody { padding: clamp(28px, 4vw, 56px); display: flex; flex-direction: column; gap: 24px; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--font-mono); font-size: 12px; }
+.badges span { padding: 6px 12px; border-radius: var(--r-pill); background: var(--surface-3); color: var(--ink-2); }
+.badges .on { background: var(--blue-600); color: #fff; }
+.featBody h2 { margin: 0; font-size: clamp(30px, 3.2vw, 42px); line-height: 1.06; letter-spacing: -.035em; font-weight: 600; }
+.facts { display: flex; flex-direction: column; gap: 18px; }
+.fact { display: flex; flex-direction: column; gap: 6px; }
+.fact span { font-family: var(--font-mono); font-size: 12px; color: var(--blue-600); }
+.fact p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--muted); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 10px; }
+.fchip { font: inherit; cursor: pointer; min-height: 44px; padding: 0 18px; border-radius: var(--r-pill); font-size: 15px; font-weight: 500; transition: all .2s; background: #fff; color: var(--ink-2); border: 1px solid var(--line-2); }
+.fchip:hover { transform: translateY(-2px); }
+.fchip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.count { margin-left: 8px; font-family: var(--font-mono); font-size: 12px; opacity: .8; }
+.col { max-width: var(--container); margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 24px; }
+
+.card { border: 1px solid var(--line); border-radius: var(--r-xl); overflow: hidden; background: #fff; display: flex; flex-direction: column; animation: popcard .5s var(--ease-out) both; }
+@keyframes popcard { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
+.imgWrap { height: 230px; overflow: hidden; }
+.shot { position: relative; height: 100%; display: grid; place-items: center; transition: transform .6s var(--ease-out); }
+.shotLabel { font-family: var(--font-mono); font-size: 13px; padding: 8px 14px; border-radius: var(--r-sm); }
+.p0 { background-color: var(--blue-500); background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .09) 0 2px, transparent 2px 18px); }
+.p0 .shotLabel { color: #fff; border: 1px dashed rgba(255, 255, 255, .7); }
+.p1 { background-color: var(--ink); background-image: radial-gradient(rgba(111, 174, 255, .35) 1.2px, transparent 1.2px); background-size: 18px 18px; }
+.p1 .shotLabel { color: #fff; border: 1px dashed rgba(255, 255, 255, .6); }
+.p2 { background-color: var(--blue-50); background-image: linear-gradient(var(--blue-100) 1px, transparent 1px), linear-gradient(90deg, var(--blue-100) 1px, transparent 1px); background-size: 24px 24px; }
+.p2 .shotLabel { color: var(--blue-800); border: 1px dashed var(--blue-600); }
+.body { padding: 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.type { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.body h2 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.body p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+.body .tags { margin-top: auto; padding-top: 8px; }

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>byteleaf admin — Quotes &amp; invoices</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.search{font:inherit;font-size:15px;width:240px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:#166FE5;background:#FFFFFF;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.search::placeholder{color:#6B7891}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.kpi{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.kpi:hover{transform:translateY(-3px);box-shadow:0 24px 40px -28px rgba(11,18,32,.35)}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.drow{transition:background .15s}
+.drow:hover{background:#F8FAFD}
+.act{font:inherit;cursor:pointer;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #D5DEEB;background:#FFFFFF;color:#0B1220;font-size:13px;font-weight:600;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.act:hover{border-color:#166FE5;color:#166FE5}
+.act.pri{background:#166FE5;border-color:#166FE5;color:#FFFFFF}
+.act.pri:hover{background:#0F5FCC;color:#FFFFFF}
+.ibtn{font:inherit;cursor:pointer;width:36px;height:36px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.ibtn:hover{border-color:#D5DEEB;background:#FFFFFF;color:#166FE5}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes flash{0%{background:#E6F6EF}100%{background:transparent}}
+.flash{animation:flash 1.6s ease-out both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.thead,.c-dates{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+
+<aside class="side" style="flex: 0 0 256px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; box-sizing: border-box">
+<a href="AdminDashboard.dc.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<nav aria-label="Admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="6">
+<a class="{{n.cls}}" href="{{n.href}}" aria-current="{{n.current}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">{{n.badge}}<span class="sr"> new</span></span></sc-if></a>
+</sc-for>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="Main.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>View website</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="AdminLogin.dc.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Admin / Quotes &amp; invoices</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Quotes &amp; invoices</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<div style="position: relative">
+<label for="q" class="sr">Search quotes and invoices</label>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4B5872" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 13px"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+<input id="q" class="search" type="search" placeholder="Number or client…" onInput="{{onSearch}}">
+</div>
+<a class="btn btn-ghost" href="AdminBillingEdit.dc.html">New quote</a>
+<a class="btn btn-primary" href="AdminBillingEdit.dc.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New invoice</a>
+</div>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; width: 100%; max-width: 1320px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div class="panel kpi rise" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #4B5872"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{k.dot}}"></span>{{k.label}}</span>
+<span class="mono" style="font-size: 26px; font-weight: 500; letter-spacing: -0.03em; color: {{k.color}}">{{k.value}}</span>
+<span style="font-size: 13px; color: #4B5872">{{k.note}}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between">
+<div role="tablist" aria-label="Document type" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 999px; max-width: 100%; box-sizing: border-box">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button type="button" role="tab" class="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}<span class="mono" style="font-size: 11px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; display: grid; place-items: center; box-sizing: border-box; {{t.countStyle}}">{{t.count}}</span></button>
+</sc-for>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<label for="st" style="font-size: 14px; color: #4B5872">Status</label>
+<select id="st" onChange="{{onStatus}}" style="font: inherit; font-size: 14px; min-height: 40px; padding: 0 12px; border: 1px solid #D5DEEB; border-radius: 10px; background: #FFFFFF; color: #0B1220"><option>Any</option><option>Draft</option><option>Sent</option><option>Overdue</option><option>Paid</option><option>Accepted</option><option>Declined</option></select>
+</div>
+</div>
+
+<section class="panel rise d2" aria-label="Documents" style="overflow: hidden">
+<div class="mono thead" style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; border-bottom: 1px solid #EEF2F8; background: #FBFCFE; font-size: 11px; letter-spacing: 0.06em; color: #4B5872">
+<span style="width: 168px">NUMBER</span><span style="flex: 1 1 200px">CLIENT</span><span style="width: 150px">DATES</span><span style="width: 130px; text-align: right">AMOUNT</span><span style="width: 96px">STATUS</span><span style="width: 210px; text-align: right">ACTIONS</span>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{rows}}" as="d" hint-placeholder-count="7">
+<li class="{{d.rowCls}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 14px 20px; border-bottom: 1px solid #EEF2F8">
+<span style="width: 168px; display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; {{d.kindStyle}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{d.kindIcon}}"></path></svg></span>
+<a class="mono" href="BillingDocument.dc.html" style="font-size: 13px; font-weight: 500; white-space: nowrap">{{d.no}}</a>
+</span>
+<span style="flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 15px; font-weight: 600">{{d.client}}</span>
+<span style="font-size: 13px; color: #4B5872; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{d.title}}</span>
+</span>
+<span class="c-dates" style="width: 150px; display: flex; flex-direction: column; gap: 2px; font-size: 13px"><span>Issued {{d.issued}}</span><span style="color: {{d.dueColor}}">{{d.dueLabel}} {{d.due}}</span></span>
+<span class="mono" style="width: 130px; text-align: right; font-size: 15px; font-weight: 500">{{d.amountFmt}}</span>
+<span style="width: 96px"><span class="mono" style="display: inline-flex; font-size: 11px; padding: 4px 9px; border-radius: 999px; {{d.badge}}">{{d.status}}</span></span>
+<span style="width: 210px; display: flex; justify-content: flex-end; align-items: center; gap: 4px; margin-left: auto">
+<sc-if value="{{d.canPay}}" hint-placeholder-val="{{ false }}"><button type="button" class="act pri" onClick="{{d.pay}}">Mark paid</button></sc-if>
+<sc-if value="{{d.canRemind}}" hint-placeholder-val="{{ false }}"><button type="button" class="act" onClick="{{d.remind}}">Remind</button></sc-if>
+<sc-if value="{{d.canConvert}}" hint-placeholder-val="{{ false }}"><button type="button" class="act pri" onClick="{{d.convert}}">Convert to invoice</button></sc-if>
+<sc-if value="{{d.canEdit}}" hint-placeholder-val="{{ false }}"><a class="act" href="AdminBillingEdit.dc.html">Continue</a></sc-if>
+<a class="ibtn" href="BillingDocument.dc.html" aria-label="Download {{d.no}} as PDF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></a>
+</span>
+</li>
+</sc-for>
+</ul>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 48px 20px; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center">
+<span style="font-size: 16px; font-weight: 600">Nothing matches</span>
+<span style="font-size: 14px; color: #4B5872">Try another type or status.</span>
+</div>
+</sc-if>
+</section>
+<p class="hint" style="margin: 0; font-size: 13px; color: #4B5872">Amounts in South African rand. Invoices become overdue automatically after their due date.</p>
+</div>
+</main>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 24px 48px -16px rgba(11,18,32,0.5); max-width: calc(100% - 48px)">
+<span style="width: 24px; height: 24px; border-radius: 50%; background: #0B7A55; display: grid; place-items: center; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+<span>{{toast}}</span>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = {
+tab: 'all', status: 'Any', q: '', toast: '', flash: '', next: 35,
+docs: [
+{ id: 'd1', kind: 'invoice', no: 'INV-2026-031', client: 'Patel & Sons Pharmacy', title: 'Ordering site stabilisation', issued: '2 Oct', due: '16 Oct', amount: 18400, status: 'Overdue' },
+{ id: 'd2', kind: 'invoice', no: 'INV-2026-032', client: 'Mokoena Logistics', title: 'Care plan — October', issued: '1 Oct', due: '15 Oct', amount: 12500, status: 'Paid' },
+{ id: 'd3', kind: 'invoice', no: 'INV-2026-033', client: 'Ubuntu Fitness', title: 'Member portal — milestone 1 of 2', issued: '30 Oct', due: '13 Nov', amount: 9800, status: 'Sent' },
+{ id: 'd4', kind: 'invoice', no: 'INV-2026-034', client: 'Brightline Retail', title: 'POS integration review', issued: '—', due: '—', amount: 6250, status: 'Draft' },
+{ id: 'd5', kind: 'quote', no: 'Q-2026-014', client: 'Karoo Outdoor Co.', title: 'Shopify ↔ warehouse stock sync', issued: '28 Oct', due: '27 Nov', amount: 48000, status: 'Sent' },
+{ id: 'd6', kind: 'quote', no: 'Q-2026-013', client: 'Nkosi Legal', title: 'AI case-document summariser', issued: '20 Oct', due: '19 Nov', amount: 65000, status: 'Accepted' },
+{ id: 'd7', kind: 'quote', no: 'Q-2026-012', client: 'Fourie Interiors', title: 'Showroom website', issued: '12 Oct', due: '11 Nov', amount: 32000, status: 'Declined' },
+{ id: 'd8', kind: 'quote', no: 'Q-2026-015', client: 'Botha Engineering', title: 'Sales quoting tool', issued: '—', due: '—', amount: 54000, status: 'Draft' }
+]
+};
+}
+renderVals() {
+const st = this.state;
+const NAV = [
+['dashboard', 'Dashboard', 'AdminDashboard.dc.html', 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z'],
+['bookings', 'Bookings', 'AdminBookings.dc.html', 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4'],
+['messages', 'Messages', 'AdminMessages.dc.html', 'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13L22 12v7H2v-7z'],
+['billing', 'Quotes & invoices', 'AdminBilling.dc.html', 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4'],
+['projects', 'Projects', 'AdminProjects.dc.html', 'M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5'],
+['settings', 'Settings', 'AdminSettings.dc.html', 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6']
+];
+const R = (n) => 'R ' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const BADGE = {
+Draft: 'background: #EEF2F8; color: #33405A;',
+Sent: 'background: #EEF4FE; color: #0B4FB3;',
+Overdue: 'background: #FEF3F2; color: #912018;',
+Paid: 'background: #E6F6EF; color: #0B6B4B;',
+Accepted: 'background: #E6F6EF; color: #0B6B4B;',
+Declined: 'background: #FFF4E0; color: #8A5200;',
+Invoiced: 'background: #EEF2F8; color: #33405A;'
+};
+const all = st.docs;
+const inv = all.filter((d) => d.kind === 'invoice');
+const sum = (xs) => xs.reduce((a, d) => a + d.amount, 0);
+const outstanding = inv.filter((d) => d.status === 'Sent' || d.status === 'Overdue');
+const overdue = inv.filter((d) => d.status === 'Overdue');
+const paid = inv.filter((d) => d.status === 'Paid');
+const waiting = all.filter((d) => d.kind === 'quote' && d.status === 'Sent');
+const groups = { all: () => true, quote: (d) => d.kind === 'quote', invoice: (d) => d.kind === 'invoice' };
+const q = st.q.trim().toLowerCase();
+const rows = all.filter(groups[st.tab]).filter((d) => st.status === 'Any' || d.status === st.status).filter((d) => !q || (d.no + ' ' + d.client + ' ' + d.title).toLowerCase().indexOf(q) > -1);
+const patch = (id, p, toast, extra) => this.setState(Object.assign({ docs: all.map((d) => (d.id === id ? Object.assign({}, d, p) : d)), toast: toast, flash: id }, extra || {}));
+return {
+nav: NAV.map((n) => ({ cls: n[0] === 'billing' ? 'snav on' : 'snav', label: n[1], href: n[2], icon: n[3], current: n[0] === 'billing' ? 'page' : 'false', badge: n[0] === 'bookings' ? '2' : n[0] === 'messages' ? '3' : '' })),
+onSearch: (e) => this.setState({ q: e.target.value }),
+onStatus: (e) => this.setState({ status: e.target.value }),
+kpis: [
+{ label: 'Outstanding', value: R(sum(outstanding)), note: outstanding.length + (outstanding.length === 1 ? ' unpaid invoice' : ' unpaid invoices'), dot: '#1877F2', color: '#0B1220' },
+{ label: 'Overdue', value: R(sum(overdue)), note: overdue.length ? overdue.length + (overdue.length === 1 ? ' invoice past its due date' : ' invoices past their due date') : 'Nothing overdue', dot: '#B42318', color: overdue.length ? '#912018' : '#0B1220' },
+{ label: 'Paid this month', value: R(sum(paid)), note: paid.length + (paid.length === 1 ? ' invoice settled' : ' invoices settled'), dot: '#0B7A55', color: '#0B1220' },
+{ label: 'Quotes awaiting reply', value: R(sum(waiting)), note: waiting.length + (waiting.length === 1 ? ' quote out with a client' : ' quotes out with clients'), dot: '#C27C0E', color: '#0B1220' }
+],
+tabs: [['all', 'All'], ['quote', 'Quotes'], ['invoice', 'Invoices']].map((l) => {
+const on = st.tab === l[0];
+return {
+label: l[1], count: String(all.filter(groups[l[0]]).length), selected: on ? 'true' : 'false',
+style: on ? 'border: 0; background: #0B1220; color: #FFFFFF;' : 'border: 0; background: transparent; color: #4B5872;',
+countStyle: on ? 'background: rgba(255,255,255,0.18); color: #FFFFFF;' : 'background: #EEF2F8; color: #33405A;',
+pick: () => this.setState({ tab: l[0] })
+};
+}),
+rows: rows.map((d) => {
+const isInv = d.kind === 'invoice';
+return Object.assign({}, d, {
+rowCls: st.flash === d.id ? 'drow flash' : 'drow',
+amountFmt: R(d.amount),
+badge: BADGE[d.status],
+kindStyle: isInv ? 'background: #EEF4FE; color: #166FE5;' : 'background: #FFF4E0; color: #8A5200;',
+kindIcon: isInv ? 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4' : 'M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5M9 13h6M9 17h4',
+dueLabel: isInv ? 'Due' : 'Valid to',
+dueColor: d.status === 'Overdue' ? '#912018' : '#4B5872',
+canPay: isInv && (d.status === 'Sent' || d.status === 'Overdue'),
+canRemind: isInv && d.status === 'Overdue',
+canConvert: !isInv && d.status === 'Accepted',
+canEdit: d.status === 'Draft',
+pay: () => patch(d.id, { status: 'Paid' }, d.no + ' marked as paid — receipt emailed to ' + d.client + '.'),
+remind: () => this.setState({ toast: 'Payment reminder sent to ' + d.client + '.', flash: d.id }),
+convert: () => {
+const no = 'INV-2026-0' + st.next;
+const invDoc = { id: 'n' + st.next, kind: 'invoice', no: no, client: d.client, title: d.title, issued: '—', due: '—', amount: d.amount, status: 'Draft' };
+this.setState({ docs: [invDoc].concat(all.map((x) => (x.id === d.id ? Object.assign({}, x, { status: 'Invoiced' }) : x))), toast: d.no + ' converted to draft invoice ' + no + '.', flash: invDoc.id, next: st.next + 1 });
+}
+});
+}),
+noRows: rows.length === 0,
+toast: st.toast
+};
+}
+}
+</script>
+</body>
+</html>

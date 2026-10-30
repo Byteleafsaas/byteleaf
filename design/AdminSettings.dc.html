@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>byteleaf admin — Settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.stab{font:inherit;cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;min-height:48px;padding:0 14px;border-radius:12px;border:0;font-size:15px;font-weight:500;white-space:nowrap;transition:all .2s}
+.stab:hover{background:#EEF4FE;color:#0B1220}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:46px;padding:11px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:#166FE5;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.field::placeholder{color:#6B7891}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.day{font:inherit;cursor:pointer;min-width:56px;min-height:44px;padding:0 12px;border-radius:12px;font-size:14px;font-weight:600;transition:all .2s}
+.slot{display:inline-flex;align-items:center;gap:4px;padding:4px 4px 4px 12px;border-radius:10px;background:#EEF4FE;color:#0B4FB3;font-size:14px}
+.slotx{font:inherit;cursor:pointer;width:28px;height:28px;border:0;border-radius:8px;background:transparent;color:#0B4FB3;display:grid;place-items:center}
+.slotx:hover{background:#D6E5FC}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.fade{animation:fade .4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}.stabs{flex-direction:row!important;overflow-x:auto}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+
+<aside class="side" style="flex: 0 0 256px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; box-sizing: border-box">
+<a href="AdminDashboard.dc.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<nav aria-label="Admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="6">
+<a class="{{n.cls}}" href="{{n.href}}" aria-current="{{n.current}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">{{n.badge}}<span class="sr"> new</span></span></sc-if></a>
+</sc-for>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="Main.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>View website</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="AdminLogin.dc.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Admin / Settings</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Settings</h1>
+</div>
+<button type="button" class="btn btn-primary" onClick="{{save}}">Save changes</button>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; box-sizing: border-box; width: 100%; max-width: 1200px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<nav aria-label="Settings sections" class="stabs" style="flex: 1 1 220px; max-width: 100%; display: flex; flex-direction: column; gap: 4px; padding: 8px; background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 18px; box-sizing: border-box">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<button type="button" class="stab" onClick="{{t.pick}}" aria-current="{{t.current}}" style="{{t.style}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg>{{t.label}}</button>
+</sc-for>
+</nav>
+
+<div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+<sc-if value="{{tBiz}}" hint-placeholder-val="{{ true }}">
+<section class="panel fade" aria-labelledby="h-biz" style="padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-biz" style="margin: 0; font-size: 18px; font-weight: 600">Business details</h2><span class="hint">Shown on the Contact page and in the website footer.</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-email" class="lbl">Public email</label><input id="b-email" class="field" type="email" placeholder="hello@yourdomain.co.za"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-phone" class="lbl">Phone / WhatsApp</label><input id="b-phone" class="field" type="tel" placeholder="+27 00 000 0000"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-addr" class="lbl">Studio location</label><input id="b-addr" class="field" type="text" value="Johannesburg, South Africa"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-hours" class="lbl">Office hours</label><input id="b-hours" class="field" type="text" placeholder="Mon–Fri · 08:00–17:00 SAST"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-reply" class="lbl">We reply within</label><select id="b-reply" class="field"><option>4 business hours</option><option>8 business hours</option><option>1 business day</option><option>2 business days</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-urgent" class="lbl">Urgent response time (care contracts)</label><select id="b-urgent" class="field"><option>2 hours</option><option>4 hours</option><option>8 hours</option></select></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="b-notify" class="lbl">Send new bookings &amp; messages to</label><input id="b-notify" class="field" type="email" placeholder="you@byteleaf.co.za"><span class="hint">You'll get an email the moment someone books or writes in.</span></div>
+</section>
+</sc-if>
+
+<sc-if value="{{tPrice}}" hint-placeholder-val="{{ false }}">
+<section class="panel fade" aria-labelledby="h-price" style="padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-price" style="margin: 0; font-size: 18px; font-weight: 600">Prices</h2><span class="hint">Shown on the Services page under "Ways to work with us". Leave blank to show "Let's talk".</span></div>
+<sc-for list="{{prices}}" as="p" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px; align-items: end; padding: 16px; border: 1px solid #EEF2F8; border-radius: 14px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="mono" style="font-size: 11px; color: #166FE5">{{p.tag}}</span><span style="font-size: 15px; font-weight: 600">{{p.title}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="{{p.id}}" class="lbl">Price shown</label><input id="{{p.id}}" class="field" type="text" placeholder="{{p.ph}}"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="{{p.id2}}" class="lbl">Billing</label><select id="{{p.id2}}" class="field"><option>{{p.unit}}</option><option>Per month</option><option>Per project</option><option>Per hour</option><option>Custom quote</option></select></div>
+</div>
+</sc-for>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="pr-hrs" class="lbl">Hours of changes included in a care contract</label><input id="pr-hrs" class="field" type="number" min="0" placeholder="e.g. 8" style="max-width: 200px"></div>
+</section>
+</sc-if>
+
+<sc-if value="{{tAvail}}" hint-placeholder-val="{{ false }}">
+<section class="panel fade" aria-labelledby="h-av" style="padding: 24px; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-av" style="margin: 0; font-size: 18px; font-weight: 600">Booking availability</h2><span class="hint">Controls what visitors can pick on the Book a call page. All times SAST.</span></div>
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<legend class="lbl" style="padding: 0; margin-bottom: 10px">Working days</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{days}}" as="d" hint-placeholder-count="7"><button type="button" class="day" onClick="{{d.toggle}}" aria-pressed="{{d.pressed}}" style="{{d.style}}">{{d.label}}</button></sc-for></div>
+</fieldset>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="lbl" id="slots-l">Start times</span>
+<div role="group" aria-labelledby="slots-l" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<sc-for list="{{slots}}" as="s" hint-placeholder-count="6"><span class="slot mono">{{s.t}}<button type="button" class="slotx" onClick="{{s.remove}}" aria-label="Remove {{s.t}}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span></sc-for>
+<label for="new-slot" class="sr">Add a start time</label>
+<input id="new-slot" class="field mono" type="time" step="900" onChange="{{addSlot}}" style="width: 140px; min-height: 40px; padding: 6px 10px">
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="lbl">Meeting types</span>
+<sc-for list="{{types}}" as="m" hint-placeholder-count="3">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid #EEF2F8; border-radius: 14px">
+<button type="button" class="sw" role="switch" aria-checked="{{m.aria}}" aria-label="Offer {{m.name}}" onClick="{{m.toggle}}" style="background: {{m.bg}}"><span class="knob" style="left: {{m.knob}}"></span></button>
+<span style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600; color: {{m.color}}">{{m.name}}</span><span class="hint">{{m.where}}</span></span>
+<label for="{{m.id}}" class="sr">{{m.name}} length</label>
+<select id="{{m.id}}" class="field" style="width: 130px; min-height: 40px; padding: 6px 10px"><option>{{m.len}}</option><option>15 min</option><option>30 min</option><option>45 min</option><option>60 min</option><option>90 min</option></select>
+</div>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="av-notice" class="lbl">Minimum notice</label><select id="av-notice" class="field"><option>Next working day</option><option>24 hours</option><option>48 hours</option><option>1 week</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="av-buf" class="lbl">Break between meetings</label><select id="av-buf" class="field"><option>15 min</option><option>None</option><option>30 min</option><option>60 min</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="av-max" class="lbl">Max meetings per day</label><input id="av-max" class="field" type="number" min="1" value="4"></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="lbl">Blocked dates</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<span class="slot mono">24 Dec – 2 Jan<button type="button" class="slotx" aria-label="Remove 24 Dec to 2 Jan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span>
+<button type="button" class="btn btn-ghost" style="min-height: 40px; padding: 0 14px; font-size: 14px">+ Block dates</button>
+</div>
+<span class="hint">Public holidays and leave — visitors can't book on these days.</span>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{tInv}}" hint-placeholder-val="{{ false }}">
+<section class="panel fade" aria-labelledby="h-inv" style="padding: 24px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-inv" style="margin: 0; font-size: 18px; font-weight: 600">Invoicing</h2><span class="hint">Printed on every quote and invoice PDF.</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-legal" class="lbl">Registered business name</label><input id="i-legal" class="field" type="text" placeholder="byteleaf (Pty) Ltd"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-reg" class="lbl">Company registration number</label><input id="i-reg" class="field" type="text" placeholder="0000/000000/07"></div>
+<div style="display: flex; flex-direction: column; gap: 8px; grid-column: 1 / -1"><label for="i-addr" class="lbl">Billing address</label><input id="i-addr" class="field" type="text" placeholder="Street, suburb, Johannesburg, postal code"></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 16px; border: 1px solid #EEF2F8; border-radius: 14px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<span style="display: flex; flex-direction: column; gap: 2px"><span id="vat-s" style="font-size: 15px; font-weight: 600">VAT registered</span><span class="hint">Adds VAT at 15% and titles invoices "Tax invoice".</span></span>
+<button type="button" class="sw" role="switch" aria-checked="{{vatAria}}" aria-labelledby="vat-s" onClick="{{toggleVat}}" style="background: {{vatBg}}"><span class="knob" style="left: {{vatKnob}}"></span></button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-vat" class="lbl">VAT number</label><input id="i-vat" class="field" type="text" placeholder="4000000000" style="max-width: 280px"></div>
+</div>
+<fieldset style="border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 16px">
+<legend class="lbl" style="padding: 0; margin-bottom: 12px">Bank details</legend>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-bank" class="lbl">Bank</label><input id="i-bank" class="field" type="text" placeholder="Bank name"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-accn" class="lbl">Account name</label><input id="i-accn" class="field" type="text" placeholder="byteleaf"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-acc" class="lbl">Account number</label><input id="i-acc" class="field" type="text" inputmode="numeric" placeholder="Account number"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-br" class="lbl">Branch code</label><input id="i-br" class="field" type="text" inputmode="numeric" placeholder="Branch code"></div>
+</fieldset>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-qp" class="lbl">Quote numbers</label><input id="i-qp" class="field mono" type="text" value="Q-2026-016"><span class="hint">Next number to use</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-ip" class="lbl">Invoice numbers</label><input id="i-ip" class="field mono" type="text" value="INV-2026-035"><span class="hint">Next number to use</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-terms" class="lbl">Default payment terms</label><select id="i-terms" class="field"><option>14 days</option><option>7 days</option><option>30 days</option><option>On receipt</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-valid" class="lbl">Quotes valid for</label><select id="i-valid" class="field"><option>30 days</option><option>14 days</option><option>60 days</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-dep" class="lbl">Default quote deposit</label><select id="i-dep" class="field"><option>50%</option><option>30%</option><option>None</option></select></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="i-foot" class="lbl">Default notes on invoices</label><textarea id="i-foot" class="field" rows="3" style="resize: vertical">Please use the invoice number as your payment reference. Thank you for your business.</textarea></div>
+</section>
+</sc-if>
+
+<sc-if value="{{tAcc}}" hint-placeholder-val="{{ false }}">
+<section class="panel fade" aria-labelledby="h-acc" style="padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-acc" style="margin: 0; font-size: 18px; font-weight: 600">Your account</h2><span class="hint">Signed in as administrator.</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="a-name" class="lbl">Name</label><input id="a-name" class="field" type="text" value="Gerald"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="a-email" class="lbl">Sign-in email</label><input id="a-email" class="field" type="email" placeholder="you@byteleaf.co.za"></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border: 1px solid #EEF2F8; border-radius: 14px">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Password</span><span class="hint">Use a long, unique password.</span></span>
+<a class="btn btn-ghost" href="AdminReset.dc.html">Change password</a>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border: 1px solid #EEF2F8; border-radius: 14px">
+<span style="display: flex; flex-direction: column; gap: 2px"><span id="tfa" style="font-size: 15px; font-weight: 600">Two-step verification</span><span class="hint">Ask for a code from an authenticator app when signing in.</span></span>
+<button type="button" class="sw" role="switch" aria-checked="{{tfaAria}}" aria-labelledby="tfa" onClick="{{toggleTfa}}" style="background: {{tfaBg}}"><span class="knob" style="left: {{tfaKnob}}"></span></button>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border: 1px solid #EEF2F8; border-radius: 14px">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Sign out everywhere</span><span class="hint">Ends every session except this one.</span></span>
+<button type="button" class="btn btn-ghost" style="color: #B42318; border-color: #F1C9C5">Sign out other devices</button>
+</div>
+</section>
+</sc-if>
+</div>
+</div>
+</main>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 24px 48px -16px rgba(11,18,32,0.5); max-width: calc(100% - 48px)">
+<span style="width: 24px; height: 24px; border-radius: 50%; background: #0B7A55; display: grid; place-items: center; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+<span>{{toast}}</span>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { tab: 'availability', days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], slots: ['09:00', '10:00', '11:30', '13:00', '14:30', '16:00'], off: [], tfa: false, vat: false, toast: '' };
+}
+renderVals() {
+const st = this.state;
+const NAV = [
+['dashboard', 'Dashboard', 'AdminDashboard.dc.html', 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z'],
+['bookings', 'Bookings', 'AdminBookings.dc.html', 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4'],
+['messages', 'Messages', 'AdminMessages.dc.html', 'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13L22 12v7H2v-7z'],
+['billing', 'Quotes & invoices', 'AdminBilling.dc.html', 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4'],
+['projects', 'Projects', 'AdminProjects.dc.html', 'M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5'],
+['settings', 'Settings', 'AdminSettings.dc.html', 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6']
+];
+const TABS = [
+['business', 'Business details', 'M3 21h18M5 21V7l7-4 7 4v14M9 9h1M14 9h1M9 13h1M14 13h1M10 21v-4h4v4'],
+['prices', 'Prices', 'M20 12l-8 8-9-9V3h8zM7.5 7.5h.01'],
+['availability', 'Availability', 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4'],
+['invoicing', 'Invoicing', 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4'],
+['account', 'Account & security', 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z']
+];
+const on = (b) => (b ? 'border: 1px solid #166FE5; background: #166FE5; color: #FFFFFF;' : 'border: 1px solid #D5DEEB; background: #FFFFFF; color: #4B5872;');
+const sw = (b) => ({ bg: b ? '#166FE5' : '#C9D3E3', knob: b ? '21px' : '3px', aria: b ? 'true' : 'false' });
+const T = sw(st.tfa);
+const types = [['mt1', 'Discovery call', 'Video call', '30 min'], ['mt2', 'Technical deep-dive', 'Video call', '60 min'], ['mt3', 'In-person meeting', 'Johannesburg', '60 min']];
+return {
+nav: NAV.map((n) => ({ cls: n[0] === 'settings' ? 'snav on' : 'snav', label: n[1], href: n[2], icon: n[3], current: n[0] === 'settings' ? 'page' : 'false', badge: n[0] === 'bookings' ? '2' : n[0] === 'messages' ? '3' : '' })),
+tabs: TABS.map((t) => ({ label: t[1], icon: t[2], current: st.tab === t[0] ? 'page' : 'false', style: st.tab === t[0] ? 'background: #EEF4FE; color: #166FE5;' : 'background: transparent; color: #33405A;', pick: () => this.setState({ tab: t[0] }) })),
+tBiz: st.tab === 'business', tPrice: st.tab === 'prices', tAvail: st.tab === 'availability', tAcc: st.tab === 'account', tInv: st.tab === 'invoicing',
+vatAria: st.vat ? 'true' : 'false', vatBg: st.vat ? '#166FE5' : '#C9D3E3', vatKnob: st.vat ? '21px' : '3px', toggleVat: () => this.setState({ vat: !st.vat }),
+prices: [
+{ id: 'pr1', id2: 'pr1b', tag: 'CARE', title: 'Maintenance contract', ph: 'e.g. From R 0 000', unit: 'Per month' },
+{ id: 'pr2', id2: 'pr2b', tag: 'BUILD', title: 'Full-stack projects', ph: 'e.g. Quoted per project', unit: 'Per project' },
+{ id: 'pr3', id2: 'pr3b', tag: 'FIX', title: 'Bug fixing & rescue', ph: 'e.g. R 000', unit: 'Per hour' },
+{ id: 'pr4', id2: 'pr4b', tag: 'TEAM', title: 'Embedded collaboration', ph: "Let's talk", unit: 'Custom quote' }
+],
+days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => {
+const a = st.days.indexOf(d) > -1;
+return { label: d, pressed: a ? 'true' : 'false', style: on(a), toggle: () => this.setState({ days: a ? st.days.filter((x) => x !== d) : st.days.concat([d]) }) };
+}),
+slots: st.slots.slice().sort().map((t) => ({ t: t, remove: () => this.setState({ slots: st.slots.filter((x) => x !== t) }) })),
+addSlot: (e) => { const v = e.target.value; if (v && st.slots.indexOf(v) < 0) this.setState({ slots: st.slots.concat([v]) }); e.target.value = ''; },
+types: types.map((m) => {
+const enabled = st.off.indexOf(m[0]) < 0;
+const s = sw(enabled);
+return { id: m[0], name: m[1], where: m[2], len: m[3], bg: s.bg, knob: s.knob, aria: s.aria, color: enabled ? '#0B1220' : '#4B5872', toggle: () => this.setState({ off: enabled ? st.off.concat([m[0]]) : st.off.filter((x) => x !== m[0]) }) };
+}),
+tfaAria: T.aria, tfaBg: T.bg, tfaKnob: T.knob,
+toggleTfa: () => this.setState({ tfa: !st.tfa }),
+save: () => this.setState({ toast: 'Settings saved — the website is updated.' }),
+toast: st.toast
+};
+}
+}
+</script>
+</body>
+</html>

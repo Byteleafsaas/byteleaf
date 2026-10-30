@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>byteleaf admin — Bookings</title>
+<!-- REFERENCE BUILD generated from design/AdminBookings.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.btn-danger{background:#FFFFFF;color:#B42318;border:1px solid #F1C9C5}
+.btn-danger:hover{background:#FEF3F2}
+.btn-danger-solid{background:#B42318;color:#FFFFFF}
+.btn-danger-solid:hover{background:#912018;color:#FFFFFF}
+.icon-btn{font:inherit;cursor:pointer;position:relative;width:44px;height:44px;border-radius:12px;border:1px solid #E3E9F2;background:#FFFFFF;color:#33405A;display:grid;place-items:center;transition:all .2s}
+.icon-btn:hover{border-color:#166FE5;color:#166FE5}
+.search{font:inherit;font-size:15px;width:260px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:#166FE5;background:#FFFFFF;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.search::placeholder{color:#6B7891}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:focus{outline:none;border-color:#166FE5;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.tab:hover{color:#0B1220}
+.brow{font:inherit;cursor:pointer;width:100%;text-align:left;display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:14px 18px;border:0;border-bottom:1px solid #EEF2F8;color:#0B1220;transition:background .15s}
+.brow:hover{background:#F8FAFD}
+.pick{font:inherit;cursor:pointer;min-height:44px;padding:0 12px;border-radius:10px;font-size:14px;font-weight:500;transition:all .15s}
+.pick:hover{transform:translateY(-1px)}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+
+<aside class="side" style="flex: 0 0 256px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; box-sizing: border-box">
+<a href="admin-dashboard.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<nav aria-label="Admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="6">
+<a class="{{n.cls}}" href="{{n.href}}" aria-current="{{n.current}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">{{n.badge}}<span class="sr"> new</span></span></sc-if></a>
+</sc-for>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="home.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>View website</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="admin-login.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Admin / Bookings</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Bookings</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<div style="position: relative">
+<label for="q" class="sr">Search bookings</label>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4B5872" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 13px"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+<input id="q" class="search" type="search" placeholder="Search name or company…" onInput="{{onSearch}}">
+</div>
+<a class="btn btn-ghost" href="admin-settings.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg>Availability</a>
+</div>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; width: 100%; max-width: 1320px">
+<div role="tablist" aria-label="Filter bookings" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 999px; align-self: flex-start; max-width: 100%; box-sizing: border-box">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+<button type="button" role="tab" class="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}<span class="mono" style="font-size: 11px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; display: grid; place-items: center; box-sizing: border-box; {{t.countStyle}}">{{t.count}}</span></button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<section class="panel rise" aria-label="Booking list" style="flex: 999 1 480px; min-width: 0; overflow: hidden">
+<div class="mono" style="display: flex; gap: 14px; padding: 12px 18px; border-bottom: 1px solid #EEF2F8; background: #FBFCFE; font-size: 11px; letter-spacing: 0.06em; color: #4B5872">
+<span style="flex: 1">CLIENT</span><span style="width: 150px">WHEN (SAST)</span><span style="width: 104px">STATUS</span>
+</div>
+<sc-if value="{{hasRows}}" hint-placeholder-val="{{ true }}">
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{rows}}" as="b" hint-placeholder-count="4">
+<li>
+<button type="button" class="brow" onClick="{{b.pick}}" aria-pressed="{{b.pressed}}" style="{{b.rowStyle}}">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 50%; background: #EEF4FE; color: #0B4FB3; display: grid; place-items: center; font-weight: 600; font-size: 14px; flex: none">{{b.initials}}</span>
+<span style="flex: 1 1 160px; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 15px; font-weight: 600">{{b.name}}</span>
+<span style="font-size: 13px; color: #4B5872">{{b.company}} · {{b.type}}</span>
+</span>
+<span style="width: 150px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 500">{{b.date}}</span><span class="mono" style="font-size: 12px; color: #4B5872">{{b.time}} · {{b.duration}}</span></span>
+<span style="width: 104px"><span class="mono" style="display: inline-flex; font-size: 11px; padding: 4px 9px; border-radius: 999px; {{b.badge}}">{{b.status}}</span></span>
+</button>
+</li>
+</sc-for>
+</ul>
+</sc-if>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 48px 20px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center">
+<span style="font-size: 16px; font-weight: 600">Nothing here</span>
+<span style="font-size: 14px; color: #4B5872">No bookings match this filter.</span>
+</div>
+</sc-if>
+</section>
+
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">
+<aside class="panel slide" aria-label="Booking details" style="flex: 1 1 360px; max-width: 100%; min-width: 0; display: flex; flex-direction: column">
+<div style="padding: 20px; border-bottom: 1px solid #EEF2F8; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: flex-start; gap: 14px">
+<span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 50%; background: #1877F2; color: #FFFFFF; display: grid; place-items: center; font-weight: 600; font-size: 17px; flex: none">{{sel.initials}}</span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-size: 20px; letter-spacing: -0.02em; font-weight: 600">{{sel.name}}</h2>
+<span style="font-size: 14px; color: #4B5872">{{sel.company}}</span>
+</div>
+<span class="mono" style="font-size: 11px; padding: 4px 9px; border-radius: 999px; {{sel.badge}}">{{sel.status}}</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<a class="btn btn-ghost" href="mailto:{{sel.email}}" style="min-height: 36px; padding: 0 12px; font-size: 13px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>{{sel.email}}</a>
+<a class="btn btn-ghost" href="tel:{{sel.phone}}" style="min-height: 36px; padding: 0 12px; font-size: 13px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>{{sel.phone}}</a>
+</div>
+</div>
+
+<sc-if value="{{modeView}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 18px">
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px">
+<div style="display: flex; flex-direction: column; gap: 4px"><dt class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">MEETING</dt><dd style="margin: 0; font-size: 15px; font-weight: 500">{{sel.type}}</dd></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><dt class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">WHERE</dt><dd style="margin: 0; font-size: 15px; font-weight: 500">{{sel.where}}</dd></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><dt class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">DATE</dt><dd style="margin: 0; font-size: 15px; font-weight: 500">{{sel.date}}</dd></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><dt class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">TIME</dt><dd style="margin: 0; font-size: 15px; font-weight: 500">{{sel.time}} SAST · {{sel.duration}}</dd></div>
+</dl>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">CLIENT'S NOTE</span>
+<p style="margin: 0; padding: 14px; border-radius: 12px; background: #F4F7FB; font-size: 14px; line-height: 1.6; color: #33405A">{{sel.note}}</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">HISTORY</span>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{sel.history}}" as="h" hint-placeholder-count="2"><li style="display: flex; gap: 10px; font-size: 13px; color: #33405A"><span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; background: #A9C7F5; flex: none"></span><span style="flex: 1">{{h.t}}</span><span class="mono" style="font-size: 12px; color: #4B5872; white-space: nowrap">{{h.when}}</span></li></sc-for>
+</ol>
+</div>
+<sc-if value="{{canAct}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 6px; border-top: 1px solid #EEF2F8">
+<sc-if value="{{isPending}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn btn-primary" onClick="{{confirm}}" style="flex: 1 1 140px">Confirm booking</button></sc-if>
+<button type="button" class="btn btn-ghost" onClick="{{startReschedule}}" style="flex: 1 1 120px">Reschedule</button>
+<button type="button" class="btn btn-danger" onClick="{{startCancel}}" style="flex: 1 1 100px">{{cancelLabel}}</button>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{modeResched}}" hint-placeholder-val="{{ false }}">
+<form onSubmit="{{sendResched}}" class="slide" style="padding: 20px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 600">Propose a new time</h3>
+<span style="font-size: 14px; color: #4B5872">Currently {{sel.date}} at {{sel.time}}. The client gets an email with the new time.</span>
+</div>
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<legend class="mono" style="padding: 0; margin-bottom: 10px; font-size: 11px; color: #4B5872; letter-spacing: 0.06em">DAY</legend>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="10"><button type="button" class="pick" onClick="{{d.pick}}" aria-pressed="{{d.pressed}}" style="{{d.style}}">{{d.label}}</button></sc-for>
+</div>
+</fieldset>
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<legend class="mono" style="padding: 0; margin-bottom: 10px; font-size: 11px; color: #4B5872; letter-spacing: 0.06em">TIME (SAST)</legend>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px">
+<sc-for list="{{slots}}" as="s" hint-placeholder-count="6"><button type="button" class="pick" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" style="{{s.style}}">{{s.t}}</button></sc-for>
+</div>
+</fieldset>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="rmsg" style="font-size: 14px; font-weight: 500; color: #33405A">Message to {{sel.first}} <span style="font-weight: 400; color: #4B5872">(optional)</span></label>
+<textarea id="rmsg" class="field" rows="3" style="resize: vertical">Hi {{sel.first}}, something came up on our side — would this new time work for you? Sorry for the change.</textarea>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" class="btn btn-ghost" onClick="{{back}}">Back</button>
+<button type="submit" class="btn btn-primary" disabled="{{cantResched}}" style="flex: 1 1 160px">Send new time</button>
+</div>
+</form>
+</sc-if>
+
+<sc-if value="{{modeCancel}}" hint-placeholder-val="{{ false }}">
+<form onSubmit="{{doCancel}}" class="slide" style="padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; gap: 12px; padding: 14px; border-radius: 12px; background: #FEF3F2; border: 1px solid #F1C9C5; color: #8A1C12; font-size: 14px; line-height: 1.5">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+<span>{{sel.first}} will be told the {{sel.type}} on {{sel.date}} is {{cancelVerb}}. This can't be undone.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="cmsg" style="font-size: 14px; font-weight: 500; color: #33405A">Reason for the client <span style="font-weight: 400; color: #4B5872">(optional)</span></label>
+<textarea id="cmsg" class="field" rows="3" style="resize: vertical" placeholder="e.g. We're fully booked that week — please pick another time."></textarea>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" class="btn btn-ghost" onClick="{{back}}">Keep booking</button>
+<button type="submit" class="btn btn-danger-solid" style="flex: 1 1 160px">{{cancelLabel}}</button>
+</div>
+</form>
+</sc-if>
+</aside>
+</sc-if>
+</div>
+</div>
+</main>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 24px 48px -16px rgba(11,18,32,0.5); max-width: calc(100% - 48px)">
+<span style="width: 24px; height: 24px; border-radius: 50%; background: #0B7A55; display: grid; place-items: center; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+<span>{{toast}}</span>
+<button type="button" onClick="{{closeToast}}" aria-label="Dismiss" style="font: inherit; cursor: pointer; border: 0; background: transparent; color: #B7C3D9; width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+</sc-if>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = {
+tab: 'pending', q: '', sel: 'b1', mode: 'view', nd: null, nt: null, toast: '',
+bookings: [
+{ id: 'b1', name: 'Thandi Mokoena', company: 'Mokoena Logistics', email: 'thandi@mokoenalogistics.co.za', phone: '+27 82 000 0001', type: 'Discovery call', where: 'Video call', duration: '30 min', date: 'Tue 3 Nov', time: '09:00', status: 'Pending', note: 'We run 40 delivery vans and our dispatch tool is an old PHP app nobody wants to touch. Looking for someone to maintain it and eventually rebuild it.', history: [{ t: 'Booked via website', when: '29 Oct' }] },
+{ id: 'b2', name: 'Pieter van Wyk', company: 'Karoo Outdoor Co.', email: 'pieter@karooutdoor.co.za', phone: '+27 83 000 0002', type: 'Technical deep-dive', where: 'Video call', duration: '60 min', date: 'Wed 4 Nov', time: '11:30', status: 'Pending', note: 'Our Shopify store needs a custom stock sync with the warehouse system. Happy to share the API docs beforehand.', history: [{ t: 'Booked via website', when: '30 Oct' }] },
+{ id: 'b3', name: 'Ayesha Patel', company: 'Patel & Sons Pharmacy', email: 'ayesha@patelpharmacy.co.za', phone: '+27 84 000 0003', type: 'Discovery call', where: 'Video call', duration: '30 min', date: 'Thu 5 Nov', time: '14:30', status: 'Confirmed', note: 'Ordering site times out at month-end. Need help fast.', history: [{ t: 'Booked via website', when: '27 Oct' }, { t: 'Confirmed by Gerald', when: '27 Oct' }] },
+{ id: 'b4', name: 'Sipho Dlamini', company: 'Ubuntu Fitness', email: 'sipho@ubuntufitness.co.za', phone: '+27 72 000 0004', type: 'In-person meeting', where: 'Johannesburg', duration: '60 min', date: 'Fri 6 Nov', time: '10:00', status: 'Rescheduled', note: 'Would love to see examples of member portals you have built.', history: [{ t: 'Booked for Mon 2 Nov, 10:00', when: '22 Oct' }, { t: 'Rescheduled to Fri 6 Nov, 10:00', when: '26 Oct' }] },
+{ id: 'b5', name: 'Lerato Nkosi', company: 'Nkosi Legal', email: 'lerato@nkosilegal.co.za', phone: '+27 76 000 0005', type: 'Discovery call', where: 'Video call', duration: '30 min', date: 'Mon 9 Nov', time: '13:00', status: 'Confirmed', note: 'Interested in AI to summarise case documents securely.', history: [{ t: 'Booked via website', when: '28 Oct' }, { t: 'Confirmed by Gerald', when: '28 Oct' }] },
+{ id: 'b6', name: 'James Okafor', company: 'Brightline Retail', email: 'james@brightline.co.za', phone: '+27 79 000 0006', type: 'Technical deep-dive', where: 'Video call', duration: '60 min', date: 'Tue 27 Oct', time: '16:00', status: 'Completed', note: 'Review of our POS integration.', history: [{ t: 'Booked via website', when: '20 Oct' }, { t: 'Confirmed by Gerald', when: '20 Oct' }, { t: 'Meeting held', when: '27 Oct' }] },
+{ id: 'b7', name: 'Megan Fourie', company: 'Fourie Interiors', email: 'megan@fourieinteriors.co.za', phone: '+27 71 000 0007', type: 'Discovery call', where: 'Video call', duration: '30 min', date: 'Wed 28 Oct', time: '10:00', status: 'Cancelled', note: 'New website for the showroom.', history: [{ t: 'Booked via website', when: '21 Oct' }, { t: 'Cancelled by client', when: '26 Oct' }] }
+]
+};
+}
+renderVals() {
+const st = this.state;
+const NAV = [
+['dashboard', 'Dashboard', 'AdminDashboard.dc.html', 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z'],
+['bookings', 'Bookings', 'AdminBookings.dc.html', 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4'],
+['messages', 'Messages', 'AdminMessages.dc.html', 'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13L22 12v7H2v-7z'],
+['billing', 'Quotes & invoices', 'AdminBilling.dc.html', 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4'],
+['projects', 'Projects', 'AdminProjects.dc.html', 'M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5'],
+['settings', 'Settings', 'AdminSettings.dc.html', 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6']
+];
+const BADGE = {
+Pending: 'background: #FFF4E0; color: #8A5200;',
+Confirmed: 'background: #E6F6EF; color: #0B6B4B;',
+Rescheduled: 'background: #EEF4FE; color: #0B4FB3;',
+Completed: 'background: #EEF2F8; color: #33405A;',
+Cancelled: 'background: #FEF3F2; color: #912018;'
+};
+const groups = {
+pending: (b) => b.status === 'Pending',
+upcoming: (b) => b.status === 'Confirmed' || b.status === 'Rescheduled',
+past: (b) => b.status === 'Completed',
+cancelled: (b) => b.status === 'Cancelled',
+all: () => true
+};
+const labels = [['pending', 'Pending'], ['upcoming', 'Upcoming'], ['past', 'Past'], ['cancelled', 'Cancelled'], ['all', 'All']];
+const all = st.bookings;
+const pendingCount = all.filter(groups.pending).length;
+const q = st.q.trim().toLowerCase();
+const rows = all.filter(groups[st.tab]).filter((b) => !q || (b.name + ' ' + b.company).toLowerCase().indexOf(q) > -1);
+const sel = all.find((b) => b.id === st.sel) || null;
+const update = (id, patch, toast) => this.setState({ bookings: all.map((b) => (b.id === id ? Object.assign({}, b, patch) : b)), mode: 'view', nd: null, nt: null, toast: toast });
+const days = [];
+const base = new Date(2026, 10, 2);
+const DN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+for (let i = 0; days.length < 10; i++) {
+const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() + i);
+if (d.getDay() === 0 || d.getDay() === 6) continue;
+days.push(DN[d.getDay()] + ' ' + d.getDate() + ' Nov');
+}
+const pickStyle = (on) => (on ? 'border: 1px solid #166FE5; background: #166FE5; color: #FFFFFF;' : 'border: 1px solid #D6E5FC; background: #EEF4FE; color: #0B4FB3;');
+const isPending = sel && sel.status === 'Pending';
+return {
+nav: NAV.map((n) => ({ cls: n[0] === 'bookings' ? 'snav on' : 'snav', label: n[1], href: n[2], icon: n[3], current: n[0] === 'bookings' ? 'page' : 'false', badge: n[0] === 'bookings' ? (pendingCount ? String(pendingCount) : '') : n[0] === 'messages' ? '3' : '' })),
+onSearch: (e) => this.setState({ q: e.target.value }),
+tabs: labels.map((l) => {
+const on = st.tab === l[0];
+return {
+label: l[1], count: String(all.filter(groups[l[0]]).length), selected: on ? 'true' : 'false',
+style: on ? 'border: 0; background: #0B1220; color: #FFFFFF;' : 'border: 0; background: transparent; color: #4B5872;',
+countStyle: on ? 'background: rgba(255,255,255,0.18); color: #FFFFFF;' : 'background: #EEF2F8; color: #33405A;',
+pick: () => this.setState({ tab: l[0], mode: 'view' })
+};
+}),
+hasRows: rows.length > 0,
+noRows: rows.length === 0,
+rows: rows.map((b) => {
+const on = sel && b.id === sel.id;
+return Object.assign({}, b, {
+initials: (b.name.split(' ')[0][0] + b.name.split(' ').slice(-1)[0][0]).toUpperCase(),
+badge: BADGE[b.status], pressed: on ? 'true' : 'false',
+rowStyle: on ? 'background: #EEF4FE; box-shadow: inset 0 0 0 1.5px #166FE5;' : 'background: #FFFFFF;',
+pick: () => this.setState({ sel: b.id, mode: 'view', nd: null, nt: null })
+});
+}),
+hasSel: !!sel,
+sel: sel ? Object.assign({}, sel, { initials: (sel.name.split(' ')[0][0] + sel.name.split(' ').slice(-1)[0][0]).toUpperCase(), first: sel.name.split(' ')[0], badge: BADGE[sel.status] }) : {},
+modeView: st.mode === 'view',
+modeResched: st.mode === 'resched',
+modeCancel: st.mode === 'cancel',
+canAct: !!sel && ['Pending', 'Confirmed', 'Rescheduled'].indexOf(sel.status) > -1,
+isPending: !!isPending,
+cancelLabel: isPending ? 'Decline' : 'Cancel booking',
+cancelVerb: isPending ? 'declined' : 'cancelled',
+confirm: () => update(sel.id, { status: 'Confirmed', history: sel.history.concat([{ t: 'Confirmed by Gerald', when: 'Just now' }]) }, 'Booking confirmed — ' + sel.name + ' has been emailed a calendar invite.'),
+startReschedule: () => this.setState({ mode: 'resched' }),
+startCancel: () => this.setState({ mode: 'cancel' }),
+back: () => this.setState({ mode: 'view', nd: null, nt: null }),
+days: days.map((d) => ({ label: d, pressed: st.nd === d ? 'true' : 'false', style: pickStyle(st.nd === d), pick: () => this.setState({ nd: d }) })),
+slots: ['09:00', '10:00', '11:30', '13:00', '14:30', '16:00'].map((t) => ({ t: t, pressed: st.nt === t ? 'true' : 'false', style: pickStyle(st.nt === t), pick: () => this.setState({ nt: t }) })),
+cantResched: !(st.nd && st.nt),
+sendResched: (e) => { if (e && e.preventDefault) e.preventDefault(); if (st.nd && st.nt) update(sel.id, { status: 'Rescheduled', date: st.nd, time: st.nt, history: sel.history.concat([{ t: 'Rescheduled to ' + st.nd + ', ' + st.nt, when: 'Just now' }]) }, 'New time sent to ' + sel.name + ' — ' + st.nd + ' at ' + st.nt + '.'); },
+doCancel: (e) => { if (e && e.preventDefault) e.preventDefault(); update(sel.id, { status: 'Cancelled', history: sel.history.concat([{ t: (isPending ? 'Declined' : 'Cancelled') + ' by Gerald', when: 'Just now' }]) }, sel.name + ' has been notified.'); },
+toast: st.toast,
+closeToast: () => this.setState({ toast: '' })
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

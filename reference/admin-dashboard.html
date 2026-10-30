@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>byteleaf admin — Dashboard</title>
+<!-- REFERENCE BUILD generated from design/AdminDashboard.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.icon-btn{font:inherit;cursor:pointer;position:relative;width:44px;height:44px;border-radius:12px;border:1px solid #E3E9F2;background:#FFFFFF;color:#33405A;display:grid;place-items:center;transition:all .2s}
+.icon-btn:hover{border-color:#166FE5;color:#166FE5}
+.search{font:inherit;font-size:15px;width:260px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:#166FE5;background:#FFFFFF;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.search::placeholder{color:#6B7891}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.kpi{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
+.kpi:hover{transform:translateY(-4px);box-shadow:0 24px 40px -28px rgba(11,18,32,.35);border-color:#B9D2F8}
+.row{transition:background .15s}
+.row:hover{background:#F8FAFD}
+.qa{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 14px;border-radius:12px;border:1px solid #E3E9F2;color:#0B1220;font-weight:500;font-size:15px;transition:all .2s}
+.qa:hover{border-color:#166FE5;color:#166FE5;transform:translateX(4px)}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}.d4{animation-delay:.24s}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(24,119,242,.55)}100%{box-shadow:0 0 0 8px rgba(24,119,242,0)}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+
+<aside class="side" style="flex: 0 0 256px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; box-sizing: border-box">
+<a href="admin-dashboard.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<nav aria-label="Admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="6">
+<a class="{{n.cls}}" href="{{n.href}}" aria-current="{{n.current}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">{{n.badge}}<span class="sr"> new</span></span></sc-if></a>
+</sc-for>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="home.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>View website</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="admin-login.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">{{today}}</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">{{greeting}}, Gerald</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<div style="position: relative">
+<label for="q" class="sr">Search bookings, messages and projects</label>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4B5872" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 13px"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+<input id="q" class="search" type="search" placeholder="Search…">
+</div>
+<a class="icon-btn" href="admin-messages.html" aria-label="Notifications, 3 unread"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg><span class="pulse" style="position: absolute; top: 10px; right: 11px; width: 8px; height: 8px; border-radius: 50%; background: #1877F2; border: 2px solid #FFFFFF"></span></a>
+<a class="btn btn-primary" href="admin-project-edit.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add project</a>
+</div>
+</header>
+
+<div class="pad" style="padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box; width: 100%; max-width: 1280px">
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<a class="panel kpi rise" href="{{k.href}}" style="display: flex; flex-direction: column; gap: 14px; padding: 20px; color: #0B1220">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span style="font-size: 14px; font-weight: 500; color: #4B5872">{{k.label}}</span>
+<span style="width: 36px; height: 36px; border-radius: 10px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{k.icon}}"></path></svg></span>
+</div>
+<span style="font-size: 40px; font-weight: 600; letter-spacing: -0.04em; line-height: 1">{{k.value}}</span>
+<span style="font-size: 13px; color: #166FE5; font-weight: 500">{{k.cta}} →</span>
+</a>
+</sc-for>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 24px; align-items: start">
+<section class="panel rise d1" aria-labelledby="att" style="overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid #EEF2F8">
+<h2 id="att" style="margin: 0; font-size: 17px; font-weight: 600">Needs your attention</h2>
+<a href="admin-bookings.html" style="font-size: 14px; font-weight: 500">All bookings</a>
+</div>
+<sc-if value="{{hasPending}}" hint-placeholder-val="{{ true }}">
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{pending}}" as="b" hint-placeholder-count="2">
+<li class="row" style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 16px 20px; border-bottom: 1px solid #EEF2F8">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 50%; background: #EEF4FE; color: #0B4FB3; display: grid; place-items: center; font-weight: 600; font-size: 14px; flex: none">{{b.initials}}</span>
+<div style="flex: 1 1 180px; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 15px; font-weight: 600">{{b.name}} <span style="font-weight: 400; color: #4B5872">· {{b.company}}</span></span>
+<span style="font-size: 13px; color: #4B5872">{{b.type}} · <span class="mono">{{b.date}}, {{b.time}}</span></span>
+</div>
+<div style="display: flex; gap: 8px">
+<a class="btn btn-ghost btn-sm" href="admin-bookings.html">Reschedule</a>
+<button type="button" class="btn btn-primary btn-sm" onClick="{{b.confirm}}">Confirm</button>
+</div>
+</li>
+</sc-for>
+</ul>
+</sc-if>
+<sc-if value="{{noPending}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 32px 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center">
+<span style="width: 48px; height: 48px; border-radius: 50%; background: #E6F6EF; color: #0B7A55; display: grid; place-items: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+<span style="font-size: 15px; font-weight: 600">All caught up</span>
+<span style="font-size: 14px; color: #4B5872">No bookings waiting for confirmation.</span>
+</div>
+</sc-if>
+</section>
+
+<section class="panel rise d2" aria-labelledby="up" style="overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid #EEF2F8">
+<h2 id="up" style="margin: 0; font-size: 17px; font-weight: 600">Next 7 days</h2>
+<span class="mono" style="font-size: 12px; color: #4B5872">SAST</span>
+</div>
+<ol style="list-style: none; margin: 0; padding: 8px 20px 16px; display: flex; flex-direction: column">
+<sc-for list="{{upcoming}}" as="u" hint-placeholder-count="4">
+<li style="display: grid; grid-template-columns: 64px 14px 1fr; gap: 12px; align-items: stretch">
+<span style="display: flex; flex-direction: column; padding: 12px 0"><span class="mono" style="font-size: 12px; color: #4B5872">{{u.day}}</span><span style="font-size: 15px; font-weight: 600">{{u.time}}</span></span>
+<span aria-hidden="true" style="position: relative; display: flex; justify-content: center"><span style="width: 2px; background: #E3E9F2"></span><span style="position: absolute; top: 18px; width: 10px; height: 10px; border-radius: 50%; background: {{u.dot}}; border: 2px solid #FFFFFF; box-shadow: 0 0 0 1px {{u.dot}}"></span></span>
+<span style="display: flex; flex-direction: column; gap: 4px; padding: 12px 0; border-bottom: 1px solid #F1F4F9">
+<span style="font-size: 15px; font-weight: 600">{{u.name}}</span>
+<span style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; color: #4B5872">{{u.type}}<span class="mono" style="font-size: 11px; padding: 3px 8px; border-radius: 999px; {{u.badge}}">{{u.status}}</span></span>
+</span>
+</li>
+</sc-for>
+</ol>
+</section>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 24px; align-items: start">
+<section class="panel rise d3" aria-labelledby="msg" style="overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid #EEF2F8">
+<h2 id="msg" style="margin: 0; font-size: 17px; font-weight: 600">Latest messages</h2>
+<a href="admin-messages.html" style="font-size: 14px; font-weight: 500">Open inbox</a>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{messages}}" as="m" hint-placeholder-count="3">
+<li style="border-bottom: 1px solid #EEF2F8">
+<a class="row" href="admin-messages.html" style="display: flex; gap: 14px; padding: 16px 20px; color: #0B1220">
+<span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; flex: none; background: {{m.dot}}"></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<span style="display: flex; justify-content: space-between; gap: 12px"><span style="font-size: 15px; font-weight: {{m.weight}}">{{m.name}} <span style="font-weight: 400; color: #4B5872">· {{m.company}}</span></span><span class="mono" style="font-size: 12px; color: #4B5872; white-space: nowrap">{{m.when}}</span></span>
+<span style="font-size: 14px; color: #4B5872; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{m.preview}}</span>
+</span>
+</a>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section class="panel rise d4" aria-labelledby="qa" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="qa" style="margin: 0; font-size: 17px; font-weight: 600">Quick actions</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 10px">
+<a class="qa" href="admin-project-edit.html"><span style="width: 32px; height: 32px; border-radius: 9px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span>Add a project</a>
+<a class="qa" href="admin-settings.html"><span style="width: 32px; height: 32px; border-radius: 9px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v16H3zM3 10h18M8 3v4M16 3v4"></path></svg></span>Edit availability</a>
+<a class="qa" href="admin-settings.html"><span style="width: 32px; height: 32px; border-radius: 9px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12l-8 8-9-9V3h8z"></path><circle cx="7.5" cy="7.5" r="1.5"></circle></svg></span>Update prices</a>
+<a class="qa" href="home.html"><span style="width: 32px; height: 32px; border-radius: 9px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg></span>View live website</a>
+</div>
+</section>
+</div>
+</div>
+</main>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 24px 48px -16px rgba(11,18,32,0.5); max-width: calc(100% - 48px)">
+<span style="width: 24px; height: 24px; border-radius: 50%; background: #0B7A55; display: grid; place-items: center; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+<span>{{toast}}</span>
+<button type="button" onClick="{{closeToast}}" aria-label="Dismiss" style="font: inherit; cursor: pointer; border: 0; background: transparent; color: #B7C3D9; width: 32px; height: 32px; border-radius: 8px">✕</button>
+</div>
+</sc-if>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { confirmed: [], toast: '' };
+}
+renderVals() {
+const NAV = [
+['dashboard', 'Dashboard', 'AdminDashboard.dc.html', 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z'],
+['bookings', 'Bookings', 'AdminBookings.dc.html', 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4'],
+['messages', 'Messages', 'AdminMessages.dc.html', 'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13L22 12v7H2v-7z'],
+['billing', 'Quotes & invoices', 'AdminBilling.dc.html', 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4'],
+['projects', 'Projects', 'AdminProjects.dc.html', 'M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5'],
+['settings', 'Settings', 'AdminSettings.dc.html', 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6']
+];
+const conf = this.state.confirmed;
+const pendingAll = [
+{ id: 'b1', name: 'Thandi Mokoena', company: 'Mokoena Logistics', type: 'Discovery call', date: 'Tue 3 Nov', time: '09:00' },
+{ id: 'b2', name: 'Pieter van Wyk', company: 'Karoo Outdoor Co.', type: 'Technical deep-dive', date: 'Wed 4 Nov', time: '11:30' }
+];
+const pending = pendingAll.filter((b) => conf.indexOf(b.id) < 0);
+const badges = { bookings: pending.length ? String(pending.length) : '', messages: '3' };
+const BADGE = {
+Pending: 'background: #FFF4E0; color: #8A5200;',
+Confirmed: 'background: #E6F6EF; color: #0B6B4B;',
+Rescheduled: 'background: #EEF4FE; color: #0B4FB3;'
+};
+const DOT = { Pending: '#C27C0E', Confirmed: '#0B7A55', Rescheduled: '#1877F2' };
+const upcomingRaw = [
+{ id: 'b1', day: 'Tue 3', time: '09:00', name: 'Thandi Mokoena', type: 'Discovery call', status: 'Pending' },
+{ id: 'b2', day: 'Wed 4', time: '11:30', name: 'Pieter van Wyk', type: 'Technical deep-dive', status: 'Pending' },
+{ id: 'b3', day: 'Thu 5', time: '14:30', name: 'Ayesha Patel', type: 'Discovery call', status: 'Confirmed' },
+{ id: 'b4', day: 'Fri 6', time: '10:00', name: 'Sipho Dlamini', type: 'In-person meeting', status: 'Rescheduled' }
+];
+const now = new Date();
+const h = now.getHours();
+return {
+nav: NAV.map((n) => ({ cls: n[0] === 'dashboard' ? 'snav on' : 'snav', label: n[1], href: n[2], icon: n[3], current: n[0] === 'dashboard' ? 'page' : 'false', badge: badges[n[0]] || '' })),
+today: now.toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+greeting: h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening',
+kpis: [
+{ label: 'Awaiting confirmation', value: String(pending.length), cta: 'Review bookings', href: 'AdminBookings.dc.html', icon: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z' },
+{ label: 'Unread messages', value: '3', cta: 'Open inbox', href: 'AdminMessages.dc.html', icon: 'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13L22 12v7H2v-7z' },
+{ label: 'Calls in next 7 days', value: '4', cta: 'See schedule', href: 'AdminBookings.dc.html', icon: 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4' },
+{ label: 'Live projects', value: '5', cta: 'Manage projects', href: 'AdminProjects.dc.html', icon: 'M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5' }
+],
+pending: pending.map((b) => Object.assign({}, b, {
+initials: (b.name.split(' ')[0][0] + b.name.split(' ').slice(-1)[0][0]).toUpperCase(),
+confirm: () => this.setState({ confirmed: conf.concat([b.id]), toast: 'Booking confirmed — ' + b.name + ' has been emailed.' })
+})),
+hasPending: pending.length > 0,
+noPending: pending.length === 0,
+upcoming: upcomingRaw.map((u) => {
+const st = conf.indexOf(u.id) > -1 ? 'Confirmed' : u.status;
+return Object.assign({}, u, { status: st, badge: BADGE[st], dot: DOT[st] });
+}),
+messages: [
+{ name: 'Ayesha Patel', company: 'Patel & Sons Pharmacy', when: '2h ago', preview: 'Our online ordering site keeps timing out at month-end when traffic spikes…', dot: '#1877F2', weight: '600' },
+{ name: 'Johan Botha', company: 'Botha Engineering', when: '5h ago', preview: 'We need a quoting tool connected to our job-costing database…', dot: '#1877F2', weight: '600' },
+{ name: 'Nomvula Zulu', company: 'Zulu Events', when: 'Yesterday', preview: 'Looking to redesign our booking site before the festive season…', dot: '#1877F2', weight: '600' }
+],
+toast: this.state.toast,
+closeToast: () => this.setState({ toast: '' })
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

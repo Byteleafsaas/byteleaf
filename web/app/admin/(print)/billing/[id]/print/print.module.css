@@ -1,0 +1,50 @@
+/* A4 quote/invoice template. Chromium renders this page to PDF (HANDOFF-ADMIN §9). */
+@page { size: A4; margin: 0; }
+.stage { background: #fff; }
+.page { width: 794px; min-height: 1123px; box-sizing: border-box; position: relative; background: #fff; font-family: var(--font-sans); color: var(--ink); font-size: 13px; line-height: 1.5; display: flex; flex-direction: column; margin: 0 auto; }
+.bar { height: 10px; background: var(--blue-500); flex: none; }
+.body { flex: 1; padding: 44px 56px 40px; display: flex; flex-direction: column; gap: 28px; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.brand { display: flex; flex-direction: column; gap: 10px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 24px; letter-spacing: -.04em; }
+.contact { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.titleBox { text-align: right; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.title { font-size: 32px; font-weight: 600; letter-spacing: .02em; color: var(--blue-500); line-height: 1; }
+.no { font-family: var(--font-mono); font-size: 14px; font-weight: 500; }
+.paid { margin-top: 6px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: .1em; color: #0B6B4B; border: 2px solid #0B7A55; border-radius: 6px; padding: 4px 12px; transform: rotate(-4deg); }
+.meta { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 20px; padding: 18px 20px; border-radius: 10px; background: var(--surface-3); }
+.col { display: flex; flex-direction: column; gap: 3px; min-width: 0; overflow-wrap: anywhere; }
+.k { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; color: var(--muted); }
+.muted { color: var(--muted); }
+.big { font-weight: 600; font-size: 14px; }
+.table { display: flex; flex-direction: column; font-size: 13px; }
+.tr { display: grid; grid-template-columns: 32px minmax(0, 1fr) 44px 116px 116px; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: start; break-inside: avoid; }
+.th { padding: 0 0 10px; border-bottom: 2px solid var(--ink); font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; color: var(--muted); }
+.tr span:nth-child(n+3) { text-align: right; font-family: var(--font-mono); white-space: nowrap; }
+.th span:nth-child(n+3) { text-align: right; }
+.tr .n { color: var(--muted); font-family: var(--font-mono); text-align: left; }
+.desc { display: flex; flex-direction: column; gap: 2px; }
+.desc span { font-family: var(--font-sans) !important; text-align: left !important; white-space: normal !important; }
+.desc span:first-child { font-weight: 500; }
+.desc span:last-child { font-size: 12px; color: var(--muted); }
+.amt { font-weight: 500; }
+.totalsWrap { display: flex; justify-content: flex-end; break-inside: avoid; }
+.totals { width: 300px; display: flex; flex-direction: column; gap: 8px; }
+.line { display: flex; justify-content: space-between; }
+.line .l { color: var(--muted); }
+.line .v { font-family: var(--font-mono); }
+.grand { align-items: baseline; padding: 12px 14px; margin-top: 4px; border-radius: 8px; background: var(--ink); color: #fff; }
+.grand .l { color: #fff; font-weight: 600; }
+.grand .v { font-size: 20px; font-weight: 500; }
+.dep { padding: 8px 14px; border-radius: 8px; background: var(--blue-50); color: var(--blue-800); }
+.dep .l { color: var(--blue-800); }
+.foot { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding-top: 22px; border-top: 1px solid var(--line); break-inside: avoid; }
+.fcol { display: flex; flex-direction: column; gap: 4px; font-size: 12px; line-height: 1.6; }
+.notes { color: var(--ink-2); }
+.sign { display: flex; gap: 16px; padding-top: 18px; }
+.sign span { border-top: 1px solid var(--ink); padding-top: 4px; color: var(--muted); }
+.sign span:first-child { flex: 1; }
+.sign span:last-child { width: 90px; }
+.thanks { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+.thanks .mono { font-family: var(--font-mono); }
+@media print { .thanks .pageNo { display: none; } }

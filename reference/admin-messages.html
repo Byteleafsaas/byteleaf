@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>byteleaf admin — Messages</title>
+<!-- REFERENCE BUILD generated from design/AdminMessages.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.search{font:inherit;font-size:15px;width:260px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:#166FE5;background:#FFFFFF;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.search::placeholder{color:#6B7891}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.mrow{font:inherit;cursor:pointer;width:100%;text-align:left;display:flex;gap:12px;padding:16px 18px;border:0;border-bottom:1px solid #EEF2F8;color:#0B1220;transition:background .15s}
+.mrow:hover{background:#F8FAFD}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+
+<aside class="side" style="flex: 0 0 256px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px; padding: 22px 16px; box-sizing: border-box">
+<a href="admin-dashboard.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<nav aria-label="Admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="6">
+<a class="{{n.cls}}" href="{{n.href}}" aria-current="{{n.current}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="flex: 1">{{n.label}}</span><sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">{{n.badge}}<span class="sr"> new</span></span></sc-if></a>
+</sc-for>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="home.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>View website</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="admin-login.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Admin / Messages</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Messages</h1>
+</div>
+<div style="position: relative">
+<label for="q" class="sr">Search messages</label>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4B5872" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 14px; top: 13px"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+<input id="q" class="search" type="search" placeholder="Search messages…" onInput="{{onSearch}}">
+</div>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px; box-sizing: border-box; width: 100%; max-width: 1320px">
+<div role="tablist" aria-label="Filter messages" style="display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 999px; align-self: flex-start; max-width: 100%; box-sizing: border-box">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button type="button" role="tab" class="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}<span class="mono" style="font-size: 11px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; display: grid; place-items: center; box-sizing: border-box; {{t.countStyle}}">{{t.count}}</span></button>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<section class="panel rise" aria-label="Message list" style="flex: 1 1 340px; min-width: 0; overflow: hidden">
+<sc-if value="{{hasRows}}" hint-placeholder-val="{{ true }}">
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{rows}}" as="m" hint-placeholder-count="4">
+<li>
+<button type="button" class="mrow" onClick="{{m.pick}}" aria-pressed="{{m.pressed}}" style="{{m.rowStyle}}">
+<span aria-hidden="true" style="width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; flex: none; background: {{m.dot}}"></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<span style="display: flex; justify-content: space-between; gap: 12px"><span style="font-size: 15px; font-weight: {{m.weight}}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{m.name}}</span><span class="mono" style="font-size: 12px; color: #4B5872; white-space: nowrap">{{m.when}}</span></span>
+<span style="font-size: 13px; color: #33405A">{{m.company}}</span>
+<span style="font-size: 14px; color: #4B5872; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{m.message}}</span>
+<span style="display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px"><sc-for list="{{m.needs}}" as="n" hint-placeholder-count="2"><span class="mono" style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: #EEF4FE; color: #0B4FB3">{{n}}</span></sc-for></span>
+</span>
+<span class="sr">{{m.srState}}</span>
+</button>
+</li>
+</sc-for>
+</ul>
+</sc-if>
+<sc-if value="{{noRows}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 48px 20px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center">
+<span style="font-size: 16px; font-weight: 600">Inbox zero</span>
+<span style="font-size: 14px; color: #4B5872">No messages in this view.</span>
+</div>
+</sc-if>
+</section>
+
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">
+<article class="panel slide" aria-label="Message" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column">
+<header style="padding: 22px 24px; border-bottom: 1px solid #EEF2F8; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; justify-content: space-between">
+<div style="display: flex; gap: 14px; align-items: center; min-width: 0">
+<span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 50%; background: #1877F2; color: #FFFFFF; display: grid; place-items: center; font-weight: 600; font-size: 17px; flex: none">{{sel.initials}}</span>
+<div style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+<h2 style="margin: 0; font-size: 20px; letter-spacing: -0.02em; font-weight: 600">{{sel.name}}</h2>
+<span style="font-size: 14px; color: #4B5872">{{sel.company}} · <span class="mono" style="font-size: 12px">{{sel.received}}</span></span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" class="btn btn-ghost" onClick="{{toggleRead}}" style="min-height: 40px; padding: 0 14px; font-size: 14px">{{readLabel}}</button>
+<button type="button" class="btn btn-ghost" onClick="{{toggleArchive}}" style="min-height: 40px; padding: 0 14px; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v5H3zM5 9v11h14V9M10 13h4"></path></svg>{{archiveLabel}}</button>
+</div>
+</header>
+<div style="padding: 24px; display: flex; flex-direction: column; gap: 22px">
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 16px; padding: 16px; border-radius: 14px; background: #F8FAFD; border: 1px solid #EEF2F8">
+<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><dt class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">EMAIL</dt><dd style="margin: 0; font-size: 14px; overflow-wrap: anywhere"><a href="mailto:{{sel.email}}">{{sel.email}}</a></dd></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><dt class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">PHONE</dt><dd style="margin: 0; font-size: 14px"><a href="tel:{{sel.phone}}">{{sel.phone}}</a></dd></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><dt class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">WORKING MODEL</dt><dd style="margin: 0; font-size: 14px; font-weight: 500">{{sel.model}}</dd></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><dt class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">WANTS TO START</dt><dd style="margin: 0; font-size: 14px; font-weight: 500">{{sel.start}}</dd></div>
+</dl>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">HELP WITH</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{sel.needs}}" as="n" hint-placeholder-count="2"><span style="font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 999px; background: #166FE5; color: #FFFFFF">{{n}}</span></sc-for></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="mono" style="font-size: 11px; color: #4B5872; letter-spacing: 0.06em">MESSAGE</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #0B1220; white-space: pre-line; max-width: 680px">{{sel.message}}</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; padding-top: 18px; border-top: 1px solid #EEF2F8">
+<a class="btn btn-primary" href="mailto:{{sel.email}}?subject=Re: your message to byteleaf"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 5 5v6"></path></svg>Reply by email</a>
+<a class="btn btn-ghost" href="tel:{{sel.phone}}">Call {{sel.first}}</a>
+<a class="btn btn-ghost" href="admin-bookings.html">View bookings</a>
+</div>
+</div>
+</article>
+</sc-if>
+</div>
+</div>
+</main>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 24px 48px -16px rgba(11,18,32,0.5); max-width: calc(100% - 48px)">
+<span>{{toast}}</span>
+<button type="button" onClick="{{undo}}" style="font: inherit; cursor: pointer; border: 0; background: transparent; color: #6FAEFF; font-weight: 600; min-height: 32px; padding: 0 8px; border-radius: 8px">Undo</button>
+</div>
+</sc-if>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = {
+tab: 'inbox', q: '', sel: 'm1', toast: '', last: null,
+msgs: [
+{ id: 'm1', name: 'Ayesha Patel', company: 'Patel & Sons Pharmacy', email: 'ayesha@patelpharmacy.co.za', phone: '+27 84 000 0003', when: '2h ago', received: 'Today, 08:14', needs: ['Maintenance', 'Bug fix'], model: 'Monthly maintenance contract', start: 'As soon as possible', message: 'Hi byteleaf,\n\nOur online ordering site keeps timing out at month-end when traffic spikes. The developer who built it has moved on and we have no documentation.\n\nCould you take a look and tell us what it would take to stabilise it — and then look after it monthly?\n\nThanks, Ayesha', read: false, archived: false },
+{ id: 'm2', name: 'Johan Botha', company: 'Botha Engineering', email: 'johan@bothaeng.co.za', phone: '+27 82 000 0011', when: '5h ago', received: 'Today, 05:40', needs: ['New feature', 'Backend'], model: 'One-off project', start: 'Within a month', message: 'We need a quoting tool connected to our job-costing database so the sales team stops working from spreadsheets. Happy to share our current Excel model.', read: false, archived: false },
+{ id: 'm3', name: 'Nomvula Zulu', company: 'Zulu Events', email: 'nomvula@zuluevents.co.za', phone: '+27 73 000 0012', when: 'Yesterday', received: 'Thu 29 Oct, 16:02', needs: ['Design', 'Frontend'], model: 'Not sure yet', start: 'In 1–3 months', message: 'Looking to redesign our booking site before the festive season. The current one is slow on phones and looks dated.', read: false, archived: false },
+{ id: 'm4', name: 'Daniel Smith', company: 'Smith Auto Parts', email: 'daniel@smithauto.co.za', phone: '+27 61 000 0013', when: 'Tue', received: 'Tue 27 Oct, 11:25', needs: ['AI integration'], model: 'One-off project', start: 'Just exploring', message: 'Could AI read our supplier invoices and capture them into our accounting system automatically? We get a few hundred a month.', read: true, archived: false },
+{ id: 'm5', name: 'Kgosi Molefe', company: 'Molefe Properties', email: 'kgosi@molefeprop.co.za', phone: '+27 74 000 0014', when: '19 Oct', received: 'Mon 19 Oct, 09:10', needs: ['Something else'], model: 'Not sure yet', start: 'Just exploring', message: 'Just checking if you also do hosting for WordPress sites.', read: true, archived: true }
+]
+};
+}
+renderVals() {
+const st = this.state;
+const NAV = [
+['dashboard', 'Dashboard', 'AdminDashboard.dc.html', 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z'],
+['bookings', 'Bookings', 'AdminBookings.dc.html', 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4'],
+['messages', 'Messages', 'AdminMessages.dc.html', 'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13L22 12v7H2v-7z'],
+['billing', 'Quotes & invoices', 'AdminBilling.dc.html', 'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4'],
+['projects', 'Projects', 'AdminProjects.dc.html', 'M12 2l10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5'],
+['settings', 'Settings', 'AdminSettings.dc.html', 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6']
+];
+const all = st.msgs;
+const unread = all.filter((m) => !m.read && !m.archived).length;
+const groups = { inbox: (m) => !m.archived, unread: (m) => !m.read && !m.archived, archived: (m) => m.archived };
+const q = st.q.trim().toLowerCase();
+const rows = all.filter(groups[st.tab]).filter((m) => !q || (m.name + ' ' + m.company + ' ' + m.message).toLowerCase().indexOf(q) > -1);
+const sel = all.find((m) => m.id === st.sel) || null;
+const patch = (id, p, toast, last) => this.setState({ msgs: all.map((m) => (m.id === id ? Object.assign({}, m, p) : m)), toast: toast || '', last: last || null });
+return {
+nav: NAV.map((n) => ({ cls: n[0] === 'messages' ? 'snav on' : 'snav', label: n[1], href: n[2], icon: n[3], current: n[0] === 'messages' ? 'page' : 'false', badge: n[0] === 'bookings' ? '2' : n[0] === 'messages' ? (unread ? String(unread) : '') : '' })),
+onSearch: (e) => this.setState({ q: e.target.value }),
+tabs: [['inbox', 'Inbox'], ['unread', 'Unread'], ['archived', 'Archived']].map((l) => {
+const on = st.tab === l[0];
+return {
+label: l[1], count: String(all.filter(groups[l[0]]).length), selected: on ? 'true' : 'false',
+style: on ? 'border: 0; background: #0B1220; color: #FFFFFF;' : 'border: 0; background: transparent; color: #4B5872;',
+countStyle: on ? 'background: rgba(255,255,255,0.18); color: #FFFFFF;' : 'background: #EEF2F8; color: #33405A;',
+pick: () => this.setState({ tab: l[0] })
+};
+}),
+hasRows: rows.length > 0,
+noRows: rows.length === 0,
+rows: rows.map((m) => {
+const on = sel && m.id === sel.id;
+return Object.assign({}, m, {
+dot: m.read ? 'transparent' : '#1877F2', weight: m.read ? '500' : '700', srState: m.read ? 'Read' : 'Unread',
+pressed: on ? 'true' : 'false',
+rowStyle: on ? 'background: #EEF4FE; box-shadow: inset 0 0 0 1.5px #166FE5;' : 'background: #FFFFFF;',
+pick: () => this.setState({ sel: m.id, msgs: all.map((x) => (x.id === m.id ? Object.assign({}, x, { read: true }) : x)) })
+});
+}),
+hasSel: !!sel,
+sel: sel ? Object.assign({}, sel, { initials: (sel.name.split(' ')[0][0] + sel.name.split(' ').slice(-1)[0][0]).toUpperCase(), first: sel.name.split(' ')[0] }) : {},
+readLabel: sel && sel.read ? 'Mark as unread' : 'Mark as read',
+archiveLabel: sel && sel.archived ? 'Move to inbox' : 'Archive',
+toggleRead: () => patch(sel.id, { read: !sel.read }),
+toggleArchive: () => patch(sel.id, { archived: !sel.archived }, sel.archived ? 'Moved back to inbox.' : 'Message archived.', { id: sel.id, archived: sel.archived }),
+toast: st.toast,
+undo: () => { const l = st.last; if (l) patch(l.id, { archived: l.archived }); else this.setState({ toast: '' }); }
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

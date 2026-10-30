@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>byteleaf — Home</title>
+<!-- REFERENCE BUILD generated from design/Main.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.navlink{color:#33405A;font-size:15px;font-weight:500;padding:10px 14px;border-radius:999px;transition:background .2s,color .2s}
+.navlink:hover{background:#EEF4FE;color:#0B1220}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;font-weight:600;font-size:16px;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s,color .25s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(22,111,229,.7)}
+.btn-ghost{color:#0B1220;border:1px solid #D5DEEB;background:#FFFFFF}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.btn-light{background:#FFFFFF;color:#0B1220}
+.btn-light:hover{color:#0B1220;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(0,0,0,.5)}
+.arr{transition:transform .25s}.btn:hover .arr,.lnk:hover .arr{transform:translateX(4px)}
+.lnk{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.card{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s}
+.card:hover{transform:translateY(-6px);box-shadow:0 28px 50px -28px rgba(11,18,32,.35);border-color:#B9D2F8}
+.dcard{transition:transform .35s cubic-bezier(.2,.8,.2,1),background .35s,border-color .35s}
+.dcard:hover{transform:translateY(-6px);background:#101E3A;border-color:#2C5BA8}
+.ico{transition:transform .35s cubic-bezier(.2,.8,.2,1),background .35s,color .35s}
+.card:hover .ico{transform:rotate(-8deg) scale(1.08);background:#166FE5;color:#FFFFFF}
+.flink{color:#B7C3D9}.flink:hover{color:#FFFFFF}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.32s}.d4{animation-delay:.46s}.d5{animation-delay:.6s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.float1{animation:floaty 7s ease-in-out infinite}.float2{animation:floaty 6s ease-in-out -2s infinite}.float3{animation:floaty 8s ease-in-out -4s infinite}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.marquee{animation:marquee 38s linear infinite}
+@keyframes blink{50%{opacity:0}}
+.caret{animation:blink 1s steps(1) infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(24,119,242,.55)}100%{box-shadow:0 0 0 12px rgba(24,119,242,0)}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+@keyframes typing{from{width:0}}
+.type{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:bottom;animation:typing 1.4s steps(30) both}
+.t1{animation-delay:.9s}.t2{animation-delay:2.4s}.t3{animation-delay:3.6s}
+@keyframes flow{to{stroke-dashoffset:-40}}
+.flow{stroke-dasharray:4 6;animation:flow 2.4s linear infinite}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.grow{transform-origin:left;animation:grow 2.2s cubic-bezier(.6,0,.2,1) .6s both}
+@keyframes shimmer{0%{background-position:-200px 0}100%{background-position:200px 0}}
+.skel{background:linear-gradient(90deg,#EEF2F8 0px,#F7F9FC 60px,#EEF2F8 120px);background-size:400px 100%;animation:shimmer 2.4s linear infinite}
+.mnav{display:none}
+.menu-btn{list-style:none;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid #D5DEEB;display:grid;place-items:center;color:#0B1220;background:#FFFFFF}
+.menu-btn::-webkit-details-marker{display:none}
+.mnav[open] .menu-btn{border-color:#166FE5;color:#166FE5}
+.mnav .i-close{display:none}.mnav[open] .i-close{display:block}.mnav[open] .i-open{display:none}
+.mpanel{position:absolute;left:0;right:0;top:100%;background:#FFFFFF;border-bottom:1px solid #E8EDF5;box-shadow:0 24px 40px -24px rgba(11,18,32,.25);padding:12px 20px 20px;display:flex;flex-direction:column;gap:4px;animation:rise .35s cubic-bezier(.2,.8,.2,1) both}
+.mlink{display:flex;align-items:center;min-height:52px;padding:0 12px;border-radius:12px;font-size:18px;font-weight:500;color:#0B1220;border-bottom:1px solid #F1F4F9}
+.mlink:hover{background:#EEF4FE;color:#166FE5}
+@media (max-width: 760px){.dnav,.dcta{display:none!important}.mnav{display:block}}
+@media (max-width: 640px){section[style*="padding: 120px 24px"]{padding-top:64px!important;padding-bottom:64px!important}section[style*="24px 120px"]{padding-bottom:64px!important}section[style*="padding: 96px"],section[style*="padding: 88px"],section[style*="padding: 80px"]{padding-top:56px!important}section[style*="padding: 72px 24px"]{padding-top:44px!important;padding-bottom:44px!important}.hide-sm{display:none}}
+@media (max-width: 1199px){.pline{display:none}}
+@media (max-width: 640px){.hv{min-height:430px!important}.hv-win{width:100%!important}.hv-term{left:0!important;width:88%!important;padding:12px 14px 14px!important}.hv-term .mono{font-size:11px!important}.hv-ai{width:60%!important;top:auto!important;bottom:140px!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; background: #FFFFFF; overflow-x: hidden">
+
+<header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid #E8EDF5">
+<nav aria-label="Main" style="max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="home.html" aria-label="byteleaf home" style="display: flex; align-items: center; gap: 10px; color: #0B1220; font-weight: 700; font-size: 22px; letter-spacing: -0.04em">
+<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byte<span style="color: #1877F2">leaf</span></span>
+</a>
+<div class="dnav" style="display: flex; flex-wrap: wrap; align-items: center; gap: 2px">
+<a class="navlink" href="services.html">Services</a>
+<a class="navlink" href="process.html">Process</a>
+<a class="navlink" href="projects.html">Projects</a>
+<a class="navlink" href="contact.html">Contact</a>
+</div>
+<a class="btn btn-primary dcta" href="book.html" style="min-height: 44px; padding: 0 20px; font-size: 15px">Book a call<svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<details class="mnav">
+<summary class="menu-btn" aria-label="Menu"><svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></summary>
+<div class="mpanel">
+<a class="mlink" href="services.html">Services</a>
+<a class="mlink" href="process.html">Process</a>
+<a class="mlink" href="projects.html">Projects</a>
+<a class="mlink" href="contact.html">Contact</a>
+<a class="btn btn-primary" href="book.html" style="justify-content: center; margin-top: 12px">Book a call</a>
+</div>
+</details>
+</nav>
+</header>
+
+<section style="position: relative; padding: 88px 24px 104px; background-color: #FFFFFF; background-image: linear-gradient(#EEF2F8 1px, transparent 1px), linear-gradient(90deg, #EEF2F8 1px, transparent 1px); background-size: 48px 48px; background-position: center top">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(255,255,255,0) 0%, #FFFFFF 75%)"></div>
+<div style="position: relative; max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(500px, 100%), 1fr)); gap: 64px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 28px; align-items: flex-start">
+<div class="rise mono" style="display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 12px; border: 1px solid #D5DEEB; border-radius: 999px; background: #FFFFFF; font-size: 13px; color: #33405A">
+<span class="pulse" style="width: 8px; height: 8px; border-radius: 50%; background: #1877F2"></span>Software studio · Johannesburg<span class="hide-sm">, South Africa</span>
+</div>
+<h1 class="rise d1" style="margin: 0; font-size: clamp(46px, 6.2vw, 86px); line-height: 0.98; letter-spacing: -0.045em; font-weight: 600; text-wrap: balance">Your software,<br>kept <span style="color: #1877F2">growing.</span></h1>
+<p class="rise d2" style="margin: 0; max-width: 540px; font-size: 20px; line-height: 1.55; color: #4B5872; text-wrap: pretty">byteleaf designs, builds and looks after the frontend, backend and AI behind established businesses — on a monthly care contract, or project by project as you need it.</p>
+<div class="rise d3" style="display: flex; flex-wrap: wrap; gap: 12px">
+<a class="btn btn-primary" href="book.html">Book a 30-min call<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a class="btn btn-ghost" href="process.html">See how we work</a>
+</div>
+<div class="rise d4 mono" style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: #4B5872; padding-top: 8px">
+<span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#166FE5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Design</span>
+<span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#166FE5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Frontend</span>
+<span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#166FE5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Backend</span>
+<span style="display: inline-flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#166FE5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>AI integrations</span>
+</div>
+</div>
+
+<div class="rise d3 hv" style="position: relative; min-height: 520px">
+<svg aria-hidden="true" width="100%" height="100%" viewBox="0 0 560 520" preserveAspectRatio="none" style="position: absolute; inset: 0">
+<path class="flow" d="M150 210 C 150 300, 260 300, 300 330" stroke="#1877F2" stroke-width="1.6" fill="none" opacity="0.55"></path>
+<path class="flow" d="M430 250 C 470 300, 470 360, 420 390" stroke="#1877F2" stroke-width="1.6" fill="none" opacity="0.55"></path>
+</svg>
+<div class="float1 hv-win" style="position: absolute; top: 0; left: 0; width: 78%; background: #FFFFFF; border: 1px solid #DCE4F0; border-radius: 16px; box-shadow: 0 40px 80px -40px rgba(11,18,32,0.35); overflow: hidden">
+<div style="display: flex; align-items: center; gap: 6px; padding: 12px 14px; border-bottom: 1px solid #EEF2F8; background: #F8FAFD">
+<span style="width: 10px; height: 10px; border-radius: 50%; background: #E3E9F2"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #E3E9F2"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #E3E9F2"></span>
+<span class="mono" style="margin-left: 10px; flex: 1; font-size: 12px; color: #4B5872; background: #FFFFFF; border: 1px solid #EEF2F8; border-radius: 6px; padding: 4px 10px">app.yourbusiness.co.za</span>
+</div>
+<div style="padding: 20px; display: grid; grid-template-columns: 96px 1fr; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="height: 10px; border-radius: 4px; background: #1877F2; width: 70%"></div>
+<div class="skel" style="height: 8px; border-radius: 4px"></div>
+<div class="skel" style="height: 8px; border-radius: 4px; width: 80%"></div>
+<div class="skel" style="height: 8px; border-radius: 4px; width: 60%"></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+<div style="height: 54px; border-radius: 10px; background: #EEF4FE; padding: 10px; box-sizing: border-box"><div style="height: 6px; width: 50%; border-radius: 3px; background: #A9C7F5"></div><div style="margin-top: 10px; height: 12px; width: 70%; border-radius: 3px; background: #1877F2"></div></div>
+<div style="height: 54px; border-radius: 10px; background: #F4F7FB; padding: 10px; box-sizing: border-box"><div style="height: 6px; width: 50%; border-radius: 3px; background: #D5DEEB"></div><div style="margin-top: 10px; height: 12px; width: 60%; border-radius: 3px; background: #0B1220"></div></div>
+<div style="height: 54px; border-radius: 10px; background: #F4F7FB; padding: 10px; box-sizing: border-box"><div style="height: 6px; width: 50%; border-radius: 3px; background: #D5DEEB"></div><div style="margin-top: 10px; height: 12px; width: 40%; border-radius: 3px; background: #0B1220"></div></div>
+</div>
+<div style="height: 110px; border-radius: 10px; background: #F8FAFD; border: 1px solid #EEF2F8; display: flex; align-items: flex-end; gap: 8px; padding: 12px; box-sizing: border-box">
+<div class="grow" style="flex: 1; height: 40%; border-radius: 4px; background: #CFE0FB"></div>
+<div class="grow" style="flex: 1; height: 55%; border-radius: 4px; background: #CFE0FB"></div>
+<div class="grow" style="flex: 1; height: 48%; border-radius: 4px; background: #CFE0FB"></div>
+<div class="grow" style="flex: 1; height: 70%; border-radius: 4px; background: #A9C7F5"></div>
+<div class="grow" style="flex: 1; height: 62%; border-radius: 4px; background: #A9C7F5"></div>
+<div class="grow" style="flex: 1; height: 88%; border-radius: 4px; background: #1877F2"></div>
+</div>
+<div class="skel" style="height: 8px; border-radius: 4px; width: 90%"></div>
+<div class="skel" style="height: 8px; border-radius: 4px; width: 70%"></div>
+</div>
+</div>
+</div>
+
+<div class="float2 hv-term" style="position: absolute; left: 6%; bottom: 0; width: 62%; background: #0B1220; border-radius: 14px; box-shadow: 0 40px 80px -30px rgba(11,18,32,0.55); padding: 16px 18px 20px; box-sizing: border-box">
+<div class="mono" style="display: flex; justify-content: space-between; font-size: 11px; color: #8A98B3; padding-bottom: 12px; border-bottom: 1px solid #1C2840; margin-bottom: 12px"><span>api — zsh</span><span>backend</span></div>
+<div class="mono" style="font-size: 13px; line-height: 1.9; color: #D6DEEC">
+<div><span style="color: #5AA0FF">$</span> <span class="type t1" style="width: 22ch">git push origin main</span></div>
+<div><span style="color: #5AA0FF">✓</span> <span class="type t2" style="width: 24ch; color: #9FB0CC">tests passed · build ok</span></div>
+<div><span style="color: #5AA0FF">→</span> <span class="type t3" style="width: 26ch; color: #FFFFFF">deployed to production</span><span class="caret" style="display: inline-block; width: 8px; height: 15px; background: #1877F2; vertical-align: -2px; margin-left: 4px"></span></div>
+</div>
+</div>
+
+<div class="float3 hv-ai" style="position: absolute; right: 0; top: 46%; width: 44%; background: #FFFFFF; border: 1px solid #DCE4F0; border-radius: 14px; box-shadow: 0 30px 60px -30px rgba(11,18,32,0.4); padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 8px">
+<span style="width: 26px; height: 26px; border-radius: 8px; background: #1877F2; display: grid; place-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"></path></svg></span>
+<span class="mono" style="font-size: 12px; color: #33405A">AI assistant</span>
+</div>
+<div style="font-size: 13px; line-height: 1.5; color: #0B1220; background: #F4F7FB; border-radius: 10px 10px 10px 2px; padding: 10px 12px">Which invoices are overdue this week?</div>
+<div style="font-size: 13px; line-height: 1.5; color: #FFFFFF; background: #166FE5; border-radius: 10px 10px 2px 10px; padding: 10px 12px; align-self: flex-end">Pulled from your system — here's the list, sorted by amount.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section aria-label="Technologies" style="border-top: 1px solid #EEF2F8; border-bottom: 1px solid #EEF2F8; background: #FBFCFE; padding: 28px 0; overflow: hidden">
+<div style="max-width: 1240px; margin: 0 auto 18px; padding: 0 24px; box-sizing: border-box">
+<p class="mono" style="margin: 0; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #4B5872">The stack we work in every day</p>
+</div>
+<div style="overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)">
+<div class="marquee" style="display: flex; gap: 14px; width: max-content">
+<sc-for list="{{tech}}" as="t" hint-placeholder-count="20">
+<span class="mono" style="display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border: 1px solid #E3E9F2; border-radius: 999px; background: #FFFFFF; font-size: 14px; color: #33405A; white-space: nowrap"><span style="width: 6px; height: 6px; border-radius: 2px; background: #1877F2"></span>{{t}}</span>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="padding: 120px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 680px">
+<span class="mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">01 — WHAT WE DO</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">One team for the whole stack — from the first screen to the last API call.</h2>
+</div>
+<a class="lnk" href="services.html">All services<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr)); gap: 20px">
+<article class="card" style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 18px; background: #FFFFFF">
+<span class="ico" style="width: 52px; height: 52px; border-radius: 14px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.6 7.6"></path><circle cx="11" cy="11" r="2"></circle></svg></span>
+<h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 600">Design</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4B5872">Product and interface design that fits how your team and customers already work — flows, wireframes, UI and design systems.</p>
+<div class="mono" style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: #33405A"><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">UX flows</span><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">UI</span><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">Design systems</span></div>
+</article>
+<article class="card" style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 18px; background: #FFFFFF">
+<span class="ico" style="width: 52px; height: 52px; border-radius: 14px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4M9 8l-2 2 2 2M15 8l2 2-2 2"></path></svg></span>
+<h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 600">Frontend</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4B5872">Fast, accessible web apps, portals and dashboards — built to be easy to change long after launch.</p>
+<div class="mono" style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: #33405A"><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">React</span><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">Next.js</span><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">TypeScript</span></div>
+</article>
+<article class="card" style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 18px; background: #FFFFFF">
+<span class="ico" style="width: 52px; height: 52px; border-radius: 14px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="7" rx="2"></rect><rect x="3" y="14" width="18" height="7" rx="2"></rect><path d="M7 6.5h.01M7 17.5h.01M11 6.5h6M11 17.5h6"></path></svg></span>
+<h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 600">Backend</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4B5872">APIs, databases, integrations and infrastructure that keep your operations running — secure, monitored and documented.</p>
+<div class="mono" style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: #33405A"><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">Node.js</span><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">PostgreSQL</span><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">Docker</span></div>
+</article>
+<article class="card" style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 18px; background: #FFFFFF">
+<span class="ico" style="width: 52px; height: 52px; border-radius: 14px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"></rect><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4M10 10h4v4h-4z"></path></svg></span>
+<h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 600">AI integrations</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4B5872">Practical AI inside the systems you already run — assistants on your own data, document processing and workflow automation.</p>
+<div class="mono" style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; color: #33405A"><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">LLM APIs</span><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">RAG</span><span style="padding: 4px 10px; background: #F4F7FB; border-radius: 6px">Automation</span></div>
+</article>
+</div>
+</div>
+</section>
+
+<section style="position: relative; padding: 120px 24px; background: #07101F; color: #FFFFFF; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; width: 720px; height: 720px; right: -200px; top: -260px; border-radius: 50%; background: radial-gradient(circle, rgba(24,119,242,0.35), rgba(24,119,242,0) 65%)"></div>
+<div aria-hidden="true" style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 28px 28px"></div>
+<div style="position: relative; max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<span class="mono" style="font-size: 13px; color: #6FAEFF; letter-spacing: 0.08em">02 — HOW WE WORK WITH YOU</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">Built for established businesses that need a dependable tech partner.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #B7C3D9">Pick the arrangement that suits you today — and change it as your needs change.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr)); gap: 20px">
+<article class="dcard" style="border: 1px solid #1C2B47; border-radius: 20px; padding: 30px; background: #0B1730; display: flex; flex-direction: column; gap: 16px">
+<span class="mono" style="font-size: 12px; color: #6FAEFF">CARE</span>
+<h3 style="margin: 0; font-size: 24px; letter-spacing: -0.02em; font-weight: 600">Maintenance contracts</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #B7C3D9">A monthly retainer for day-to-day upkeep: updates, security patches, monitoring, backups and small changes.</p>
+<span class="mono" style="margin-top: auto; padding-top: 8px; font-size: 13px; color: #FFFFFF">Monthly · ongoing</span>
+</article>
+<article class="dcard" style="border: 1px solid #1C2B47; border-radius: 20px; padding: 30px; background: #0B1730; display: flex; flex-direction: column; gap: 16px">
+<span class="mono" style="font-size: 12px; color: #6FAEFF">BUILD</span>
+<h3 style="margin: 0; font-size: 24px; letter-spacing: -0.02em; font-weight: 600">Full-stack development</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #B7C3D9">New features, internal tools or whole products — scoped, quoted and delivered as and when you need them.</p>
+<span class="mono" style="margin-top: auto; padding-top: 8px; font-size: 13px; color: #FFFFFF">Per project</span>
+</article>
+<article class="dcard" style="border: 1px solid #1C2B47; border-radius: 20px; padding: 30px; background: #0B1730; display: flex; flex-direction: column; gap: 16px">
+<span class="mono" style="font-size: 12px; color: #6FAEFF">FIX</span>
+<h3 style="margin: 0; font-size: 24px; letter-spacing: -0.02em; font-weight: 600">Bug fixing &amp; rescue</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #B7C3D9">Something broken, slow or inherited from a previous developer? We find the cause, fix it and document what we did.</p>
+<span class="mono" style="margin-top: auto; padding-top: 8px; font-size: 13px; color: #FFFFFF">Per issue · or hourly</span>
+</article>
+<article class="dcard" style="border: 1px solid #1C2B47; border-radius: 20px; padding: 30px; background: #0B1730; display: flex; flex-direction: column; gap: 16px">
+<span class="mono" style="font-size: 12px; color: #6FAEFF">TEAM</span>
+<h3 style="margin: 0; font-size: 24px; letter-spacing: -0.02em; font-weight: 600">Collaboration, your way</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #B7C3D9">Work alongside your in-house team — in your repos, your tools and your stand-ups — or take a whole area off your plate.</p>
+<span class="mono" style="margin-top: auto; padding-top: 8px; font-size: 13px; color: #FFFFFF">Flexible</span>
+</article>
+</div>
+</div>
+</section>
+
+<section style="padding: 120px 24px; background: #FBFCFE">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 680px">
+<span class="mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">03 — OUR PROCESS</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">Clear steps. No surprises.</h2>
+</div>
+<a class="lnk" href="process.html">The full process<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+<div style="position: relative">
+<div aria-hidden="true" class="pline" style="position: absolute; left: 0; right: 0; top: 27px; height: 2px; background: #E3E9F2"></div>
+<div aria-hidden="true" class="grow pline" style="position: absolute; left: 0; right: 0; top: 27px; height: 2px; background: #1877F2"></div>
+<ol style="position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: 28px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+<li style="display: flex; flex-direction: column; gap: 14px">
+<span class="mono" style="width: 56px; height: 56px; border-radius: 50%; background: #FFFFFF; border: 2px solid #1877F2; display: grid; place-items: center; font-size: 15px; font-weight: 500; color: #166FE5">{{s.n}}</span>
+<h3 style="margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.02em">{{s.title}}</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">{{s.text}}</p>
+</li>
+</sc-for>
+</ol>
+</div>
+</div>
+</section>
+
+<section style="padding: 120px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 680px">
+<span class="mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">04 — SELECTED WORK</span>
+<h2 style="margin: 0; font-size: clamp(34px, 4vw, 54px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">Recent projects</h2>
+</div>
+<a class="lnk" href="projects.html">View all projects<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 24px">
+<a class="card" href="projects.html" style="display: flex; flex-direction: column; border: 1px solid #E3E9F2; border-radius: 20px; overflow: hidden; color: #0B1220; background: #FFFFFF">
+<div aria-hidden="true" style="height: 240px; background-color: #1877F2; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.09) 0 2px, transparent 2px 18px); display: grid; place-items: center"><span class="mono" style="font-size: 13px; color: #FFFFFF; border: 1px dashed rgba(255,255,255,0.7); padding: 8px 14px; border-radius: 8px">[PROJECT SCREENSHOT]</span></div>
+<div style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span class="mono" style="font-size: 12px; color: #4B5872">E-commerce · Frontend + Backend</span>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em">[PROJECT NAME]</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">[One line on what you built and the outcome for the client.]</p>
+</div>
+</a>
+<a class="card" href="projects.html" style="display: flex; flex-direction: column; border: 1px solid #E3E9F2; border-radius: 20px; overflow: hidden; color: #0B1220; background: #FFFFFF">
+<div aria-hidden="true" style="height: 240px; background-color: #0B1220; background-image: radial-gradient(rgba(111,174,255,0.35) 1.2px, transparent 1.2px); background-size: 18px 18px; display: grid; place-items: center"><span class="mono" style="font-size: 13px; color: #FFFFFF; border: 1px dashed rgba(255,255,255,0.6); padding: 8px 14px; border-radius: 8px">[PROJECT SCREENSHOT]</span></div>
+<div style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span class="mono" style="font-size: 12px; color: #4B5872">AI integration · Backend</span>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em">[PROJECT NAME]</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">[One line on what you built and the outcome for the client.]</p>
+</div>
+</a>
+<a class="card" href="projects.html" style="display: flex; flex-direction: column; border: 1px solid #E3E9F2; border-radius: 20px; overflow: hidden; color: #0B1220; background: #FFFFFF">
+<div aria-hidden="true" style="height: 240px; background-color: #EEF4FE; background-image: linear-gradient(#D6E5FC 1px, transparent 1px), linear-gradient(90deg, #D6E5FC 1px, transparent 1px); background-size: 24px 24px; display: grid; place-items: center"><span class="mono" style="font-size: 13px; color: #0B4FB3; border: 1px dashed #166FE5; padding: 8px 14px; border-radius: 8px">[PROJECT SCREENSHOT]</span></div>
+<div style="padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Maintenance contract · Full stack</span>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em">[PROJECT NAME]</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">[One line on what you built and the outcome for the client.]</p>
+</div>
+</a>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 24px 120px">
+<div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 48px; align-items: start; border-top: 1px solid #E3E9F2; padding-top: 96px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span class="mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">05 — WHY BYTELEAF</span>
+<h2 style="margin: 0; font-size: clamp(32px, 3.6vw, 48px); line-height: 1.06; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">A local team that treats your systems like its own.</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 36px 40px">
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="width: 40px; height: 2px; background: #1877F2"></span><h3 style="margin: 0; font-size: 19px; font-weight: 600">Here in Johannesburg</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4B5872">Same time zone, meetings in person when it helps, and invoicing in rand.</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="width: 40px; height: 2px; background: #1877F2"></span><h3 style="margin: 0; font-size: 19px; font-weight: 600">Front to back, one team</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4B5872">Design, frontend, backend and AI under one roof — no hand-offs between agencies.</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="width: 40px; height: 2px; background: #1877F2"></span><h3 style="margin: 0; font-size: 19px; font-weight: 600">You own everything</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4B5872">Your code, your accounts, your data — documented so anyone can pick it up.</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="width: 40px; height: 2px; background: #1877F2"></span><h3 style="margin: 0; font-size: 19px; font-weight: 600">Plain-language reporting</h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #4B5872">A short monthly report on what changed, what's at risk and what's next.</p></div>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 24px 120px">
+<div style="position: relative; max-width: 1240px; margin: 0 auto; border-radius: 28px; background: #1877F2; color: #FFFFFF; padding: clamp(40px, 6vw, 80px); box-sizing: border-box; overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px">
+<svg aria-hidden="true" width="420" height="420" viewBox="0 0 32 32" style="position: absolute; right: -60px; bottom: -120px; opacity: 0.14"><path d="M4 28C4 14 14 4 28 4C28 18 18 28 4 28Z" fill="#FFFFFF"></path></svg>
+<div style="position: relative; display: flex; flex-direction: column; gap: 14px; max-width: 640px">
+<h2 style="margin: 0; font-size: clamp(32px, 4vw, 52px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance">Got a system that needs a steady hand?</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #FFFFFF">Tell us what you're running and where it hurts. We'll come back with a clear plan — no obligation.</p>
+</div>
+<div style="position: relative; display: flex; flex-wrap: wrap; gap: 12px">
+<a class="btn btn-light" href="book.html">Book a call<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a class="btn" href="contact.html" style="color: #FFFFFF; border: 1px solid rgba(255,255,255,0.6)">Send a message</a>
+</div>
+</div>
+</section>
+
+<footer style="background: #07101F; color: #FFFFFF; padding: 72px 24px 40px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: -0.04em"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>byteleaf</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #B7C3D9">Design, frontend, backend and AI integrations for established businesses.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">COMPANY</span>
+<a class="flink" href="services.html">Services</a><a class="flink" href="process.html">Process</a><a class="flink" href="projects.html">Projects</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">GET IN TOUCH</span>
+<a class="flink" href="contact.html">Contact</a><a class="flink" href="book.html">Book a call</a><span style="color: #B7C3D9">[hello@yourdomain.co.za]</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">STUDIO</span>
+<span style="color: #B7C3D9; line-height: 1.6">Johannesburg<br>South Africa</span>
+</div>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 28px; border-top: 1px solid #1C2840; font-size: 12px; color: #8A98B3">
+<span>© 2026 byteleaf</span><span>Made in Jozi</span>
+</div>
+</div>
+</footer>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+renderVals() {
+const tech = ['React', 'Next.js', 'TypeScript', 'Node.js', 'Express', 'Python', 'PostgreSQL', 'MongoDB', 'Docker', 'REST & GraphQL', 'LLM APIs', 'Figma', 'Tailwind', 'Cloudflare'];
+return {
+tech: tech.concat(tech),
+steps: [
+{ n: '01', title: 'Discover', text: 'A call to understand your business, your systems and what needs to change.' },
+{ n: '02', title: 'Scope', text: 'We review what exists and send a written plan with a clear quote.' },
+{ n: '03', title: 'Design', text: 'Flows, screens and architecture, agreed with you before we build.' },
+{ n: '04', title: 'Build', text: 'Short cycles with regular demos on a staging site you can click through.' },
+{ n: '05', title: 'Launch', text: 'A careful release, handover docs and training for your team.' },
+{ n: '06', title: 'Care', text: 'Ongoing maintenance, monitoring and improvements every month.' }
+]
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>byteleaf — Contact</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+.navlink{color:#33405A;font-size:15px;font-weight:500;padding:10px 14px;border-radius:999px;transition:background .2s,color .2s}
+.navlink:hover{background:#EEF4FE;color:#0B1220}
+.navlink.on{background:#EEF4FE;color:#166FE5}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;font-weight:600;font-size:16px;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s,color .25s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(22,111,229,.7)}
+.btn-ghost{color:#0B1220;border:1px solid #D5DEEB;background:#FFFFFF}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.arr{transition:transform .25s}.btn:hover .arr{transform:translateX(4px)}
+.field{font:inherit;font-size:16px;color:#0B1220;width:100%;box-sizing:border-box;min-height:52px;padding:12px 16px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:#166FE5;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.field::placeholder{color:#6B7891}
+.tchip{font:inherit;cursor:pointer;min-height:44px;padding:0 16px;border-radius:999px;font-size:15px;font-weight:500;transition:all .2s}
+.tchip:hover{transform:translateY(-1px)}
+.row{transition:background .2s}
+.row:hover{background:#101E3A}
+.flink{color:#B7C3D9}.flink:hover{color:#FFFFFF}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}
+@keyframes ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+.ping{animation:ping 2s cubic-bezier(0,0,.2,1) infinite}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+.popin{animation:pop .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes draw{from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+.draw{stroke-dasharray:30;animation:draw .6s ease .35s both}
+.mnav{display:none}
+.menu-btn{list-style:none;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid #D5DEEB;display:grid;place-items:center;color:#0B1220;background:#FFFFFF}
+.menu-btn::-webkit-details-marker{display:none}
+.mnav[open] .menu-btn{border-color:#166FE5;color:#166FE5}
+.mnav .i-close{display:none}.mnav[open] .i-close{display:block}.mnav[open] .i-open{display:none}
+.mpanel{position:absolute;left:0;right:0;top:100%;background:#FFFFFF;border-bottom:1px solid #E8EDF5;box-shadow:0 24px 40px -24px rgba(11,18,32,.25);padding:12px 20px 20px;display:flex;flex-direction:column;gap:4px;animation:rise .35s cubic-bezier(.2,.8,.2,1) both}
+.mlink{display:flex;align-items:center;min-height:52px;padding:0 12px;border-radius:12px;font-size:18px;font-weight:500;color:#0B1220;border-bottom:1px solid #F1F4F9}
+.mlink:hover{background:#EEF4FE;color:#166FE5}
+@media (max-width: 760px){.dnav,.dcta{display:none!important}.mnav{display:block}}
+@media (max-width: 640px){section[style*="padding: 120px 24px"]{padding-top:64px!important;padding-bottom:64px!important}section[style*="24px 120px"]{padding-bottom:64px!important}section[style*="padding: 96px"],section[style*="padding: 88px"],section[style*="padding: 80px"]{padding-top:56px!important}section[style*="padding: 72px 24px"]{padding-top:44px!important;padding-bottom:44px!important}.hide-sm{display:none}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; background: #FFFFFF; overflow-x: hidden">
+
+<header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid #E8EDF5">
+<nav aria-label="Main" style="max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Main.dc.html" aria-label="byteleaf home" style="display: flex; align-items: center; gap: 10px; color: #0B1220; font-weight: 700; font-size: 22px; letter-spacing: -0.04em">
+<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byte<span style="color: #1877F2">leaf</span></span>
+</a>
+<div class="dnav" style="display: flex; flex-wrap: wrap; align-items: center; gap: 2px">
+<a class="navlink" href="Services.dc.html">Services</a>
+<a class="navlink" href="Process.dc.html">Process</a>
+<a class="navlink" href="Projects.dc.html">Projects</a>
+<a class="navlink on" href="Contact.dc.html" aria-current="page">Contact</a>
+</div>
+<a class="btn btn-primary dcta" href="Book.dc.html" style="min-height: 44px; padding: 0 20px; font-size: 15px">Book a call<svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<details class="mnav">
+<summary class="menu-btn" aria-label="Menu"><svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></summary>
+<div class="mpanel">
+<a class="mlink" href="Services.dc.html">Services</a>
+<a class="mlink" href="Process.dc.html">Process</a>
+<a class="mlink" href="Projects.dc.html">Projects</a>
+<a class="mlink" href="Contact.dc.html">Contact</a>
+<a class="btn btn-primary" href="Book.dc.html" style="justify-content: center; margin-top: 12px">Book a call</a>
+</div>
+</details>
+</nav>
+</header>
+
+<section style="padding: 88px 24px 120px; background: #FBFCFE">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 20px; max-width: 760px">
+<span class="rise mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">CONTACT</span>
+<h1 class="rise d1" style="margin: 0; font-size: clamp(44px, 5.6vw, 76px); line-height: 1; letter-spacing: -0.045em; font-weight: 600; text-wrap: balance">Let's talk about <span style="color: #1877F2">your systems.</span></h1>
+<p class="rise d2" style="margin: 0; font-size: 20px; line-height: 1.55; color: #4B5872">Tell us a little about your business and what you need. We'll reply within [X] business hours.</p>
+</div>
+
+<div class="rise d3" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
+<aside style="flex: 1 1 340px; position: relative; border-radius: 24px; background: #07101F; color: #FFFFFF; overflow: hidden; display: flex; flex-direction: column">
+<div aria-hidden="true" style="position: relative; height: 230px; background-color: #0B1730; background-image: radial-gradient(rgba(111,174,255,0.28) 1.2px, transparent 1.2px); background-size: 16px 16px">
+<svg width="100%" height="100%" viewBox="0 0 400 230" preserveAspectRatio="none" style="position: absolute; inset: 0"><path d="M0 160 C 80 120, 140 190, 220 130 S 340 80, 400 110" stroke="#22345A" stroke-width="10" fill="none"></path><path d="M120 0 C 150 80, 170 140, 160 230" stroke="#22345A" stroke-width="8" fill="none"></path><path d="M260 0 L 300 230" stroke="#1A2946" stroke-width="6" fill="none"></path></svg>
+<div style="position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%)">
+<span class="ping" style="position: absolute; inset: 0; border-radius: 50%; background: #1877F2"></span>
+<span style="position: relative; display: block; width: 18px; height: 18px; border-radius: 50%; background: #1877F2; border: 3px solid #FFFFFF; box-sizing: border-box"></span>
+</div>
+<span class="mono" style="position: absolute; left: calc(50% + 18px); top: calc(48% - 12px); font-size: 12px; padding: 4px 10px; background: #FFFFFF; color: #0B1220; border-radius: 6px">Johannesburg</span>
+</div>
+<div style="padding: 28px; display: flex; flex-direction: column; gap: 4px">
+<a class="row" href="mailto:hello@yourdomain.co.za" style="display: flex; gap: 16px; align-items: center; padding: 14px; border-radius: 12px; color: #FFFFFF">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #17233B; display: grid; place-items: center; flex: none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6FAEFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 12px; color: #8A98B3">EMAIL</span><span style="font-size: 16px">[hello@yourdomain.co.za]</span></span>
+</a>
+<a class="row" href="tel:+27000000000" style="display: flex; gap: 16px; align-items: center; padding: 14px; border-radius: 12px; color: #FFFFFF">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #17233B; display: grid; place-items: center; flex: none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6FAEFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 12px; color: #8A98B3">PHONE / WHATSAPP</span><span style="font-size: 16px">[+27 00 000 0000]</span></span>
+</a>
+<div class="row" style="display: flex; gap: 16px; align-items: center; padding: 14px; border-radius: 12px">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #17233B; display: grid; place-items: center; flex: none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6FAEFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 12px; color: #8A98B3">STUDIO</span><span style="font-size: 16px">Johannesburg, South Africa</span></span>
+</div>
+<div class="row" style="display: flex; gap: 16px; align-items: center; padding: 14px; border-radius: 12px">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #17233B; display: grid; place-items: center; flex: none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6FAEFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 12px; color: #8A98B3">HOURS</span><span style="font-size: 16px">Mon–Fri · [08:00–17:00] SAST</span></span>
+</div>
+</div>
+<div style="margin-top: auto; padding: 0 28px 28px">
+<a class="btn btn-primary" href="Book.dc.html" style="width: 100%; box-sizing: border-box">Prefer to talk? Book a call<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</aside>
+
+<div style="flex: 999 1 560px; min-width: 0; border-radius: 24px; background: #FFFFFF; border: 1px solid #E3E9F2; padding: clamp(24px, 4vw, 48px); box-sizing: border-box; box-shadow: 0 40px 80px -60px rgba(11,18,32,0.4)">
+<sc-if value="{{sent}}" hint-placeholder-val="{{ false }}">
+<div style="min-height: 560px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 20px">
+<span class="popin" style="width: 88px; height: 88px; border-radius: 50%; background: #166FE5; display: grid; place-items: center"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" d="M5 12l5 5L20 7"></path></svg></span>
+<h2 style="margin: 0; font-size: 34px; letter-spacing: -0.03em; font-weight: 600">Message sent — thank you.</h2>
+<p style="margin: 0; max-width: 420px; font-size: 17px; line-height: 1.6; color: #4B5872">We'll be in touch within [X] business hours. If it's urgent, give us a call.</p>
+<button type="button" class="btn btn-ghost" onClick="{{reset}}">Send another message</button>
+</div>
+</sc-if>
+<sc-if value="{{notSent}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{submit}}" style="display: flex; flex-direction: column; gap: 28px">
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+<legend style="padding: 0; margin-bottom: 14px; font-size: 18px; font-weight: 600">What can we help with?</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{needs}}" as="n" hint-placeholder-count="6">
+<button type="button" class="tchip" onClick="{{n.toggle}}" aria-pressed="{{n.pressed}}" style="{{n.style}}">{{n.label}}</button>
+</sc-for>
+</div>
+</fieldset>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-name" style="font-size: 14px; font-weight: 500; color: #33405A">Your name</label><input id="c-name" class="field" type="text" placeholder="Thandi Mokoena" required></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-company" style="font-size: 14px; font-weight: 500; color: #33405A">Company</label><input id="c-company" class="field" type="text" placeholder="Company name"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-email" style="font-size: 14px; font-weight: 500; color: #33405A">Work email</label><input id="c-email" class="field" type="email" placeholder="you@company.co.za" required></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-phone" style="font-size: 14px; font-weight: 500; color: #33405A">Phone <span style="color: #6B7891; font-weight: 400">(optional)</span></label><input id="c-phone" class="field" type="tel" placeholder="+27"></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-type" style="font-size: 14px; font-weight: 500; color: #33405A">How would you like to work?</label>
+<select id="c-type" class="field"><option>Not sure yet</option><option>Monthly maintenance contract</option><option>One-off project</option><option>Bug fix / rescue</option><option>Join our in-house team</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-when" style="font-size: 14px; font-weight: 500; color: #33405A">When do you want to start?</label>
+<select id="c-when" class="field"><option>As soon as possible</option><option>Within a month</option><option>In 1–3 months</option><option>Just exploring</option></select></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label for="c-msg" style="font-size: 14px; font-weight: 500; color: #33405A">Tell us about it</label><textarea id="c-msg" class="field" rows="5" placeholder="What systems do you run today, and what needs to change?" style="resize: vertical; min-height: 140px"></textarea></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<span style="font-size: 14px; color: #4B5872; max-width: 380px">We only use your details to reply to you, in line with POPIA.</span>
+<button type="submit" class="btn btn-primary">Send message<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</div>
+</form>
+</sc-if>
+</div>
+</div>
+</div>
+</section>
+
+<footer style="background: #07101F; color: #FFFFFF; padding: 72px 24px 40px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: -0.04em"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>byteleaf</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #B7C3D9">Design, frontend, backend and AI integrations for established businesses.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">COMPANY</span>
+<a class="flink" href="Services.dc.html">Services</a><a class="flink" href="Process.dc.html">Process</a><a class="flink" href="Projects.dc.html">Projects</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">GET IN TOUCH</span>
+<a class="flink" href="Contact.dc.html">Contact</a><a class="flink" href="Book.dc.html">Book a call</a><span style="color: #B7C3D9">[hello@yourdomain.co.za]</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">STUDIO</span>
+<span style="color: #B7C3D9; line-height: 1.6">Johannesburg<br>South Africa</span>
+</div>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 28px; border-top: 1px solid #1C2840; font-size: 12px; color: #8A98B3">
+<span>© 2026 byteleaf</span><span>Made in Jozi</span>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1760}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { picked: ['Maintenance'], sent: false };
+}
+renderVals() {
+const picked = this.state.picked;
+const labels = ['Maintenance', 'New feature', 'Bug fix', 'Design', 'Frontend', 'Backend', 'AI integration', 'Something else'];
+return {
+sent: this.state.sent,
+notSent: !this.state.sent,
+needs: labels.map((l) => {
+const on = picked.indexOf(l) > -1;
+return {
+label: l,
+pressed: on ? 'true' : 'false',
+style: on ? 'background: #166FE5; color: #FFFFFF; border: 1px solid #166FE5;' : 'background: #FFFFFF; color: #33405A; border: 1px solid #D5DEEB;',
+toggle: () => this.setState({ picked: on ? picked.filter((x) => x !== l) : picked.concat([l]) })
+};
+}),
+submit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ sent: true }); },
+reset: () => this.setState({ sent: false })
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: byteleaf-mongo
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27117:27017"
+    volumes:
+      - byteleaf-mongo-data:/data/db
+
+  # Dev-only S3 storage (Garage). Production uses your own Garage; only the S3_* env vars change.
+  # First run: `npm run garage:setup` creates the layout, bucket and access key and writes them to .env.local.
+  garage:
+    image: dxflrs/garage:v1.0.1
+    container_name: byteleaf-garage
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3910:3900"
+    volumes:
+      - ./docker/garage.toml:/etc/garage.toml:ro
+      - byteleaf-garage-meta:/var/lib/garage/meta
+      - byteleaf-garage-data:/var/lib/garage/data
+
+volumes:
+  byteleaf-mongo-data:
+  byteleaf-garage-meta:
+  byteleaf-garage-data:
