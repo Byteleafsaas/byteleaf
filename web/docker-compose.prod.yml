@@ -1,0 +1,32 @@
+# Production stack for the shared server. Lives next to a git-ignored .env; see README "Deploy".
+name: byteleaf-prod
+
+networks:
+  infra:
+    external: true
+    name: infra
+
+services:
+  web:
+    build: .
+    image: byteleaf-web:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    networks: [default, infra]
+    env_file: .env
+    environment:
+      NODE_ENV: production
+    ports:
+      - '127.0.0.1:${WEB_LOCAL_PORT:-8083}:3000'
+    mem_limit: 768m
+    logging:
+      driver: json-file
+      options: { max-size: '10m', max-file: '3' }
+
+  # Optional own tunnel: docker compose --profile tunnel up -d cloudflared
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    profiles: ['tunnel']
+    command: ['tunnel', '--no-autoupdate', 'run']
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
