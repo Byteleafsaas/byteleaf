@@ -72,7 +72,7 @@ export default function BookingWidget({ availability, types }: { availability: A
     const r = await submitBookingAction({
       meetingType: t.key, date: keyOf(day), time,
       name: String(fd.get('name') ?? ''), email: String(fd.get('email') ?? ''), company: String(fd.get('company') ?? ''), note: String(fd.get('notes') ?? ''),
-      website: String(fd.get('website') ?? ''),
+      trap: String(fd.get('trap') ?? ''),
     });
     setBusy(false);
     if (r.ok) return setDone(true);
@@ -178,7 +178,7 @@ export default function BookingWidget({ availability, types }: { availability: A
 
         <form onSubmit={submit} className={s.details}>
           <span className={s.label}>4 · YOUR DETAILS</span>
-          <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+          <input type="text" name="trap" tabIndex={-1} autoComplete="new-password" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
           <div className={s.dgrid}>
             <div className="fgroup"><label htmlFor="b-name">Name</label><input id="b-name" name="name" className="field" type="text" placeholder="Your name" required autoComplete="name" /></div>
             <div className="fgroup"><label htmlFor="b-email">Work email</label><input id="b-email" name="email" className="field" type="email" placeholder="you@company.co.za" required autoComplete="email" /></div>

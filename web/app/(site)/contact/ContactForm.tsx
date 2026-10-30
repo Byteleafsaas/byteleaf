@@ -25,7 +25,7 @@ export default function ContactForm({ replyTime }: { replyTime: string }) {
       needs: picked,
       name: String(fd.get('name') ?? ''), company: String(fd.get('company') ?? ''), email: String(fd.get('email') ?? ''), phone: String(fd.get('phone') ?? ''),
       workType: String(fd.get('workType') ?? ''), start: String(fd.get('start') ?? ''), message: String(fd.get('message') ?? ''),
-      website: String(fd.get('website') ?? ''),
+      trap: String(fd.get('trap') ?? ''),
     });
     setBusy(false);
     if (r.ok) setSent(true);
@@ -57,7 +57,7 @@ export default function ContactForm({ replyTime }: { replyTime: string }) {
           ))}
         </div>
       </fieldset>
-      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+      <input type="text" name="trap" tabIndex={-1} autoComplete="new-password" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
       <div className="fgrid">
         <div className="fgroup"><label htmlFor="c-name">Your name</label><input id="c-name" name="name" className="field" type="text" placeholder="Thandi Mokoena" required autoComplete="name" /></div>
         <div className="fgroup"><label htmlFor="c-company">Company</label><input id="c-company" name="company" className="field" type="text" placeholder="Company name" autoComplete="organization" /></div>

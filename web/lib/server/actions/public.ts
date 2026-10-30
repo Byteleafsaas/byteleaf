@@ -24,12 +24,13 @@ const contactSchema = z.object({
   workType: trim(80).default(''),
   start: trim(80).default(''),
   message: trim(5000).default(''),
-  website: z.string().max(0).optional(), // honeypot: real people never fill this
+  trap: z.string().max(200).optional(), // honeypot: real people never fill this
 });
 
 export async function submitContactAction(input: z.input<typeof contactSchema>): Promise<Result> {
   const p = contactSchema.safeParse(input);
   if (!p.success) return { ok: false, error: p.error.issues[0]?.message ?? 'Please check the form.' };
+  if (p.data.trap) return { ok: true }; // bot: pretend it worked
   const { ip } = await clientInfo();
   if (!(await rateLimit(`contact:${ip}`, 5, 60 * 60000))) return { ok: false, error: 'Too many messages from this connection. Please try again later.' };
 
@@ -57,12 +58,13 @@ const bookingSchema = z.object({
   email: z.string().trim().toLowerCase().email('Enter a valid email address.').max(200),
   company: trim(120).default(''),
   note: trim(3000).default(''),
-  website: z.string().max(0).optional(),
+  trap: z.string().max(200).optional(),
 });
 
 export async function submitBookingAction(input: z.input<typeof bookingSchema>): Promise<Result> {
   const p = bookingSchema.safeParse(input);
   if (!p.success) return { ok: false, error: p.error.issues[0]?.message ?? 'Please check the form.' };
+  if (p.data.trap) return { ok: true };
   const { ip } = await clientInfo();
   if (!(await rateLimit(`book:${ip}`, 6, 60 * 60000))) return { ok: false, error: 'Too many booking requests from this connection. Please try again later.' };
 
