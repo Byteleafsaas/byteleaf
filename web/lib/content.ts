@@ -146,7 +146,7 @@ export const FOUNDER = {
   first: 'Gerald',
   name: 'Gerald Mutswi',
   role: 'Founder · Full Stack Engineer',
-  bio: 'I'm Gerald, the founder of byteleaf. I've spent the last two years building software for real businesses, working remotely with a European company. I take a project from the first sketch all the way to launch, and I'm the person you'll deal with the whole way through.',
+  bio: "I’m Gerald, the founder of byteleaf. I’ve spent the last two years building software for real businesses, working remotely with a European company. I take a project from the first sketch all the way to launch, and I’m the person you’ll deal with the whole way through.",
   linkedin: 'https://www.linkedin.com/in/gerald-mutswi-550711237',
   github: 'https://github.com/Geraldmutsw',
 };
