@@ -12,10 +12,10 @@ export const SITE = {
 };
 
 export const NAV = [
+  { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
   { href: '/process', label: 'Process' },
   { href: '/projects', label: 'Projects' },
-  { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
 
@@ -146,7 +146,7 @@ export const FOUNDER = {
   first: 'Gerald',
   name: 'Gerald Mutswi',
   role: 'Founder · Full Stack Engineer',
-  bio: 'Two years of remote experience building production web apps, APIs, desktop tools and LLM-powered services for CUX, a European digital experience analytics company. Has owned projects from Figma designs and requirements through to deployment.',
+  bio: 'I'm Gerald, the founder of byteleaf. I've spent the last two years building software for real businesses, working remotely with a European company. I take a project from the first sketch all the way to launch, and I'm the person you'll deal with the whole way through.',
   linkedin: 'https://www.linkedin.com/in/gerald-mutswi-550711237',
   github: 'https://github.com/Geraldmutsw',
 };

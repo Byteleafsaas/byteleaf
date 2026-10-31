@@ -1,4 +1,4 @@
-.hero { position: relative; padding: 96px var(--gutter) 104px; }
+.hero { position: relative; overflow-x: clip; padding: 96px var(--gutter) 104px; }
 .heroFade { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 30% 35%, rgba(255, 255, 255, 0) 0%, #fff 72%); }
 .heroIn { position: relative; max-width: var(--container); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(480px, 100%), 1fr)); gap: 56px; align-items: center; }
 .heroText { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
@@ -6,7 +6,7 @@
 .btns { display: flex; flex-wrap: wrap; gap: 12px; }
 
 .hv { position: relative; min-height: 440px; display: grid; place-items: center; }
-.ring { position: absolute; width: min(420px, 100%); height: auto; aspect-ratio: 1; animation: spin 40s linear infinite; transform-origin: center; }
+.ring { position: absolute; max-width: 100%; width: min(420px, 100%); height: auto; aspect-ratio: 1; animation: spin 40s linear infinite; transform-origin: center; }
 .tile { position: relative; width: 220px; height: 220px; border-radius: 60px; background: var(--blue-500); display: grid; place-items: center; box-shadow: 0 50px 90px -40px rgba(24, 119, 242, .85); }
 .leaf { animation: sway 6s ease-in-out infinite; transform-origin: 20% 80%; }
 .chip { position: absolute; padding: 10px 14px; border-radius: 12px; background: #fff; border: 1px solid #DCE4F0; box-shadow: 0 20px 40px -24px rgba(11, 18, 32, .35); font-size: 13px; color: var(--ink-2); }
@@ -45,7 +45,7 @@
 .card h3 { margin: 0; font-size: 21px; letter-spacing: -.02em; font-weight: 600; }
 .card p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--muted); }
 
-.who { background: #FBFCFE; border-top: 1px solid var(--line-3); border-bottom: 1px solid var(--line-3); }
+.who { overflow-x: clip; background: #FBFCFE; border-top: 1px solid var(--line-3); border-bottom: 1px solid var(--line-3); }
 .whoIn { max-width: var(--container); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 56px; align-items: center; }
 .photoWrap { position: relative; max-width: 460px; width: 100%; justify-self: center; }
 .photoBlock { position: absolute; inset: 18px -18px -18px 18px; border-radius: 28px; background: var(--blue-500); }
