@@ -128,10 +128,10 @@ export default async function About() {
             <p>When you work with byteleaf, you deal with the person building your software — no hand-offs and no call centres.</p>
             <p className={s.bio}>{FOUNDER.bio}</p>
             <div className={s.socials}>
-              <a className={s.soc} href={FOUNDER.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${FOUNDER.first} on LinkedIn (link to be added)`}>
+              <a className={s.soc} href={FOUNDER.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${FOUNDER.first} on LinkedIn`}>
                 <svg {...icon}><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7" /></svg>LinkedIn
               </a>
-              <a className={s.soc} href={FOUNDER.github} target="_blank" rel="noopener noreferrer" aria-label={`${FOUNDER.first} on GitHub (link to be added)`}>
+              <a className={s.soc} href={FOUNDER.github} target="_blank" rel="noopener noreferrer" aria-label={`${FOUNDER.first} on GitHub`}>
                 <svg {...icon}><path d="M9 19c-4 1.5-4-2-6-2.5M15 21v-3.5a3 3 0 0 0-.8-2.3c2.8-.3 5.8-1.4 5.8-6.2a4.8 4.8 0 0 0-1.3-3.3 4.5 4.5 0 0 0-.1-3.3s-1.1-.3-3.4 1.3a11.6 11.6 0 0 0-6.2 0C6.7 2.1 5.6 2.4 5.6 2.4a4.5 4.5 0 0 0-.1 3.3A4.8 4.8 0 0 0 4.2 9c0 4.8 3 5.9 5.8 6.2a3 3 0 0 0-.8 2.3V21" /></svg>GitHub
               </a>
               <Link className={s.soc} href="/book">

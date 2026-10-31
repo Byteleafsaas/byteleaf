@@ -54,7 +54,7 @@
 .whoText { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .role { font-size: 18px; font-weight: 500; color: var(--blue-600); }
 .whoText p { margin: 0; font-size: 18px; line-height: 1.7; color: var(--ink-2); }
-.whoText .bio { padding: 16px 18px; border-radius: 14px; background: #fff; border: 1px dashed #A9C7F5; color: var(--blue-800); font-size: 16px; line-height: 1.6; }
+.whoText .bio { padding: 16px 18px; border-radius: 14px; background: #fff; border: 1px solid var(--line); color: var(--ink-2); font-size: 16px; line-height: 1.6; }
 .socials { display: flex; flex-wrap: wrap; gap: 10px; }
 .soc { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--ink); font-size: 14px; font-weight: 500; transition: all .2s; }
 .soc:hover { border-color: var(--blue-600); color: var(--blue-600); transform: translateY(-2px); }

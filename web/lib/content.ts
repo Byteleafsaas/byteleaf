@@ -134,7 +134,7 @@ export const MEETING_TYPES = [
 // Placeholder availability. TODO: replace with a real calendar source.
 export const SLOT_TIMES = ['09:00', '10:00', '11:30', '13:00', '14:30', '16:00'];
 
-// About page. Placeholders stay visible until the owner replaces them (founder surname, title, bio, photo, links).
+// About page. Still a placeholder: the founding-story line and founder photo (see the About page).
 export const ABOUT_PRINCIPLES = [
   { n: '01', title: 'Fix the cause, not the symptom', text: 'We dig until we understand why something broke, so it stays fixed.' },
   { n: '02', title: 'Leave it better than we found it', text: 'Every change comes with documentation and tidier code, so anyone can pick it up.' },
@@ -144,9 +144,9 @@ export const ABOUT_PRINCIPLES = [
 
 export const FOUNDER = {
   first: 'Gerald',
-  name: 'Gerald [Surname]',
-  role: 'Founder · [Your title, e.g. Lead developer]',
-  bio: '[Two or three sentences about your background: experience, the kinds of systems you’ve built, and what you enjoy working on.]',
-  linkedin: 'https://www.linkedin.com/',
-  github: 'https://github.com/',
+  name: 'Gerald Mutswi',
+  role: 'Founder · Full Stack Engineer',
+  bio: 'Two years of remote experience building production web apps, APIs, desktop tools and LLM-powered services for CUX, a European digital experience analytics company. Works across React, Next.js, Node.js, Express, MongoDB and Electron, and has owned projects from Figma designs and requirements through to deployment.',
+  linkedin: 'https://www.linkedin.com/in/gerald-mutswi-550711237',
+  github: 'https://github.com/Geraldmutsw',
 };
