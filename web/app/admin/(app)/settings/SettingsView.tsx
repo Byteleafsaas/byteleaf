@@ -146,7 +146,7 @@ function Inner() {
           {tab === 'prices' && (
             <section className={`${s.panel} ${t.sec}`} aria-labelledby="h-price">
               <div className={t.secHead}><h2 id="h-price">Prices</h2><span className={t.hint}>Shown on the Services page under &quot;Ways to work with us&quot;. Leave blank to show &quot;Let&apos;s talk&quot;.</span></div>
-              {([['care', 'CARE', 'Maintenance contract', 'e.g. From R 0 000'], ['build', 'BUILD', 'Full-stack projects', 'e.g. Quoted per project'], ['fix', 'FIX', 'Bug fixing & rescue', 'e.g. R 000'], ['team', 'TEAM', 'Embedded collaboration', "Let's talk"]] as const).map(([k, tag, title, ph]) => (
+              {([['care', 'CARE', 'Maintenance', 'e.g. From R 0 000'], ['build', 'BUILD', 'Full-stack projects', 'e.g. Quoted per project'], ['fix', 'FIX', 'Bug fixing & rescue', 'e.g. R 000'], ['team', 'TEAM', 'Collaboration', "Let's talk"]] as const).map(([k, tag, title, ph]) => (
                 <div key={k} className={t.priceRow}>
                   <div className={s.col} style={{ gap: 4 }}><span className={t.priceTag}>{tag}</span><span className={t.priceTitle}>{title}</span></div>
                   <Field id={`pr-${k}`} label="Price shown"><input id={`pr-${k}`} className={s.field} type="text" placeholder={ph} value={pr[k].text} onChange={(e) => upd((n) => { n.prices[k].text = e.target.value; })} /></Field>

@@ -30,7 +30,7 @@ const toCents = (rands: string) => Math.round(num(rands) * 100);
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Quick-add presets: the rate comes from Settings › Prices when that value is numeric, otherwise 0.
 const PRESETS = [
-  { label: 'Care plan (monthly)', description: 'Maintenance contract — monthly care plan', price: 'care' },
+  { label: 'Care plan (monthly)', description: 'Maintenance — monthly care plan', price: 'care' },
   { label: 'Development (hourly)', description: 'Development — per hour', price: 'fix' },
   { label: 'Bug fix', description: 'Bug investigation & fix', price: 'fix' },
   { label: 'Design sprint', description: 'UX / UI design sprint', price: 'build' },

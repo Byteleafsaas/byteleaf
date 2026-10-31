@@ -28,7 +28,7 @@ export const HOME_SERVICES = [
 ];
 
 export const HOME_WORK_WITH_YOU = [
-  { tag: 'CARE', title: 'Maintenance contracts', text: 'A monthly retainer for day-to-day upkeep: updates, security patches, monitoring, backups and small changes.', meta: 'Monthly · ongoing' },
+  { tag: 'CARE', title: 'Maintenance', text: 'A monthly retainer for day-to-day upkeep: updates, security patches, monitoring, backups and small changes.', meta: 'Monthly · ongoing' },
   { tag: 'BUILD', title: 'Full-stack development', text: 'New features, internal tools or whole products — scoped, quoted and delivered as and when you need them.', meta: 'Per project' },
   { tag: 'FIX', title: 'Bug fixing & rescue', text: 'Something broken, slow or inherited from a previous developer? We find the cause, fix it and document what we did.', meta: 'Per issue · or hourly' },
   { tag: 'TEAM', title: 'Collaboration, your way', text: 'Work alongside your in-house team — in your repos, your tools and your stand-ups — or take a whole area off your plate.', meta: 'Flexible' },
@@ -46,7 +46,7 @@ export const HOME_STEPS = [
 export const HOME_PROJECTS = [
   { type: 'E-commerce · Frontend + Backend', pattern: 0 },
   { type: 'AI integration · Backend', pattern: 1 },
-  { type: 'Maintenance contract · Full stack', pattern: 2 },
+  { type: 'Maintenance · Full stack', pattern: 2 },
 ];
 
 export const WHY = [
@@ -72,10 +72,10 @@ export const ENDPOINTS = [
 ];
 
 export const MODELS = [
-  { tag: 'CARE', title: 'Maintenance contract', text: 'Day-to-day upkeep for the systems your business runs on.', price: '[From R— / month]', unit: 'Monthly retainer', items: ['Updates & security patches', 'Monitoring & backups', '[X] hours of changes a month', 'Monthly report'] },
+  { tag: 'CARE', title: 'Maintenance', text: 'Day-to-day upkeep for the systems your business runs on.', price: '[From R— / month]', unit: 'Monthly retainer', items: ['Updates & security patches', 'Monitoring & backups', '[X] hours of changes a month', 'Monthly report'] },
   { tag: 'BUILD', title: 'Full-stack projects', text: 'New features, tools or products, built as you need them.', price: '[Quoted per project]', unit: 'Fixed scope', items: ['Discovery & written scope', 'Design through launch', 'Regular demos', 'Handover docs'] },
   { tag: 'FIX', title: 'Bug fixing & rescue', text: 'Fast help when something breaks or a codebase is inherited.', price: '[R— / hour]', unit: 'Per issue or hourly', items: ['Diagnosis & root cause', 'Fix and test', 'Code health review', 'Written summary'] },
-  { tag: 'TEAM', title: 'Embedded collaboration', text: 'Extra hands that slot into your own team and tools.', price: '[Let’s talk]', unit: 'Flexible', items: ['Your repos & workflow', 'Join your stand-ups', 'Pair with your devs', 'Scale up or down'] },
+  { tag: 'TEAM', title: 'Collaboration', text: 'Extra hands that slot into your own team and tools.', price: '[Let’s talk]', unit: 'Flexible', items: ['Your repos & workflow', 'Join your stand-ups', 'Pair with your devs', 'Scale up or down'] },
 ];
 
 export const FAQS = [
@@ -114,7 +114,7 @@ export const PROJECT_FILTERS = ['All', 'Design', 'Frontend', 'Backend', 'AI'] as
 export const PROJECTS = [
   { type: 'E-commerce storefront', cats: ['Design', 'Frontend', 'Backend'], text: '[One line on the brief and the outcome.]', tags: ['Next.js', 'Node.js'] },
   { type: 'AI document assistant', cats: ['AI', 'Backend'], text: '[One line on the brief and the outcome.]', tags: ['LLM API', 'Python'] },
-  { type: 'Maintenance contract', cats: ['Backend', 'Frontend'], text: '[One line on the brief and the outcome.]', tags: ['React', 'PostgreSQL'] },
+  { type: 'Maintenance', cats: ['Backend', 'Frontend'], text: '[One line on the brief and the outcome.]', tags: ['React', 'PostgreSQL'] },
   { type: 'Customer portal redesign', cats: ['Design', 'Frontend'], text: '[One line on the brief and the outcome.]', tags: ['Figma', 'React'] },
   { type: 'Systems integration', cats: ['Backend'], text: '[One line on the brief and the outcome.]', tags: ['REST', 'Docker'] },
   { type: 'Workflow automation', cats: ['AI', 'Backend'], text: '[One line on the brief and the outcome.]', tags: ['Automation', 'Node.js'] },
