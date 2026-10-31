@@ -15,6 +15,7 @@ export const NAV = [
   { href: '/services', label: 'Services' },
   { href: '/process', label: 'Process' },
   { href: '/projects', label: 'Projects' },
+  { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
 
@@ -132,3 +133,20 @@ export const MEETING_TYPES = [
 
 // Placeholder availability. TODO: replace with a real calendar source.
 export const SLOT_TIMES = ['09:00', '10:00', '11:30', '13:00', '14:30', '16:00'];
+
+// About page. Placeholders stay visible until the owner replaces them (founder surname, title, bio, photo, links).
+export const ABOUT_PRINCIPLES = [
+  { n: '01', title: 'Fix the cause, not the symptom', text: 'We dig until we understand why something broke, so it stays fixed.' },
+  { n: '02', title: 'Leave it better than we found it', text: 'Every change comes with documentation and tidier code, so anyone can pick it up.' },
+  { n: '03', title: 'Say it in plain language', text: 'You always know what we did, what it cost and what comes next — without the jargon.' },
+  { n: '04', title: 'AI only where it earns its place', text: 'We recommend AI when it saves real time or money, and say so when it doesn’t.' },
+];
+
+export const FOUNDER = {
+  first: 'Gerald',
+  name: 'Gerald [Surname]',
+  role: 'Founder · [Your title, e.g. Lead developer]',
+  bio: '[Two or three sentences about your background: experience, the kinds of systems you’ve built, and what you enjoy working on.]',
+  linkedin: 'https://www.linkedin.com/',
+  github: 'https://github.com/',
+};

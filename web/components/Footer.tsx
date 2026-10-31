@@ -20,6 +20,7 @@ export default async function Footer({ variant = 'full' }: { variant?: 'full' | 
             <Link className="flink" href="/services">Services</Link>
             <Link className="flink" href="/process">Process</Link>
             <Link className="flink" href="/projects">Projects</Link>
+            <Link className="flink" href="/about">About</Link>
             <Link className="flink" href="/contact">Contact</Link>
           </div>
           <span>© {year} byteleaf · Johannesburg</span>
@@ -44,6 +45,7 @@ export default async function Footer({ variant = 'full' }: { variant?: 'full' | 
             <Link className="flink" href="/services">Services</Link>
             <Link className="flink" href="/process">Process</Link>
             <Link className="flink" href="/projects">Projects</Link>
+            <Link className="flink" href="/about">About</Link>
           </div>
           <div className="footer-col">
             <span className="label">GET IN TOUCH</span>

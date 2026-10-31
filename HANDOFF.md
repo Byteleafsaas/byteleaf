@@ -26,7 +26,7 @@ byteleaf/
 ├── HANDOFF.md                 ← this file
 ├── HANDOFF-ADMIN.md           ← part 2: admin, quotes & invoices, PDF
 ├── reference/                 ← SOURCE OF TRUTH: runnable static build of the design
-│   ├── home.html  services.html  process.html  projects.html  contact.html  book.html
+│   ├── home.html  services.html  process.html  projects.html  about.html  contact.html  book.html
 │   ├── admin-*.html             admin screens (see HANDOFF-ADMIN.md)
 │   └── billing-document-pdf.html  A4 quote/invoice template
 ├── screenshots/               ← full-page captures (nothing cut off)
@@ -88,6 +88,7 @@ app/
   services/page.tsx
   process/page.tsx
   projects/page.tsx     ("use client" child for the filter)
+  about/page.tsx
   contact/page.tsx      ("use client" child for the form)
   book/page.tsx         ("use client" child for the booking widget)
 components/
@@ -109,6 +110,7 @@ Keep pages as **Server Components**. Only the filter, contact form, booking widg
 | Services | `/services` | Services |
 | Process | `/process` | Process |
 | Projects | `/projects` | Projects |
+| About | `/about` | About |
 | Contact | `/contact` | Contact |
 | Book a call | `/book` | (header CTA has `aria-current="page"`) |
 
@@ -158,13 +160,14 @@ Pills 999px; cards 20px; large panels 24px; CTA band and featured project 28px; 
 
 ### Header (all pages)
 - Sticky, `top: 0`, `z-index: 30`, background `rgba(255,255,255,.85)` with `backdrop-filter: blur(14px)`, 1px bottom border `--line-nav`.
-- Row layout: Logo (32px mark + "byte**leaf**" wordmark, 22px/700, -0.04em, with "leaf" in brand blue) · nav links (`.navlink`) · "Book a call" primary button (44px tall, 15px text, arrow icon).
+- Row layout: Logo (32px mark + "byte**leaf**" wordmark, 22px/700, -0.04em, with "leaf" in brand blue) · nav links (`.navlink`, **in this order: Services · Process · Projects · About · Contact**) · "Book a call" primary button (44px tall, 15px text, arrow icon).
 - **≤760px:** hide the links and CTA (`.dnav` / `.dcta`) and show the 44×44 hamburger (`<details class="mnav">` + `<summary class="menu-btn" aria-label="Menu">`). Its panel drops down full-width under the header with 52px tall links and a full-width "Book a call". The icon swaps to an ✕ when open. See `state-mobile-menu-open.png`.
   - In React, a `useState` toggle is fine. Close the menu on route change and on Escape, and keep `aria-expanded` on the button.
 
 ### Footer
 - **Full** (every page except Book): navy, padding 72/24/40. A 4-column auto-fit grid: brand + tagline · COMPANY · GET IN TOUCH (shows the `[hello@yourdomain.co.za]` placeholder) · STUDIO (Johannesburg, South Africa). Bottom bar: `© 2026 byteleaf` and `Made in Jozi` in 12px mono `#8A98B3`. Make the year dynamic.
-- **Compact** (Book page): one wrapping row with logo · 4 links · `© 2026 byteleaf · Johannesburg`.
+- The COMPANY column lists Services · Process · Projects · About.
+- **Compact** (Book page): one wrapping row with logo · 5 links (Services, Process, Projects, About, Contact) · `© 2026 byteleaf · Johannesburg`.
 
 ### Buttons
 `.btn-primary`, `.btn-ghost`, `.btn-light` (white on the blue band) and an outline-light variant (`color:#fff; border:1px solid rgba(255,255,255,.6)`). Height 48px (52px on the Contact and Book forms). Trailing arrow icons nudge 4px right on hover.
@@ -239,6 +242,27 @@ Use the reference HTML for exact values. This section lists structure and anythi
 ### 7.6 Book a call `/book`
 - Grid-paper background. Left column: **meeting type** radio cards (Discovery call 30 min Free · Technical deep-dive 60 min · In-person meeting 60 min Johannesburg), then a navy **"Your booking" summary**. Right card: **calendar**, **time slots**, **your details** form and **Confirm booking**.
 - After booking, the page shows the confirmation state (`state-book-confirmed-desktop.png`).
+
+### 7.7 About `/about`
+1. **Hero** (grid-paper background, two columns):
+   - **Left:** the "ABOUT BYTELEAF" eyebrow, H1 "The team that keeps your software **growing.**", a lead paragraph, and two buttons: "Meet us on a call" (→ `/book`) and "What we do" (→ `/services`).
+   - **Right:** a 220px brand-blue tile holding a large leaf mark.
+     - The leaf gently sways ±4° (6s).
+     - The tile floats, and must be `position: relative` so it sits above the ring.
+     - Behind it, a dashed ring rotates (40s). Size the ring with `width: min(420px, 100%); aspect-ratio: 1`.
+     - Three floating chips: "design → frontend", "backend + AI ✓" (ink) and "Johannesburg · SAST" with a pulsing dot.
+   - **≤640px:** the visual is 340px tall and the tile shrinks to 168px.
+2. **01 Our story:** heading on the left, three paragraphs on the right. The third is a dashed placeholder box for the owner's founding story.
+3. **02 The name** (navy rounded panel with a glow):
+   - An animated equation of three 140px cards: `01` + leaf = the byteleaf mark. The cards are 96px at ≤640px.
+   - Below it, three captions: BYTE / LEAF / THE MARK.
+4. **03 How we think:** 4 principle cards with numbered tiles. On hover the tile turns blue and the card lifts.
+5. **04 Who you'll work with:**
+   - A 4:5 founder-photo placeholder with a brand-blue offset block behind it.
+   - Name `Gerald [Surname]`, role line, intro, and a dashed bio placeholder.
+   - Pill links: LinkedIn, GitHub and "Book time with Gerald". The real profile URLs are still to come.
+6. **05 Where we work:** an intro column plus "In person" and "Remote" cards (grid `align-items: start`).
+7. **CTA band** "Let's get to know each other." → Footer.
 
 ---
 
@@ -327,13 +351,14 @@ Keep these visible exactly as written until they are replaced:
 - Prices `[From R— / month]`, `[Quoted per project]`, `[R— / hour]`, `[Let's talk]`, and `[X] hours of changes a month`
 - All project names, screenshots, industry, stack and outcome text on Home and Projects
 - Booking time slots (placeholder availability)
+- About page: founding story, founder surname, title, bio, photo, and the LinkedIn/GitHub URLs
 
 Recommended: put all of these in `lib/content.ts` so the owner can edit them in one place.
 
 ---
 
 ## 13. Acceptance criteria
-- [ ] All 6 routes render and match the screenshots at 1440, 768 and 390. Spot-check 320, 1024 and 1920: no overflow and nothing cut off.
+- [ ] All 7 routes render and match the screenshots at 1440, 768 and 390. Spot-check 320, 1024 and 1920: no overflow and nothing cut off.
 - [ ] `document.documentElement.scrollWidth === innerWidth` on every page at every width.
 - [ ] Header menu, Projects filter, Contact form and success state, Booking flow and FAQ all behave as in §8 and the reference.
 - [ ] Animations match §9, and all of them stop under reduced motion.
