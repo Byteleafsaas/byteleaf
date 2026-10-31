@@ -146,7 +146,7 @@ export const FOUNDER = {
   first: 'Gerald',
   name: 'Gerald Mutswi',
   role: 'Founder · Full Stack Engineer',
-  bio: 'Two years of remote experience building production web apps, APIs, desktop tools and LLM-powered services for CUX, a European digital experience analytics company. Works across React, Next.js, Node.js, Express, MongoDB and Electron, and has owned projects from Figma designs and requirements through to deployment.',
+  bio: 'Two years of remote experience building production web apps, APIs, desktop tools and LLM-powered services for CUX, a European digital experience analytics company. Has owned projects from Figma designs and requirements through to deployment.',
   linkedin: 'https://www.linkedin.com/in/gerald-mutswi-550711237',
   github: 'https://github.com/Geraldmutsw',
 };
