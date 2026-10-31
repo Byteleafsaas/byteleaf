@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import ListSelect from '@/components/ListSelect';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { LogoMark } from '@/components/Logo';
@@ -232,21 +233,20 @@ export default function DocumentEditor({ id, initialKind }: { id?: string; initi
               <div className={b.g}>
                 <div className={s.fg}>
                   <label htmlFor="c-cl" className={s.label}>Bill to</label>
-                  <select id="c-cl" className={`${s.field} ${b.fld}`} value={newClient ? 'new' : f.clientId} onChange={(e) => {
-                    if (e.target.value === 'new') setNewClient({ company: '', contactName: '', email: '', phone: '', address: '', vatNumber: '' });
-                    else { setNewClient(null); set('clientId', e.target.value); }
-                  }}>
-                    {clients.map((c) => <option key={c.id} value={c.id}>{c.company} — {c.contactName}</option>)}
-                    <option value="new">+ New client…</option>
-                  </select>
+                  <ListSelect id="c-cl" triggerClass={`${s.field} ${b.fld}`} value={newClient ? 'new' : f.clientId}
+                    options={[...clients.map((c) => ({ value: c.id, label: `${c.company} — ${c.contactName}` })), { value: 'new', label: '+ New client…' }]}
+                    onChange={(v) => {
+                      if (v === 'new') setNewClient({ company: '', contactName: '', email: '', phone: '', address: '', vatNumber: '' });
+                      else { setNewClient(null); set('clientId', v); }
+                    }} />
                 </div>
                 <div className={s.fg}><label htmlFor="c-ref" className={s.label}>Project / reference</label><input id="c-ref" className={`${s.field} ${b.fld}`} type="text" value={f.reference} onChange={(e) => set('reference', e.target.value)} /></div>
                 <div className={s.fg}><label htmlFor="c-iss" className={s.label}>Issue date</label><input id="c-iss" className={`${s.field} ${b.fld}`} type="date" value={f.issueDate} onChange={(e) => set('issueDate', e.target.value)} /></div>
                 <div className={s.fg}>
                   <label htmlFor="c-due" className={s.label}>{isQuote ? 'Valid for' : 'Payment due'}</label>
-                  <select id="c-due" className={`${s.field} ${b.fld}`} value={f.termsDays} onChange={(e) => set('termsDays', Number(e.target.value))}>
-                    {(isQuote ? [30, 14, 60] : [14, 7, 30, 0]).map((d) => <option key={d} value={d}>{d === 0 ? 'On receipt' : `${d} days`}</option>)}
-                  </select>
+                  <ListSelect id="c-due" triggerClass={`${s.field} ${b.fld}`} value={String(f.termsDays)}
+                    options={(isQuote ? [30, 14, 60] : [14, 7, 30, 0]).map((d) => ({ value: String(d), label: d === 0 ? 'On receipt' : `${d} days` }))}
+                    onChange={(v) => set('termsDays', Number(v))} />
                 </div>
               </div>
 

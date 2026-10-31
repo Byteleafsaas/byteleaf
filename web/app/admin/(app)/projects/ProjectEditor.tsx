@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import ListSelect from '@/components/ListSelect';
 import { useRouter } from 'next/navigation';
 import { useState, type ChangeEvent, type KeyboardEvent } from 'react';
 import { ICON, PathIcon } from '@/components/admin/icons';
@@ -167,9 +168,7 @@ export default function ProjectEditor({ id }: { id?: string }) {
               <div className={s.fg}><label htmlFor="e-type" className={s.label}>Project type</label><input id="e-type" className={`${s.field} ${p.fieldC}`} type="text" placeholder="e.g. E-commerce storefront" value={f.type} onChange={(e) => set('type', e.target.value)} /></div>
               <div className={s.fg}>
                 <label htmlFor="e-ind" className={s.label}>Industry</label>
-                <select id="e-ind" className={`${s.field} ${p.fieldC}`} value={f.industry} onChange={(e) => set('industry', e.target.value)}>
-                  {INDUSTRIES.map((o) => <option key={o}>{o}</option>)}
-                </select>
+                <ListSelect id="e-ind" triggerClass={`${s.field} ${p.fieldC}`} value={f.industry} options={INDUSTRIES} onChange={(v) => set('industry', v)} />
               </div>
             </div>
             <fieldset className={s.fieldset}>

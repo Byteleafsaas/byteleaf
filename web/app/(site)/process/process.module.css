@@ -58,3 +58,6 @@
 .big { font-family: var(--font-mono); font-size: 30px; font-weight: 500; color: var(--blue-500); letter-spacing: -.03em; }
 .stat h3 { margin: 0; font-size: 19px; font-weight: 600; }
 .stat p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+/* keyframes are local to this module (CSS Modules scope animation names) */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes growY { from { transform: scaleY(0); } to { transform: scaleY(1); } }

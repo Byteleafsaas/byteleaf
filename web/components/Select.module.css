@@ -10,3 +10,5 @@
 .active { background: var(--blue-50); color: var(--ink); }
 .opt[aria-selected="true"] { color: var(--blue-600); }
 .opt svg { flex: none; }
+/* keyframes are local to this module (CSS Modules scope animation names) */
+@keyframes slide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }

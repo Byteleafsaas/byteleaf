@@ -9,7 +9,8 @@
 .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 .toolbar .tabs { align-self: auto; }
 .statusSel { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
-.statusSel select { font: inherit; font-size: 14px; min-height: 40px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; background: #fff; color: var(--ink); }
+.statusPick { width: 160px; }
+.statusTrigger { font: inherit; font-size: 14px; min-height: 40px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; background: #fff; color: var(--ink); width: 100%; box-sizing: border-box; }
 .thead { display: flex; align-items: center; gap: 16px; padding: 12px 20px; border-bottom: 1px solid var(--line-3); background: var(--surface-2); font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); }
 .drow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 14px 20px; border-bottom: 1px solid var(--line-3); transition: background .15s; }
 .drow:hover { background: var(--surface-4); }

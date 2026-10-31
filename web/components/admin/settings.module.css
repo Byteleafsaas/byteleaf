@@ -32,7 +32,8 @@
 .mt { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid var(--line-3); border-radius: 14px; }
 .mtText { flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px; }
 .mtText span:first-child { font-size: 15px; font-weight: 600; }
-.mtLen { width: 130px; min-height: 40px; padding: 6px 10px; }
+.mtLenWrap { width: 130px; }
+.mtLen { min-height: 40px; padding: 6px 10px; }
 .block { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .blockForm { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; padding: 14px 16px; border: 1px solid var(--line-3); border-radius: 14px; }
 .blockForm .field { width: 170px; min-height: 40px; padding: 6px 10px; }

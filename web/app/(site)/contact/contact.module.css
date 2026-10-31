@@ -36,3 +36,5 @@
 .disc { width: 88px; height: 88px; border-radius: 50%; background: var(--blue-600); display: grid; place-items: center; }
 .sent h2 { margin: 0; font-size: 34px; letter-spacing: -.03em; font-weight: 600; }
 .sent p { margin: 0; max-width: 420px; font-size: 17px; line-height: 1.6; color: var(--muted); }
+/* keyframes are local to this module (CSS Modules scope animation names) */
+@keyframes ping { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.6); opacity: 0; } }

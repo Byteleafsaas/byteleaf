@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import ListSelect from '@/components/ListSelect';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import { ICON, PathIcon } from '@/components/admin/icons';
@@ -124,9 +125,7 @@ function Inner() {
           <PillTabs label="Document type" value={type} onChange={(t) => setParams(t, status)} tabs={TABS.map(([key, label]) => ({ key, label, count: documents.filter((d) => key === 'all' || d.kind === key).length }))} />
           <div className={b.statusSel}>
             <label htmlFor="st">Status</label>
-            <select id="st" value={status} onChange={(e) => setParams(type, e.target.value)}>
-              {STATUSES.map((x) => <option key={x} value={x}>{x === 'any' ? 'Any' : x.charAt(0).toUpperCase() + x.slice(1)}</option>)}
-            </select>
+            <ListSelect id="st" className={b.statusPick} triggerClass={b.statusTrigger} value={status} options={STATUSES.map((x) => ({ value: x, label: x === 'any' ? 'Any' : x.charAt(0).toUpperCase() + x.slice(1) }))} onChange={(v) => setParams(type, v)} />
           </div>
         </div>
 

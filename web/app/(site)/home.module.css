@@ -122,3 +122,8 @@
 @media (max-width: 640px) {
   .navy { padding-top: 64px; padding-bottom: 64px; }
 }
+/* keyframes are local to this module (CSS Modules scope animation names) */
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
+@keyframes typing { from { width: 0; } }
+@keyframes marquee { to { transform: translateX(-50%); } }

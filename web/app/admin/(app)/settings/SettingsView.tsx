@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState, type ReactNode } from 'react';
 import { PathIcon } from '@/components/admin/icons';
+import ListSelect from '@/components/ListSelect';
 import { Switch, TopBar } from '@/components/admin/Ui';
 import s from '@/components/admin/admin.module.css';
 import t from '@/components/admin/settings.module.css';
@@ -47,9 +48,7 @@ function Field({ id, label, hint, className, children }: { id: string; label: st
 function Select({ id, value, options, onChange, className }: { id: string; value: string; options: string[]; onChange: (v: string) => void; className?: string }) {
   const opts = options.includes(value) ? options : [value, ...options];
   return (
-    <select id={id} className={`${s.field} ${className ?? ''}`} value={value} onChange={(e) => onChange(e.target.value)}>
-      {opts.map((o) => <option key={o}>{o}</option>)}
-    </select>
+    <ListSelect id={id} className={className} triggerClass={s.field} value={value} options={opts} onChange={onChange} />
   );
 }
 
@@ -202,9 +201,7 @@ function Inner() {
                     <Switch checked={m.enabled} label={`Offer ${m.name}`} onChange={(v) => upd((x) => { x.availability.meetingTypes[i].enabled = v; })} />
                     <span className={t.mtText}><span style={{ color: m.enabled ? 'var(--ink)' : 'var(--muted)' }}>{m.name}</span><span className={t.hint}>{m.where}</span></span>
                     <label htmlFor={`mt-${m.key}`} className={s.sr}>{m.name} length</label>
-                    <select id={`mt-${m.key}`} className={`${s.field} ${t.mtLen}`} value={m.minutes} onChange={(e) => upd((x) => { x.availability.meetingTypes[i].minutes = Number(e.target.value); })}>
-                      {[15, 30, 45, 60, 90].map((n) => <option key={n} value={n}>{n} min</option>)}
-                    </select>
+                    <ListSelect id={`mt-${m.key}`} className={t.mtLenWrap} triggerClass={`${s.field} ${t.mtLen}`} value={String(m.minutes)} options={[15, 30, 45, 60, 90].map((n) => ({ value: String(n), label: `${n} min` }))} onChange={(v) => upd((x) => { x.availability.meetingTypes[i].minutes = Number(v); })} />
                   </div>
                 ))}
               </div>
