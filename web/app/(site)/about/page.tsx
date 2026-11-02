@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
 import Footer from '@/components/Footer';
@@ -117,8 +118,8 @@ export default async function About() {
         <div className={s.whoIn}>
           <div className={s.photoWrap}>
             <div className={s.photoBlock} aria-hidden="true" />
-            <div className={s.photo} role="img" aria-label="Photo of the founder (placeholder)">
-              <span className={`mono ${s.photoTag}`}>[FOUNDER PHOTO]</span>
+            <div className={s.photo}>
+              <Image src="/founder.webp" alt={`${FOUNDER.name}, founder of byteleaf`} fill sizes="(max-width: 640px) 90vw, 460px" style={{ objectFit: 'cover', objectPosition: 'center top' }} />
             </div>
           </div>
           <div className={s.whoText}>

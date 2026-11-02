@@ -50,7 +50,6 @@
 .photoWrap { position: relative; max-width: 460px; width: 100%; justify-self: center; }
 .photoBlock { position: absolute; inset: 18px -18px -18px 18px; border-radius: 28px; background: var(--blue-500); }
 .photo { position: relative; aspect-ratio: 4 / 5; border-radius: 28px; background-color: var(--blue-50); background-image: linear-gradient(#D6E5FC 1px, transparent 1px), linear-gradient(90deg, #D6E5FC 1px, transparent 1px); background-size: 24px 24px; border: 1px solid #D6E5FC; display: grid; place-items: center; overflow: hidden; }
-.photoTag { font-size: 13px; color: var(--blue-800); border: 1px dashed var(--blue-600); padding: 10px 16px; border-radius: 10px; background: #fff; }
 .whoText { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .role { font-size: 18px; font-weight: 500; color: var(--blue-600); }
 .whoText p { margin: 0; font-size: 18px; line-height: 1.7; color: var(--ink-2); }
