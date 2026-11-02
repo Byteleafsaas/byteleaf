@@ -8,13 +8,13 @@ export const SITE = {
   phoneHref: 'tel:+27000000000',
   hours: 'Mon–Fri · [08:00–17:00] SAST',
   replyTime: '[X] business hours',
-  tagline: 'Design, frontend, backend and AI integrations for established businesses.',
+  tagline: 'Design, frontend, backend and AI integrations for businesses at every stage.',
 };
 
 export const NAV = [
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
-  { href: '/process', label: 'Process' },
+  { href: '/workflow', label: 'Workflow' },
   { href: '/projects', label: 'Projects' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -80,7 +80,7 @@ export const MODELS = [
 ];
 
 export const FAQS = [
-  { q: 'Do you only work with big companies?', a: 'We work with established businesses of any size that rely on software day to day — from a single online store to multi-branch operations.' },
+  { q: 'Do you only work with big companies?', a: 'No. We work with businesses of any size and at any stage — from a new idea that needs its first website to established, multi-branch operations.' },
   { q: 'Can you take over a system someone else built?', a: 'Yes. We start with a short audit so we understand the code, fix what is urgent, and document it as we go.' },
   { q: 'What does a maintenance contract include?', a: 'Updates, security patches, monitoring, backups and a set number of hours each month for small changes and fixes, plus a short monthly report.' },
   { q: 'Who owns the code?', a: 'You do. Code, accounts and data stay in your name, and we document everything so you are never locked in.' },

@@ -7,7 +7,7 @@ networks:
     name: infra
 
 services:
-  web:
+  byteleaf-web:
     build: ${BUILD_CONTEXT:-.}
     image: byteleaf-web:${IMAGE_TAG:-local}
     restart: unless-stopped

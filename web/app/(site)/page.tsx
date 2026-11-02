@@ -12,7 +12,7 @@ import s from './home.module.css';
 
 export const metadata: Metadata = {
   title: 'byteleaf — Home',
-  description: 'byteleaf designs, builds and looks after the frontend, backend and AI behind established businesses — on a monthly care contract, or project by project as you need it.',
+  description: 'byteleaf designs, builds and looks after the frontend, backend and AI behind businesses of every size — from a brand-new idea to a company that has traded for years — on a monthly care contract, or project by project as you need it.',
 };
 
 const CHECKS = ['Design', 'Frontend', 'Backend', 'AI integrations'];
@@ -39,14 +39,14 @@ export default async function Home() {
               kept <span className="hl">growing.</span>
             </h1>
             <p className={`rise d2 ${s.heroLead}`}>
-              byteleaf designs, builds and looks after the frontend, backend and AI behind established businesses — on a monthly care contract, or project by project as you need it.
+              byteleaf designs, builds and looks after the frontend, backend and AI behind businesses of every size — from a brand-new idea to a company that has traded for years — on a monthly care contract, or project by project as you need it.
             </p>
             <div className={`rise d3 ${s.heroBtns}`}>
               <Link className="btn btn-primary" href="/book">
                 Book a 30-min call
                 <ArrowIcon />
               </Link>
-              <Link className="btn btn-ghost" href="/process">See how we work</Link>
+              <Link className="btn btn-ghost" href="/workflow">See how we work</Link>
             </div>
             <div className={`rise d4 ${s.checkRow}`}>
               {CHECKS.map((c) => (
@@ -94,7 +94,7 @@ export default async function Home() {
         <div className={s.navyIn}>
           <div className={s.navyHead}>
             <span className="eyebrow on-dark">02 — HOW WE WORK WITH YOU</span>
-            <h2 className="h2">Built for established businesses that need a dependable tech partner.</h2>
+            <h2 className="h2">Built for businesses at every stage that need a dependable tech partner.</h2>
             <p>Pick the arrangement that suits you today — and change it as your needs change.</p>
           </div>
           <div className={s.grid4}>
@@ -114,11 +114,11 @@ export default async function Home() {
         <div className={`container ${s.col}`}>
           <div className="sec-head">
             <div className="sec-head-text">
-              <span className="eyebrow">03 — OUR PROCESS</span>
+              <span className="eyebrow">03 — OUR WORKFLOW</span>
               <h2 className="h2">Clear steps. No surprises.</h2>
             </div>
-            <Link className="lnk" href="/process">
-              The full process
+            <Link className="lnk" href="/workflow">
+              The full workflow
               <ArrowIcon />
             </Link>
           </div>

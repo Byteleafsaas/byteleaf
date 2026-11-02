@@ -4,14 +4,14 @@ import Footer from '@/components/Footer';
 import { CARE_BEATS, PROCESS_STEPS, TOUCH } from '@/lib/content';
 import { getSite } from '@/lib/server/public';
 import { siteContact } from '@/lib/siteContact';
-import s from './process.module.css';
+import s from './workflow.module.css';
 
 export const metadata: Metadata = {
-  title: 'byteleaf — Process',
+  title: 'byteleaf — Workflow',
   description: "Six clear stages, so you always know what's happening, what it costs and what comes next.",
 };
 
-export default async function Process() {
+export default async function Workflow() {
   const c = siteContact((await getSite()).business);
   const touch = TOUCH.map((t, i) => (i === 0 ? { ...t, big: c.urgent } : t));
   return (
@@ -19,7 +19,7 @@ export default async function Process() {
       <section className={`gridpaper ${s.hero}`}>
         <div className={s.heroFade} aria-hidden="true" />
         <div className={s.heroIn}>
-          <span className="rise eyebrow">OUR PROCESS</span>
+          <span className="rise eyebrow">OUR WORKFLOW</span>
           <h1 className="rise d1 h1">From first call to <span className="hl">long-term care.</span></h1>
           <p className="rise d2 lead">Six clear stages, so you always know what&apos;s happening, what it costs and what comes next.</p>
         </div>

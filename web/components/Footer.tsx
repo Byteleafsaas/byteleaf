@@ -19,7 +19,7 @@ export default async function Footer({ variant = 'full' }: { variant?: 'full' | 
           <div className="footer-compact-links">
             <Link className="flink" href="/about">About</Link>
             <Link className="flink" href="/services">Services</Link>
-            <Link className="flink" href="/process">Process</Link>
+            <Link className="flink" href="/workflow">Workflow</Link>
             <Link className="flink" href="/projects">Projects</Link>
             <Link className="flink" href="/contact">Contact</Link>
           </div>
@@ -44,7 +44,7 @@ export default async function Footer({ variant = 'full' }: { variant?: 'full' | 
             <span className="label">COMPANY</span>
             <Link className="flink" href="/about">About</Link>
             <Link className="flink" href="/services">Services</Link>
-            <Link className="flink" href="/process">Process</Link>
+            <Link className="flink" href="/workflow">Workflow</Link>
             <Link className="flink" href="/projects">Projects</Link>
           </div>
           <div className="footer-col">

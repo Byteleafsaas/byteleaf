@@ -10,7 +10,7 @@ import s from './about.module.css';
 
 export const metadata: Metadata = {
   title: 'byteleaf — About',
-  description: 'byteleaf is a Johannesburg software studio. We design, build and look after the systems established businesses run on.',
+  description: 'byteleaf is a Johannesburg software studio. We design, build and look after the systems businesses run on, from a first website to long-running platforms.',
 };
 
 const LEAF = 'M6 26C6 14 14 6 26 6C26 18 18 26 6 26Z';
@@ -26,7 +26,7 @@ export default async function About() {
           <div className={s.heroText}>
             <span className="rise eyebrow">ABOUT BYTELEAF</span>
             <h1 className="rise d1 h1">The team that keeps your software <span className="hl">growing.</span></h1>
-            <p className="rise d2 lead">byteleaf is a Johannesburg software studio. We design, build and look after the systems established businesses run on — and we stay around after launch.</p>
+            <p className="rise d2 lead">byteleaf is a Johannesburg software studio. We design, build and look after the systems businesses run on, whether you are just starting out or have been trading for years — and we stay around after launch.</p>
             <div className={`rise d3 ${s.btns}`}>
               <Link className="btn btn-primary" href="/book">Meet us on a call<ArrowIcon /></Link>
               <Link className="btn btn-ghost" href="/services">What we do</Link>
@@ -56,13 +56,13 @@ export default async function About() {
       <section className="sec">
         <div className={s.story}>
           <div className={s.col16}>
-            <span className="eyebrow">01 — OUR STORY</span>
-            <h2 className="h2">Built for the systems nobody else wants to look after.</h2>
+            <span className="eyebrow">01 — WHY BYTELEAF</span>
+            <h2 className="h2">One place to go for everything your business needs from software.</h2>
           </div>
           <div className={s.body}>
-            <p>Most established businesses run on software someone built years ago. The developer moved on, the documentation never existed, and every small change feels risky. Meanwhile there&apos;s pressure to modernise and to use AI.</p>
-            <p>byteleaf exists to be the steady team behind those systems. We work directly with the business — no layers of account managers — fixing what&apos;s broken, keeping things updated, and building what&apos;s needed next, from the first screen to the last API call.</p>
-            <p className={s.ph}>[Add a line or two about how byteleaf started — the moment or problem that made you start it.]</p>
+            <p>I started byteleaf because every business, whether it is just starting out or has been trading for years, ends up needing software, and too often has nobody dependable to turn to. byteleaf is built to be the one solution for everything business: a website for a brand-new idea, a booking system, an internal tool, an AI assistant.</p>
+            <p>Some people need something once: a single service, built well and handed over. Others need us urgently, when something breaks, a developer disappears or a deadline will not wait. We step in, fix it properly and keep things steady.</p>
+            <p>And many already have software that works but has grown old. We modernise it and improve it step by step, without stopping the business while we do it.</p>
           </div>
         </div>
       </section>

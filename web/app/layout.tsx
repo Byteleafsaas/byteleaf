@@ -7,7 +7,7 @@ const geistMono = Geist_Mono({ subsets: ['latin'], weight: ['400', '500'], varia
 
 export const metadata: Metadata = {
   title: { default: 'byteleaf — Software studio, Johannesburg', template: '%s' },
-  description: 'byteleaf designs, builds and looks after the frontend, backend and AI behind established businesses — on a monthly care contract, or project by project.',
+  description: 'byteleaf designs, builds and looks after the frontend, backend and AI behind businesses of every size, from new ideas to established operations — on a monthly care contract, or project by project.',
 };
 
 export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
