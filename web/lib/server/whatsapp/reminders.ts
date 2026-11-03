@@ -1,0 +1,52 @@
+import 'server-only';
+import { T, fmtDay } from '@/lib/whatsapp/copy';
+import { templatePayload, windowOpen } from '@/lib/whatsapp/cloud';
+import { isDue, kindOf } from '@/lib/whatsapp/reminders';
+import type { Out } from '@/lib/whatsapp/types';
+import { connectDB } from '../db';
+import { env } from '../env';
+import { WaAppointment, WaBusiness, WaClient } from '../models';
+import { sendOut, sendRaw } from './send';
+
+export type ReminderRun = { checked: number; sent: number; skipped: number };
+
+/**
+ * Sends the reminders that are due. Meant to be called every few minutes by a scheduler.
+ * Inside WhatsApp's 24-hour window it sends a normal message with buttons; outside it, the approved template.
+ */
+export async function runReminders(now = new Date()): Promise<ReminderRun> {
+  await connectDB();
+  const out: ReminderRun = { checked: 0, sent: 0, skipped: 0 };
+  const businesses = await WaBusiness.find({ active: true, phoneNumberId: { $exists: true, $ne: null } }).lean();
+
+  for (const b of businesses) {
+    const hours = b.reminderHours?.length ? b.reminderHours : [24, 2];
+    const horizon = new Date(now.getTime() + Math.max(...hours) * 3600000);
+    const appts = await WaAppointment.find({ business: b.slug, status: 'booked', startsAt: { $gt: now, $lte: horizon } }).lean();
+    for (const a of appts) {
+      for (const h of hours) {
+        const sent = (a.reminders ?? []).map((r: { kind?: string | null }) => r.kind ?? '');
+        if (!isDue({ startsAt: a.startsAt, createdAt: a.createdAt ?? a.startsAt, now, hours: h, sent })) continue;
+        out.checked++;
+        const client = await WaClient.findById(a.clientId).lean();
+        if (!client || client.optedOut) { out.skipped++; continue; }
+        const id = String(a._id);
+        const first = (client.name || '').split(' ')[0];
+        let ok = false;
+        if (windowOpen(client.lastInboundAt, now)) {
+          const m: Out = { type: 'buttons', body: T.reminder(a.serviceName ?? '', a.date, a.time), buttons: [{ id: 'remind:ok', title: T.btnSeeYou }, { id: `remind:move:${id}`, title: T.btnMove }, { id: `remind:cancel:${id}`, title: T.btnCancelBooking }] };
+          ok = await sendOut(b.phoneNumberId!, client.phone, [m]);
+        } else if (env.WHATSAPP_REMINDER_TEMPLATE) {
+          ok = await sendRaw(b.phoneNumberId!, templatePayload(client.phone, env.WHATSAPP_REMINDER_TEMPLATE, env.WHATSAPP_TEMPLATE_LANG, [first || 'there', a.serviceName ?? '', fmtDay(a.date), a.time, b.name], ['remind:ok', `remind:move:${id}`, `remind:cancel:${id}`]));
+        } else {
+          console.warn('[whatsapp] a reminder is due outside the 24-hour window but WHATSAPP_REMINDER_TEMPLATE is not set.');
+        }
+        if (ok) {
+          await WaAppointment.updateOne({ _id: a._id }, { $push: { reminders: { kind: kindOf(h), at: now } } });
+          out.sent++;
+        } else out.skipped++;
+      }
+    }
+  }
+  return out;
+}

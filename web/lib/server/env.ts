@@ -23,6 +23,15 @@ export const env = {
   DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY ?? '',
   LLM_MODEL: process.env.LLM_MODEL ?? 'deepseek-chat',
   LLM_BASE_URL: (process.env.LLM_BASE_URL ?? 'https://api.deepseek.com').replace(/\/$/, ''),
+  // WhatsApp Business Cloud API (Meta). Without these the booking assistant still runs in the demo simulator.
+  WHATSAPP_TOKEN: process.env.WHATSAPP_TOKEN ?? '',
+  WHATSAPP_APP_SECRET: process.env.WHATSAPP_APP_SECRET ?? '',
+  WHATSAPP_VERIFY_TOKEN: process.env.WHATSAPP_VERIFY_TOKEN ?? '',
+  WHATSAPP_API_VERSION: process.env.WHATSAPP_API_VERSION ?? 'v21.0',
+  WHATSAPP_REMINDER_TEMPLATE: process.env.WHATSAPP_REMINDER_TEMPLATE ?? '',
+  WHATSAPP_TEMPLATE_LANG: process.env.WHATSAPP_TEMPLATE_LANG ?? 'en',
+  // Shared secret for the scheduled call that sends appointment reminders.
+  CRON_SECRET: process.env.CRON_SECRET ?? '',
   // Hard stop on AI-written answers per day across all visitors, so a public demo can't run up a bill.
   ASSISTANT_DAILY_LIMIT: Number(process.env.ASSISTANT_DAILY_LIMIT ?? 1500),
   NODE_ENV: process.env.NODE_ENV ?? 'development',

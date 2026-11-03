@@ -11,6 +11,8 @@
     "create-admin": "tsx --env-file=.env.local --conditions=react-server scripts/create-admin.ts",
     "seed": "tsx --env-file=.env.local --conditions=react-server scripts/seed.ts",
     "seed-assistant": "tsx --env-file=.env.local --conditions=react-server scripts/seed-assistant.ts",
+    "seed-whatsapp": "tsx --env-file=.env.local --conditions=react-server scripts/seed-whatsapp.ts",
+    "wa-simulate": "tsx --env-file=.env.local --conditions=react-server scripts/wa-simulate.ts",
     "starter-projects": "tsx --env-file=.env.local --conditions=react-server scripts/starter-projects.ts",
     "db:up": "docker compose up -d",
     "garage:setup": "node scripts/garage-setup.mjs"

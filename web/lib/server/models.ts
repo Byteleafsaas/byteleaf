@@ -374,4 +374,129 @@ conversationSchema.index({ workspace: 1, cid: 1 }, { unique: true });
 conversationSchema.index({ workspace: 1, lastAt: -1 });
 export const Conversation = model('Conversation', conversationSchema);
 
+/* ---------- WhatsApp booking assistant ---------- */
+// A business that takes bookings over WhatsApp. Hours are { weekday (1 Monday to 7 Sunday): [{ start, end }] } in SAST.
+const daysOffSchema = new Schema({ from: String, to: String }, { _id: false });
+const waBusinessSchema = new Schema(
+  {
+    slug: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    // The WhatsApp number's id from Meta. Inbound messages are matched to a business by it.
+    phoneNumberId: { type: String, index: true, sparse: true },
+    hours: { type: Schema.Types.Mixed, default: {} },
+    daysOff: [daysOffSchema],
+    minNoticeMin: { type: Number, default: 120 },
+    bufferMin: { type: Number, default: 15 },
+    stepMin: { type: Number, default: 30 },
+    windowDays: { type: Number, default: 30 },
+    cancelWindowHours: { type: Number, default: 24 },
+    replyNote: { type: String, default: 'We usually reply within [X hours].' },
+    payNote: { type: String, default: 'paid at the salon' },
+    reminderHours: { type: [Number], default: [24, 2] },
+    active: { type: Boolean, default: true },
+  },
+  { timestamps: true },
+);
+export const WaBusiness = model('WaBusiness', waBusinessSchema);
+
+const waServiceSchema = new Schema(
+  {
+    business: { type: String, required: true, index: true },
+    name: { type: String, required: true },
+    minutes: { type: Number, required: true },
+    priceCents: { type: Number, default: 0 },
+    // Overrides the business's break after this service. Null uses the business setting.
+    bufferMin: { type: Number, default: null },
+    staff: [{ type: Schema.Types.ObjectId }],
+    active: { type: Boolean, default: true },
+    order: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+export const WaService = model('WaService', waServiceSchema);
+
+const waStaffSchema = new Schema(
+  {
+    business: { type: String, required: true, index: true },
+    name: { type: String, required: true },
+    // Empty means they work the business's opening hours.
+    hours: { type: Schema.Types.Mixed, default: {} },
+    daysOff: [daysOffSchema],
+    active: { type: Boolean, default: true },
+    order: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+export const WaStaff = model('WaStaff', waStaffSchema);
+
+const waClientSchema = new Schema(
+  {
+    business: { type: String, required: true },
+    phone: { type: String, required: true },
+    name: { type: String, default: '' },
+    greeted: { type: Boolean, default: false },
+    optedOut: { type: Boolean, default: false },
+    optedOutAt: { type: Date, default: null },
+    lastInboundAt: { type: Date, default: null },
+    notes: { type: String, default: '' },
+  },
+  { timestamps: true },
+);
+waClientSchema.index({ business: 1, phone: 1 }, { unique: true });
+export const WaClient = model('WaClient', waClientSchema);
+
+const waAppointmentSchema = new Schema(
+  {
+    business: { type: String, required: true },
+    serviceId: { type: Schema.Types.ObjectId, required: true },
+    staffId: { type: Schema.Types.ObjectId, required: true },
+    clientId: { type: Schema.Types.ObjectId, required: true },
+    serviceName: String,
+    staffName: String,
+    clientName: String,
+    clientPhone: String,
+    date: { type: String, required: true },
+    time: { type: String, required: true },
+    startsAt: { type: Date, required: true },
+    endsAt: { type: Date, required: true },
+    // The end plus the break after it. This is what other bookings may not overlap.
+    blocksUntil: { type: Date, required: true },
+    priceCents: { type: Number, default: 0 },
+    status: { type: String, enum: ['booked', 'cancelled', 'no_show', 'completed'], default: 'booked' },
+    source: { type: String, enum: ['whatsapp', 'simulator', 'manual'], default: 'whatsapp' },
+    cancelledAt: { type: Date, default: null },
+    cancelledLate: { type: Boolean, default: false },
+    reminders: [{ kind: String, at: Date, _id: false }],
+  },
+  { timestamps: true },
+);
+waAppointmentSchema.index({ business: 1, startsAt: 1 });
+waAppointmentSchema.index({ staffId: 1, startsAt: 1 });
+waAppointmentSchema.index({ clientId: 1, startsAt: 1 });
+export const WaAppointment = model('WaAppointment', waAppointmentSchema);
+
+// One row per staff member per 15 minutes that is taken. The unique index is what makes double-booking impossible,
+// even when two customers confirm the same slot in the same instant: the second insert fails.
+const waSlotLockSchema = new Schema({ staffId: { type: Schema.Types.ObjectId, required: true }, grain: { type: Date, required: true }, apptId: { type: Schema.Types.ObjectId, required: true, index: true } });
+waSlotLockSchema.index({ staffId: 1, grain: 1 }, { unique: true });
+export const WaSlotLock = model('WaSlotLock', waSlotLockSchema);
+
+// Message ids we have already handled, because WhatsApp sends the same webhook again when it doesn't hear back in time.
+const waSeenSchema = new Schema({ messageId: { type: String, required: true, unique: true }, createdAt: { type: Date, default: Date.now, expires: 172800 } });
+export const WaSeen = model('WaSeen', waSeenSchema);
+
+const waChatSchema = new Schema(
+  {
+    business: { type: String, required: true },
+    clientId: { type: Schema.Types.ObjectId, required: true },
+    state: { type: Schema.Types.Mixed, default: { step: 'menu' } },
+    needsHuman: { type: Boolean, default: false },
+    lastInboundAt: { type: Date, default: null },
+    messages: [{ dir: { type: String, enum: ['in', 'out'] }, body: String, kind: String, at: { type: Date, default: Date.now }, _id: false }],
+  },
+  { timestamps: true },
+);
+waChatSchema.index({ business: 1, clientId: 1 }, { unique: true });
+export const WaChat = model('WaChat', waChatSchema);
+
 export type AdminUserDoc = InferSchemaType<typeof adminUserSchema>;
