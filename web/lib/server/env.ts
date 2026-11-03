@@ -18,6 +18,11 @@ export const env = {
   S3_SECRET_KEY: process.env.S3_SECRET_KEY ?? '',
   // 32-byte key (64 hex chars) that encrypts two-step secrets at rest. Required in production.
   TOTP_ENCRYPTION_KEY: process.env.TOTP_ENCRYPTION_KEY ?? '',
+  // Knowledge assistant. With no key the assistant still answers, but by quoting its best-matching source.
+  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ?? '',
+  ASSISTANT_MODEL: process.env.ASSISTANT_MODEL ?? 'claude-haiku-5-5',
+  // Hard stop on AI-written answers per day across all visitors, so a public demo can't run up a bill.
+  ASSISTANT_DAILY_LIMIT: Number(process.env.ASSISTANT_DAILY_LIMIT ?? 1500),
   NODE_ENV: process.env.NODE_ENV ?? 'development',
 };
 

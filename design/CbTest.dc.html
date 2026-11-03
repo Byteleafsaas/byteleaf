@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Knowledge assistant — Test assistant</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+:focus-visible{outline:3px solid #166FE5;outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.btn-danger{background:#FFFFFF;color:#B42318;border:1px solid #F1C9C5}
+.btn-danger:hover{background:#FEF3F2}
+.btn-ok{background:#0B7A55;color:#FFFFFF}
+.btn-ok:hover:not(:disabled){background:#086545;color:#FFFFFF}
+.btn-ok:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.search{font:inherit;font-size:15px;width:240px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:#166FE5;background:#FFFFFF;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.search::placeholder{color:#6B7891}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:46px;padding:11px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:#166FE5;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.field::placeholder{color:#6B7891}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.snav.off{opacity:.55;cursor:default}.snav.off:hover{background:transparent;color:#B7C3D9}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.row{transition:background .15s}.row:hover{background:#F8FAFD}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.ibtn{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.ibtn:hover{border-color:#D5DEEB;background:#FFFFFF;color:#166FE5}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+.ai{display:inline-flex;align-items:center;gap:5px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#F1ECFE;color:#5B21B6}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.scrim{animation:fadein .2s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.modal{animation:pop .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bar{from{background-position:0 0}to{background-position:40px 0}}
+.prog{background-image:linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.25) 50%,rgba(255,255,255,.25) 75%,transparent 75%);background-size:20px 20px;animation:bar 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(24,119,242,.5)}100%{box-shadow:0 0 0 8px rgba(24,119,242,0)}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:#4B5872;animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:#166FE5;vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot,.wscard{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.hide-sm{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:#EEF2F8;gap:2px}
+.seg button{font:inherit;cursor:pointer;border:0;min-height:36px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;background:transparent;color:#33405A;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.seg button[aria-pressed="true"]{background:#FFFFFF;color:#0B1220;box-shadow:0 1px 3px rgba(11,18,32,.12)}
+.qchip{font:inherit;cursor:pointer;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid #D5DEEB;background:#FFFFFF;color:#0B1220;font-size:14px;transition:all .2s}
+.qchip:hover{border-color:#166FE5;color:#166FE5}
+.msgb{font:inherit;cursor:pointer;text-align:left;border:0;max-width:min(560px,100%);padding:14px 16px;border-radius:18px 18px 18px 6px;font-size:15px;line-height:1.55;transition:box-shadow .2s,background .2s}
+.msgb:hover{box-shadow:0 0 0 2px #BCD5FA}
+.src{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:14px;border:1px solid #E3E9F2;background:#FFFFFF}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+<aside class="side" style="flex: 0 0 264px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; box-sizing: border-box">
+<a href="AdminDashboard.dc.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<div class="wscard" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span class="mono" style="font-size: 10px; letter-spacing: 0.08em; color: #8A98B3">KNOWLEDGE ASSISTANT</span>
+<button type="button" style="font: inherit; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border-radius: 10px; border: 1px solid #22345A; background: #07101F; color: #FFFFFF; text-align: left">
+<span aria-hidden="true" style="width: 26px; height: 26px; border-radius: 50%; background: #E8A317; display: grid; place-items: center; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg></span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Khumalo Home Solar</span><span style="font-size: 11px; color: #8A98B3">Demo client · switch</span></span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A98B3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"></path></svg>
+</button>
+</div>
+<nav aria-label="Assistant admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<a class="snav" href="CbSources.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"></path></svg><span style="flex: 1">Knowledge sources</span></a>
+<a class="snav" href="CbReview.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg><span style="flex: 1">Review &amp; publish</span><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">9<span class="sr"> to do</span></span></a>
+<a class="snav on" href="CbTest.dc.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path></svg><span style="flex: 1">Test assistant</span></a>
+<a class="snav" href="CbUnanswered.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg><span style="flex: 1">Unanswered</span><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">4<span class="sr"> to do</span></span></a>
+<a class="snav" href="CbConversations.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg><span style="flex: 1">Conversations</span></a>
+<a class="snav" href="CbSettings.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg><span style="flex: 1">Assistant settings</span></a>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="AdminDashboard.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>byteleaf admin</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="AdminLogin.dc.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Khumalo Home Solar / Knowledge</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Test assistant</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+<div class="seg" role="group" aria-label="Who is asking">
+<button type="button" aria-pressed="{{custP}}" onClick="{{toCust}}">As a customer</button>
+<button type="button" aria-pressed="{{staffP}}" onClick="{{toStaff}}">As staff</button>
+</div>
+<button type="button" class="btn btn-ghost btn-sm" onClick="{{clear}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"></path></svg>Start over</button>
+</div>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; box-sizing: border-box; width: 100%; max-width: 1400px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<div role="note" style="flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px; background: {{verBg}}; color: {{verTx}}">
+<span style="flex: 1 1 320px; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.5">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="{{verIcon}}"></path></svg>
+<span><strong>{{verTitle}}</strong> {{verText}}</span>
+</span>
+<span style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500">
+<span id="draft-l">Include unpublished changes</span>
+<button type="button" class="sw" role="switch" aria-checked="{{draftOn}}" aria-labelledby="draft-l" onClick="{{toggleDraft}}" style="background: {{swBg}}"><span class="knob" style="left: {{swLeft}}"></span></button>
+</span>
+</div>
+
+<section class="panel" aria-label="Test chat" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; height: 760px; overflow: hidden">
+<div style="padding: 14px 20px; border-bottom: 1px solid #EEF2F8; display: flex; align-items: center; gap: 12px">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: {{avR}}; background: {{avBg}}; color: #FFFFFF; display: grid; place-items: center; font-weight: 700; font-size: 15px">K</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-weight: 600; font-size: 15px">{{botName}}</span><span class="hint" style="font-size: 12px">Test chat · not saved to conversations · not counted in stats</span></span>
+<span class="pill" style="background: #F1ECFE; color: #5B21B6">TEST</span>
+</div>
+
+<div data-cb-log aria-live="polite" aria-relevant="additions" style="flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #FBFCFE">
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<div class="rise" style="margin: auto; max-width: 440px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 20px">
+<span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 16px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path></svg></span>
+<h2 style="margin: 0; font-size: 20px; letter-spacing: -0.02em">Ask what your customers ask</h2>
+<p class="hint" style="margin: 0; font-size: 14px; line-height: 1.55">Click any answer to see exactly which sources it used. Try a question you think it should not answer, too.</p>
+</div>
+</sc-if>
+<sc-for list="{{msgs}}" as="m" hint-placeholder-count="4">
+<sc-if value="{{m.user}}" hint-placeholder-val="{{ false }}">
+<div class="rise" style="align-self: flex-end; max-width: min(480px, 85%); padding: 12px 16px; border-radius: 18px 18px 6px 18px; background: {{m.uBg}}; color: #FFFFFF; font-size: 15px; line-height: 1.5">{{m.text}}</div>
+</sc-if>
+<sc-if value="{{m.bot}}" hint-placeholder-val="{{ false }}">
+<div class="rise" style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start">
+<button type="button" class="msgb" onClick="{{m.inspect}}" aria-pressed="{{m.sel}}" aria-label="{{m.aria}}" style="{{m.style}}">{{m.text}}<sc-if value="{{m.streaming}}" hint-placeholder-val="{{ false }}"><span class="caret" aria-hidden="true"></span></sc-if></button>
+<span style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding-left: 4px">
+<span class="pill" style="{{m.tagStyle}}">{{m.tag}}</span>
+<span class="hint" style="font-size: 12px">{{m.meta}}</span>
+</span>
+</div>
+</sc-if>
+</sc-for>
+<sc-if value="{{typing}}" hint-placeholder-val="{{ false }}">
+<div role="status" aria-label="Assistant is typing" style="align-self: flex-start; display: flex; gap: 5px; padding: 16px 18px; border-radius: 18px 18px 18px 6px; background: #EEF2F8"><span class="dot"></span><span class="dot b"></span><span class="dot c"></span></div>
+</sc-if>
+</div>
+
+<div style="padding: 12px 16px 16px; border-top: 1px solid #EEF2F8; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="4"><button type="button" class="qchip" onClick="{{c.ask}}">{{c.q}}</button></sc-for>
+</div>
+<form onSubmit="{{send}}" style="display: flex; gap: 8px">
+<label for="tq" class="sr">Test question</label>
+<input id="tq" class="field" value="{{draft}}" onInput="{{onDraft}}" placeholder="Type a test question" autocomplete="off" style="flex: 1; min-width: 0">
+<button type="submit" class="btn btn-primary" aria-label="Send" style="padding: 0 16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</form>
+</div>
+</section>
+
+<aside class="panel slide" aria-labelledby="why-h" style="flex: 1 1 360px; min-width: 0; max-width: 100%; display: flex; flex-direction: column">
+<div style="padding: 18px 20px; border-bottom: 1px solid #EEF2F8; display: flex; flex-direction: column; gap: 4px">
+<span class="mono" style="font-size: 11px; letter-spacing: 0.06em; color: #4B5872">WHY IT ANSWERED THIS</span>
+<h2 id="why-h" style="margin: 0; font-size: 18px; letter-spacing: -0.02em; font-weight: 600; line-height: 1.35">{{why.q}}</h2>
+</div>
+<sc-if value="{{why.none}}" hint-placeholder-val="{{ false }}">
+<p class="hint" style="margin: 0; padding: 20px; font-size: 14px; line-height: 1.55">Ask a question, then click an answer to see where it came from.</p>
+</sc-if>
+<sc-if value="{{why.some}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="display: flex; justify-content: space-between; font-size: 14px"><span class="lbl">How sure it was</span><span style="font-weight: 600; color: {{why.confC}}">{{why.conf}}</span></span>
+<span aria-hidden="true" style="height: 8px; border-radius: 8px; background: #EEF2F8; overflow: hidden"><span style="display: block; height: 100%; width: {{why.confW}}; background: {{why.confC}}; transition: width .4s cubic-bezier(.2,.8,.2,1)"></span></span>
+<span class="hint" style="line-height: 1.5">{{why.confNote}}</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="lbl">{{why.srcLabel}}</span>
+<sc-for list="{{why.srcs}}" as="s" hint-placeholder-count="2">
+<div class="src">
+<span style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px"><span style="font-size: 14px; font-weight: 600">{{s.name}}</span><span class="pill" style="{{s.pill}}">{{s.state}}</span></span>
+<span class="mono" style="font-size: 12px; color: #4B5872">{{s.where}}</span>
+<span style="font-size: 14px; line-height: 1.55; color: #33405A; padding: 10px 12px; border-radius: 10px; background: #F8FAFD; border-left: 3px solid {{s.bar}}">{{s.snip}}</span>
+</div>
+</sc-for>
+<sc-if value="{{why.noSrc}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 14px; border-radius: 14px; border: 1px dashed #D5DEEB; font-size: 14px; line-height: 1.55; color: #33405A">{{why.noSrcText}}</div>
+</sc-if>
+</div>
+<sc-if value="{{why.hasFix}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1px solid #EEF2F8">
+<span class="lbl">Wrong or missing?</span>
+<span class="hint" style="line-height: 1.5">{{why.fixText}}</span>
+<span style="display: flex; flex-wrap: wrap; gap: 8px"><a class="btn btn-ghost btn-sm" href="{{why.fixHref}}">{{why.fixLabel}}</a></span>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</aside>
+
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { mode: 'cust', withDraft: false, draft: '', typing: false, streamId: '', shown: 0, sel: 'b2',
+msgs: [
+{ id: 'u1', who: 'u', text: 'Do you install in Pretoria?' },
+{ id: 'b1', who: 'b', k: 'areas' },
+{ id: 'u2', who: 'u', text: 'How much is the family package?' },
+{ id: 'b2', who: 'b', k: 'family' }
+] };
+this.n = 3;
+}
+componentDidUpdate() { const l = document.querySelector('[data-cb-log]'); if (l) l.scrollTop = l.scrollHeight; }
+componentWillUnmount() { clearTimeout(this.t); clearInterval(this.iv); }
+kb(k, draft, staff) {
+const P = { live: 'background: #E6F6EF; color: #0B6B4B;', draft: 'background: #FFF4E0; color: #8A5200;', staff: 'background: #0B1220; color: #FFFFFF;' };
+const A = {
+areas: { text: 'Yes. We install across Gauteng, including Pretoria (Tshwane), Johannesburg and the East Rand.', conf: 92, srcs: [{ name: 'Services and packages', where: 'web page · “Areas we serve”', snip: 'Serving Joburg, Tshwane & the East Rand', state: 'LIVE', pill: P.live, bar: '#0B7A55' }] },
+family: draft
+? { text: 'The Family package (5 kW panels, 10 kWh battery) costs R 112 000, including installation and the certificate of compliance.', conf: 88, draftUsed: true, srcs: [{ name: 'Price list 2026.pdf', where: 'page 1 · approved, not published', snip: 'FAMILY 5kW / 10kWh ........ R112,000', state: 'UNPUBLISHED', pill: P.draft, bar: '#B45309' }] }
+: { text: "I don't have a confirmed price for the Family package right now. The team can send you an up-to-date quote — tap “Ask the team” and they'll get back to you.", conf: 34, unknown: true, why: 'Two sources gave different prices and you have not chosen one yet, so it would not quote either.', srcs: [{ name: 'Price list 2026.pdf', where: 'page 1 · waiting for review', snip: 'FAMILY 5kW / 10kWh ........ R112,000', state: 'NOT LIVE', pill: P.draft, bar: '#B42318' }, { name: 'Services and packages', where: 'web page', snip: 'Family package from R118 500 installed', state: 'LIVE', pill: P.live, bar: '#0B7A55' }], fixHref: 'CbReview.dc.html', fixLabel: 'Resolve the price conflict', fixText: 'Choose the right price in Review & publish, then publish.' },
+battery: draft
+? { text: 'Yes — a backup-only battery (5.5 kWh lithium, no panels) costs R 39 900 installed.', conf: 81, draftUsed: true, srcs: [{ name: 'Price list 2026.pdf', where: 'page 2 · scanned · AI cleaned', snip: 'BACKUP ONLY 5,5kWh lithium  R39 9OO installed', state: 'UNPUBLISHED', pill: P.draft, bar: '#B45309' }] }
+: { text: "Yes, we can install a battery on its own. I don't have the price for that yet — the team can quote you. Tap “Ask the team”.", conf: 55, srcs: [{ name: 'Services and packages', where: 'web page', snip: 'Battery-only backup systems available for load-shedding.', state: 'LIVE', pill: P.live, bar: '#0B7A55' }], fixHref: 'CbReview.dc.html', fixLabel: 'Review the battery price', fixText: 'The price is in a scanned page that still needs your check.' },
+warranty: { text: 'Panels carry a 25-year performance warranty, inverters 10 years and batteries 10 years. Our workmanship is guaranteed for 2 years.', conf: 90, srcs: [{ name: 'Warranty sheet.pdf', where: 'page 1', snip: 'Panels 25yr perf. / Inverter 10yr / Battery 10yr (6000 cycles) / Workmanship 2yr', state: 'LIVE', pill: P.live, bar: '#0B7A55' }] },
+discount: staff
+? { text: 'You can give up to 5% off without asking. Anything more needs Thandi to approve it in writing before you quote.', conf: 93, srcs: [{ name: 'Sales playbook (staff only)', where: 'section 4 · discounts', snip: 'Max 5% discretionary. >5% → written OK from Thandi.', state: 'STAFF ONLY', pill: P.staff, bar: '#0B1220' }] }
+: { text: "I can't help with discounts in chat. The team can talk you through current offers — tap “Ask the team”.", conf: 0, refused: true, why: 'Discounts are on the “won\'t answer” list for customers. The staff playbook has the answer, but customers never see staff-only sources.', srcs: [], fixHref: 'CbSettings.dc.html', fixLabel: 'Edit refused topics', fixText: 'If customers should get an answer, remove “discounts” from refused topics and add a public source.' },
+geyser: { text: "I'm not sure about that one. I don't want to guess — tap “Ask the team” and someone will reply.", conf: 12, unknown: true, why: 'No source mentions geysers or solar water heating.', srcs: [], fixHref: 'CbUnanswered.dc.html', fixLabel: 'Add an answer', fixText: 'This question is now in Unanswered. Add an answer there and it goes through the same review.' },
+off: { text: 'I can only help with Khumalo Home Solar — our systems, prices, installs and finance. Is there something about solar I can help with?', conf: 0, refused: true, why: 'The question is not about this business, so it politely steered back.', srcs: [] }
+};
+return A[k];
+}
+match(q) {
+const s = q.toLowerCase();
+if (/pretoria|tshwane|area|where|east rand|joburg/.test(s)) return 'areas';
+if (/family/.test(s)) return 'family';
+if (/battery|backup|load/.test(s)) return 'battery';
+if (/warrant|guarantee/.test(s)) return 'warranty';
+if (/discount|special|deal|cheaper/.test(s)) return 'discount';
+if (/geyser|water|heat/.test(s)) return 'geyser';
+return 'off';
+}
+ask(q) {
+if (!q.trim() || this.state.typing || this.state.streamId) return;
+const id = 'b' + (++this.n);
+const k = this.match(q);
+this.setState((s) => ({ msgs: s.msgs.concat([{ id: 'u' + this.n, who: 'u', text: q }]), draft: '', typing: true }));
+clearTimeout(this.t); clearInterval(this.iv);
+const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+this.t = setTimeout(() => {
+this.setState((s) => ({ typing: false, msgs: s.msgs.concat([{ id: id, who: 'b', k: k }]), sel: id, streamId: reduce ? '' : id, shown: 0 }));
+if (reduce) return;
+this.iv = setInterval(() => {
+const full = this.kb(k, this.state.withDraft, this.state.mode === 'staff').text.length;
+if (this.state.shown >= full) { clearInterval(this.iv); this.setState({ streamId: '' }); return; }
+this.setState((s) => ({ shown: s.shown + 3 }));
+}, 24);
+}, 900);
+}
+renderVals() {
+const st = this.state;
+const staff = st.mode === 'staff';
+const d = st.withDraft;
+const acc = staff ? '#0B1220' : '#166FE5';
+const items = st.msgs.map((m) => {
+if (m.who === 'u') return { user: true, bot: false, text: m.text, uBg: acc };
+const a = this.kb(m.k, d, staff);
+const on = st.sel === m.id;
+const streaming = st.streamId === m.id;
+const text = streaming ? a.text.slice(0, st.shown) : a.text;
+const tag = a.refused ? 'REFUSED' : a.unknown ? "DIDN'T KNOW" : a.draftUsed ? 'USED UNPUBLISHED' : 'ANSWERED';
+const tagStyle = a.refused ? 'background: #EEF2F8; color: #33405A;' : a.unknown ? 'background: #FEF3F2; color: #912018;' : a.draftUsed ? 'background: #FFF4E0; color: #8A5200;' : 'background: #E6F6EF; color: #0B6B4B;';
+return { user: false, bot: true, text: text, streaming: streaming, sel: on ? 'true' : 'false', aria: 'Answer: ' + a.text + '. Show sources.', style: on ? 'background: #EEF4FE; color: #0B1220; box-shadow: 0 0 0 2px #166FE5;' : 'background: #EEF2F8; color: #0B1220;', tag: tag, tagStyle: tagStyle, meta: a.srcs.length ? a.srcs.length + (a.srcs.length === 1 ? ' source' : ' sources') + ' · click to inspect' : 'no sources used', inspect: () => this.setState({ sel: m.id }) };
+});
+let why = { none: true, some: false, q: 'Nothing selected' };
+const selIdx = st.msgs.findIndex((m) => m.id === st.sel);
+if (selIdx > 0) {
+const m = st.msgs[selIdx];
+const a = this.kb(m.k, d, staff);
+const c = a.conf;
+why = {
+none: false, some: true,
+q: '“' + st.msgs[selIdx - 1].text + '”',
+conf: a.refused ? 'Refused' : c >= 75 ? 'Sure · ' + c + '%' : c >= 45 ? 'Partly sure · ' + c + '%' : 'Not sure · ' + c + '%',
+confW: (a.refused ? 100 : c) + '%',
+confC: a.refused ? '#4B5872' : c >= 75 ? '#0B7A55' : c >= 45 ? '#B45309' : '#B42318',
+confNote: a.why || (c >= 75 ? 'It found a clear match and answered from it.' : 'It found something related but not a full answer, so it offered a handover.'),
+srcLabel: a.srcs.length ? 'Sources it read (' + a.srcs.length + ')' : 'Sources it read',
+srcs: a.srcs, noSrc: !a.srcs.length, noSrcText: a.refused ? 'None. It refused before looking anything up.' : 'None matched this question.',
+hasFix: !!a.fixHref, fixHref: a.fixHref || '', fixLabel: a.fixLabel || '', fixText: a.fixText || ''
+};
+}
+return {
+custP: staff ? 'false' : 'true', staffP: staff ? 'true' : 'false',
+toCust: () => this.setState({ mode: 'cust' }), toStaff: () => this.setState({ mode: 'staff' }),
+clear: () => { clearTimeout(this.t); clearInterval(this.iv); this.setState({ msgs: [], sel: '', typing: false, streamId: '' }); },
+draftOn: d ? 'true' : 'false', swBg: d ? '#B45309' : '#C9D3E3', swLeft: d ? '21px' : '3px',
+toggleDraft: () => this.setState({ withDraft: !d }),
+verBg: d ? '#FFF4E0' : '#EEF4FE', verTx: d ? '#6B3F00' : '#0B3A80',
+verIcon: d ? 'M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z' : 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 16v-4M12 8h.01',
+verTitle: d ? 'Testing with unpublished changes.' : 'Testing the live version.',
+verText: d ? 'Answers can use 5 approved items that customers can’t see yet. Nothing here changes the live assistant.' : 'This is exactly what customers get right now, from 62 live items.',
+botName: staff ? 'Khumalo staff assistant' : 'Khumalo assistant',
+avBg: acc, avR: staff ? '10px' : '50%',
+empty: !st.msgs.length && !st.typing,
+msgs: items, typing: st.typing,
+chips: (staff ? ['How much discount can I give?', 'Battery warranty?', 'Do you install in Pretoria?'] : ['How much is the family package?', 'Can I get just a battery?', 'Do you fit solar geysers?', 'Can I get a discount?']).map((q) => ({ q: q, ask: () => this.ask(q) })),
+draft: st.draft, onDraft: (e) => this.setState({ draft: e.target.value }),
+send: (e) => { e.preventDefault(); this.ask(st.draft); },
+why: why
+};
+}
+}
+</script>
+</body>
+</html>

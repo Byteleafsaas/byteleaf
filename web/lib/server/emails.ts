@@ -55,6 +55,9 @@ export const mail = {
   newMessageOwner: (to: string, m: { id: string; name: string; company: string; email: string; needs: string[]; message: string }) =>
     send({ to, subject: `New message from ${m.name}`, paragraphs: [`${m.name}${m.company ? ` (${m.company})` : ''} · ${m.email}`, m.needs.length ? `Help with: ${m.needs.join(', ')}` : '', m.message.slice(0, 600)].filter(Boolean), button: { label: 'Open in admin', href: admin(`/admin/messages?id=${m.id}`) } }),
 
+  assistantHandoverOwner: (to: string, h: { business: string; name: string; contact: string; question: string }) =>
+    send({ to, subject: `${h.business} assistant: ${h.name} asked for a person`, paragraphs: [`${h.name} · ${h.contact}`, h.question ? `Question: ${h.question}` : 'No question was added.', `They asked to talk to a person from the ${h.business} assistant.`] }),
+
   passwordReset: (to: string, link: string, minutes: number) =>
     send({ to, subject: 'Reset your byteleaf admin password', paragraphs: ['Use the button below to choose a new password.', `The link works once and expires in ${minutes} minutes. If you didn't ask for this, you can ignore this email.`], button: { label: 'Set a new password', href: link } }),
 

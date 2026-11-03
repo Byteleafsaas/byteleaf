@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge chatbot — brand themes</title>
+<!-- REFERENCE BUILD generated from design/CbThemes.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div style="width: 1440px; height: 1240px; box-sizing: border-box; padding: 56px; background: #FFFFFF; font-family: 'Geist', system-ui, sans-serif; color: #0B1220; display: flex; flex-direction: column; gap: 36px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">KNOWLEDGE CHATBOT · THEMING</span>
+<h1 style="margin: 0; font-size: 44px; letter-spacing: -0.035em; font-weight: 600">One widget, any brand</h1>
+</div>
+<span style="font-size: 15px; line-height: 1.5; color: #4B5872; max-width: 560px; text-align: right">A client changes only four things: colour, logo, name and avatar. Everything else (layout, type, spacing, motion) stays fixed. The colour set below is derived from one accent and checked for AA contrast.</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px">
+<sc-for list="{{themes}}" as="t" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: baseline; justify-content: space-between"><span style="font-size: 17px; font-weight: 600">{{t.label}}</span><span class="mono" style="font-size: 12px; color: #4B5872">{{t.a}}</span></div>
+<div style="position: relative; height: 560px; border-radius: 20px; background: {{t.page}}; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 14px">
+<div style="width: 100%; height: 460px; box-sizing: border-box; border-radius: 18px; background: {{t.surf}}; color: {{t.tx}}; border: 1px solid {{t.bd}}; box-shadow: 0 30px 60px -36px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid {{t.bd}}">
+<span style="width: 38px; height: 38px; border-radius: 50%; background: {{t.a}}; color: {{t.ai}}; display: grid; place-items: center; font-weight: 700; font-size: 16px; flex: none">{{t.mark}}</span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">{{t.bot}}</span><span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: {{t.mu}}"><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; background: {{t.as}}; color: {{t.tx}}">AI</span>{{t.sub}}</span></span>
+</div>
+<div style="flex: 1; padding: 14px; display: flex; flex-direction: column; gap: 10px; justify-content: flex-end">
+<div style="align-self: flex-start; max-width: 88%; padding: 10px 13px; border-radius: 4px 16px 16px 16px; background: {{t.botBg}}; font-size: 14px; line-height: 1.5">{{t.greet}}</div>
+<div style="align-self: flex-end; max-width: 82%; padding: 9px 13px; border-radius: 16px 4px 16px 16px; background: {{t.a}}; color: {{t.ai}}; font-size: 14px; line-height: 1.5">{{t.q}}</div>
+<div style="align-self: flex-start; max-width: 88%; padding: 10px 13px; border-radius: 4px 16px 16px 16px; background: {{t.botBg}}; font-size: 14px; line-height: 1.5">{{t.ans}}</div>
+<span style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; border: 1px solid {{t.bd}}; color: {{t.mu}}; font-size: 12px">{{t.src}}</span>
+</div>
+<div style="padding: 10px 12px; border-top: 1px solid {{t.bd}}; display: flex; gap: 8px; align-items: center"><span style="flex: 1; min-height: 40px; display: flex; align-items: center; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.bd}}; color: {{t.mu}}; font-size: 13px">{{t.ph}}</span><span style="width: 40px; height: 40px; border-radius: 50%; background: {{t.a}}; color: {{t.ai}}; display: grid; place-items: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></div>
+</div>
+<span style="width: 56px; height: 56px; border-radius: 50%; background: {{t.a}}; color: {{t.ai}}; display: grid; place-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px">
+<sc-for list="{{t.checks}}" as="c" hint-placeholder-count="4"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px"><span style="color: #4B5872">{{c.l}}</span><span class="mono" style="color: {{c.col}}; font-weight: 500">{{c.r}}:1 {{c.ok}}</span></span></sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 17px; font-weight: 600">Widget tokens (CSS custom properties)</span>
+<div style="border: 1px solid #E3E9F2; border-radius: 14px; overflow: hidden">
+<div class="mono" style="display: grid; grid-template-columns: 170px minmax(0, 1fr) 150px 150px 150px; gap: 12px; padding: 10px 16px; background: #F8FAFD; font-size: 11px; letter-spacing: 0.06em; color: #4B5872"><span>TOKEN</span><span>USE</span><span>BYTELEAF</span><span>WARM</span><span>DARK</span></div>
+<sc-for list="{{tokens}}" as="k" hint-placeholder-count="9">
+<div style="display: grid; grid-template-columns: 170px minmax(0, 1fr) 150px 150px 150px; gap: 12px; padding: 8px 16px; border-top: 1px solid #EEF2F8; font-size: 13px; align-items: center">
+<span class="mono" style="font-weight: 500">{{k.n}}</span><span style="color: #4B5872">{{k.use}}</span>
+<sc-for list="{{k.vals}}" as="v" hint-placeholder-count="3"><span class="mono" style="display: flex; align-items: center; gap: 8px; font-size: 12px"><span style="width: 16px; height: 16px; border-radius: 4px; background: {{v}}; border: 1px solid #D5DEEB; flex: none"></span>{{v}}</span></sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+renderVals() {
+const lum = (hex) => { const c = [1, 3, 5].map((i) => parseInt(hex.substr(i, 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4))); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+const T = [
+{ key: 'byteleaf', label: 'byteleaf blue (demo)', mark: 'K', bot: 'Khumalo assistant', sub: "Answers from Khumalo's own info", greet: 'Hi, I can help with packages, prices, installation and warranty.', q: 'Do you install batteries?', ans: 'Yes. We install panels, inverters and batteries, and can add a battery to an existing system.', src: 'Services and packages', ph: 'Ask about packages…', a: '#166FE5', ai: '#FFFFFF', as: '#EEF4FE', surf: '#FFFFFF', tx: '#0B1220', mu: '#4B5872', bd: '#E3E9F2', botBg: '#F2F5F9', page: '#F4F1EA' },
+{ key: 'warm', label: 'Warm · Sunbird Bakery (sample)', mark: 'S', bot: 'Sunbird helper', sub: "Answers from Sunbird's own info", greet: 'Hello! Ask me about cakes, orders and opening times.', q: 'Can I order a birthday cake for Saturday?', ans: 'Yes, with 48 hours’ notice. Custom cakes start at [R—]. You can order in store or by phone.', src: 'Custom cake orders', ph: 'Ask about cakes, orders…', a: '#B4471A', ai: '#FFFFFF', as: '#FBEDE6', surf: '#FFFCF8', tx: '#2A1A12', mu: '#6B5446', bd: '#EADCD2', botBg: '#F6EEE7', page: '#EFE6DC' },
+{ key: 'dark', label: 'Dark · Ironclad Gym (sample)', mark: 'I', bot: 'Ironclad coach', sub: "Answers from Ironclad's own info", greet: 'Hey! Ask me about memberships, classes and times.', q: 'Is there a student membership?', ans: 'Yes. Students get 20% off any monthly plan with a valid student card. Sign up at the front desk.', src: 'Membership plans', ph: 'Ask about memberships…', a: '#3DDC97', ai: '#06231A', as: '#12352A', surf: '#12161C', tx: '#F2F4F7', mu: '#A3ADBD', bd: '#262D38', botBg: '#1B212A', page: '#0A0C10' }
+];
+const check = (l, a, b, min) => { const r = cr(a, b); return { l: l, r: r.toFixed(1), ok: r >= min ? 'AA' : 'FAIL', col: r >= min ? '#0B6B4B' : '#B42318' }; };
+return {
+themes: T.map((t) => Object.assign({}, t, { checks: [
+check('Text on accent', t.ai, t.a, 4.5), check('Text on surface', t.tx, t.surf, 4.5),
+check('Muted on surface', t.mu, t.surf, 4.5), check('Text on bot bubble', t.tx, t.botBg, 4.5)
+] })),
+tokens: [
+['--cb-accent', 'Launcher, user bubble, send button, focus ring', 'a'],
+['--cb-on-accent', 'Text and icons on the accent', 'ai'],
+['--cb-accent-soft', 'Hover on chips, AI badge, input focus glow', 'as'],
+['--cb-surface', 'Panel background', 'surf'],
+['--cb-text', 'Main text', 'tx'],
+['--cb-muted', 'Secondary text, icons, source chips', 'mu'],
+['--cb-border', 'Panel, input and chip borders', 'bd'],
+['--cb-bubble', 'Assistant message bubble', 'botBg']
+].map((r) => ({ n: r[0], use: r[1], vals: T.map((t) => t[r[2]]) }))
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+    if (window.__mounted && comp.componentDidUpdate) comp.componentDidUpdate();
+    if (!window.__mounted) { window.__mounted = true; if (comp.componentDidMount) comp.componentDidMount(); }
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

@@ -223,3 +223,12 @@
 .qaIco { width: 32px; height: 32px; border-radius: 9px; background: var(--blue-50); color: var(--blue-600); display: grid; place-items: center; }
 /* keyframes are local to this module (CSS Modules scope animation names) */
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+
+/* knowledge assistant sidebar: workspace card */
+.wscard { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: var(--navy-800, #0B1730); border: 1px solid #1C2B47; }
+.wscardLabel { font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; color: #8A98B3; }
+.wsbtn { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border-radius: 10px; border: 1px solid #22345A; background: var(--navy-900); color: #fff; }
+.wsdot { width: 26px; height: 26px; border-radius: 50%; background: #E8A317; display: grid; place-items: center; flex: none; color: #fff; }
+.wsname { display: flex; flex-direction: column; min-width: 0; font-size: 14px; font-weight: 600; }
+.wsname span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wsname small { font-size: 11px; font-weight: 400; color: #8A98B3; }

@@ -10,6 +10,7 @@
     "test": "vitest run",
     "create-admin": "tsx --env-file=.env.local --conditions=react-server scripts/create-admin.ts",
     "seed": "tsx --env-file=.env.local --conditions=react-server scripts/seed.ts",
+    "seed-assistant": "tsx --env-file=.env.local --conditions=react-server scripts/seed-assistant.ts",
     "starter-projects": "tsx --env-file=.env.local --conditions=react-server scripts/starter-projects.ts",
     "db:up": "docker compose up -d",
     "garage:setup": "node scripts/garage-setup.mjs"
@@ -17,6 +18,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1160.0",
     "@node-rs/argon2": "^2.2.2",
+    "mammoth": "^1.13.0",
     "mongoose": "^9.11.4",
     "next": "15.5.4",
     "nodemailer": "^10.3.1",
@@ -27,6 +29,7 @@
     "react-dom": "19.1.1",
     "server-only": "^0.0.1",
     "sharp": "^0.35.5",
+    "unpdf": "^2.1.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {

@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Knowledge assistant — Unanswered questions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+:focus-visible{outline:3px solid #166FE5;outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.btn-danger{background:#FFFFFF;color:#B42318;border:1px solid #F1C9C5}
+.btn-danger:hover{background:#FEF3F2}
+.btn-ok{background:#0B7A55;color:#FFFFFF}
+.btn-ok:hover:not(:disabled){background:#086545;color:#FFFFFF}
+.btn-ok:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.search{font:inherit;font-size:15px;width:240px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:#166FE5;background:#FFFFFF;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.search::placeholder{color:#6B7891}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:46px;padding:11px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:#166FE5;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.field::placeholder{color:#6B7891}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.snav.off{opacity:.55;cursor:default}.snav.off:hover{background:transparent;color:#B7C3D9}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.row{transition:background .15s}.row:hover{background:#F8FAFD}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.ibtn{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.ibtn:hover{border-color:#D5DEEB;background:#FFFFFF;color:#166FE5}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+.ai{display:inline-flex;align-items:center;gap:5px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#F1ECFE;color:#5B21B6}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.scrim{animation:fadein .2s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.modal{animation:pop .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bar{from{background-position:0 0}to{background-position:40px 0}}
+.prog{background-image:linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.25) 50%,rgba(255,255,255,.25) 75%,transparent 75%);background-size:20px 20px;animation:bar 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(24,119,242,.5)}100%{box-shadow:0 0 0 8px rgba(24,119,242,0)}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:#4B5872;animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:#166FE5;vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot,.wscard{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.hide-sm{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.uq{border-top:1px solid #EEF2F8;padding:18px 22px;display:flex;flex-direction:column;gap:14px;transition:background .2s}
+.uq:first-child{border-top:0}
+.vchip{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border-radius:999px;background:#F4F7FB;color:#33405A;font-size:13px}
+.opt{font:inherit;cursor:pointer;display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:12px;text-align:left;font-size:14px;line-height:1.45;transition:all .2s;flex:1 1 220px}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+<aside class="side" style="flex: 0 0 264px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; box-sizing: border-box">
+<a href="AdminDashboard.dc.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<div class="wscard" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span class="mono" style="font-size: 10px; letter-spacing: 0.08em; color: #8A98B3">KNOWLEDGE ASSISTANT</span>
+<button type="button" style="font: inherit; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border-radius: 10px; border: 1px solid #22345A; background: #07101F; color: #FFFFFF; text-align: left">
+<span aria-hidden="true" style="width: 26px; height: 26px; border-radius: 50%; background: #E8A317; display: grid; place-items: center; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg></span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Khumalo Home Solar</span><span style="font-size: 11px; color: #8A98B3">Demo client · switch</span></span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A98B3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"></path></svg>
+</button>
+</div>
+<nav aria-label="Assistant admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<a class="snav" href="CbSources.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"></path></svg><span style="flex: 1">Knowledge sources</span></a>
+<a class="snav" href="CbReview.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg><span style="flex: 1">Review &amp; publish</span><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">9<span class="sr"> to do</span></span></a>
+<a class="snav" href="CbTest.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path></svg><span style="flex: 1">Test assistant</span></a>
+<a class="snav on" href="CbUnanswered.dc.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg><span style="flex: 1">Unanswered</span><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #FFFFFF; color: #166FE5; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">4<span class="sr"> to do</span></span></a>
+<a class="snav" href="CbConversations.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg><span style="flex: 1">Conversations</span></a>
+<a class="snav" href="CbSettings.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg><span style="flex: 1">Assistant settings</span></a>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="AdminDashboard.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>byteleaf admin</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="AdminLogin.dc.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Khumalo Home Solar / Knowledge</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Unanswered questions</h1>
+</div>
+<span class="hint" style="font-size: 14px">Last 30 days · similar questions are grouped</span>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; box-sizing: border-box; width: 100%; max-width: 1400px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<div style="flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="3">
+<div class="panel" style="flex: 1 1 100px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 28px; font-weight: 600; letter-spacing: -0.03em">{{s.n}}</span><span class="hint" style="font-size: 14px">{{s.t}}</span></div>
+</sc-for>
+</div>
+
+<section class="panel" aria-labelledby="uq-h" style="flex: 999 1 560px; min-width: 0; overflow: hidden">
+<h2 id="uq-h" class="sr">Questions</h2>
+<div role="tablist" aria-label="Filter questions" style="padding: 14px 18px; border-bottom: 1px solid #EEF2F8; display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3"><button type="button" role="tab" class="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}} <span class="mono" style="font-size: 11px; opacity: 0.8">{{t.count}}</span></button></sc-for>
+</div>
+
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+<div class="rise" style="padding: 56px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 56px; height: 56px; border-radius: 16px; background: #E6F6EF; color: #0B7A55; display: grid; place-items: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span>
+<h3 style="margin: 0; font-size: 18px">{{emptyTitle}}</h3>
+<p class="hint" style="margin: 0; font-size: 14px; max-width: 380px; line-height: 1.5">{{emptyText}}</p>
+</div>
+</sc-if>
+
+<div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+<article class="uq" style="{{r.bg}}" aria-labelledby="{{r.hid}}">
+<div style="display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: flex-start">
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<h3 id="{{r.hid}}" style="margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.4">“{{r.q}}”</h3>
+<span style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<span class="pill" style="{{r.pill}}">{{r.state}}</span>
+<span class="hint">Asked {{r.times}} · last {{r.last}} · {{r.said}}</span>
+</span>
+<sc-if value="{{r.hasVars}}" hint-placeholder-val="{{ true }}">
+<span style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center"><span class="hint" style="font-size: 12px">Also asked as</span><sc-for list="{{r.vars}}" as="v" hint-placeholder-count="2"><span class="vchip">{{v}}</span></sc-for></span>
+</sc-if>
+</div>
+<sc-if value="{{r.showActs}}" hint-placeholder-val="{{ true }}">
+<span style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" class="btn btn-ghost btn-sm" onClick="{{r.ignore}}">Ignore</button>
+<button type="button" class="btn btn-primary btn-sm" onClick="{{r.open}}" aria-expanded="{{r.exp}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add answer</button>
+</span>
+</sc-if>
+<sc-if value="{{r.showUndo}}" hint-placeholder-val="{{ false }}">
+<button type="button" class="btn btn-ghost btn-sm" onClick="{{r.undo}}">{{r.undoLabel}}</button>
+</sc-if>
+</div>
+
+<sc-if value="{{r.editing}}" hint-placeholder-val="{{ false }}">
+<form class="slide" onSubmit="{{r.publish}}" style="display: flex; flex-direction: column; gap: 14px; padding: 18px; border-radius: 14px; background: #FFFFFF; border: 1px solid #BCD5FA">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; justify-content: space-between; gap: 10px"><label class="lbl" for="ans">Your answer</label><span class="mono hint" style="font-size: 12px">{{len}} / 600</span></span>
+<textarea id="ans" class="field" rows="5" onInput="{{onAns}}" aria-invalid="{{ansBad}}" aria-describedby="ans-h" placeholder="Write it the way you'd say it to a customer." style="resize: vertical; line-height: 1.55">{{ansText}}</textarea>
+<span id="ans-h" class="hint" role="{{ansRole}}" style="color: {{ansHintC}}">{{ansHint}}</span>
+</div>
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<legend class="lbl" style="padding: 0; margin-bottom: 8px">Who can get this answer?</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<sc-for list="{{aud}}" as="a" hint-placeholder-count="2"><button type="button" class="opt" aria-pressed="{{a.p}}" onClick="{{a.pick}}" style="{{a.style}}"><span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 50%; flex: none; margin-top: 1px; box-sizing: border-box; {{a.dot}}"></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">{{a.t}}</strong><span class="hint">{{a.s}}</span></span></button></sc-for>
+</div>
+</fieldset>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding-top: 4px">
+<span class="hint" style="flex: 1 1 260px; line-height: 1.5">Saved to <strong style="color: #0B1220">Typed answers</strong>. Your words are used as written — they skip AI cleaning and review.</span>
+<span style="display: flex; gap: 8px"><button type="button" class="btn btn-ghost btn-sm" onClick="{{r.cancel}}">Cancel</button><button type="submit" class="btn btn-primary btn-sm">Publish answer</button></span>
+</div>
+</form>
+</sc-if>
+
+<sc-if value="{{r.justDone}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="slide" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 12px; background: #E6F6EF; color: #0B4D36; font-size: 14px; line-height: 1.5">
+<span style="flex: 1 1 260px"><strong>Live.</strong> The assistant will use this from the next question. Check it answers the way you expect.</span>
+<button type="button" class="btn btn-ok btn-sm" onClick="{{r.retry}}">Ask it again</button>
+</div>
+</sc-if>
+</article>
+</sc-for>
+</div>
+</section>
+
+<aside class="panel" aria-labelledby="try-h" style="flex: 1 1 340px; min-width: 0; max-width: 100%; display: flex; flex-direction: column; overflow: hidden">
+<div style="padding: 16px 18px; border-bottom: 1px solid #EEF2F8; display: flex; align-items: center; gap: 10px">
+<span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 50%; background: #166FE5; color: #FFFFFF; display: grid; place-items: center; font-weight: 700; font-size: 14px">K</span>
+<span style="flex: 1; display: flex; flex-direction: column"><h2 id="try-h" style="margin: 0; font-size: 15px; font-weight: 600">Ask it again</h2><span class="hint" style="font-size: 12px">Live assistant · test chat</span></span>
+</div>
+<div data-cb-log aria-live="polite" style="padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 280px; background: #FBFCFE">
+<sc-if value="{{noTry}}" hint-placeholder-val="{{ false }}">
+<p class="hint" style="margin: auto; text-align: center; max-width: 240px; line-height: 1.5">Publish an answer, then click “Ask it again” to check the assistant now gets it right.</p>
+</sc-if>
+<sc-if value="{{hasTry}}" hint-placeholder-val="{{ true }}">
+<div class="rise" style="align-self: flex-end; max-width: 85%; padding: 10px 14px; border-radius: 16px 16px 6px 16px; background: #166FE5; color: #FFFFFF; font-size: 14px; line-height: 1.5">{{tryQ}}</div>
+<sc-if value="{{tryTyping}}" hint-placeholder-val="{{ false }}">
+<div role="status" aria-label="Assistant is typing" style="align-self: flex-start; display: flex; gap: 5px; padding: 14px 16px; border-radius: 16px 16px 16px 6px; background: #EEF2F8"><span class="dot"></span><span class="dot b"></span><span class="dot c"></span></div>
+</sc-if>
+<sc-if value="{{tryShown}}" hint-placeholder-val="{{ true }}">
+<div class="rise" style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+<div style="max-width: 92%; padding: 12px 14px; border-radius: 16px 16px 16px 6px; background: #EEF2F8; font-size: 14px; line-height: 1.55">{{tryA}}<sc-if value="{{tryStreaming}}" hint-placeholder-val="{{ false }}"><span class="caret" aria-hidden="true"></span></sc-if></div>
+<sc-if value="{{tryDone}}" hint-placeholder-val="{{ true }}">
+<span style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center"><span class="pill" style="background: #E6F6EF; color: #0B6B4B">ANSWERED</span><span class="pill" style="background: #FFFFFF; border: 1px solid #E3E9F2; color: #33405A">Typed answers · you · just now</span></span>
+</sc-if>
+</div>
+</sc-if>
+</sc-if>
+</div>
+<div style="padding: 14px 18px; border-top: 1px solid #EEF2F8; display: flex; flex-direction: column; gap: 6px">
+<span class="lbl" style="font-size: 13px">Handovers caused by these questions</span>
+<span class="hint" style="line-height: 1.5">9 customers used “Talk to a person” after one of these. Answering the top two would have covered 6 of them.</span>
+</div>
+</aside>
+
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { tab: 'open', open: 'q1', ans: 'Yes. We supply and fit solar geysers and heat pumps, on their own or with a panel system. Prices start from R 18 900 installed. Book a free site assessment and we’ll tell you which suits your home.', aud: 'all', err: '', just: '', tryId: '', tryPhase: '', shown: 0,
+qs: [
+{ id: 'q1', q: 'Do you fit solar geysers?', times: '7 times', last: 'today 09:12', said: "didn't know", vars: ['solar water heater?', 'geyser + panels together?'], st: 'open', draftA: 'Yes. We supply and fit solar geysers and heat pumps, on their own or with a panel system. Prices start from R 18 900 installed. Book a free site assessment and we’ll tell you which suits your home.' },
+{ id: 'q2', q: 'Can you install on a thatch roof?', times: '4 times', last: 'yesterday', said: 'handed over', vars: ['thatched roof'], st: 'open', draftA: '' },
+{ id: 'q3', q: 'Do you move my system if I move house?', times: '3 times', last: '28 Oct', said: "didn't know", vars: [], st: 'open', draftA: '' },
+{ id: 'q4', q: 'Is there a call-out fee for repairs?', times: '2 times', last: '26 Oct', said: 'handed over', vars: ['repair cost'], st: 'open', draftA: '' },
+{ id: 'q5', q: 'Do you install on Saturdays?', times: '5 times', last: '20 Oct', said: 'answered since 21 Oct', vars: [], st: 'done' },
+{ id: 'q6', q: 'Who won the rugby?', times: '1 time', last: '19 Oct', said: 'off-topic', vars: [], st: 'ignored' }
+] };
+}
+componentWillUnmount() { clearTimeout(this.t); clearInterval(this.iv); }
+retry(row) {
+clearTimeout(this.t); clearInterval(this.iv);
+this.setState({ tryId: row.id, tryPhase: 'typing', shown: 0 });
+const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+this.t = setTimeout(() => {
+if (reduce) { this.setState({ tryPhase: 'done' }); return; }
+this.setState({ tryPhase: 'stream' });
+this.iv = setInterval(() => {
+const full = (this.state.qs.find((q) => q.id === this.state.tryId).answer || '').length;
+if (this.state.shown >= full) { clearInterval(this.iv); this.setState({ tryPhase: 'done' }); return; }
+this.setState((s) => ({ shown: s.shown + 3 }));
+}, 24);
+}, 900);
+}
+renderVals() {
+const st = this.state;
+const upd = (id, patch, extra) => this.setState((s) => Object.assign({ qs: s.qs.map((q) => (q.id === id ? Object.assign({}, q, patch) : q)) }, extra || {}));
+const cnt = (k) => st.qs.filter((q) => q.st === k).length;
+const shown = st.qs.filter((q) => q.st === st.tab);
+const P = { open: ['Needs an answer', 'background: #FFF4E0; color: #8A5200;'], done: ['Answered · live', 'background: #E6F6EF; color: #0B6B4B;'], ignored: ['Ignored', 'background: #EEF2F8; color: #33405A;'] };
+const len = st.ans.length;
+const tq = st.qs.find((q) => q.id === st.tryId);
+return {
+stats: [{ n: String(cnt('open')), t: 'questions need an answer' }, { n: '16', t: 'customers asked them' }, { n: '9', t: 'went on to ask for a person' }],
+tabs: [['open', 'Open'], ['done', 'Answered'], ['ignored', 'Ignored']].map((t) => { const on = st.tab === t[0]; return { label: t[1], count: String(cnt(t[0])), on: on ? 'true' : 'false', style: on ? 'border: 1px solid #0B1220; background: #0B1220; color: #FFFFFF;' : 'border: 1px solid #D5DEEB; background: #FFFFFF; color: #33405A;', pick: () => this.setState({ tab: t[0], just: '' }) }; }),
+isEmpty: !shown.length,
+emptyTitle: st.tab === 'open' ? 'Nothing unanswered' : st.tab === 'done' ? 'No answered questions yet' : 'Nothing ignored',
+emptyText: st.tab === 'open' ? 'Every question customers asked in the last 30 days had an answer. New gaps show up here as they happen.' : 'Questions move here when you act on them.',
+rows: shown.map((q) => {
+const editing = st.open === q.id && q.st === 'open';
+return {
+hid: 'q-' + q.id, q: q.q, times: q.times, last: q.last, said: q.said, vars: q.vars, hasVars: q.vars.length > 0,
+state: P[q.st][0], pill: P[q.st][1], bg: editing ? 'background: #F7FAFF;' : '',
+showActs: q.st === 'open' && !editing, exp: editing ? 'true' : 'false',
+showUndo: q.st !== 'open', undoLabel: q.st === 'ignored' ? 'Restore' : 'Edit answer',
+editing: editing, justDone: st.just === q.id && q.st === 'done',
+open: () => this.setState({ open: q.id, ans: q.answer || q.draftA || '', err: '', aud: 'all' }),
+cancel: () => this.setState({ open: '', err: '' }),
+ignore: () => upd(q.id, { st: 'ignored' }),
+undo: () => upd(q.id, { st: 'open' }, { tab: 'open', open: q.id, ans: q.answer || q.draftA || '' }),
+publish: (e) => { e.preventDefault(); const a = st.ans.trim(); if (a.length < 10) { this.setState({ err: a ? 'That’s very short. Give the customer a full answer.' : 'Write an answer first.' }); return; } upd(q.id, { st: 'done', answer: a, said: 'answered just now', last: 'today' }, { open: '', tab: 'done', just: q.id, err: '' }); },
+retry: () => this.retry(q)
+};
+}),
+ansText: st.ans, onAns: (e) => this.setState({ ans: e.target.value.slice(0, 600), err: '' }), len: String(len),
+ansBad: st.err ? 'true' : 'false', ansRole: st.err ? 'alert' : '', ansHintC: st.err ? '#B42318' : '#4B5872',
+ansHint: st.err || 'Keep it short and specific. Prices and times are fine; personal details are not.',
+aud: [['all', 'Customers and staff', 'The public widget and staff mode'], ['staff', 'Staff only', 'Customers get a handover instead']].map((a) => { const on = st.aud === a[0]; return { t: a[1], s: a[2], p: on ? 'true' : 'false', style: on ? 'border: 2px solid #166FE5; background: #F3F8FF; color: #0B1220;' : 'border: 2px solid #E3E9F2; background: #FFFFFF; color: #0B1220;', dot: on ? 'border: 5px solid #166FE5; background: #FFFFFF;' : 'border: 2px solid #A9B8CF;', pick: () => this.setState({ aud: a[0] }) }; }),
+noTry: !tq, hasTry: !!tq, tryQ: tq ? tq.q : '',
+tryTyping: st.tryPhase === 'typing', tryShown: st.tryPhase === 'stream' || st.tryPhase === 'done',
+tryStreaming: st.tryPhase === 'stream', tryDone: st.tryPhase === 'done',
+tryA: tq ? (st.tryPhase === 'stream' ? (tq.answer || '').slice(0, st.shown) : (tq.answer || '')) : ''
+};
+}
+}
+</script>
+</body>
+</html>

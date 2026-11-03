@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Knowledge chatbot — widget prototype</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#EEF1F5}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cb :focus-visible{outline:3px solid var(--a);outline-offset:2px}
+.cb-launch{font:inherit;cursor:pointer;position:fixed;right:24px;bottom:24px;z-index:40;width:60px;height:60px;border-radius:50%;border:0;background:var(--a);color:var(--ai);display:grid;place-items:center;box-shadow:0 14px 30px -10px rgba(0,0,0,.4);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.cb-launch:hover{transform:scale(1.07)}
+.cb-nudge{position:fixed;right:24px;bottom:96px;z-index:40;max-width:240px;padding:12px 14px;border-radius:14px 14px 4px 14px;background:var(--surf);color:var(--tx);border:1px solid var(--bd);box-shadow:0 18px 40px -20px rgba(0,0,0,.4);font-size:14px;line-height:1.45;animation:cbIn .4s cubic-bezier(.2,.8,.2,1) .6s both}
+.cb-panel{position:fixed;right:24px;bottom:100px;z-index:40;width:400px;height:min(660px,calc(100vh - 124px));background:var(--surf);color:var(--tx);border:1px solid var(--bd);border-radius:20px;box-shadow:0 30px 80px -30px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;transform-origin:bottom right;animation:cbIn .28s cubic-bezier(.2,.8,.2,1) both}
+@keyframes cbIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+.cb-msg{animation:msgIn .25s ease-out both}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--mu);animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:var(--a);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.chip{font:inherit;cursor:pointer;text-align:left;min-height:40px;padding:8px 14px;border-radius:999px;border:1px solid var(--bd);background:var(--surf);color:var(--tx);font-size:14px;line-height:1.3;transition:border-color .2s,background .2s}
+.chip:hover{border-color:var(--a);background:var(--as)}
+.src{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:2px 10px;border-radius:999px;border:1px solid var(--bd);background:transparent;color:var(--mu);font-size:12px;transition:all .15s}
+.src:hover{border-color:var(--a);color:var(--tx)}
+.ib{font:inherit;cursor:pointer;width:36px;height:36px;border-radius:10px;border:0;background:transparent;color:var(--mu);display:grid;place-items:center;transition:background .15s,color .15s}
+.ib:hover{background:var(--bot);color:var(--tx)}
+.lnk{font:inherit;cursor:pointer;border:0;background:transparent;padding:0;color:var(--tx);text-decoration:underline;text-underline-offset:3px;font-size:12px}
+.btn{font:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-size:15px;font-weight:600;transition:filter .2s,transform .2s}
+.btn:hover{filter:brightness(1.08)}
+.btn-a{border:0;background:var(--a);color:var(--ai)}
+.btn-o{border:1px solid var(--bd);background:var(--surf);color:var(--tx)}
+.inp{font:inherit;font-size:16px;color:var(--tx);background:var(--surf);width:100%;box-sizing:border-box;min-height:46px;padding:10px 14px;border:1px solid var(--bd);border-radius:12px}
+.inp:focus{outline:none;border-color:var(--a);box-shadow:0 0 0 3px var(--as)}
+.inp::placeholder{color:var(--mu);opacity:.85}
+@media (max-width: 600px){.cb-launch-x{display:none!important}.cb-panel{inset:0;width:auto;height:auto;border-radius:0;border:0}.cb-launch{right:16px;bottom:calc(16px + env(safe-area-inset-bottom))}.cb-nudge{right:16px;bottom:calc(88px + env(safe-area-inset-bottom))}.cb-foot{padding-bottom:calc(12px + env(safe-area-inset-bottom))!important}.site-cards{grid-template-columns:1fr!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div class="bl cb" style="min-height: 100vh; position: relative; overflow: hidden; background: #F4F1EA; color: #1F2A1F; --a: {{t.a}}; --ai: {{t.ai}}; --as: {{t.as}}; --surf: {{t.surf}}; --tx: {{t.tx}}; --mu: {{t.mu}}; --bd: {{t.bd}}; --bot: {{t.bot}}">
+
+<div aria-hidden="true" style="max-width: 1200px; margin: 0 auto; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px; opacity: 0.9">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px">
+<span style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px"><span style="width: 34px; height: 34px; border-radius: 50%; background: #E8A317; display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></span>Khumalo Home Solar</span>
+<span style="display: flex; gap: 20px; font-size: 14px; color: #4A5A4A"><span>Packages</span><span>Batteries</span><span>Finance</span><span>Contact</span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 18px; max-width: 620px; padding-top: 40px">
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: #8A6A10">SAMPLE CLIENT WEBSITE</span>
+<span style="font-size: clamp(36px, 5vw, 60px); font-weight: 700; line-height: 1.02; letter-spacing: -0.03em">Clean power for Gauteng homes.</span>
+<span style="font-size: 18px; line-height: 1.6; color: #4A5A4A">Panels, inverters and batteries, installed in one to two days.</span>
+<span style="align-self: flex-start; padding: 14px 22px; border-radius: 999px; background: #1F2A1F; color: #FFFFFF; font-weight: 600">Get a quote</span>
+</div>
+<div class="site-cards" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<span style="height: 160px; border-radius: 16px; background: #FFFFFF"></span><span style="height: 160px; border-radius: 16px; background: #FFFFFF"></span><span style="height: 160px; border-radius: 16px; background: #FFFFFF"></span>
+</div>
+</div>
+
+<sc-if value="{{showNudge}}" hint-placeholder-val="{{ false }}">
+<div class="cb-nudge" role="status"><span style="display: block; font-weight: 600; margin-bottom: 2px">Questions about going solar?</span>Ask me about packages, prices and warranty.</div>
+</sc-if>
+
+<sc-if value="{{closed}}" hint-placeholder-val="{{ false }}">
+<button type="button" class="cb-launch" onClick="{{openIt}}" aria-label="{{launchLabel}}" aria-expanded="false">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"></path></svg>
+<sc-if value="{{showNudge}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 2px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 999px; background: #D92D20; color: #FFFFFF; border: 2px solid #FFFFFF; font-size: 11px; font-weight: 700; display: grid; place-items: center">1</span></sc-if>
+</button>
+</sc-if>
+
+<sc-if value="{{open}}" hint-placeholder-val="{{ true }}">
+<section class="cb-panel" role="dialog" aria-modal="false" aria-labelledby="cb-title" onKeyDown="{{onKey}}">
+<header style="display: flex; align-items: center; gap: 12px; padding: 14px 12px 14px 16px; border-bottom: 1px solid var(--bd)">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 50%; background: var(--a); color: var(--ai); display: grid; place-items: center; flex: none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<h2 id="cb-title" style="margin: 0; font-size: 16px; font-weight: 600">{{botName}}</h2>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--mu)"><span class="mono" style="font-size: 10px; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 6px; background: var(--as); color: var(--tx)">AI</span>Answers from Khumalo's own info</span>
+</div>
+<button type="button" class="ib" onClick="{{toTeam}}" aria-label="Talk to a person"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></button>
+<button type="button" class="ib" onClick="{{closeIt}}" aria-label="Close chat (Esc)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</header>
+
+<sc-if value="{{noSheet}}" hint-placeholder-val="{{ true }}">
+<div data-cb-log="1" role="log" aria-live="polite" aria-label="Conversation" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<div class="cb-msg" style="align-self: flex-start; max-width: 88%; padding: 12px 14px; border-radius: 4px 16px 16px 16px; background: var(--bot); font-size: 15px; line-height: 1.5">Hi, I'm the Khumalo Home Solar assistant. I can help with packages, prices, installation and warranty. What would you like to know?</div>
+<sc-if value="{{showSuggest}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+<span style="font-size: 12px; color: var(--mu)">Popular questions</span>
+<sc-for list="{{suggest}}" as="s" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{s.pick}}">{{s.q}}</button></sc-for>
+</div>
+</sc-if>
+<sc-for list="{{msgs}}" as="m" hint-placeholder-count="2">
+<sc-if value="{{m.isUser}}" hint-placeholder-val="{{ false }}"><div class="cb-msg" style="align-self: flex-end; max-width: 82%; padding: 10px 14px; border-radius: 16px 4px 16px 16px; background: var(--a); color: var(--ai); font-size: 15px; line-height: 1.5"><span class="sr">You said: </span>{{m.text}}</div></sc-if>
+<sc-if value="{{m.isTyping}}" hint-placeholder-val="{{ false }}"><div class="cb-msg" role="status" style="align-self: flex-start; padding: 14px 16px; border-radius: 4px 16px 16px 16px; background: var(--bot); display: flex; gap: 5px"><span class="sr">Assistant is typing</span><span class="dot"></span><span class="dot b"></span><span class="dot c"></span></div></sc-if>
+<sc-if value="{{m.isBot}}" hint-placeholder-val="{{ false }}">
+<div class="cb-msg" style="align-self: flex-start; max-width: 88%; display: flex; flex-direction: column; gap: 8px">
+<div style="padding: 12px 14px; border-radius: 4px 16px 16px 16px; background: var(--bot); font-size: 15px; line-height: 1.5; display: flex; flex-direction: column; gap: 8px">
+<span><span class="sr">Assistant said: </span>{{m.shownText}}<sc-if value="{{m.streaming}}" hint-placeholder-val="{{ false }}"><span class="caret" aria-hidden="true"></span></sc-if></span>
+<sc-if value="{{m.showList}}" hint-placeholder-val="{{ false }}"><ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px"><sc-for list="{{m.list}}" as="li" hint-placeholder-count="3"><li>{{li}}</li></sc-for></ul></sc-if>
+<sc-if value="{{m.showLink}}" hint-placeholder-val="{{ false }}"><a href="#" style="color: var(--tx); font-weight: 600; text-decoration: underline; text-underline-offset: 3px">{{m.linkLabel}} ↗</a></sc-if>
+<sc-if value="{{m.isUnknown}}" hint-placeholder-val="{{ false }}"><button type="button" class="btn btn-o" onClick="{{m.handover}}" style="min-height: 38px; font-size: 14px; align-self: flex-start">Ask the team</button></sc-if>
+<sc-if value="{{m.isOff}}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{m.topics}}" as="tp" hint-placeholder-count="3"><button type="button" class="chip" onClick="{{tp.pick}}" style="min-height: 34px; padding: 4px 12px; font-size: 13px">{{tp.q}}</button></sc-for></div></sc-if>
+</div>
+<sc-if value="{{m.done}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px">
+<sc-if value="{{m.noSource}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--mu)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8 12h8"></path></svg>No source found</span></sc-if>
+<sc-for list="{{m.sources}}" as="sc" hint-placeholder-count="1"><button type="button" class="src" onClick="{{sc.toggle}}" aria-expanded="{{sc.expanded}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5"></path></svg><span class="sr">Source: </span>{{sc.t}}</button></sc-for>
+<sc-if value="{{m.canRate}}" hint-placeholder-val="{{ false }}">
+<span style="margin-left: auto; display: flex; gap: 2px">
+<button type="button" class="ib" onClick="{{m.up}}" aria-pressed="{{m.upP}}" aria-label="Helpful" style="width: 32px; height: 32px; color: {{m.upC}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="{{m.upF}}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H4V10zM7 10l4-7a2 2 0 0 1 3 2l-1 5h6a2 2 0 0 1 2 2.3l-1.4 7A2 2 0 0 1 17.6 21H7"></path></svg></button>
+<button type="button" class="ib" onClick="{{m.down}}" aria-pressed="{{m.downP}}" aria-label="Not helpful" style="width: 32px; height: 32px; color: {{m.downC}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="{{m.downF}}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V3h3v11zM17 14l-4 7a2 2 0 0 1-3-2l1-5H5a2 2 0 0 1-2-2.3l1.4-7A2 2 0 0 1 6.4 3H17"></path></svg></button>
+</span>
+</sc-if>
+</div>
+<sc-if value="{{m.snip}}" hint-placeholder-val="{{ false }}"><div style="padding: 10px 12px; border-radius: 10px; border: 1px solid var(--bd); font-size: 13px; line-height: 1.5; color: var(--mu)"><span class="mono" style="display: block; font-size: 10px; letter-spacing: 0.06em; margin-bottom: 4px">FROM: {{m.snipFrom}}</span>“{{m.snip}}”</div></sc-if>
+<sc-if value="{{m.askReason}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="What was wrong?" style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center"><span style="font-size: 12px; color: var(--mu); width: 100%">What was wrong?</span><sc-for list="{{m.reasons}}" as="r" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{r.pick}}" style="min-height: 32px; padding: 4px 12px; font-size: 13px">{{r.t}}</button></sc-for></div>
+</sc-if>
+<sc-if value="{{m.thanks}}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 12px; color: var(--mu)">{{m.thanks}}</span></sc-if>
+</sc-if>
+</div>
+</sc-if>
+</sc-for>
+</div>
+
+<form class="cb-foot" onSubmit="{{submit}}" style="padding: 12px 12px 10px; border-top: 1px solid var(--bd); display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; gap: 8px; align-items: center">
+<label for="cb-in" class="sr">Type your question</label>
+<input id="cb-in" class="inp" type="text" autocomplete="off" placeholder="Ask about packages, prices, warranty…" value="{{draft}}" onInput="{{onDraft}}" style="border-radius: 999px; padding: 10px 16px">
+<button type="submit" aria-label="Send" style="font: inherit; cursor: pointer; flex: none; width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--a); color: var(--ai); display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</div>
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--mu)">
+<span>AI assistant · <a href="#" class="lnk">Privacy</a></span>
+<button type="button" class="lnk" onClick="{{toTeam}}">Talk to a person</button>
+</div>
+</form>
+</sc-if>
+
+<sc-if value="{{sheetForm}}" hint-placeholder-val="{{ false }}">
+<form onSubmit="{{sendTeam}}" class="cb-msg" style="flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 14px">
+<h3 style="margin: 0; font-size: 20px; font-weight: 600">Ask the team</h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.55; color: var(--mu)">This is a separate form, not the chat. A person at Khumalo Home Solar will reply, usually within [X business hours].</p>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="h-n" style="font-size: 13px; font-weight: 500">Your name</label><input id="h-n" class="inp" type="text" autocomplete="name" required></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="h-c" style="font-size: 13px; font-weight: 500">Email or phone</label><input id="h-c" class="inp" type="text" autocomplete="email" required></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="h-q" style="font-size: 13px; font-weight: 500">Your question</label><textarea id="h-q" class="inp" rows="3" style="resize: vertical">{{sheetQ}}</textarea></div>
+<label style="display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: var(--mu)"><input type="checkbox" required style="width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--a)">I agree that Khumalo Home Solar may contact me about this question. <a href="#" style="color: var(--tx)">Privacy note</a></label>
+<div style="display: flex; gap: 8px; margin-top: auto; padding-top: 8px">
+<button type="button" class="btn btn-o" onClick="{{backChat}}">Back to chat</button>
+<button type="submit" class="btn btn-a" style="flex: 1">Send to the team</button>
+</div>
+</form>
+</sc-if>
+<sc-if value="{{sheetSent}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="cb-msg" style="flex: 1; padding: 28px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px">
+<span style="width: 64px; height: 64px; border-radius: 50%; background: var(--a); color: var(--ai); display: grid; place-items: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span>
+<h3 style="margin: 0; font-size: 20px; font-weight: 600">Sent to the team</h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.55; color: var(--mu); max-width: 280px">A person will get back to you, usually within [X business hours].</p>
+<button type="button" class="btn btn-o" onClick="{{backChat}}">Back to chat</button>
+</div>
+</sc-if>
+</section>
+<button type="button" class="cb-launch cb-launch-x" onClick="{{closeIt}}" aria-label="Close chat" aria-expanded="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["byteleaf","warm","dark"],"default":"byteleaf"},"startOpen":{"editor":"boolean","default":true},"nudge":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { open: props.startOpen ?? true, msgs: [], draft: '', sheet: '', sheetQ: '', nid: 1, seen: false };
+this.t = [];
+}
+componentDidUpdate() { const el = typeof document !== 'undefined' && document.querySelector('[data-cb-log]'); if (el) el.scrollTop = el.scrollHeight; }
+componentWillUnmount() { this.t.forEach((x) => { clearTimeout(x); clearInterval(x); }); }
+kb() {
+return {
+battery: { q: 'Do you install batteries as well as panels?', a: 'Yes. We install panels, inverters and batteries, and we can add a battery to a system you already have. Most home installs take one to two days. Would you like a quote?', src: [['Services and packages', 'We supply and install solar panels, hybrid inverters and lithium batteries, and retrofit batteries to existing systems.']] },
+price: { q: 'How much does a home system cost?', a: 'Our Essential package (3 kW panels, 5 kWh battery) is R 68 500, and the Family package (5 kW, 10 kWh) is R 112 000. Both include installation and the electrical certificate.', src: [['Price list 2026', 'Essential 3 kW / 5 kWh — R 68 500 installed. Family 5 kW / 10 kWh — R 112 000 installed.'], ['Services and packages', 'All prices include installation and a certificate of compliance.']] },
+warranty: { q: 'What warranty do I get?', a: 'Every install comes with four warranties:', list: ['Panels: 25-year performance', 'Inverter: 10 years', 'Battery: 10 years', 'Our workmanship: 5 years'], src: [['Warranty terms', 'Panels carry a 25-year linear performance warranty; inverters and batteries 10 years; workmanship 5 years.']] },
+finance: { q: 'Can I pay it off monthly?', a: 'Yes. You can spread the cost over 12 to 60 months through our finance partner. The options and a calculator are on our finance page.', link: 'Finance options', src: [['Finance FAQ', 'Pay over 12–60 months through [finance partner]. Approval takes about two working days.']] },
+areas: { q: 'Which areas do you cover?', a: 'We install across Gauteng: Johannesburg, Pretoria and the East Rand. For other areas, ask the team and they will let you know.', src: [['About Khumalo Home Solar', 'Based in Johannesburg, installing across Gauteng.']] },
+unknown: { a: "I'm not sure about that, and I don't want to guess. I can pass your question to the team.", kind: 'unknown' },
+off: { a: "That's outside what I can help with. I can answer questions about Khumalo's solar packages, prices, installation and warranty.", kind: 'off' }
+};
+}
+match(text) {
+const s = text.toLowerCase();
+if (/tax|lawyer|legal|medical|doctor|stock|crypto/.test(s)) return 'off';
+if (/batter/.test(s)) return 'battery';
+if (/price|cost|how much|package/.test(s)) return 'price';
+if (/warrant|guarantee/.test(s)) return 'warranty';
+if (/financ|monthly|pay off|instal?ment/.test(s)) return 'finance';
+if (/area|where|cover|pretoria|joburg|johannesburg/.test(s)) return 'areas';
+return 'unknown';
+}
+ask(key, text) {
+const kb = this.kb();
+const k = kb[key];
+const uid = this.state.nid, bid = uid + 1;
+this.setState((s) => ({ msgs: s.msgs.concat([{ id: uid, role: 'user', text: text }, { id: bid, role: 'typing' }]), nid: s.nid + 2, draft: '' }));
+const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const full = k.a;
+this.t.push(setTimeout(() => {
+this.setState((s) => ({ msgs: s.msgs.map((m) => (m.id === bid ? { id: bid, role: 'bot', key: key, full: full, shown: reduce ? full.length : 0, src: k.src || [], list: k.list || null, link: k.link || null, kind: k.kind || 'answer', fb: '', open: -1 } : m)) }));
+if (reduce) return;
+const iv = setInterval(() => {
+let fin = false;
+this.setState((s) => ({ msgs: s.msgs.map((m) => { if (m.id !== bid) return m; const n = Math.min(m.full.length, m.shown + 3); fin = n >= m.full.length; return Object.assign({}, m, { shown: n }); }) }));
+if (fin) clearInterval(iv);
+}, 24);
+this.t.push(iv);
+}, 900));
+}
+patch(id, p) { this.setState((s) => ({ msgs: s.msgs.map((m) => (m.id === id ? Object.assign({}, m, p) : m)) })); }
+renderVals() {
+const st = this.state;
+const T = {
+byteleaf: { a: '#166FE5', ai: '#FFFFFF', as: '#EEF4FE', surf: '#FFFFFF', tx: '#0B1220', mu: '#4B5872', bd: '#E3E9F2', bot: '#F2F5F9' },
+warm: { a: '#B4471A', ai: '#FFFFFF', as: '#FBEDE6', surf: '#FFFCF8', tx: '#2A1A12', mu: '#6B5446', bd: '#EADCD2', bot: '#F6EEE7' },
+dark: { a: '#3DDC97', ai: '#06231A', as: '#12352A', surf: '#12161C', tx: '#F2F4F7', mu: '#A3ADBD', bd: '#262D38', bot: '#1B212A' }
+};
+const kb = this.kb();
+const REASONS = ['Wrong answer', 'Not clear', 'Not what I asked', 'Something else'];
+const msgs = st.msgs.map((m) => {
+if (m.role === 'user') return { isUser: true, text: m.text };
+if (m.role === 'typing') return { isTyping: true };
+const done = m.shown >= m.full.length;
+const ans = m.kind === 'answer';
+return {
+isBot: true, shownText: m.full.slice(0, m.shown), streaming: !done, done: done,
+showList: done && !!m.list, list: m.list || [], showLink: done && !!m.link, linkLabel: m.link,
+isUnknown: done && m.kind === 'unknown', isOff: done && m.kind === 'off',
+topics: ['battery', 'price', 'warranty'].map((k) => ({ q: kb[k].q, pick: () => this.ask(k, kb[k].q) })),
+handover: () => this.setState({ sheet: 'form', sheetQ: (st.msgs.find((x) => x.id === m.id - 1) || {}).text || '' }),
+noSource: m.kind !== 'answer',
+sources: (m.src || []).map((s, i) => ({ t: s[0], expanded: m.open === i ? 'true' : 'false', toggle: () => this.patch(m.id, { open: m.open === i ? -1 : i }) })),
+snip: m.open > -1 ? m.src[m.open][1] : '', snipFrom: m.open > -1 ? m.src[m.open][0] : '',
+canRate: ans && m.fb !== 'reasoned' && m.fb !== 'up',
+upP: m.fb === 'up' ? 'true' : 'false', downP: m.fb === 'down' ? 'true' : 'false',
+upF: m.fb === 'up' ? 'currentColor' : 'none', downF: m.fb === 'down' ? 'currentColor' : 'none',
+upC: m.fb === 'up' ? 'var(--a)' : 'var(--mu)', downC: m.fb === 'down' ? 'var(--a)' : 'var(--mu)',
+up: () => this.patch(m.id, { fb: 'up' }), down: () => this.patch(m.id, { fb: 'down' }),
+askReason: m.fb === 'down', reasons: REASONS.map((r) => ({ t: r, pick: () => this.patch(m.id, { fb: 'reasoned' }) })),
+thanks: m.fb === 'up' ? 'Thanks for letting us know.' : m.fb === 'reasoned' ? "Thanks. The team will review this answer." : ''
+};
+});
+const open = st.open;
+return {
+t: T[this.props.theme ?? 'byteleaf'] || T.byteleaf,
+botName: 'Khumalo assistant',
+open: open, closed: !open,
+showNudge: !open && (this.props.nudge ?? true) && !st.seen,
+launchLabel: 'Open chat with the Khumalo assistant' + (!st.seen ? ', 1 new message' : ''),
+openIt: () => this.setState({ open: true, seen: true }),
+closeIt: () => this.setState({ open: false, sheet: '' }),
+onKey: (e) => { if (e.key === 'Escape') this.setState({ open: false, sheet: '' }); },
+noSheet: !st.sheet, sheetForm: st.sheet === 'form', sheetSent: st.sheet === 'sent', sheetQ: st.sheetQ,
+toTeam: () => this.setState({ sheet: 'form', sheetQ: '' }),
+backChat: () => this.setState({ sheet: '' }),
+sendTeam: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ sheet: 'sent' }); },
+showSuggest: st.msgs.length === 0,
+suggest: ['battery', 'price', 'warranty', 'finance'].map((k) => ({ q: kb[k].q, pick: () => this.ask(k, kb[k].q) })),
+msgs: msgs,
+draft: st.draft,
+onDraft: (e) => this.setState({ draft: e.target.value }),
+submit: (e) => { if (e && e.preventDefault) e.preventDefault(); const v = st.draft.trim(); if (v) this.ask(this.match(v), v); }
+};
+}
+}
+</script>
+</body>
+</html>

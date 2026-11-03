@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>byteleaf — Knowledge chatbot demo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+:focus-visible{outline:3px solid #166FE5;outline-offset:2px}
+.navlink{color:#33405A;font-size:15px;font-weight:500;padding:10px 14px;border-radius:999px;transition:background .2s,color .2s}
+.navlink:hover{background:#EEF4FE;color:#0B1220}
+.navlink.on{background:#EEF4FE;color:#166FE5}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;font-weight:600;font-size:16px;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s,color .25s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(22,111,229,.7)}
+.btn-ghost{color:#0B1220;border:1px solid #D5DEEB;background:#FFFFFF}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.btn-light{background:#FFFFFF;color:#0B1220}
+.btn-light:hover{color:#0B1220;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(0,0,0,.5)}
+.arr{transition:transform .25s}.btn:hover .arr{transform:translateX(4px)}
+.flink{color:#B7C3D9}.flink:hover{color:#FFFFFF}
+.seg{font:inherit;cursor:pointer;min-height:40px;padding:0 16px;border:0;border-radius:999px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.chip{font:inherit;cursor:pointer;text-align:left;min-height:40px;padding:8px 14px;border-radius:999px;border:1px solid var(--bd);background:var(--surf);color:var(--tx);font-size:14px;line-height:1.3;transition:border-color .2s,background .2s}
+.chip:hover{border-color:var(--a);background:var(--as)}
+.src{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:2px 10px;border-radius:999px;border:1px solid var(--bd);background:transparent;color:var(--mu);font-size:12px;transition:all .15s}
+.src:hover{border-color:var(--a);color:var(--tx)}
+.ib{font:inherit;cursor:pointer;width:32px;height:32px;border-radius:10px;border:0;background:transparent;color:var(--mu);display:grid;place-items:center}
+.ib:hover{background:var(--bot);color:var(--tx)}
+.inp{font:inherit;font-size:16px;color:var(--tx);background:var(--surf);width:100%;box-sizing:border-box;min-height:46px;padding:10px 16px;border:1px solid var(--bd);border-radius:999px}
+.inp:focus{outline:none;border-color:var(--a);box-shadow:0 0 0 3px var(--as)}
+.inp::placeholder{color:var(--mu)}
+.cb-msg{animation:msgIn .25s ease-out both}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--mu);animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:var(--a);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}
+.krow{transition:background .15s}.krow:hover{background:#F8FAFD}
+.mnav{display:none}
+.menu-btn{list-style:none;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid #D5DEEB;display:grid;place-items:center;color:#0B1220;background:#FFFFFF}
+.menu-btn::-webkit-details-marker{display:none}
+.mnav[open] .menu-btn{border-color:#166FE5;color:#166FE5}
+.mnav .i-close{display:none}.mnav[open] .i-close{display:block}.mnav[open] .i-open{display:none}
+.mpanel{position:absolute;left:0;right:0;top:100%;background:#FFFFFF;border-bottom:1px solid #E8EDF5;box-shadow:0 24px 40px -24px rgba(11,18,32,.25);padding:12px 20px 20px;display:flex;flex-direction:column;gap:4px}
+.mlink{display:flex;align-items:center;min-height:52px;padding:0 12px;border-radius:12px;font-size:18px;font-weight:500;color:#0B1220;border-bottom:1px solid #F1F4F9}
+@media (max-width: 760px){.dnav,.dcta{display:none!important}.mnav{display:block}}
+@media (max-width: 640px){section[style*="padding: 120px 24px"]{padding-top:64px!important;padding-bottom:64px!important}section[style*="24px 120px"]{padding-bottom:64px!important}.chatbox{height:600px!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; background: #FFFFFF; overflow-x: hidden">
+<header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid #E8EDF5">
+<nav aria-label="Main" style="max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Main.dc.html" aria-label="byteleaf home" style="display: flex; align-items: center; gap: 10px; color: #0B1220; font-weight: 700; font-size: 22px; letter-spacing: -0.04em">
+<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byte<span style="color: #1877F2">leaf</span></span>
+</a>
+<div class="dnav" style="display: flex; flex-wrap: wrap; align-items: center; gap: 2px">
+<a class="navlink" href="Services.dc.html">Services</a>
+<a class="navlink" href="Process.dc.html">Process</a>
+<a class="navlink on" href="Projects.dc.html" aria-current="page">Projects</a>
+<a class="navlink" href="About.dc.html">About</a>
+<a class="navlink" href="Contact.dc.html">Contact</a>
+</div>
+<a class="btn btn-primary dcta" href="Book.dc.html" style="min-height: 44px; padding: 0 20px; font-size: 15px">Book a call<svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<details class="mnav">
+<summary class="menu-btn" aria-label="Menu"><svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></summary>
+<div class="mpanel">
+<a class="mlink" href="Services.dc.html">Services</a>
+<a class="mlink" href="Process.dc.html">Process</a>
+<a class="mlink" href="Projects.dc.html">Projects</a>
+<a class="mlink" href="About.dc.html">About</a>
+<a class="mlink" href="Contact.dc.html">Contact</a>
+<a class="btn btn-primary" href="Book.dc.html" style="justify-content: center; margin-top: 12px">Book a call</a>
+</div>
+</details>
+</nav>
+</header>
+
+
+<section style="padding: 56px 24px 32px; background: #FBFCFE; border-bottom: 1px solid #EEF2F8">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px">
+<nav aria-label="Breadcrumb" class="mono" style="font-size: 12px; color: #4B5872"><a href="Projects.dc.html">Projects</a> / Knowledge chatbot</nav>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 760px">
+<span class="rise mono" style="font-size: 13px; color: #166FE5; letter-spacing: 0.08em">SHOWCASE PROJECT 1 OF 4 · AI INTEGRATION</span>
+<h1 class="rise d1" style="margin: 0; font-size: clamp(36px, 4.6vw, 60px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance">An assistant that only answers from <span style="color: #1877F2">your own information.</span></h1>
+<p class="rise d2" style="margin: 0; font-size: 18px; line-height: 1.6; color: #4B5872">Ask it anything a customer would. Every answer shows where it came from, and when it doesn't know, it says so and hands over to a person.</p>
+</div>
+<a class="btn btn-ghost rise d3" href="CbWidget.dc.html">See it as a website widget</a>
+</div>
+<div role="note" class="rise d3" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: #FFF4E0; color: #6B3F00; font-size: 14px; line-height: 1.5">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>
+<span><strong>This is a demo with sample data.</strong> Khumalo Home Solar is a made-up business, and every price and policy here is invented. Please don't type personal details.</span>
+</div>
+</div>
+</section>
+
+<section style="padding: 32px 24px 96px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div role="group" aria-label="Assistant mode" style="display: flex; gap: 4px; padding: 4px; background: #F4F7FB; border: 1px solid #E3E9F2; border-radius: 999px">
+<button type="button" class="seg" aria-pressed="{{pubA}}" onClick="{{toPublic}}" style="{{pubSeg}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg>Customer</button>
+<button type="button" class="seg" aria-pressed="{{staffA}}" onClick="{{toStaff}}" style="{{staffSeg}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Staff</button>
+</div>
+<span style="font-size: 13px; color: #4B5872">{{modeNote}}</span>
+</div>
+
+<div class="chatbox" style="height: 640px; border-radius: 20px; border: 1px solid var(--bd); background: var(--surf); color: var(--tx); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 30px 60px -40px rgba(11,18,32,0.4); --a: {{t.a}}; --ai: {{t.ai}}; --as: {{t.as}}; --surf: {{t.surf}}; --tx: {{t.tx}}; --mu: {{t.mu}}; --bd: {{t.bd}}; --bot: {{t.bot}}">
+<div style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--bd); background: {{t.head}}">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: {{t.avR}}; background: var(--a); color: var(--ai); display: grid; place-items: center; flex: none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></span>
+<div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">{{botName}}</h2>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--mu)"><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; background: var(--as); color: var(--tx)">AI</span>{{botSub}}</span>
+</div>
+<button type="button" class="btn btn-ghost" onClick="{{reset}}" style="min-height: 36px; padding: 0 14px; font-size: 13px">Start over</button>
+</div>
+<div data-cb-log="1" role="log" aria-live="polite" aria-label="Conversation" style="flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+<div class="cb-msg" style="align-self: flex-start; max-width: 80%; padding: 12px 14px; border-radius: 4px 16px 16px 16px; background: var(--bot); font-size: 15px; line-height: 1.5">{{greet}}</div>
+<sc-if value="{{showSuggest}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; color: var(--mu); width: 100%">Try one of these</span>
+<sc-for list="{{suggest}}" as="s" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{s.pick}}">{{s.q}}</button></sc-for>
+</div>
+</sc-if>
+<sc-for list="{{msgs}}" as="m" hint-placeholder-count="2">
+<sc-if value="{{m.isUser}}" hint-placeholder-val="{{ false }}"><div class="cb-msg" style="align-self: flex-end; max-width: 75%; padding: 10px 14px; border-radius: 16px 4px 16px 16px; background: var(--a); color: var(--ai); font-size: 15px; line-height: 1.5"><span class="sr">You said: </span>{{m.text}}</div></sc-if>
+<sc-if value="{{m.isTyping}}" hint-placeholder-val="{{ false }}"><div class="cb-msg" role="status" style="align-self: flex-start; padding: 14px 16px; border-radius: 4px 16px 16px 16px; background: var(--bot); display: flex; gap: 5px"><span class="sr">Assistant is typing</span><span class="dot"></span><span class="dot b"></span><span class="dot c"></span></div></sc-if>
+<sc-if value="{{m.isBot}}" hint-placeholder-val="{{ false }}">
+<div class="cb-msg" style="align-self: flex-start; max-width: 82%; display: flex; flex-direction: column; gap: 8px">
+<div style="padding: 12px 14px; border-radius: 4px 16px 16px 16px; background: var(--bot); font-size: 15px; line-height: 1.5; display: flex; flex-direction: column; gap: 8px">
+<span><span class="sr">Assistant said: </span>{{m.shownText}}<sc-if value="{{m.streaming}}" hint-placeholder-val="{{ false }}"><span class="caret" aria-hidden="true"></span></sc-if></span>
+<sc-if value="{{m.showList}}" hint-placeholder-val="{{ false }}"><ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px"><sc-for list="{{m.list}}" as="li" hint-placeholder-count="3"><li>{{li}}</li></sc-for></ul></sc-if>
+<sc-if value="{{m.isUnknown}}" hint-placeholder-val="{{ false }}"><a class="btn btn-ghost" href="Contact.dc.html" style="min-height: 38px; font-size: 14px; align-self: flex-start; padding: 0 16px">Ask the team</a></sc-if>
+</div>
+<sc-if value="{{m.done}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px">
+<sc-if value="{{m.noSource}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: var(--mu)">No source found</span></sc-if>
+<sc-for list="{{m.sources}}" as="sc" hint-placeholder-count="1"><button type="button" class="src" onClick="{{sc.toggle}}" aria-expanded="{{sc.expanded}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{sc.icon}}"></path></svg><span class="sr">Source: </span>{{sc.t}}</button></sc-for>
+<sc-if value="{{m.canRate}}" hint-placeholder-val="{{ false }}"><span style="margin-left: auto; display: flex; gap: 2px">
+<button type="button" class="ib" onClick="{{m.up}}" aria-pressed="{{m.upP}}" aria-label="Helpful" style="color: {{m.upC}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="{{m.upF}}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H4V10zM7 10l4-7a2 2 0 0 1 3 2l-1 5h6a2 2 0 0 1 2 2.3l-1.4 7A2 2 0 0 1 17.6 21H7"></path></svg></button>
+<button type="button" class="ib" onClick="{{m.down}}" aria-pressed="{{m.downP}}" aria-label="Not helpful" style="color: {{m.downC}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="{{m.downF}}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 14V3h3v11zM17 14l-4 7a2 2 0 0 1-3-2l1-5H5a2 2 0 0 1-2-2.3l1.4-7A2 2 0 0 1 6.4 3H17"></path></svg></button>
+</span></sc-if>
+</div>
+<sc-if value="{{m.snip}}" hint-placeholder-val="{{ false }}"><div style="padding: 10px 12px; border-radius: 10px; border: 1px solid var(--bd); font-size: 13px; line-height: 1.5; color: var(--mu)"><span class="mono" style="display: block; font-size: 10px; letter-spacing: 0.06em; margin-bottom: 4px">FROM: {{m.snipFrom}}</span>“{{m.snip}}”</div></sc-if>
+<sc-if value="{{m.thanks}}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 12px; color: var(--mu)">{{m.thanks}}</span></sc-if>
+</sc-if>
+</div>
+</sc-if>
+</sc-for>
+</div>
+<form onSubmit="{{submit}}" style="padding: 12px 14px; border-top: 1px solid var(--bd); display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; gap: 8px; align-items: center">
+<label for="d-in" class="sr">Type your question</label>
+<input id="d-in" class="inp" type="text" autocomplete="off" placeholder="{{ph}}" value="{{draft}}" onInput="{{onDraft}}">
+<button type="submit" aria-label="Send" style="font: inherit; cursor: pointer; flex: none; width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--a); color: var(--ai); display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</div>
+<span style="font-size: 12px; color: var(--mu)">AI assistant using sample data · Answers come only from the sources on the right.</span>
+</form>
+</div>
+</div>
+
+<aside aria-labelledby="kn" style="flex: 1 1 340px; min-width: 0; max-width: 100%; display: flex; flex-direction: column; gap: 16px">
+<div style="border: 1px solid #E3E9F2; border-radius: 20px; overflow: hidden; background: #FFFFFF">
+<div style="padding: 18px 20px; border-bottom: 1px solid #EEF2F8; display: flex; flex-direction: column; gap: 4px">
+<h2 id="kn" style="margin: 0; font-size: 17px; font-weight: 600">What this assistant knows</h2>
+<span style="font-size: 13px; color: #4B5872">{{knNote}}</span>
+</div>
+<ul style="list-style: none; margin: 0; padding: 6px 0">
+<sc-for list="{{knowledge}}" as="k" hint-placeholder-count="6">
+<li class="krow" style="display: flex; gap: 12px; align-items: center; padding: 10px 20px; opacity: {{k.op}}">
+<span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 10px; background: {{k.bg}}; color: {{k.c}}; display: grid; place-items: center; flex: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{k.icon}}"></path></svg></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 14px; font-weight: 500">{{k.name}}</span><span style="font-size: 12px; color: #4B5872">{{k.meta}}</span></span>
+<sc-if value="{{k.used}}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 10px; padding: 3px 7px; border-radius: 999px; background: #EEF4FE; color: #0B4FB3">USED</span></sc-if>
+<sc-if value="{{k.locked}}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 10px; padding: 3px 7px; border-radius: 999px; background: #EEF2F8; color: #33405A">STAFF</span></sc-if>
+</li>
+</sc-for>
+</ul>
+</div>
+<div style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 15px; font-weight: 600">It won't answer</span>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{refused}}" as="r" hint-placeholder-count="4"><span style="font-size: 13px; padding: 4px 10px; border-radius: 999px; background: #F4F7FB; color: #33405A">{{r}}</span></sc-for></div>
+<span style="font-size: 13px; color: #4B5872; line-height: 1.5">Questions it can't answer go to the owner's "Unanswered" list, so the gap gets filled.</span>
+</div>
+</aside>
+</div>
+</section>
+
+<section style="padding: 0 24px 120px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.035em; font-weight: 600">How it works for your business</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 20px">
+<sc-for list="{{how}}" as="h" hint-placeholder-count="3">
+<li style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span class="mono" style="width: 44px; height: 44px; border-radius: 12px; background: #EEF4FE; color: #166FE5; display: grid; place-items: center; font-size: 14px">{{h.n}}</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600">{{h.t}}</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">{{h.d}}</p>
+</li>
+</sc-for>
+</ol>
+<div style="position: relative; border-radius: 28px; background: #1877F2; color: #FFFFFF; padding: clamp(32px, 5vw, 64px); overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 600px"><h2 style="margin: 0; font-size: clamp(28px, 3.4vw, 44px); letter-spacing: -0.035em; font-weight: 600">Want one trained on your business?</h2><p style="margin: 0; font-size: 17px; line-height: 1.6">We'll set it up with your information, your colours and your team's contact details.</p></div>
+<a class="btn btn-light" href="Book.dc.html">Book a call<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</div>
+</section>
+<footer style="background: #07101F; color: #FFFFFF; padding: 72px 24px 40px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: -0.04em"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>byteleaf</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #B7C3D9">Design, frontend, backend and AI integrations for established businesses.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">COMPANY</span>
+<a class="flink" href="Services.dc.html">Services</a><a class="flink" href="Process.dc.html">Process</a><a class="flink" href="Projects.dc.html">Projects</a><a class="flink" href="About.dc.html">About</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">GET IN TOUCH</span>
+<a class="flink" href="Contact.dc.html">Contact</a><a class="flink" href="Book.dc.html">Book a call</a><span style="color: #B7C3D9">[hello@yourdomain.co.za]</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">STUDIO</span>
+<span style="color: #B7C3D9; line-height: 1.6">Johannesburg<br>South Africa</span>
+</div>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 28px; border-top: 1px solid #1C2840; font-size: 12px; color: #8A98B3">
+<span>© 2026 byteleaf</span><span>Made in Jozi</span>
+</div>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { mode: 'public', msgs: [], draft: '', nid: 1, used: [] };
+this.t = [];
+}
+componentDidUpdate() { const el = typeof document !== 'undefined' && document.querySelector('[data-cb-log]'); if (el) el.scrollTop = el.scrollHeight; }
+componentWillUnmount() { this.t.forEach((x) => { clearTimeout(x); clearInterval(x); }); }
+kb() {
+return {
+battery: { q: 'Do you install batteries as well as panels?', a: 'Yes. We install panels, inverters and batteries, and we can add a battery to a system you already have. Most home installs take one to two days. Would you like a quote?', src: [['Services and packages', 'We supply and install solar panels, hybrid inverters and lithium batteries, and retrofit batteries to existing systems.']] },
+price: { q: 'How much does a home system cost?', a: 'Our Essential package (3 kW panels, 5 kWh battery) is R 68 500, and the Family package (5 kW, 10 kWh) is R 112 000. Both include installation and the electrical certificate.', src: [['Price list 2026', 'Essential 3 kW / 5 kWh — R 68 500 installed. Family 5 kW / 10 kWh — R 112 000 installed.'], ['Services and packages', 'All prices include installation and a certificate of compliance.']] },
+warranty: { q: 'What warranty do I get?', a: 'Every install comes with four warranties:', list: ['Panels: 25-year performance', 'Inverter: 10 years', 'Battery: 10 years', 'Our workmanship: 5 years'], src: [['Warranty terms', 'Panels carry a 25-year linear performance warranty; inverters and batteries 10 years; workmanship 5 years.']] },
+areas: { q: 'Which areas do you cover?', a: 'We install across Gauteng: Johannesburg, Pretoria and the East Rand. For other areas, ask the team and they will let you know.', src: [['About Khumalo Home Solar', 'Based in Johannesburg, installing across Gauteng.']] },
+checklist: { q: "What's on the install-day checklist?", a: 'The install-day checklist from procedure v3, in order:', list: ['Agree the shutdown window with the homeowner and isolate the DB board', 'Photograph the roof and board before any work', 'Mount panels and torque-check every clamp', 'Commission the inverter and set up the owner app', 'Test, issue the certificate of compliance and get the sign-off form signed'], staff: true, src: [['Install procedure v3 (internal)', 'Section 4 — Install day. Steps 4.1 to 4.5, signed off by the site lead.']] },
+claim: { q: 'How do I log a warranty claim?', a: 'Log it in [job system] under Warranty within 48 hours of the call. Attach photos of the fault and the serial number. Battery claims go to the supplier through their claims portal; panel and inverter claims are handled by us. The full form is in the source below.', staff: true, src: [['Warranty claims process (internal)', 'All claims logged within 48h. Batteries: supplier portal. Panels and inverters: in-house, see form WC-2.'], ['Warranty terms', 'Workmanship claims are covered for 5 years from installation.']] },
+discount: { q: 'What discount can I offer a customer?', a: "Sales staff may offer up to 5% off package prices without approval. Anything more needs a manager's sign-off in writing.", staff: true, src: [['Sales policy (internal)', 'Discretionary discount: up to 5% on package price. Above 5%: manager approval required.']] },
+unknown: { a: "I'm not sure about that, and I don't want to guess. I can pass your question to the team.", kind: 'unknown' }
+};
+}
+match(text, staff) {
+const s = text.toLowerCase();
+if (staff && /checklist|install day/.test(s)) return 'checklist';
+if (staff && /claim/.test(s)) return 'claim';
+if (staff && /discount/.test(s)) return 'discount';
+if (/batter/.test(s)) return 'battery';
+if (/price|cost|how much|package/.test(s)) return 'price';
+if (/warrant|guarantee/.test(s)) return 'warranty';
+if (/area|where|cover|pretoria|joburg|johannesburg/.test(s)) return 'areas';
+return 'unknown';
+}
+ask(key, text) {
+const k = this.kb()[key];
+const uid = this.state.nid, bid = uid + 1;
+this.setState((s) => ({ msgs: s.msgs.concat([{ id: uid, role: 'user', text: text }, { id: bid, role: 'typing' }]), nid: s.nid + 2, draft: '' }));
+const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+this.t.push(setTimeout(() => {
+this.setState((s) => ({ used: (k.src || []).map((x) => x[0]), msgs: s.msgs.map((m) => (m.id === bid ? { id: bid, role: 'bot', full: k.a, shown: reduce ? k.a.length : 0, src: k.src || [], list: k.list || null, kind: k.kind || 'answer', fb: '', open: -1 } : m)) }));
+if (reduce) return;
+const iv = setInterval(() => {
+let fin = false;
+this.setState((s) => ({ msgs: s.msgs.map((m) => { if (m.id !== bid) return m; const n = Math.min(m.full.length, m.shown + 3); fin = n >= m.full.length; return Object.assign({}, m, { shown: n }); }) }));
+if (fin) clearInterval(iv);
+}, 24);
+this.t.push(iv);
+}, 900));
+}
+patch(id, p) { this.setState((s) => ({ msgs: s.msgs.map((m) => (m.id === id ? Object.assign({}, m, p) : m)) })); }
+renderVals() {
+const st = this.state;
+const staff = st.mode === 'staff';
+const kb = this.kb();
+const DOC = 'M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5';
+const LOCK = 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4';
+const WEB = 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3a14 14 0 0 1 0 18';
+const TYPED = 'M4 6h16M4 12h10M4 18h7';
+const isInternal = (n) => /internal/.test(n);
+const T = staff
+? { a: '#0B1220', ai: '#FFFFFF', as: '#EEF2F8', surf: '#FFFFFF', tx: '#0B1220', mu: '#4B5872', bd: '#D5DEEB', bot: '#F4F7FB', head: '#F8FAFD', avR: '10px' }
+: { a: '#166FE5', ai: '#FFFFFF', as: '#EEF4FE', surf: '#FFFFFF', tx: '#0B1220', mu: '#4B5872', bd: '#E3E9F2', bot: '#F2F5F9', head: '#FFFFFF', avR: '50%' };
+const K = [
+['Services and packages', 'Web page · khumalosolar.example/services', WEB, false],
+['Price list 2026', 'PDF · 2 pages · 14 items', DOC, false],
+['Warranty terms', 'PDF · 6 pages · 22 items', DOC, false],
+['About Khumalo Home Solar', 'Typed by owner · 5 items', TYPED, false],
+['Install procedure v3 (internal)', 'PDF · staff only', LOCK, true],
+['Warranty claims process (internal)', 'Typed · staff only', LOCK, true],
+['Sales policy (internal)', 'PDF · staff only', LOCK, true]
+];
+const segOn = 'background: #FFFFFF; color: #0B1220; box-shadow: 0 1px 3px rgba(11,18,32,0.15);';
+const segOff = 'background: transparent; color: #4B5872;';
+const sKeys = staff ? ['checklist', 'claim', 'discount', 'warranty'] : ['battery', 'price', 'warranty', 'areas'];
+return {
+t: T,
+pubA: staff ? 'false' : 'true', staffA: staff ? 'true' : 'false', pubSeg: staff ? segOff : segOn, staffSeg: staff ? segOn : segOff,
+toPublic: () => { this.t.forEach((x) => { clearTimeout(x); clearInterval(x); }); this.setState({ mode: 'public', msgs: [], used: [] }); },
+toStaff: () => { this.t.forEach((x) => { clearTimeout(x); clearInterval(x); }); this.setState({ mode: 'staff', msgs: [], used: [] }); },
+reset: () => this.setState({ msgs: [], used: [] }),
+modeNote: staff ? 'Staff sign in first in the real product. Skipped in this demo.' : 'What a customer sees on the website.',
+botName: staff ? 'Khumalo staff assistant' : 'Khumalo assistant',
+botSub: staff ? 'Internal · fuller answers with documents' : "Answers from Khumalo's own info",
+greet: staff ? 'Hi. Ask me about procedures, policies and product details. I include the internal documents I used.' : "Hi, I'm the Khumalo Home Solar assistant. I can help with packages, prices, installation and warranty. What would you like to know?",
+ph: staff ? 'Ask about procedures, policies, products…' : 'Ask about packages, prices, warranty…',
+showSuggest: st.msgs.length === 0,
+suggest: sKeys.map((k) => ({ q: kb[k].q, pick: () => this.ask(k, kb[k].q) })),
+msgs: st.msgs.map((m) => {
+if (m.role === 'user') return { isUser: true, text: m.text };
+if (m.role === 'typing') return { isTyping: true };
+const done = m.shown >= m.full.length;
+return {
+isBot: true, shownText: m.full.slice(0, m.shown), streaming: !done, done: done,
+showList: done && !!m.list, list: m.list || [], isUnknown: done && m.kind === 'unknown', noSource: m.kind !== 'answer',
+sources: m.src.map((s, i) => ({ t: s[0], icon: isInternal(s[0]) ? LOCK : DOC, expanded: m.open === i ? 'true' : 'false', toggle: () => this.patch(m.id, { open: m.open === i ? -1 : i }) })),
+snip: m.open > -1 ? m.src[m.open][1] : '', snipFrom: m.open > -1 ? m.src[m.open][0] : '',
+canRate: m.kind === 'answer' && !m.fb,
+upP: 'false', downP: 'false', upF: 'none', downF: 'none', upC: 'var(--mu)', downC: 'var(--mu)',
+up: () => this.patch(m.id, { fb: 'up' }), down: () => this.patch(m.id, { fb: 'down' }),
+thanks: m.fb === 'up' ? 'Thanks for letting us know.' : m.fb === 'down' ? 'Thanks. The team will review this answer.' : ''
+};
+}),
+draft: st.draft,
+onDraft: (e) => this.setState({ draft: e.target.value }),
+submit: (e) => { if (e && e.preventDefault) e.preventDefault(); const v = st.draft.trim(); if (v) this.ask(this.match(v, staff), v); },
+knNote: staff ? 'Public sources plus 3 staff-only documents.' : '4 published sources · last updated [date]',
+knowledge: K.filter((k) => staff || !k[3]).map((k) => ({ name: k[0], meta: k[1], icon: k[2], locked: k[3], used: st.used.indexOf(k[0]) > -1, bg: k[3] ? '#EEF2F8' : '#EEF4FE', c: k[3] ? '#33405A' : '#166FE5', op: '1' })),
+refused: ['Medical or legal advice', 'Other companies', 'Personal finance', 'Anything not in the sources'],
+how: [
+{ n: '01', t: 'Add what you already have', d: 'Upload documents, paste text or point it at your website. Nothing needs to be rewritten first.' },
+{ n: '02', t: 'Check what AI cleaned up', d: 'AI organises everything into short, clear items. You approve, edit or reject each one before anything goes live.' },
+{ n: '03', t: 'Customers and staff get answers', d: 'Every answer shows its source. Questions it cannot answer come back to you to fill the gap.' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

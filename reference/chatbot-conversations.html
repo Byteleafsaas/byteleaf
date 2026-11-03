@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge assistant — Conversations</title>
+<!-- REFERENCE BUILD generated from design/CbConversations.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+:focus-visible{outline:3px solid #166FE5;outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:#0F5FCC;color:#FFFFFF;box-shadow:0 10px 24px -10px rgba(22,111,229,.7)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.btn-danger{background:#FFFFFF;color:#B42318;border:1px solid #F1C9C5}
+.btn-danger:hover{background:#FEF3F2}
+.btn-ok{background:#0B7A55;color:#FFFFFF}
+.btn-ok:hover:not(:disabled){background:#086545;color:#FFFFFF}
+.btn-ok:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.search{font:inherit;font-size:15px;width:240px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:#166FE5;background:#FFFFFF;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.search::placeholder{color:#6B7891}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:46px;padding:11px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:#166FE5;box-shadow:0 0 0 4px rgba(24,119,242,.15)}
+.field::placeholder{color:#6B7891}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:#166FE5;color:#FFFFFF}
+.snav.off{opacity:.55;cursor:default}.snav.off:hover{background:transparent;color:#B7C3D9}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.row{transition:background .15s}.row:hover{background:#F8FAFD}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.ibtn{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.ibtn:hover{border-color:#D5DEEB;background:#FFFFFF;color:#166FE5}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+.ai{display:inline-flex;align-items:center;gap:5px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#F1ECFE;color:#5B21B6}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.scrim{animation:fadein .2s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.modal{animation:pop .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bar{from{background-position:0 0}to{background-position:40px 0}}
+.prog{background-image:linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.25) 50%,rgba(255,255,255,.25) 75%,transparent 75%);background-size:20px 20px;animation:bar 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(24,119,242,.5)}100%{box-shadow:0 0 0 8px rgba(24,119,242,0)}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:#4B5872;animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:#166FE5;vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot,.wscard{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.hide-sm{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.crow{font:inherit;cursor:pointer;width:100%;text-align:left;display:flex;flex-direction:column;gap:6px;padding:14px 16px;border:0;border-radius:12px;background:transparent;color:#0B1220;transition:background .15s}
+.crow:hover{background:#F4F7FB}
+.fchip{font:inherit;cursor:pointer;min-height:34px;padding:0 11px;border-radius:999px;font-size:13px;font-weight:500;transition:all .2s;white-space:nowrap}
+.sel{font:inherit;font-size:14px;min-height:40px;padding:0 34px 0 12px;border:1px solid #D5DEEB;border-radius:10px;background:#FFFFFF;color:#0B1220}
+.redact{font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;padding:2px 6px;border-radius:6px;background:#0B1220;color:#FFFFFF;white-space:nowrap}
+.tsrc{display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:0 9px;border-radius:999px;border:1px solid #E3E9F2;background:#FFFFFF;color:#4B5872;font-size:12px}
+.flag{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.45}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB">
+<aside class="side" style="flex: 0 0 264px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; box-sizing: border-box">
+<a href="admin-dashboard.html" aria-label="byteleaf admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byteleaf</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #6FAEFF; border: 1px solid #2C5BA8; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<div class="wscard" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span class="mono" style="font-size: 10px; letter-spacing: 0.08em; color: #8A98B3">KNOWLEDGE ASSISTANT</span>
+<button type="button" style="font: inherit; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border-radius: 10px; border: 1px solid #22345A; background: #07101F; color: #FFFFFF; text-align: left">
+<span aria-hidden="true" style="width: 26px; height: 26px; border-radius: 50%; background: #E8A317; display: grid; place-items: center; flex: none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path></svg></span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Khumalo Home Solar</span><span style="font-size: 11px; color: #8A98B3">Demo client · switch</span></span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A98B3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"></path></svg>
+</button>
+</div>
+<nav aria-label="Assistant admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<a class="snav" href="chatbot-sources.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"></path></svg><span style="flex: 1">Knowledge sources</span></a>
+<a class="snav" href="chatbot-review.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg><span style="flex: 1">Review &amp; publish</span><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">9<span class="sr"> to do</span></span></a>
+<a class="snav" href="chatbot-test.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path></svg><span style="flex: 1">Test assistant</span></a>
+<a class="snav" href="chatbot-unanswered.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg><span style="flex: 1">Unanswered</span><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #1877F2; color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">4<span class="sr"> to do</span></span></a>
+<a class="snav on" href="chatbot-conversations.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg><span style="flex: 1">Conversations</span></a>
+<a class="snav" href="chatbot-settings.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg><span style="flex: 1">Assistant settings</span></a>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<a class="snav" href="admin-dashboard.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>byteleaf admin</a>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #1877F2; display: grid; place-items: center; font-weight: 600; flex: none">G</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">Gerald</span><span style="font-size: 12px; color: #8A98B3">Administrator</span></span>
+<a href="admin-login.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span class="mono" style="font-size: 12px; color: #4B5872">Khumalo Home Solar / Knowledge</span>
+<h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Conversations</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<label for="rng" class="sr">Date range</label>
+<select id="rng" class="sel"><option>Last 7 days</option><option>Last 30 days</option><option>Today</option></select>
+<label for="chn" class="sr">Channel</label>
+<select id="chn" class="sel" onChange="{{onChannel}}"><option value="all">All channels</option><option value="web">Website widget</option><option value="staff">Staff assistant</option></select>
+</div>
+</header>
+
+<div class="pad" style="padding: 24px 32px 48px; box-sizing: border-box; width: 100%; max-width: 1400px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<div style="flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 12px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div class="panel" style="flex: 1 1 130px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 28px; font-weight: 600; letter-spacing: -0.03em">{{s.n}}</span><span class="hint" style="font-size: 14px">{{s.t}}</span></div>
+</sc-for>
+</div>
+
+<div role="note" style="flex: 1 1 100%; display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; border-radius: 14px; background: #EEF4FE; color: #0B3A80; font-size: 14px; line-height: 1.5">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 2px"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+<span>Visitors are anonymous. Phone numbers, emails and ID numbers are removed before chats are saved, and chats are deleted after 30 days. Handover details live in <a href="admin-messages.html">Messages</a>, not here.</span>
+</div>
+
+<section class="panel" aria-labelledby="cl-h" style="flex: 1 1 360px; max-width: 100%; min-width: 0; overflow: hidden">
+<h2 id="cl-h" class="sr">Conversation list</h2>
+<div style="padding: 14px; border-bottom: 1px solid #EEF2F8; display: flex; flex-direction: column; gap: 10px">
+<div style="position: relative">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7891" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 13px; top: 13px"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+<label for="cq" class="sr">Search conversations</label>
+<input id="cq" class="search" type="search" value="{{q}}" onInput="{{onQ}}" placeholder="Search what people asked" style="width: 100%">
+</div>
+<div role="group" aria-label="Filter" style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4"><button type="button" class="fchip" aria-pressed="{{f.p}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}} <span class="mono" style="font-size: 11px; opacity: 0.8">{{f.count}}</span></button></sc-for>
+</div>
+</div>
+<sc-if value="{{none}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 40px 20px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center">
+<h3 style="margin: 0; font-size: 16px">No conversations match</h3>
+<p class="hint" style="margin: 0; font-size: 14px; max-width: 260px; line-height: 1.5">Try another filter or search word.</p>
+<button type="button" class="btn btn-ghost btn-sm" onClick="{{reset}}" style="margin-top: 6px">Clear filters</button>
+</div>
+</sc-if>
+<div style="padding: 8px; display: flex; flex-direction: column; gap: 2px; max-height: 720px; overflow-y: auto">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+<button type="button" class="crow" onClick="{{r.pick}}" aria-current="{{r.cur}}" style="{{r.style}}">
+<span style="display: flex; justify-content: space-between; gap: 10px; align-items: baseline"><span style="font-size: 14px; font-weight: 600; line-height: 1.4">{{r.first}}</span><span class="mono" style="font-size: 11px; color: #4B5872; white-space: nowrap">{{r.when}}</span></span>
+<span style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center">
+<sc-for list="{{r.tags}}" as="t" hint-placeholder-count="2"><span class="pill" style="{{t.s}}">{{t.l}}</span></sc-for>
+<span class="hint" style="font-size: 12px">{{r.meta}}</span>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section class="panel slide" aria-labelledby="tr-h" style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column">
+<sc-if value="{{hasCur}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 18px 22px; border-bottom: 1px solid #EEF2F8; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="mono" style="font-size: 12px; color: #4B5872">{{cur.who}} · {{cur.channel}} · {{cur.when}}</span>
+<h2 id="tr-h" style="margin: 0; font-size: 20px; letter-spacing: -0.02em; font-weight: 600">{{cur.first}}</h2>
+</div>
+<button type="button" class="btn btn-danger btn-sm" onClick="{{askDelete}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>Delete</button>
+</div>
+<ol aria-label="Transcript" style="list-style: none; margin: 0; padding: 22px; display: flex; flex-direction: column; gap: 14px; background: #FBFCFE">
+<sc-for list="{{cur.msgs}}" as="m" hint-placeholder-count="5">
+<li style="display: flex; flex-direction: column; gap: 6px; align-items: {{m.align}}">
+<span class="mono" style="font-size: 11px; color: #6B7891">{{m.label}} · {{m.t}}</span>
+<div style="max-width: min(560px, 92%); padding: 12px 15px; font-size: 15px; line-height: 1.55; {{m.bubble}}">{{m.a}}<sc-if value="{{m.hasRed}}" hint-placeholder-val="{{ false }}"><span class="redact">{{m.red}}</span></sc-if>{{m.b}}</div>
+<sc-if value="{{m.hasSrc}}" hint-placeholder-val="{{ false }}">
+<span style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{m.srcs}}" as="s" hint-placeholder-count="1"><span class="tsrc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M14 3v6h6"></path></svg>{{s}}</span></sc-for></span>
+</sc-if>
+<sc-if value="{{m.hasFlag}}" hint-placeholder-val="{{ false }}">
+<div class="flag" style="max-width: min(560px, 92%); {{m.flagStyle}}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="{{m.flagIcon}}"></path></svg>
+<span style="flex: 1 1 200px">{{m.flag}}</span>
+<sc-if value="{{m.hasFix}}" hint-placeholder-val="{{ false }}"><a class="btn btn-ghost btn-sm" href="{{m.fixHref}}" style="min-height: 32px">{{m.fixLabel}}</a></sc-if>
+</div>
+</sc-if>
+</li>
+</sc-for>
+</ol>
+<div style="padding: 14px 22px; border-top: 1px solid #EEF2F8; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; color: #4B5872">
+<span>Outcome: <strong style="color: #0B1220">{{cur.outcome}}</strong></span>
+<span>Sources used: <strong style="color: #0B1220">{{cur.nsrc}}</strong></span>
+<span>Deleted automatically on {{cur.expires}}</span>
+</div>
+</sc-if>
+<sc-if value="{{noCur}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 56px 24px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center">
+<h2 id="tr-h" style="margin: 0; font-size: 18px">{{blankTitle}}</h2>
+<p class="hint" style="margin: 0; font-size: 14px; max-width: 320px; line-height: 1.5">{{blankText}}</p>
+</div>
+</sc-if>
+</section>
+
+</div>
+</main>
+
+<sc-if value="{{confirm}}" hint-placeholder-val="{{ false }}">
+<div class="scrim" onClick="{{cancelDelete}}" style="position: fixed; inset: 0; z-index: 50; background: rgba(11,18,32,.45); display: grid; place-items: center; padding: 16px">
+<div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="del-h" aria-describedby="del-d" onClick="{{stop}}" style="width: 100%; max-width: 440px; box-sizing: border-box; background: #FFFFFF; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="del-h" style="margin: 0; font-size: 20px; letter-spacing: -0.02em">Delete this conversation?</h2>
+<p id="del-d" style="margin: 0; font-size: 15px; line-height: 1.55; color: #33405A">It's removed straight away and can't be recovered. Any unanswered question it raised stays in Unanswered.</p>
+<span style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-ghost" onClick="{{cancelDelete}}">Keep it</button><button type="button" class="btn btn-danger" onClick="{{doDelete}}" style="background: #B42318; color: #FFFFFF; border: 0">Delete</button></span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 60; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 20px 40px -20px rgba(11,18,32,.6); max-width: calc(100% - 32px); box-sizing: border-box">Conversation deleted.</div>
+</sc-if>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { filter: 'all', q: '', ch: 'all', sel: 'c2', confirm: false, toast: false, deleted: [] };
+}
+componentDidMount() { this.onKey = (e) => { if (e.key === 'Escape' && this.state.confirm) this.setState({ confirm: false }); }; document.addEventListener('keydown', this.onKey); }
+componentWillUnmount() { clearTimeout(this.tt); document.removeEventListener('keydown', this.onKey); }
+data() {
+const B = (a, src, extra) => Object.assign({ who: 'b', a: a, srcs: src || [] }, extra || {});
+const U = (a, extra) => Object.assign({ who: 'u', a: a }, extra || {});
+return [
+{ id: 'c1', who: 'Visitor 4F2A', channel: 'Website', when: 'Today 09:12', expires: '2 Dec', first: 'Do you fit solar geysers?', out: ['unknown'], msgs: [U('Do you fit solar geysers?', { t: '09:12' }), B("I'm not sure about that one. I don't want to guess — tap “Ask the team” and someone will reply.", [], { t: '09:12', flag: 'unknown' }), U('ok thanks', { t: '09:13' })] },
+{ id: 'c2', who: 'Visitor 9B71', channel: 'Website', when: 'Today 08:40', expires: '2 Dec', first: 'How much is the family package?', out: ['down', 'handover'], msgs: [U('How much is the family package?', { t: '08:40' }), B('The Family package (5 kW panels, 10 kWh battery) costs from R 118 500 installed.', ['Services and packages'], { t: '08:40', flag: 'down', reason: 'Wrong answer' }), U('your price list says 112 000. can someone call me on ', { t: '08:41', red: 'phone removed', b: '' }), B("I can't take contact details in the chat, but the team can call you back. Tap “Talk to a person” to leave your details safely.", [], { t: '08:41', flag: 'handover' })] },
+{ id: 'c3', who: 'Visitor 22D0', channel: 'Website', when: 'Yesterday 17:05', expires: '1 Dec', first: 'Do you install in Pretoria?', out: ['up'], msgs: [U('Do you install in Pretoria?', { t: '17:05' }), B('Yes. We install across Gauteng, including Pretoria (Tshwane), Johannesburg and the East Rand.', ['Services and packages'], { t: '17:05', flag: 'up' }), U('and how long does it take', { t: '17:06' }), B('Most home installations take one to two days, depending on the roof.', ['Services and packages'], { t: '17:06' })] },
+{ id: 'c4', who: 'Sipho M.', channel: 'Staff', when: 'Yesterday 14:22', expires: '1 Dec', first: 'How do I log a warranty claim for a battery?', out: ['ok'], msgs: [U('How do I log a warranty claim for a battery?', { t: '14:22' }), B('Log it within 7 days of the fault. Collect the serial number, an inverter error-log export and photos, then email claims with the job number.', ['Warranty claims process'], { t: '14:22' })] },
+{ id: 'c5', who: 'Visitor 7E13', channel: 'Website', when: 'Mon 11:48', expires: '30 Nov', first: 'Can I get a discount?', out: ['refused'], msgs: [U('Can I get a discount?', { t: '11:48' }), B("I can't help with discounts in chat. The team can talk you through current offers — tap “Ask the team”.", [], { t: '11:48', flag: 'refused' })] },
+{ id: 'c6', who: 'Visitor 0C9F', channel: 'Website', when: 'Mon 10:02', expires: '30 Nov', first: 'Can I pay it off monthly?', out: ['up'], msgs: [U('Can I pay it off monthly?', { t: '10:02' }), B('Yes. You can spread the cost over 12 to 60 months through our finance partner.', ['Finance FAQ'], { t: '10:02', flag: 'up' })] }
+];
+}
+renderVals() {
+const st = this.state;
+const T = { unknown: ["DIDN'T KNOW", 'background: #FEF3F2; color: #912018;'], down: ['NOT HELPFUL', 'background: #FFF4E0; color: #8A5200;'], up: ['HELPFUL', 'background: #E6F6EF; color: #0B6B4B;'], handover: ['HANDED OVER', 'background: #EEF4FE; color: #0B3A80;'], refused: ['REFUSED', 'background: #EEF2F8; color: #33405A;'], ok: ['ANSWERED', 'background: #E6F6EF; color: #0B6B4B;'] };
+const F = { all: () => true, handover: (c) => c.out.indexOf('handover') > -1, down: (c) => c.out.indexOf('down') > -1, unknown: (c) => c.out.indexOf('unknown') > -1 };
+const all = this.data().filter((c) => st.deleted.indexOf(c.id) < 0).filter((c) => st.ch === 'all' || (st.ch === 'staff') === (c.channel === 'Staff'));
+const q = st.q.trim().toLowerCase();
+const shown = all.filter(F[st.filter]).filter((c) => !q || c.msgs.some((m) => (m.a || '').toLowerCase().indexOf(q) > -1));
+const cur = shown.find((c) => c.id === st.sel) || null;
+const FL = {
+unknown: ['It had no source for this. The question was added to Unanswered.', 'background: #FEF3F2; color: #912018;', 'M12 8v5M12 16h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'CbUnanswered.dc.html', 'Add answer'],
+down: ['', 'background: #FFF4E0; color: #6B3F00;', 'M10 15v4a3 3 0 0 0 3 3l4-9V2H5.7a2 2 0 0 0-2 1.7l-1.4 9A2 2 0 0 0 4.3 15zM17 2h3v11h-3', 'CbReview.dc.html', 'Fix in Review'],
+up: ['Rated helpful.', 'background: #E6F6EF; color: #0B4D36;', 'M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.3a2 2 0 0 0 2-1.7l1.4-9A2 2 0 0 0 19.7 9zM7 22H4V11h3', '', ''],
+handover: ['Visitor opened the handover form. Their details are in Messages.', 'background: #EEF4FE; color: #0B3A80;', 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z', 'AdminMessages.dc.html', 'Open in Messages'],
+refused: ['Refused topic: discounts.', 'background: #EEF2F8; color: #33405A;', 'M18 6L6 18M6 6l12 12', 'CbSettings.dc.html', 'Refused topics']
+};
+const count = (k) => all.filter(F[k]).length;
+const OUT = { unknown: "Didn't know", down: 'Rated not helpful, then handed over', up: 'Answered, rated helpful', handover: 'Handed over', refused: 'Refused (topic not allowed)', ok: 'Answered' };
+return {
+stats: [{ n: '142', t: 'conversations, last 7 days' }, { n: '86%', t: 'answered from sources' }, { n: '91%', t: 'of ratings were helpful' }, { n: '9', t: 'handed over to the team' }],
+q: st.q, onQ: (e) => this.setState({ q: e.target.value }),
+onChannel: (e) => this.setState({ ch: e.target.value }),
+filters: [['all', 'All'], ['down', 'Not helpful'], ['unknown', "Didn't know"], ['handover', 'Handed over']].map((f) => { const on = st.filter === f[0]; return { label: f[1], count: String(count(f[0])), p: on ? 'true' : 'false', style: on ? 'border: 1px solid #0B1220; background: #0B1220; color: #FFFFFF;' : 'border: 1px solid #D5DEEB; background: #FFFFFF; color: #33405A;', pick: () => this.setState({ filter: f[0] }) }; }),
+none: !shown.length, reset: () => this.setState({ filter: 'all', q: '', ch: 'all' }),
+rows: shown.map((c) => { const on = cur && c.id === cur.id; return { first: c.first, when: c.when, meta: c.who + ' · ' + c.msgs.length + ' messages', tags: c.out.map((o) => ({ l: T[o][0], s: T[o][1] })), cur: on ? 'true' : 'false', style: on ? 'background: #EEF4FE; box-shadow: inset 0 0 0 1.5px #166FE5;' : '', pick: () => this.setState({ sel: c.id }) }; }),
+hasCur: !!cur, noCur: !cur,
+blankTitle: shown.length ? 'Pick a conversation' : 'Nothing to show',
+blankText: shown.length ? 'Choose one from the list to read the full chat, the sources it used and any ratings.' : 'Clear the filters to see conversations again.',
+cur: cur ? {
+first: '“' + cur.first + '”', who: cur.who, channel: cur.channel, when: cur.when, expires: cur.expires,
+outcome: OUT[cur.out[0]], nsrc: String(cur.msgs.reduce((n, m) => n + (m.srcs ? m.srcs.length : 0), 0)),
+msgs: cur.msgs.map((m) => { const bot = m.who === 'b'; const f = m.flag && FL[m.flag]; return {
+align: bot ? 'flex-start' : 'flex-end', label: bot ? 'Assistant' : cur.who, t: m.t,
+bubble: bot ? 'background: #EEF2F8; color: #0B1220; border-radius: 16px 16px 16px 6px;' : (cur.channel === 'Staff' ? 'background: #0B1220;' : 'background: #166FE5;') + ' color: #FFFFFF; border-radius: 16px 16px 6px 16px;',
+a: m.a, hasRed: !!m.red, red: m.red ? '[' + m.red + ']' : '', b: m.b || '',
+hasSrc: !!(m.srcs && m.srcs.length), srcs: m.srcs || [],
+hasFlag: !!f, flag: f ? (m.flag === 'down' ? 'Rated not helpful · reason: ' + m.reason + '. Two sources disagree on this price.' : f[0]) : '', flagStyle: f ? f[1] : '', flagIcon: f ? f[2] : '', hasFix: !!(f && f[3]), fixHref: f ? f[3] : '', fixLabel: f ? f[4] : ''
+}; })
+} : { first: '', who: '', channel: '', when: '', expires: '', outcome: '', nsrc: '', msgs: [] },
+confirm: st.confirm, askDelete: () => this.setState({ confirm: true }),
+cancelDelete: () => this.setState({ confirm: false }), stop: (e) => e.stopPropagation(),
+doDelete: () => { const rest = shown.filter((c) => !cur || c.id !== cur.id); this.setState({ confirm: false, toast: true, deleted: st.deleted.concat(cur ? [cur.id] : []), sel: rest.length ? rest[0].id : '' }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: false }), 3000); },
+toast: st.toast
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+    if (window.__mounted && comp.componentDidUpdate) comp.componentDidUpdate();
+    if (!window.__mounted) { window.__mounted = true; if (comp.componentDidMount) comp.componentDidMount(); }
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>
