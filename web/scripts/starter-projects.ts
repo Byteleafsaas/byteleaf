@@ -24,7 +24,8 @@ const STARTERS = [
       "Customers ask the same questions all day: prices, opening hours, what's included, how to book. Staff lose time answering them, and the answers are scattered across a website, price lists, PDFs and chat messages.",
     whatWeDid:
       "We gather the business's information by upload, by typing it in, or by scraping the website. AI then cleans it up and organises it into a knowledge base. The assistant answers only from that knowledge base and says so when it doesn't know. It can face the public on a website or stay internal for staff, and an admin screen lets the owner review and edit what it knows.",
-    result: 'Demo coming soon, built around sample business data. Real numbers will be added once a client is live.',
+    result: 'Try it on the demo page, built around a made-up business. Real numbers will be added once a client is live.',
+    demoUrl: '/projects/knowledge-chatbot',
     featured: true,
     live: false,
   },

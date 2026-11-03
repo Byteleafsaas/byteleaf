@@ -121,6 +121,8 @@ const projectSchema = new Schema(
     result: { type: String, default: '' },
     live: { type: Boolean, default: false },
     featured: { type: Boolean, default: false },
+    // Where visitors can try or see the project (a page on this site, or another site). Optional.
+    demoUrl: { type: String, default: '' },
     pattern: { type: Number, default: 0 },
     sortOrder: { type: Number, default: 0 },
     cover: { type: new Schema({ key: String, width: Number, height: Number, alt: String }, { _id: false }), default: null },

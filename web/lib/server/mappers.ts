@@ -71,7 +71,7 @@ export function toMessage(d: Any): Message {
 export function toProject(d: Any): Project {
   return {
     id: id(d), slug: d.slug, name: d.name, client: d.client ?? '', type: d.type ?? '', industry: d.industry ?? 'Other', categories: d.categories ?? [], stack: d.stack ?? [],
-    summary: d.summary ?? '', challenge: d.challenge ?? '', whatWeDid: d.whatWeDid ?? '', result: d.result ?? '', live: !!d.live, featured: !!d.featured,
+    summary: d.summary ?? '', challenge: d.challenge ?? '', whatWeDid: d.whatWeDid ?? '', result: d.result ?? '', live: !!d.live, featured: !!d.featured, demoUrl: d.demoUrl ?? '',
     updated: d.live ? shortDay(new Date(d.updatedAt)) : 'Draft', pattern: ((d.pattern ?? 0) % 3) as 0 | 1 | 2,
     cover: img(d.cover), gallery: (d.gallery ?? []).map(img).filter((x: ImageRef | null): x is ImageRef => !!x),
   };

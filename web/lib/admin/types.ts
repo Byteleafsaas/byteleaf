@@ -59,6 +59,7 @@ export type Project = {
   result: string;
   live: boolean;
   featured: boolean; // at most one true
+  demoUrl: string; // optional: a page to try or see the project
   updated: string; // display label
   pattern: 0 | 1 | 2; // placeholder cover pattern until an image is uploaded
   cover: ImageRef | null;

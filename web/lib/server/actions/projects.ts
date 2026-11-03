@@ -28,6 +28,7 @@ const projectSchema = z.object({
   result: z.string().max(2000).default(''),
   live: z.boolean().default(false),
   featured: z.boolean().default(false),
+  demoUrl: z.string().trim().max(300).refine((v) => v === '' || /^(\/(?!\/)|https?:\/\/)/.test(v), 'Use a page on this site like /projects/demo, or a full address starting with https://.').default(''),
   cover: imageRef.nullable().default(null),
   gallery: z.array(imageRef).max(8).default([]),
 });

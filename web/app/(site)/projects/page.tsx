@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
 import Footer from '@/components/Footer';
 import { PROJECTS } from '@/lib/content';
@@ -21,7 +22,7 @@ export default async function Projects() {
   // With nothing live yet, the design placeholders stay on show.
   const featured = live.find((p) => p.featured) ?? live[0];
   const rest: GridProject[] = live.length
-    ? live.filter((p) => p !== featured).map((p) => ({ id: p.id, type: p.type, name: p.name, text: p.summary, tags: p.stack, cats: p.categories, pattern: p.pattern, cover: p.cover }))
+    ? live.filter((p) => p !== featured).map((p) => ({ id: p.id, slug: p.slug, type: p.type, name: p.name, text: p.summary, tags: p.stack, cats: p.categories, pattern: p.pattern, cover: p.cover }))
     : PROJECTS.map((p, i) => ({ id: String(i), type: p.type, name: '[PROJECT NAME]', text: p.text, tags: p.tags, cats: p.cats, pattern: i }));
 
   const facts = featured
@@ -56,13 +57,14 @@ export default async function Projects() {
           </div>
           <div className={s.featBody}>
             <div className={s.badges}><span className="on">Featured</span><span>{featured ? featured.industry : '[Industry]'}</span></div>
-            <h2>{featured ? featured.name : '[PROJECT NAME]'}</h2>
+            <h2>{featured ? <Link href={`/projects/${featured.slug}`} className={s.cardLink}>{featured.name}</Link> : '[PROJECT NAME]'}</h2>
             <div className={s.facts}>
               {facts.map((f) => (
                 <div key={f.k} className={s.fact}><span>{f.k}</span><p>{f.v}</p></div>
               ))}
             </div>
             <div className="tags">{stack.map((t, i) => <span key={t + i}>{t}</span>)}</div>
+            {featured && <span className={s.viewMore} aria-hidden="true">View project →</span>}
           </div>
         </article>
       </section>

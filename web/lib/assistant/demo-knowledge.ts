@@ -25,19 +25,14 @@ export const DEMO_KNOWLEDGE: DemoItem[] = [
   { sourceName: 'Services and packages', sourceType: 'web', title: 'What we install', text: 'We supply and install solar panels, hybrid inverters and lithium batteries, and retrofit batteries to existing systems.' },
   { sourceName: 'Services and packages', sourceType: 'web', title: 'What prices include', text: 'All prices include installation and a certificate of compliance.' },
   { sourceName: 'Services and packages', sourceType: 'web', title: 'Free site assessment', text: 'We offer a free site assessment anywhere we install. A technician checks your roof, your electrical board and how much power you use, then sends a written quote within 48 hours.' },
-  { sourceName: 'Services and packages', sourceType: 'web', title: 'Family package from the website', text: 'Family package: 5 kW of panels and a 10 kWh battery. From R 118 500 installed.' },
   { sourceName: 'Price list 2026.pdf', sourceType: 'file', title: 'Essential package price', text: 'Essential package: 3 kW of panels and a 5 kWh battery. R 68 500 installed.' },
+  { sourceName: 'Price list 2026.pdf', sourceType: 'file', title: 'Family package price', text: 'Family package: 5 kW of panels and a 10 kWh battery. R 112 000 installed.' },
   { sourceName: 'Warranty terms.pdf', sourceType: 'file', title: 'Warranty periods', text: 'Panels carry a 25-year linear performance warranty. Inverters carry a 10-year warranty. Batteries carry a 10-year warranty. Our installation workmanship is covered for 5 years.' },
   { sourceName: 'Installation process', sourceType: 'file', title: 'How installation works', text: 'Installation happens in four steps. First we visit for a free site assessment to check your roof, your electrical board and how much power you use. Within 48 hours you get a written quote. Once you accept, we book the install. Most homes take one to two days, and you will be without power for about four hours on the final day while we connect everything. Then we commission the system and walk you through it.' },
   { sourceName: 'Finance FAQ', sourceType: 'typed', title: 'Paying monthly', text: 'You can spread the cost over 12 to 60 months through [finance partner]. Approval takes about two working days.', link: { label: 'Finance options', href: '#finance' } },
   { sourceName: 'About Khumalo Home Solar', sourceType: 'typed', title: 'Where we work', text: 'Khumalo Home Solar is based in Johannesburg and installs across Gauteng. Our service area covers Johannesburg, Pretoria and the East Rand. For areas outside Gauteng, ask the team.' },
 
   // Waiting for the owner in Review & publish.
-  {
-    sourceName: 'Price list 2026.pdf', sourceType: 'file', status: 'pending', title: 'Family package price', where: 'page 1',
-    text: 'Family package: 5 kW of panels and a 10 kWh battery. R 112 000 installed.', original: 'FAMILY 5kW / 10kWh ........ R112,000\nincl. install + CoC',
-    asks: 'How much is the family package?', conflictWith: 'Family package from the website',
-  },
   {
     sourceName: 'Price list 2026.pdf', sourceType: 'file', status: 'pending', title: 'Backup-only battery', where: 'page 2 · scanned',
     text: 'A backup-only battery (5.5 kWh lithium, no panels) costs R 39 900 installed.', original: 'BACKUP ONLY  5,5kWh lithium\nR39 9OO installed',
@@ -105,3 +100,6 @@ export const DEMO_PROBLEMS: Record<string, { state: 'failed' | 'nothing'; proble
   'Old brochure 2023.pdf': { state: 'failed', problem: 'Couldn’t read this file. It is a scanned image with no text in it. Upload a text PDF, or open it and paste the text instead.' },
   Blog: { state: 'nothing', problem: 'These pages are news posts with no prices, services or policies. Try your services page instead, or add the information as text.' },
 };
+
+/** Items that used to be in the demo and must be removed when the demo data is loaded again. */
+export const RETIRED_TITLES = ['Family package from the website'];

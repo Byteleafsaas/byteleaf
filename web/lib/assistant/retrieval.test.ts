@@ -40,11 +40,15 @@ describe('retrieval on the demo knowledge', () => {
 
   it('puts the package prices in the top three for a price question', () => {
     const titles = rank('How much does a home system cost?', items).slice(0, 3).map((r) => r.item.title);
-    expect(titles).toEqual(expect.arrayContaining(['Essential package price']));
+    expect(titles).toEqual(expect.arrayContaining(['Essential package price', 'Family package price']));
+  });
+
+  it('answers the family package price from the price list', () => {
+    expect(top('How much is the family package?').item.title).toBe('Family package price');
   });
 
   it('does not answer a family question from the essential package alone', () => {
-    const without = items.filter((i) => i.title !== 'Family package from the website');
+    const without = items.filter((i) => i.title !== 'Family package price');
     expect(rank('How much is the family package?', without)[0]?.coverage ?? 0).toBeLessThan(0.55);
   });
 

@@ -24,8 +24,8 @@ export default async function Home() {
   // Selected work: the first three live projects (featured first); the design placeholders show until there are some.
   const live = (await getLiveProjects()).slice(0, 3);
   const homeProjects = live.length
-    ? live.map((p) => ({ id: p.id, type: [p.type, p.categories.join(' + ')].filter(Boolean).join(' · '), name: p.name, text: p.summary, pattern: p.pattern, cover: p.cover }))
-    : HOME_PROJECTS.map((p) => ({ id: p.type, type: p.type, name: '[PROJECT NAME]', text: '[One line on what you built and the outcome for the client.]', pattern: p.pattern, cover: null as null }));
+    ? live.map((p) => ({ id: p.id, slug: p.slug as string | null, type: [p.type, p.categories.join(' + ')].filter(Boolean).join(' · '), name: p.name, text: p.summary, pattern: p.pattern, cover: p.cover }))
+    : HOME_PROJECTS.map((p) => ({ id: p.type, slug: null as string | null, type: p.type, name: '[PROJECT NAME]', text: '[One line on what you built and the outcome for the client.]', pattern: p.pattern, cover: null as null }));
   return (
     <main>
       <section className={`gridpaper ${s.hero}`}>
@@ -155,7 +155,7 @@ export default async function Home() {
           </div>
           <div className={s.projGrid}>
             {homeProjects.map((p) => (
-              <Link key={p.id} href="/projects" className={`card ${s.proj}`}>
+              <Link key={p.id} href={p.slug ? `/projects/${p.slug}` : '/projects'} className={`card ${s.proj}`}>
                 <div aria-hidden="true" className={`${s.shot} ${p.cover ? '' : s[`p${p.pattern}`]}`} style={p.cover ? { position: 'relative' } : undefined}>
                   {p.cover ? <Image src={`/media/${p.cover.key}`} alt="" fill sizes="(max-width: 760px) 100vw, 400px" style={{ objectFit: 'cover' }} /> : <span className={s.shotLabel}>[PROJECT SCREENSHOT]</span>}
                 </div>

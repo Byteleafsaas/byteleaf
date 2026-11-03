@@ -2,7 +2,7 @@
 //   npm run seed-assistant
 // Safe to re-run: sources and items are matched by name and title and refreshed. Anything the owner adds in the admin is left alone.
 import mongoose from 'mongoose';
-import { DEMO_KNOWLEDGE, DEMO_PROBLEMS, DEMO_SOURCES } from '@/lib/assistant/demo-knowledge';
+import { DEMO_KNOWLEDGE, DEMO_PROBLEMS, DEMO_SOURCES, RETIRED_TITLES } from '@/lib/assistant/demo-knowledge';
 import { connectDB } from '@/lib/server/db';
 import { Conversation, KnowledgeItem, KnowledgeSource, Unanswered } from '@/lib/server/models';
 
@@ -28,6 +28,7 @@ async function main() {
     console.log(problem ? `source  ${s.name} (${problem.state})` : `source  ${s.name}`);
   }
 
+  await KnowledgeItem.deleteMany({ workspace: WORKSPACE, title: { $in: RETIRED_TITLES } });
   const itemIds = new Map<string, mongoose.Types.ObjectId>();
   for (const [order, it] of DEMO_KNOWLEDGE.entries()) {
     const doc = await KnowledgeItem.findOneAndUpdate(

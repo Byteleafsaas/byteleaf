@@ -22,7 +22,7 @@ const slugify = (v: string) => v.toLowerCase().replace(/[^a-z0-9]+/g, '-').repla
 
 const EMPTY: Omit<Project, 'id' | 'slug' | 'updated'> = {
   name: '', client: '', type: '', industry: INDUSTRIES[0], categories: ['Frontend'], stack: ['Next.js', 'Node.js'],
-  summary: '', challenge: '', whatWeDid: '', result: '', live: true, featured: false, pattern: 0, cover: null, gallery: [],
+  summary: '', challenge: '', whatWeDid: '', result: '', live: true, featured: false, demoUrl: '', pattern: 0, cover: null, gallery: [],
 };
 
 export default function ProjectEditor({ id }: { id?: string }) {
@@ -128,7 +128,7 @@ export default function ProjectEditor({ id }: { id?: string }) {
       return;
     }
     setSaving(true);
-    const r = await saveProjectAction({ id: existing?.id, name: f.name, client: f.client, type: f.type, industry: f.industry, categories: f.categories, stack: f.stack, summary: f.summary, challenge: f.challenge, whatWeDid: f.whatWeDid, result: f.result, live, featured: f.featured, cover: f.cover, gallery: f.gallery });
+    const r = await saveProjectAction({ id: existing?.id, name: f.name, client: f.client, type: f.type, industry: f.industry, categories: f.categories, stack: f.stack, summary: f.summary, challenge: f.challenge, whatWeDid: f.whatWeDid, result: f.result, live, featured: f.featured, demoUrl: f.demoUrl, cover: f.cover, gallery: f.gallery });
     setSaving(false);
     if (!r.ok) return notify(r.error);
     notify(live ? `${r.project.name} is live on the website.` : 'Draft saved — hidden from the website.');
@@ -207,6 +207,11 @@ export default function ProjectEditor({ id }: { id?: string }) {
             </div>
             <div className={s.fg}><label htmlFor="e-ch" className={s.label}>The challenge</label><textarea id="e-ch" className={`${s.field} ${s.area}`} rows={3} placeholder="What wasn't working for the client before?" value={f.challenge} onChange={(e) => set('challenge', e.target.value)} /></div>
             <div className={s.fg}><label htmlFor="e-did" className={s.label}>What we did</label><textarea id="e-did" className={`${s.field} ${s.area}`} rows={3} placeholder="Design, build, integrations — in two or three lines." value={f.whatWeDid} onChange={(e) => set('whatWeDid', e.target.value)} /></div>
+            <div className={s.fg}>
+              <label htmlFor="e-demo" className={s.label}>Demo or live link <span style={{ fontWeight: 400, color: 'var(--muted)' }}>(optional)</span></label>
+              <input id="e-demo" className={s.field} type="text" maxLength={300} placeholder="/projects/knowledge-chatbot or https://example.com" value={f.demoUrl} onChange={(e) => set('demoUrl', e.target.value)} />
+              <span className={p.counter}>Shown as a &ldquo;Try it&rdquo; button on the project page. Leave blank if there is nothing to open yet.</span>
+            </div>
             <div className={s.fg}><label htmlFor="e-res" className={s.label}>The result</label><textarea id="e-res" className={`${s.field} ${s.area}`} rows={3} placeholder="A real, measurable outcome the client agreed to share." value={f.result} onChange={(e) => set('result', e.target.value)} /></div>
           </section>
 

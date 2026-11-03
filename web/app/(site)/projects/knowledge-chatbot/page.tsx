@@ -28,7 +28,7 @@ export default async function Page() {
       <section className={s.hero}>
         <div className={s.heroIn}>
           <span className={s.crumb}><Link href="/projects">Projects</Link> / Knowledge chatbot</span>
-          <span className="eyebrow">SHOWCASE PROJECT 1 OF 4 · AI INTEGRATION</span>
+          <span className="eyebrow">A CHATBOT THAT KNOWS YOUR BUSINESS</span>
           <h1 className="h1" style={{ maxWidth: 760 }}>An assistant that only answers from <span className="hl">your own information.</span></h1>
           <div className={s.heroRow}>
             <p className="lead">Ask it anything a customer would. Every answer shows where it came from, and when it doesn&apos;t know, it says so and hands over to a person.</p>
