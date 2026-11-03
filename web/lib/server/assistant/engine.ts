@@ -15,8 +15,8 @@ const THANKS = /^(thanks|thank you|thx|cheers|great|perfect|awesome|ok|okay|cool
 const HELLO = /^(hi|hello|hey|howzit|good (morning|afternoon|evening))\b/i;
 
 const COVERAGE_MIN = 0.55; // without a model: how much of the question a source must cover to be quoted
-const COVERAGE_TRY = 0.3; // with a model: below this, don't even ask
 const MAX_SOURCES = 3;
+const MODEL_SOURCES = 5; // with a model: how many passages it gets to read, even when the wording barely matches
 
 const none = (kind: Answer['kind'], text: string, extra: Partial<Answer> = {}): Answer => ({ kind, text, sources: [], ...extra });
 const wordCount = (s: string) => s.trim().split(/\s+/).length;
@@ -89,19 +89,22 @@ async function compute(workspace: WorkspaceId, rawQuestion: string, ip: string, 
   const lastUser = [...history].reverse().find((t) => t.role === 'user')?.text ?? '';
   const asked = wordCount(question) <= 4 && lastUser ? `${lastUser} ${question}` : question;
   const ranked = rank(asked, items);
-  const top = ranked.slice(0, MAX_SOURCES);
+  // With a model, word matching only chooses what it reads. A paraphrase ('spread the payments') may score low,
+  // so the model gets the closest few passages (or the first few) and decides for itself whether they answer the question.
+  const pool = ranked.length ? ranked : items.map((item) => ({ item, score: 0, coverage: 0 }));
+  const top = llmEnabled() ? pool.slice(0, MODEL_SOURCES) : ranked.slice(0, MAX_SOURCES);
   const best = top[0];
   if (trace) {
     trace.coverage = best?.coverage ?? 0;
     const hit = rank(asked, rows.filter((r) => disputed.has(String(r._id))).map((r) => ({ id: String(r._id), title: r.title, text: r.text, sourceName: r.sourceName })))[0];
-    trace.disputed = Boolean(hit && hit.coverage >= COVERAGE_TRY);
+    trace.disputed = Boolean(hit && hit.coverage >= 0.3);
   }
 
   const unknown = async () => {
     if (!opts.test) await logUnanswered(workspace, question);
     return none('unknown', "I'm not sure about that, and I don't want to guess. I can pass your question to the team.");
   };
-  if (!best || best.coverage < (llmEnabled() ? COVERAGE_TRY : COVERAGE_MIN)) return unknown();
+  if (!best || (!llmEnabled() && best.coverage < COVERAGE_MIN)) return unknown();
 
   const asSource = (r: (typeof top)[number]): AnswerSource => ({ id: r.item.id, title: r.item.sourceName.replace(/\.(pdf|docx?|txt|md|csv)$/i, ''), passage: r.item.text.length > 220 ? `${r.item.text.slice(0, 217)}…` : r.item.text, ...(r.item.staffOnly ? { staff: true } : {}) });
   const uniqueSources = (rs: typeof top) => rs.map(asSource).filter((s, i, a) => a.findIndex((x) => x.title === s.title) === i);

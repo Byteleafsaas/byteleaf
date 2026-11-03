@@ -13,6 +13,7 @@ const ALIASES: Record<string, string> = {
   monthly: 'finance', instalment: 'finance', installment: 'finance', instalments: 'finance', installments: 'finance', financing: 'finance', loan: 'finance',
   joburg: 'johannesburg', jozi: 'johannesburg',
   switch: 'commission', switching: 'commission', energise: 'commission', energize: 'commission', commissioning: 'commission', activate: 'commission',
+  payment: 'finance', payments: 'finance', spread: 'finance',
   checklist: 'check', checks: 'check', checking: 'check', inspect: 'check',
 };
 
