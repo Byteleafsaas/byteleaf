@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import ListSelect from '@/components/ListSelect';
 import { PathIcon } from '@/components/admin/icons';
 import { Switch, TopBar } from '@/components/admin/Ui';
@@ -26,6 +27,9 @@ function Avatar({ kind, name, accent }: { kind: AssistantSettings['avatar']; nam
 
 export default function SettingsView({ initial }: { initial: AssistantSettings }) {
   const { notify } = useAdmin();
+  const router = useRouter();
+  const [leaveTo, setLeaveTo] = useState<string | null>(null);
+  const dialog = useRef<HTMLDivElement>(null);
   const [saved, setSaved] = useState(initial);
   const [d, setD] = useState(initial);
   const [topic, setTopic] = useState('');
@@ -50,6 +54,33 @@ export default function SettingsView({ initial }: { initial: AssistantSettings }
     window.addEventListener('beforeunload', h);
     return () => window.removeEventListener('beforeunload', h);
   }, [dirty]);
+
+  // Clicking any link inside the app while there are unsaved changes asks first, so changes aren't lost by accident.
+  useEffect(() => {
+    if (!dirty) return;
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+      if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+      const url = new URL(a.href, window.location.href);
+      if (url.origin !== window.location.origin || url.pathname + url.search === window.location.pathname + window.location.search) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setLeaveTo(url.pathname + url.search + url.hash);
+    };
+    document.addEventListener('click', onClick, true);
+    return () => document.removeEventListener('click', onClick, true);
+  }, [dirty]);
+
+  useEffect(() => {
+    if (leaveTo === null) return;
+    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') setLeaveTo(null); };
+    document.addEventListener('keydown', key);
+    dialog.current?.querySelector<HTMLElement>('button')?.focus();
+    return () => document.removeEventListener('keydown', key);
+  }, [leaveTo]);
+
+  const leave = (to: string) => { setD(saved); setLeaveTo(null); router.push(to); };
 
   const pickColour = (c: string) => { setHex(c); set('brand', c); };
   const typeColour = (v: string) => { const x = v.startsWith('#') ? v : `#${v}`; setHex(v); if (isHex(x)) set('brand', x.toUpperCase()); };
@@ -213,6 +244,19 @@ export default function SettingsView({ initial }: { initial: AssistantSettings }
           </aside>
         </div>
       </div>
+      {leaveTo !== null && (
+        <div className={t.scrim} onMouseDown={(e) => { if (e.target === e.currentTarget) setLeaveTo(null); }}>
+          <div className={t.modal} role="alertdialog" aria-modal="true" aria-labelledby="lv-h" aria-describedby="lv-p" ref={dialog}>
+            <h2 id="lv-h">You have unsaved changes</h2>
+            <p id="lv-p">If you leave now, the changes you made to the assistant settings will be lost.</p>
+            <div className={t.modalBtns}>
+              <button type="button" className={`${a.btn} ${a.btnPrimary}`} onClick={() => setLeaveTo(null)}>Keep editing</button>
+              <button type="button" className={`${a.btn} ${a.btnGhost}`} disabled={!valid || busy} onClick={async () => { const to = leaveTo; setBusy(true); const res = await saveSettingsAction(d).catch(() => null); setBusy(false); if (res?.ok) { setSaved(res.settings); setD(res.settings); notify('Settings saved.'); setLeaveTo(null); router.push(to); } else setError(res && !res.ok ? res.error : 'That didn’t save. Check your connection and try again.'); }}>Save and leave</button>
+              <button type="button" className={`${a.btn} ${a.btnDanger}`} onClick={() => leave(leaveTo)}>Discard and leave</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

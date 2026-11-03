@@ -1,5 +1,6 @@
 import 'server-only';
 import { z } from 'zod';
+import { extractJson } from '@/lib/assistant/model-json';
 import { env } from '../env';
 
 export type Passage = { n: number; title: string; sourceName: string; text: string };
@@ -13,7 +14,39 @@ const reply = z.object({
 });
 export type LlmReply = z.infer<typeof reply>;
 
-export const llmEnabled = () => Boolean(env.ANTHROPIC_API_KEY);
+export const llmEnabled = () => Boolean(env.DEEPSEEK_API_KEY);
+
+/**
+ * One chat call to DeepSeek (OpenAI-compatible), asking for a JSON object back.
+ * Returns the parsed object, or null on any failure so callers can fall back.
+ */
+async function chatJson(system: string, user: string, opts: { maxTokens: number; temperature: number; timeoutMs: number }): Promise<unknown | null> {
+  if (!env.DEEPSEEK_API_KEY) return null;
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), opts.timeoutMs);
+  try {
+    const res = await fetch(`${env.LLM_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      signal: ctl.signal,
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${env.DEEPSEEK_API_KEY}` },
+      body: JSON.stringify({
+        model: env.LLM_MODEL, max_tokens: opts.maxTokens, temperature: opts.temperature, response_format: { type: 'json_object' },
+        messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
+      }),
+    });
+    if (!res.ok) {
+      console.error('[assistant] model error', res.status, (await res.text()).slice(0, 200));
+      return null;
+    }
+    const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+    return extractJson(data.choices?.[0]?.message?.content ?? '');
+  } catch (e) {
+    console.error('[assistant] model call failed:', (e as Error).message);
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 const TONE: Record<string, string> = {
   friendly: 'Warm and plain. Short sentences, no jargon.',
@@ -35,35 +68,20 @@ Rules:
 
 /** Asks the model to answer from the given passages. Returns null on any failure so the caller can fall back. */
 export async function askModel(business: string, question: string, passages: Passage[], history: Turn[], tone = 'friendly'): Promise<LlmReply | null> {
-  if (!env.ANTHROPIC_API_KEY) return null;
-  const sources = passages.map((p) => `[${p.n}] ${p.title} (from ${p.sourceName})\n${p.text}`).join('\n\n');
+  const sources = passages.map((p) => `[${p.n}] ${p.title} (from ${p.sourceName})
+${p.text}`).join('\n\n');
   const convo = history.slice(-4).map((t) => `${t.role === 'user' ? 'Customer' : 'Assistant'}: ${t.text}`).join('\n');
-  const content = `Source passages:\n${sources}\n\n${convo ? `Conversation so far:\n${convo}\n\n` : ''}Customer's new message:\n${question}`;
+  const content = `Source passages:
+${sources}
 
-  const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), 15000);
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      signal: ctl.signal,
-      headers: { 'content-type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: env.ASSISTANT_MODEL, max_tokens: 500, temperature: 0.2, system: SYSTEM(business, tone), messages: [{ role: 'user', content }] }),
-    });
-    if (!res.ok) {
-      console.error('[assistant] model error', res.status, (await res.text()).slice(0, 200));
-      return null;
-    }
-    const data = (await res.json()) as { content?: { type: string; text?: string }[] };
-    const raw = data.content?.find((c) => c.type === 'text')?.text ?? '';
-    const json = raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1);
-    const parsed = reply.safeParse(JSON.parse(json));
-    return parsed.success ? parsed.data : null;
-  } catch (e) {
-    console.error('[assistant] model call failed:', (e as Error).message);
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
+${convo ? `Conversation so far:
+${convo}
+
+` : ''}Customer's new message:
+${question}`;
+  const raw = await chatJson(SYSTEM(business, tone), content, { maxTokens: 500, temperature: 0.2, timeoutMs: 20000 });
+  const parsed = reply.safeParse(raw);
+  return parsed.success ? parsed.data : null;
 }
 
 const cleaned = z.object({
@@ -83,32 +101,11 @@ Rules:
 
 /** Asks the model to turn raw text into knowledge items. Returns null if no model is set up or the call fails. */
 export async function cleanText(business: string, sourceName: string, text: string): Promise<{ title: string; text: string; unsure?: string; unsurePhrase?: string; asks?: string }[] | null> {
-  if (!env.ANTHROPIC_API_KEY) return null;
-  const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), 60000);
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      signal: ctl.signal,
-      headers: { 'content-type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({
-        model: env.ASSISTANT_MODEL, max_tokens: 4000, temperature: 0,
-        system: CLEAN_SYSTEM,
-        messages: [{ role: 'user', content: `Business: ${business}\nSource: ${sourceName}\n\nText:\n${text}` }],
-      }),
-    });
-    if (!res.ok) {
-      console.error('[assistant] clean error', res.status, (await res.text()).slice(0, 200));
-      return null;
-    }
-    const data = (await res.json()) as { content?: { type: string; text?: string }[] };
-    const raw = data.content?.find((c) => c.type === 'text')?.text ?? '';
-    const parsed = cleaned.safeParse(JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1)));
-    return parsed.success ? parsed.data.items.map((i) => ({ title: i.title, text: i.text, unsure: i.unsure ?? undefined, unsurePhrase: i.unsure_phrase && i.text.includes(i.unsure_phrase) ? i.unsure_phrase : undefined, asks: i.asks ?? undefined })) : null;
-  } catch (e) {
-    console.error('[assistant] clean failed:', (e as Error).message);
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
+  const raw = await chatJson(CLEAN_SYSTEM, `Business: ${business}
+Source: ${sourceName}
+
+Text:
+${text}`, { maxTokens: 4000, temperature: 0, timeoutMs: 60000 });
+  const parsed = cleaned.safeParse(raw);
+  return parsed.success ? parsed.data.items.map((i) => ({ title: i.title, text: i.text, unsure: i.unsure ?? undefined, unsurePhrase: i.unsure_phrase && i.text.includes(i.unsure_phrase) ? i.unsure_phrase : undefined, asks: i.asks ?? undefined })) : null;
 }
