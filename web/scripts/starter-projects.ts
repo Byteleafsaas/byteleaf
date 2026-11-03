@@ -24,7 +24,7 @@ const STARTERS = [
       "Customers ask the same questions all day: prices, opening hours, what's included, how to book. Staff lose time answering them, and the answers are scattered across a website, price lists, PDFs and chat messages.",
     whatWeDid:
       "We gather the business's information by upload, by typing it in, or by scraping the website. AI then cleans it up and organises it into a knowledge base. The assistant answers only from that knowledge base and says so when it doesn't know. It can face the public on a website or stay internal for staff, and an admin screen lets the owner review and edit what it knows.",
-    result: 'A working demo with sample business data that you can try yourself. Real numbers will be added once a client is live.',
+    result: 'Demo coming soon, built around sample business data. Real numbers will be added once a client is live.',
     featured: true,
     live: false,
   },
@@ -40,7 +40,7 @@ const STARTERS = [
     challenge: 'Bookings run on back-and-forth messages, diaries get double-booked or forgotten, and no-shows cost real money.',
     whatWeDid:
       'Clients message a WhatsApp number they already know, pick a service and a free slot, and get confirmations and reminders automatically. An admin calendar shows availability, bookings and client details, with rules for opening hours, breaks and time off. Optional AI answers common questions like prices and location.',
-    result: 'A working demo with a sample salon. Fewer no-shows and less admin time is the goal, and real figures will come from a live client.',
+    result: 'Demo coming soon, built around a sample salon. Fewer no-shows and less admin time is the goal, and real figures will come from a live client.',
     featured: false,
     live: false,
   },
@@ -56,7 +56,7 @@ const STARTERS = [
     challenge: 'A new business needs to look credible online quickly, but has no developer and no agency budget.',
     whatWeDid:
       "Custom-designed pages built for speed and phones, a contact and booking flow, and a simple admin where the owner updates content, reads messages and manages bookings. It's built so payments, a shop or AI can be added later without starting over.",
-    result: 'A live demo site for a sample business. Real results will be added with the first client.',
+    result: 'Demo site coming soon, built around a sample business. Real results will be added with the first client.',
     featured: false,
     live: false,
   },
