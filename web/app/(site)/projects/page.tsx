@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description: "A selection of things we've designed, built, fixed and looked after.",
 };
 
+// Project cards come from the database, so refresh the page every minute.
+export const revalidate = 60;
+
 export default async function Projects() {
   const live = await getLiveProjects();
   // The featured project gets the large case-study card; the rest go in the filterable grid.

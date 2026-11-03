@@ -17,6 +17,9 @@ export const metadata: Metadata = {
 
 const CHECKS = ['Design', 'Frontend', 'Backend', 'AI integrations'];
 
+// Project cards come from the database, so refresh the page every minute.
+export const revalidate = 60;
+
 export default async function Home() {
   // Selected work: the first three live projects (featured first); the design placeholders show until there are some.
   const live = (await getLiveProjects()).slice(0, 3);
