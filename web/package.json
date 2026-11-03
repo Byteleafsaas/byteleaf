@@ -10,6 +10,7 @@
     "test": "vitest run",
     "create-admin": "tsx --env-file=.env.local --conditions=react-server scripts/create-admin.ts",
     "seed": "tsx --env-file=.env.local --conditions=react-server scripts/seed.ts",
+    "starter-projects": "tsx --env-file=.env.local --conditions=react-server scripts/starter-projects.ts",
     "db:up": "docker compose up -d",
     "garage:setup": "node scripts/garage-setup.mjs"
   },
