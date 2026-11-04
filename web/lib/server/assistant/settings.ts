@@ -1,5 +1,6 @@
 import 'server-only';
 import { themeFromBrand } from '@/lib/assistant/contrast';
+import { hoursSchema } from '@/lib/assistant/hours';
 import { DEFAULT_SETTINGS, REPLY_TIMES, type AssistantSettings } from '@/lib/assistant/settings';
 import { WORKSPACES, type PublicWorkspace, type WorkspaceId } from '@/lib/assistant/workspaces';
 import { connectDB } from '../db';
@@ -23,6 +24,8 @@ export async function getAssistantSettings(workspace: WorkspaceId): Promise<Assi
       enabled: talk.enabled ?? d.talk.enabled, phone: talk.phone ?? d.talk.phone, email: talk.email ?? d.talk.email, suburb: talk.suburb ?? d.talk.suburb,
       sendTo: talk.sendTo ?? d.talk.sendTo, replyTime: (REPLY_TIMES as readonly string[]).includes(talk.replyTime ?? '') ? (talk.replyTime as AssistantSettings['talk']['replyTime']) : d.talk.replyTime,
     },
+    // Hours that are missing or fail the rules fall back to the defaults, so a bad row can't break the chat.
+    hours: (() => { const p = hoursSchema.safeParse(doc.hours); return p.success ? p.data : d.hours; })(),
     privacyUrl: doc.privacyUrl ?? d.privacyUrl,
     retentionDays: ([7, 30, 90] as number[]).includes(doc.retentionDays ?? 0) ? (doc.retentionDays as AssistantSettings['retentionDays']) : d.retentionDays,
   };

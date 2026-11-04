@@ -1,5 +1,6 @@
 import 'server-only';
 import { createHash, randomUUID } from 'node:crypto';
+import { answerHoursQuestion, detectHoursQuestion, hoursContext, hoursLines, localTime } from '@/lib/assistant/hours';
 import { hasContactDetails, redact } from '@/lib/assistant/redact';
 import { bestSentences, normaliseQuestion, rank, tokens } from '@/lib/assistant/retrieval';
 import { refusedPattern } from '@/lib/assistant/settings';
@@ -25,7 +26,7 @@ const wordCount = (s: string) => s.trim().split(/\s+/).length;
 export type AnswerOptions = { test?: boolean; draft?: boolean; staff?: boolean };
 
 /** What the engine looked at, for the "Why it answered this" panel. */
-type Trace = { coverage: number; disputed: boolean };
+type Trace = { coverage: number; disputed: boolean; hours?: boolean };
 
 const sameQuestion = (a: Set<string>, b: Set<string>) => {
   if (!a.size || !b.size) return 0;
@@ -79,14 +80,27 @@ async function compute(workspace: WorkspaceId, rawQuestion: string, ip: string, 
   if (wordCount(question) <= 6 && THANKS.test(question)) return none('chat', "You're welcome. Anything else you'd like to know about going solar?");
   if (wordCount(question) <= 4 && HELLO.test(question)) return none('chat', `Hello! Ask me about ${w.business}'s packages, prices, installation or warranty.`);
 
+  // The previous question gives a follow-up like "and the second one?" or "and Sunday?" its context.
+  const lastUser = [...history].reverse().find((t) => t.role === 'user')?.text ?? '';
+
+  // 2b. Questions about opening times are answered straight from the working hours the owner set, never from the sources.
+  const now = new Date();
+  const hoursOn = settings.hours.enabled;
+  if (hoursOn) {
+    const hq = detectHoursQuestion(question, localTime(now, settings.hours.timezone).day, lastUser);
+    if (hq) {
+      if (trace) { trace.coverage = 1; trace.hours = true; }
+      const a = answerHoursQuestion(settings.hours, hq, now);
+      return { kind: 'answer', text: a.text, list: a.list, sources: [{ id: 'working-hours', title: 'Working hours', passage: hoursLines(settings.hours).join('; ') }] };
+    }
+  }
+
   // 3. Find the passages. Live items (and approved ones when testing a draft); staff-only items only for staff.
   await connectDB();
   const rows = await KnowledgeItem.find({ workspace, status: { $in: opts.draft ? ['live', 'approved'] : ['live'] }, ...(opts.staff ? {} : { staffOnly: false }) }).sort({ order: 1 }).lean();
   // A live item that a waiting item disagrees with is not quoted until the owner resolves it.
   const disputed = new Set((await KnowledgeItem.find({ workspace, status: 'pending', conflictWith: { $ne: null } }, { conflictWith: 1 }).lean()).map((r) => String(r.conflictWith)));
   const items = rows.filter((r) => !disputed.has(String(r._id))).map((r) => ({ id: String(r._id), title: r.title, text: r.text, sourceName: r.sourceName, link: r.link ?? null, staffOnly: r.staffOnly }));
-  // A follow-up like "and the second one?" needs the previous question for context.
-  const lastUser = [...history].reverse().find((t) => t.role === 'user')?.text ?? '';
   const asked = wordCount(question) <= 4 && lastUser ? `${lastUser} ${question}` : question;
   const ranked = rank(asked, items);
   // With a model, word matching only chooses what it reads. A paraphrase ('spread the payments') may score low,
@@ -104,7 +118,10 @@ async function compute(workspace: WorkspaceId, rawQuestion: string, ip: string, 
     if (!opts.test) await logUnanswered(workspace, question);
     return none('unknown', "I'm not sure about that, and I don't want to guess. I can pass your question to the team.");
   };
-  if (!best || (!llmEnabled() && best.coverage < COVERAGE_MIN)) return unknown();
+  // A loosely worded question about hours may match no passage at all, but the model can still answer it from the working hours.
+  const hoursText = hoursOn ? hoursContext(settings.hours, now) : undefined;
+  if (!llmEnabled() && (!best || best.coverage < COVERAGE_MIN)) return unknown();
+  if (llmEnabled() && !best && !hoursText) return unknown();
 
   const asSource = (r: (typeof top)[number]): AnswerSource => ({ id: r.item.id, title: r.item.sourceName.replace(/\.(pdf|docx?|txt|md|csv)$/i, ''), passage: r.item.text.length > 220 ? `${r.item.text.slice(0, 217)}…` : r.item.text, ...(r.item.staffOnly ? { staff: true } : {}) });
   const uniqueSources = (rs: typeof top) => rs.map(asSource).filter((s, i, a) => a.findIndex((x) => x.title === s.title) === i);
@@ -115,15 +132,16 @@ async function compute(workspace: WorkspaceId, rawQuestion: string, ip: string, 
       return none('error', 'The demo has reached its limit for today. Please try again tomorrow, or book a call and we will show you a live one.');
     }
     const passages = top.map((r, i) => ({ n: i + 1, title: r.item.title, sourceName: r.item.sourceName, text: r.item.text }));
-    const out = await askModel(w.business, question, passages, history, settings.tone);
+    const out = await askModel(w.business, question, passages, history, settings.tone, hoursText);
     if (out) {
       if (!out.can_answer || !out.answer.trim()) return unknown();
       const used = out.used.map((n) => top[n - 1]).filter(Boolean);
-      const cited = used.length ? used : [best];
+      const cited = used.length ? used : best ? [best] : [];
       return { kind: 'answer', text: out.answer.trim(), list: out.list?.length ? out.list : undefined, link: cited.find((r) => r.item.link)?.item.link ?? undefined, sources: uniqueSources(cited) };
     }
     // The model failed: fall through to quoting the source so the visitor still gets an answer.
   }
+  if (!best) return unknown();
 
   // 5. No model: quote the best-matching passage.
   const chosen = top.filter((r) => r.coverage >= best.coverage * 0.85 && r.coverage >= COVERAGE_MIN);
@@ -205,11 +223,12 @@ export async function testAnswer(workspace: WorkspaceId, rawQuestion: string, hi
 
   const pct = Math.round(Math.min(1, trace.coverage) * 100);
   const answered = answer.kind === 'answer';
-  const label = answer.kind === 'off' || answer.kind === 'chat' ? 'Not needed' : !answered ? `Not sure · ${pct}%` : pct >= 80 ? `Very sure · ${pct}%` : `Sure · ${pct}%`;
+  const label = trace.hours ? 'Very sure · from your working hours' : answer.kind === 'off' || answer.kind === 'chat' ? 'Not needed' : !answered ? `Not sure · ${pct}%` : pct >= 80 ? `Very sure · ${pct}%` : `Sure · ${pct}%`;
   let note = answered ? `It found ${answer.sources.length} live source${answer.sources.length === 1 ? '' : 's'} that cover the question.` : 'Nothing live covers this well enough, so it would not guess.';
   let fix: TestResult['why']['fix'] = { label: 'Add an answer', href: '/admin/assistant/unanswered', text: 'Add the answer in Unanswered, and it goes live straight away.' };
   if (answer.kind === 'off') { note = 'This is on a topic the owner chose to hand over, so it declined.'; fix = { label: 'Change refused topics', href: '/admin/assistant/settings', text: 'Topics it won’t answer are set in Assistant settings.' }; }
   else if (answer.kind === 'chat') { note = 'A greeting or thanks. It needs no source.'; fix = null; }
+  else if (trace.hours) { note = 'Answered from the working hours you set in Assistant settings, not from the sources.'; fix = { label: 'Change working hours', href: '/admin/assistant/settings', text: 'Opening times are set in Assistant settings.' }; }
   else if (answered) { fix = null; }
   else if (trace.disputed) { note = 'Two sources gave different prices and you have not chosen one yet, so it would not quote either.'; fix = { label: 'Resolve the price conflict', href: '/admin/assistant/review', text: 'Choose the right price in Review & publish, then publish.' }; }
 

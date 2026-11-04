@@ -282,6 +282,12 @@ const assistantSettingsSchema = new Schema(
     tone: String,
     refused: [String],
     talk: { enabled: Boolean, phone: Boolean, email: Boolean, suburb: Boolean, sendTo: String, replyTime: String },
+    hours: {
+      enabled: Boolean,
+      timezone: String,
+      note: String,
+      days: [new Schema({ open: Boolean, from: String, to: String }, { _id: false })],
+    },
     privacyUrl: String,
     retentionDays: Number,
   },

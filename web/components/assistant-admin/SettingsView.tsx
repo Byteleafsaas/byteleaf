@@ -7,6 +7,7 @@ import { PathIcon } from '@/components/admin/icons';
 import { Switch, TopBar } from '@/components/admin/Ui';
 import { useAdmin } from '@/lib/admin/store';
 import { isHex, onBrand, themeFromBrand } from '@/lib/assistant/contrast';
+import { DAY_NAMES, TIMEZONES, type DayHours } from '@/lib/assistant/hours';
 import { AVATARS, REPLY_TIMES, RETENTION_OPTIONS, TONES, TONE_HELP, settingsSchema, type AssistantSettings } from '@/lib/assistant/settings';
 import { saveSettingsAction } from '@/lib/server/actions/assistant-tools';
 import a from '@/components/admin/admin.module.css';
@@ -45,6 +46,8 @@ export default function SettingsView({ initial }: { initial: AssistantSettings }
   const theme = useMemo(() => themeFromBrand(brandOk ? d.brand : saved.brand), [d.brand, brandOk, saved.brand]);
 
   const set = <K extends keyof AssistantSettings>(k: K, v: AssistantSettings[K]) => { setD((x) => ({ ...x, [k]: v })); setError(''); };
+  const setHours = <K extends keyof AssistantSettings['hours']>(k: K, v: AssistantSettings['hours'][K]) => { setD((x) => ({ ...x, hours: { ...x.hours, [k]: v } })); setError(''); };
+  const setDay = (i: number, patch: Partial<DayHours>) => setHours('days', d.hours.days.map((x, j) => (j === i ? { ...x, ...patch } : x)));
   const setTalk = <K extends keyof AssistantSettings['talk']>(k: K, v: AssistantSettings['talk'][K]) => setD((x) => ({ ...x, talk: { ...x.talk, [k]: v } }));
 
   // Warn before closing the tab with changes that aren't saved.
@@ -176,6 +179,50 @@ export default function SettingsView({ initial }: { initial: AssistantSettings }
                 </div>
                 <span className={t.hint}>Anything off-topic (sport, news, other companies) is always declined.</span>
               </div>
+            </section>
+
+            <section className={t.sec} aria-labelledby="s-hours">
+              <h2 id="s-hours">Working hours</h2>
+              <div className={t.toggleRow}>
+                <div><b>Answer questions about opening times</b><span className={t.hint}>&ldquo;What time do you open?&rdquo;, &ldquo;Are you open on Sunday?&rdquo; and &ldquo;Are you open now?&rdquo; are answered from the hours below. These hours always win over opening times written in your knowledge sources.</span></div>
+                <Switch checked={d.hours.enabled} onChange={(v) => setHours('enabled', v)} label="Answer questions about opening times" />
+              </div>
+              {d.hours.enabled && (
+                <>
+                  <div className={t.fld}>
+                    <label htmlFor="st-tz">Time zone</label>
+                    <ListSelect id="st-tz" value={d.hours.timezone} options={TIMEZONES} onChange={(v) => setHours('timezone', v)} triggerClass={a.field} />
+                    <span className={t.hint}>&ldquo;Open now&rdquo; is worked out in this time zone.</span>
+                  </div>
+                  <div className={t.hoursList} role="group" aria-label="Opening times for each day">
+                    {DAY_NAMES.map((name, i) => {
+                      const day = d.hours.days[i];
+                      const overnight = day.open && day.to < day.from;
+                      return (
+                        <div key={name} className={t.hoursRow}>
+                          <span className={t.hoursDay}>{name}</span>
+                          <Switch checked={day.open} onChange={(v) => setDay(i, { open: v })} label={`Open on ${name}`} />
+                          {day.open ? (
+                            <span className={t.hoursTimes}>
+                              <label htmlFor={`st-from-${i}`} className={t.sr}>{name} opens at</label>
+                              <input id={`st-from-${i}`} className={`${a.field} ${t.time}`} type="time" value={day.from} onChange={(e) => setDay(i, { from: e.target.value })} />
+                              <span aria-hidden="true">to</span>
+                              <label htmlFor={`st-to-${i}`} className={t.sr}>{name} closes at</label>
+                              <input id={`st-to-${i}`} className={`${a.field} ${t.time}`} type="time" value={day.to} onChange={(e) => setDay(i, { to: e.target.value })} />
+                              {overnight && <span className={t.hint}>closes after midnight</span>}
+                            </span>
+                          ) : <span className={t.hint}>Closed</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className={t.fld}>
+                    <span className={t.fldTop}><label htmlFor="st-hnote" style={{ fontSize: 14, fontWeight: 500, color: '#33405A' }}>Note (optional)</label><span>{d.hours.note.length} / 200</span></span>
+                    <input id="st-hnote" className={a.field} type="text" maxLength={200} placeholder="e.g. Closed on public holidays" value={d.hours.note} onChange={(e) => setHours('note', e.target.value)} />
+                    <span className={t.hint}>Added to every answer about opening times. Use it for public holidays or anything else customers should know.</span>
+                  </div>
+                </>
+              )}
             </section>
 
             <section className={t.sec} aria-labelledby="s4">

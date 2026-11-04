@@ -156,3 +156,11 @@
 .modal h2 { margin: 0; font-size: 22px; letter-spacing: -.02em; }
 .modal p { margin: 0; font-size: 15px; line-height: 1.55; color: #33405A; }
 .modalBtns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+
+/* working hours */
+.hoursList { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; }
+.hoursRow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; padding: 10px 14px; border-bottom: 1px solid #EEF2F8; min-height: 56px; }
+.hoursRow:last-child { border-bottom: 0; }
+.hoursDay { width: 100px; font-size: 15px; font-weight: 500; }
+.hoursTimes { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; font-size: 14px; color: var(--muted); }
+.time { width: 130px; }

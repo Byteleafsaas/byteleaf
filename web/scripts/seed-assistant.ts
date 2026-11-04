@@ -2,9 +2,10 @@
 //   npm run seed-assistant
 // Safe to re-run: sources and items are matched by name and title and refreshed. Anything the owner adds in the admin is left alone.
 import mongoose from 'mongoose';
+import { DEFAULT_HOURS } from '@/lib/assistant/hours';
 import { DEMO_KNOWLEDGE, DEMO_PROBLEMS, DEMO_SOURCES, RETIRED_TITLES } from '@/lib/assistant/demo-knowledge';
 import { connectDB } from '@/lib/server/db';
-import { Conversation, KnowledgeItem, KnowledgeSource, Unanswered } from '@/lib/server/models';
+import { AssistantSettingsModel, Conversation, KnowledgeItem, KnowledgeSource, Unanswered } from '@/lib/server/models';
 
 const WORKSPACE = 'khumalo';
 
@@ -104,6 +105,12 @@ async function main() {
       },
       { upsert: true },
     );
+  }
+  // Working hours for the demo business. Only set when the owner hasn't saved any, so hours edited in the admin are kept.
+  const saved = await AssistantSettingsModel.findOne({ workspace: WORKSPACE }, { hours: 1 }).lean();
+  if (saved?.hours?.days?.length !== 7) {
+    await AssistantSettingsModel.updateOne({ workspace: WORKSPACE }, { $set: { hours: { ...DEFAULT_HOURS, enabled: true, note: 'Closed on public holidays.' } } }, { upsert: true });
+    console.log('hours   Mon to Fri 8am to 5pm, Sat 8am to 1pm, Sun closed (SAST)');
   }
   console.log(`Done: ${await KnowledgeSource.countDocuments({ workspace: WORKSPACE })} sources, ${await KnowledgeItem.countDocuments({ workspace: WORKSPACE })} items in the Khumalo workspace.`);
 }

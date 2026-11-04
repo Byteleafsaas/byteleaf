@@ -1,6 +1,7 @@
 // What an owner can change about their assistant (Assistant settings). Shared by the form and the server.
 import { z } from 'zod';
 import { isHex } from './contrast';
+import { DEFAULT_HOURS, hoursSchema } from './hours';
 import type { WorkspaceId } from './workspaces';
 
 export const AVATARS = ['logo', 'initial', 'ai'] as const;
@@ -29,6 +30,7 @@ export const settingsSchema = z.object({
     sendTo: z.string().trim().max(200),
     replyTime: z.enum(REPLY_TIMES),
   }),
+  hours: hoursSchema,
   privacyUrl: z.string().trim().max(300),
   retentionDays: z.union([z.literal(7), z.literal(30), z.literal(90)]),
 });
@@ -43,6 +45,7 @@ export const DEFAULT_SETTINGS: Record<WorkspaceId, AssistantSettings> = {
     tone: 'friendly',
     refused: ['Discounts', 'Legal advice', 'Electrical fault diagnosis', 'Competitor pricing'],
     talk: { enabled: true, phone: true, email: true, suburb: false, sendTo: '', replyTime: 'Within 1 working day' },
+    hours: DEFAULT_HOURS,
     privacyUrl: '',
     retentionDays: 30,
   },
