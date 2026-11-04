@@ -169,3 +169,17 @@ export async function cancelSlot(d: Data, apptId: string, now: Date): Promise<{ 
   await WaSlotLock.deleteMany({ apptId: appt._id });
   return { late };
 }
+
+/**
+ * Frees time held by a lock whose booking never happened (a crash between the lock and the booking, or a cancel that
+ * stopped half way). Only locks older than ten minutes and still in the future are looked at, so a booking in progress is safe.
+ */
+export async function releaseOrphanLocks(now: Date): Promise<number> {
+  const cutoff = Types.ObjectId.createFromTime(Math.floor((now.getTime() - 10 * 60000) / 1000));
+  const held = (await WaSlotLock.distinct('apptId', { grain: { $gte: now }, _id: { $lt: cutoff } })) as Id[];
+  if (!held.length) return 0;
+  const live = new Set((await WaAppointment.find({ _id: { $in: held }, status: 'booked' }, { _id: 1 }).lean()).map((a) => String(a._id)));
+  const dead = held.filter((id) => !live.has(String(id)));
+  if (!dead.length) return 0;
+  return (await WaSlotLock.deleteMany({ apptId: { $in: dead } })).deletedCount ?? 0;
+}

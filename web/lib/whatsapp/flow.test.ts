@@ -326,6 +326,15 @@ describe('typed requests read by the interpreter', () => {
     expect(a.last.messages[0].body).toContain("can't book a particular person");
   });
 
+  it('keeps the understood service when the customer corrects the day instead of tapping', async () => {
+    const w = withModel({ date: '2026-11-10' });
+    const from: State = { step: 'understood', hint: { serviceId: 'kn', date: '2026-11-07', window: 'morning' } };
+    const a = await chat(w.ctx, ['no, tuesday'], from);
+    expect(a.state.step).toBe('understood');
+    expect(a.state.hint).toMatchObject({ serviceId: 'kn', date: '2026-11-10' });
+    expect(a.last.messages[0].body).toContain('Knotless braids');
+  });
+
   it('refuses to offer a service that does not exist', async () => {
     const w = withModel({ serviceId: 'ghost' });
     const { last } = await chat(w.ctx, ['something odd']);

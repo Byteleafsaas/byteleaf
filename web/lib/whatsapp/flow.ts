@@ -126,7 +126,9 @@ async function understand(ctx: Ctx, state: State, input: Input): Promise<Result 
   if (!found) return null;
   // Check again here: the model's answer is never trusted to name a real service.
   const svcs = await ctx.services();
-  const serviceId = (found.serviceId && svcs.some((s) => s.id === found!.serviceId) ? found.serviceId : undefined) ?? (state.step !== 'menu' ? state.serviceId : undefined);
+  // A correction typed at "Is that right?" keeps the service we had already understood.
+  const kept = state.step === 'understood' ? state.hint?.serviceId : state.step !== 'menu' ? state.serviceId : undefined;
+  const serviceId = (found.serviceId && svcs.some((s) => s.id === found!.serviceId) ? found.serviceId : undefined) ?? kept;
   const hint: Interpretation = { ...found, serviceId };
   if (!hint.serviceId && !hint.date && !hint.window && !hint.time) return null;
   return { ...(await understoodPrompt(ctx, hint)), effects: [] };
