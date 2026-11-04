@@ -1,10 +1,11 @@
 // The booking conversation as a state machine. Given where the customer is, and what they just did, it says what to
 // reply and where they are now. It never touches the database or WhatsApp: everything it needs comes in through `Ctx`,
 // so every path can be tested with a pretend calendar.
-import { T, clip, fmtDay, fmtLength, fmtMoney, rowTitle } from './copy';
+import { T, clip, fmtDay, fmtLength, fmtLong, fmtMoney, rowTitle } from './copy';
 import { isStart, isStop, no, norm, parseDay, parseTime, wantsBook, wantsMenu, wantsMine, wantsPerson, yes } from './parse';
 import { fromMin, toMin } from './slots';
 import { LIMITS, type Input, type Out, type Row } from './types';
+import type { Interpretation, Interpreter } from './understand';
 
 export type Svc = { id: string; name: string; minutes: number; priceCents: number };
 export type Appt = { id: string; serviceId: string; serviceName: string; date: string; time: string; endTime: string; priceCents: number; startsAt: Date };
@@ -16,6 +17,8 @@ export type Ctx = {
   business: { name: string; cancelWindowHours: number; replyNote: string; payNote: string };
   client: { name?: string; isNew: boolean; optedOut: boolean };
   now: Date;
+  /** Reads typed free text ("braids on Saturday morning"). Absent, or returning null, means the keyword parser alone is used. */
+  interpret?: Interpreter;
   services(): Promise<Svc[]>;
   /** Dates with at least one free start, soonest first. */
   days(serviceId: string, excludeApptId?: string): Promise<{ date: string; count: number }[]>;
@@ -27,8 +30,8 @@ export type Ctx = {
   cancel(apptId: string): Promise<{ ok: true; late: boolean } | { ok: false }>;
 };
 
-export type Step = 'menu' | 'service' | 'day' | 'time' | 'confirm' | 'mine' | 'manage' | 'cancel' | 'handover' | 'optedout';
-export type State = { step: Step; serviceId?: string; date?: string; time?: string; apptId?: string; /** 'move' while changing an existing booking */ mode?: 'new' | 'move'; dayPage?: number; period?: 'morning' | 'afternoon' | 'evening' };
+export type Step = 'menu' | 'service' | 'day' | 'time' | 'confirm' | 'understood' | 'mine' | 'manage' | 'cancel' | 'handover' | 'optedout';
+export type State = { step: Step; /** What we think a typed request meant, waiting for the customer to say yes */ hint?: Interpretation; serviceId?: string; date?: string; time?: string; apptId?: string; /** 'move' while changing an existing booking */ mode?: 'new' | 'move'; dayPage?: number; period?: 'morning' | 'afternoon' | 'evening' };
 export type Effect = 'handover' | 'optout' | 'optin';
 export type Result = { state: State; messages: Out[]; effects: Effect[] };
 
@@ -67,6 +70,8 @@ async function timePrompt(ctx: Ctx, s: State, lead?: string): Promise<{ state: S
   const all = await ctx.times(s.serviceId!, s.date!, s.mode === 'move' ? s.apptId : undefined);
   const svc = (await ctx.services()).find((x) => x.id === s.serviceId);
   if (!all.length || !svc) return dayPrompt(ctx, { ...s, date: undefined, time: undefined, period: undefined }, T.taken);
+  // A wished-for part of the day with nothing open in it: show the whole day instead of an empty list.
+  if (s.period && !all.some((t) => periodOf(t) === s.period)) return timePrompt(ctx, { ...s, period: undefined }, lead ?? T.noneThen(T.periodWord[s.period]));
   const lead1 = lead ? [text(lead)] : [];
   // Many times open: ask morning, afternoon or evening first, so the list stays short enough for WhatsApp.
   if (all.length > PAGE && !s.period) {
@@ -100,6 +105,46 @@ function managePrompt(a: Appt): { state: State; messages: Out[] } {
   return { state: { step: 'manage', apptId: a.id }, messages: [{ type: 'buttons', body: T.manageBody(a.serviceName, a.date, a.time, a.endTime), buttons: [{ id: 'move', title: T.btnMove }, { id: 'cancelbk', title: T.btnCancelBooking }, { id: 'back', title: T.btnBack }] }] };
 }
 
+/** Says back what we think the customer meant and asks them to tap yes or no. Nothing is booked from this. */
+async function understoodPrompt(ctx: Ctx, hint: Interpretation): Promise<{ state: State; messages: Out[] }> {
+  const svc = hint.serviceId ? (await ctx.services()).find((x) => x.id === hint.serviceId) : undefined;
+  const parts = [svc?.name, hint.date && fmtLong(hint.date), hint.time ?? (hint.window && T.periodWord[hint.window])].filter((p): p is string => Boolean(p));
+  const body = T.understood(parts, hint.staff ? T.staffNote(hint.staff) : undefined);
+  return { state: { step: 'understood', hint }, messages: [{ type: 'buttons', body, buttons: [{ id: 'u:yes', title: T.btnUnderstoodYes }, { id: 'u:no', title: T.btnUnderstoodNo }] }] };
+}
+
+/**
+ * Asks the interpreter what a typed message meant and, if it understood something that really exists, says it back.
+ * Null means "carry on as before" (no interpreter, it failed, or it made no sense), so the keyword parser's answer stands.
+ */
+async function understand(ctx: Ctx, state: State, input: Input): Promise<Result | null> {
+  if (!ctx.interpret || input.type !== 'text' || ctx.client.isNew || state.mode === 'move') return null;
+  const words = input.text.trim();
+  if (!words || words.length > 300) return null;
+  let found: Interpretation | null;
+  try { found = await ctx.interpret(words); } catch { return null; }
+  if (!found) return null;
+  // Check again here: the model's answer is never trusted to name a real service.
+  const svcs = await ctx.services();
+  const serviceId = (found.serviceId && svcs.some((s) => s.id === found!.serviceId) ? found.serviceId : undefined) ?? (state.step !== 'menu' ? state.serviceId : undefined);
+  const hint: Interpretation = { ...found, serviceId };
+  if (!hint.serviceId && !hint.date && !hint.window && !hint.time) return null;
+  return { ...(await understoodPrompt(ctx, hint)), effects: [] };
+}
+
+/** The customer said yes to what we understood: carry on to the same day and time choices as if they had tapped through. */
+async function applyHint(ctx: Ctx, hint: Interpretation): Promise<Result> {
+  const done = (r: { state: State; messages: Out[] }): Result => ({ ...r, effects: [] });
+  if (!hint.serviceId) return { state: { step: 'service', hint }, messages: await servicePrompt(ctx), effects: [] };
+  const base: State = { step: 'day', serviceId: hint.serviceId, mode: 'new', period: hint.window ?? (hint.time ? periodOf(hint.time) : undefined) };
+  if (!hint.date) return done(await dayPrompt(ctx, base));
+  const days = (await ctx.days(hint.serviceId)).map((d) => d.date);
+  if (!days.includes(hint.date)) return done(await dayPrompt(ctx, base, T.dayClosed(hint.date)));
+  const open = await ctx.times(hint.serviceId, hint.date);
+  if (hint.time && open.includes(hint.time)) return done(await confirmPrompt(ctx, { ...base, date: hint.date, time: hint.time }));
+  return done(await timePrompt(ctx, { ...base, step: 'time', date: hint.date }, hint.time ? T.timeNotOpen(hint.time) : undefined));
+}
+
 /** Asks the question for wherever the customer currently is. Used to carry on after a mistake or a stale button. */
 async function reprompt(ctx: Ctx, s: State, lead?: string): Promise<Result> {
   const done = (r: { state: State; messages: Out[] }): Result => ({ ...r, effects: [] });
@@ -108,6 +153,7 @@ async function reprompt(ctx: Ctx, s: State, lead?: string): Promise<Result> {
     case 'day': return done(await dayPrompt(ctx, s, lead));
     case 'time': return done(await timePrompt(ctx, s, lead));
     case 'confirm': { const r = await confirmPrompt(ctx, s); return done({ ...r, messages: [...(lead ? [text(lead)] : []), ...r.messages] }); }
+    case 'understood': { if (!s.hint) return { state: START, messages: menu(ctx), effects: [] }; const r = await understoodPrompt(ctx, s.hint); return done({ ...r, messages: [...(lead ? [text(lead)] : []), ...r.messages] }); }
     case 'mine': { const r = await minePrompt(ctx); return done({ ...r, messages: [...(lead ? [text(lead)] : []), ...r.messages] }); }
     case 'manage': { const a = s.apptId ? await ctx.appointment(s.apptId) : null; if (!a) return { state: START, messages: [text(T.gone), ...menu(ctx)], effects: [] }; const r = managePrompt(a); return done({ ...r, messages: [...(lead ? [text(lead)] : []), ...r.messages] }); }
     default: return { state: START, messages: [...(lead ? [text(lead)] : []), ...menu(ctx)], effects: [] };
@@ -158,17 +204,26 @@ export async function step(state: State, input: Input, ctx: Ctx): Promise<Result
     case 'service': {
       const svcs = await ctx.services();
       const chosen = id.startsWith('svc:') ? svcs.find((s) => s.id === id.slice(4)) : svcs.find((s) => t && (norm(s.name) === t || norm(s.name).includes(t) || (t.length >= 4 && t.includes(norm(s.name)))));
-      if (!chosen) return reprompt(ctx, state, id ? T.expired : T.noService);
+      if (!chosen) return (!id && (await understand(ctx, state, input))) || reprompt(ctx, state, id ? T.expired : T.noService);
+      // They already said when they wanted it (and agreed), so carry on from there.
+      if (state.hint) return applyHint(ctx, { ...state.hint, serviceId: chosen.id });
       const r = await dayPrompt(ctx, { step: 'day', serviceId: chosen.id, mode: 'new' });
       return { ...r, effects: [] };
+    }
+
+    case 'understood': {
+      if (id === 'u:yes' || (!id && yes(t))) return state.hint ? applyHint(ctx, state.hint) : reprompt(ctx, START);
+      if (id === 'u:no' || (!id && no(t))) return { state: { step: 'service' }, messages: await servicePrompt(ctx, T.pickYourself), effects: [] };
+      // Typed a correction instead of tapping: read that instead.
+      return (!id && (await understand(ctx, state, input))) || reprompt(ctx, state, id ? T.expired : T.notUnderstood);
     }
 
     case 'day': {
       if (id === 'day:more') { const r = await dayPrompt(ctx, { ...state, dayPage: (state.dayPage ?? 0) + 1 }); return { ...r, effects: [] }; }
       const days = (await ctx.days(state.serviceId!, state.mode === 'move' ? state.apptId : undefined)).map((d) => d.date);
       const date = id.startsWith('day:') ? (days.includes(id.slice(4)) ? id.slice(4) : null) : parseDay(input.type === 'text' ? input.text : '', days, ctx.now);
-      if (!date) return reprompt(ctx, state, id ? T.expired : T.notUnderstood);
-      const r = await timePrompt(ctx, { ...state, step: 'time', date, period: undefined });
+      if (!date) return (!id && (await understand(ctx, state, input))) || reprompt(ctx, state, id ? T.expired : T.notUnderstood);
+      const r = await timePrompt(ctx, { ...state, step: 'time', date });
       return { ...r, effects: [] };
     }
 
@@ -177,7 +232,7 @@ export async function step(state: State, input: Input, ctx: Ctx): Promise<Result
       if (id === 'time:day') { const r = await dayPrompt(ctx, { ...state, step: 'day', date: undefined, period: undefined, dayPage: 0 }); return { ...r, effects: [] }; }
       const open = await ctx.times(state.serviceId!, state.date!, state.mode === 'move' ? state.apptId : undefined);
       const time = id.startsWith('time:') ? id.slice(5) : parseTime(input.type === 'text' ? input.text : '');
-      if (!time) return reprompt(ctx, state, id ? T.expired : T.notUnderstood);
+      if (!time) return (!id && (await understand(ctx, state, input))) || reprompt(ctx, state, id ? T.expired : T.notUnderstood);
       if (!open.includes(time)) return reprompt(ctx, { ...state, period: undefined }, T.taken);
       const r = await confirmPrompt(ctx, { ...state, time });
       return { ...r, effects: [] };
@@ -230,7 +285,9 @@ export async function step(state: State, input: Input, ctx: Ctx): Promise<Result
     }
 
     default:
-      // Menu, or anything we don't understand: show the options again.
+      // Menu, or anything we don't understand: try to read it as a booking request, else show the options again.
+      const understood = state.step === 'menu' ? await understand(ctx, state, input) : null;
+      if (understood) return understood;
       return out(START, [text(T.notUnderstood), ...menu(ctx)]);
   }
 }

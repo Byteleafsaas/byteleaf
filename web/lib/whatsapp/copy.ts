@@ -91,4 +91,14 @@ export const T = {
   expired: 'That option has expired. Here is where we were.',
   noService: "I couldn't find that service. Please choose one from the list.",
   gone: "I couldn't find that booking. It may have already changed.",
+  // Understanding typed requests. `parts` are already in words, e.g. ['Box braids', 'Saturday 8 November', 'morning'].
+  understood: (parts: string[], staffNote?: string) => `I understood: ${parts.join(', ')}. Is that right?${staffNote ? `\n\n${staffNote}` : ''}`,
+  btnUnderstoodYes: "Yes, that's right",
+  btnUnderstoodNo: 'No, let me pick',
+  staffNote: (name: string) => `I can't book a particular person by chat yet, so you'll be booked with whoever is free, not necessarily ${name}.`,
+  pickYourself: 'No problem, let\'s do it step by step.',
+  dayClosed: (date: string) => `Nothing is open on ${fmtLong(date)}. Here are the days that are.`,
+  timeNotOpen: (time: string) => `${time} isn't open. Here are the times that are.`,
+  noneThen: (period: string) => `Nothing is open in the ${period}. Here are all the times that day.`,
+  periodWord: { morning: 'morning', afternoon: 'afternoon', evening: 'evening' } as Record<string, string>,
 };

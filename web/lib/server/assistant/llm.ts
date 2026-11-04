@@ -109,3 +109,8 @@ ${text}`, { maxTokens: 4000, temperature: 0, timeoutMs: 60000 });
   const parsed = cleaned.safeParse(raw);
   return parsed.success ? parsed.data.items.map((i) => ({ title: i.title, text: i.text, unsure: i.unsure ?? undefined, unsurePhrase: i.unsure_phrase && i.text.includes(i.unsure_phrase) ? i.unsure_phrase : undefined, asks: i.asks ?? undefined })) : null;
 }
+
+/** One quick call that reads a booking message. Returns the model's raw JSON, or null on any failure so the caller can fall back. */
+export async function askBookingModel(system: string, user: string): Promise<unknown | null> {
+  return chatJson(system, user, { maxTokens: 150, temperature: 0, timeoutMs: 8000 });
+}

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { START, step, type Appt, type Ctx, type State } from './flow';
 import { fromMin, toMin } from './slots';
+import type { Interpretation, Interpreter } from './understand';
 import { validateOut, type Input, type Out } from './types';
 
 const NOW = new Date('2026-11-06T08:00:00Z'); // Friday 6 Nov 2026, 10:00 in Johannesburg
@@ -229,5 +230,142 @@ describe('the booking conversation', () => {
     const w = world();
     const { last } = await chat(w.ctx, [{ id: 'menu:mine' }]);
     expect(bodies(last.messages)).toContain('no upcoming bookings');
+  });
+});
+
+describe('typed requests read by the interpreter', () => {
+  const asks = (found: Interpretation | null | 'throws') => {
+    const calls: string[] = [];
+    const interpret: Interpreter = async (text) => { calls.push(text); if (found === 'throws') throw new Error('down'); return found; };
+    return { interpret, calls };
+  };
+  const withModel = (found: Interpretation | null | 'throws', opts: Parameters<typeof world>[0] = {}) => {
+    const w = world(opts);
+    const m = asks(found);
+    return { ...w, ctx: { ...w.ctx, interpret: m.interpret }, calls: m.calls };
+  };
+
+  it('says back what it understood and books nothing until the customer confirms', async () => {
+    const w = withModel({ serviceId: 'kn', date: '2026-11-07', window: 'morning' });
+    const a = await chat(w.ctx, ['braids on saturday morning']);
+    expect(w.calls).toEqual(['braids on saturday morning']);
+    expect(a.state.step).toBe('understood');
+    const m = a.last.messages[0];
+    expect(m.body).toBe('I understood: Knotless braids, Saturday 7 November, morning. Is that right?');
+    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(["Yes, that's right", 'No, let me pick']);
+    expect(w.appts).toHaveLength(0);
+
+    const b = await chat(w.ctx, [{ id: 'u:yes' }], a.state);
+    expect(b.state.step).toBe('time');
+    const list = b.last.messages.find((x) => x.type === 'list');
+    expect(list?.type === 'list' && list.rows.map((r) => r.id)).toEqual(['time:08:00', 'time:11:00', 'time:day']); // morning only
+    expect(w.appts).toHaveLength(0);
+
+    const c = await chat(w.ctx, [{ id: 'time:11:00' }], b.state);
+    expect(c.state.step).toBe('confirm');
+    expect(w.appts).toHaveLength(0);
+    const d = await chat(w.ctx, [{ id: 'ok' }], c.state);
+    expect(bodies(d.last.messages)).toContain("You're booked");
+    expect(w.appts).toHaveLength(1);
+    expect(w.appts[0]).toMatchObject({ serviceId: 'kn', date: '2026-11-07', time: '11:00' });
+  });
+
+  it('still tells the customer when the chosen time was taken in the meantime', async () => {
+    const w = withModel({ serviceId: 'kn', date: '2026-11-07', time: '11:00' });
+    const a = await chat(w.ctx, ['braids saturday 11']);
+    const b = await chat(w.ctx, [{ id: 'u:yes' }], a.state);
+    expect(b.state.step).toBe('confirm'); // exactly that time is open: straight to the final confirm, still unbooked
+    expect(w.appts).toHaveLength(0);
+    w.times['2026-11-07'] = ['08:00', '13:00']; // someone else got it
+    const c = await chat(w.ctx, [{ id: 'ok' }], b.state);
+    expect(bodies(c.last.messages)).toContain('just taken');
+    expect(w.appts).toHaveLength(0);
+  });
+
+  it('asks for the service when only a day was understood, then continues to that day', async () => {
+    const w = withModel({ date: '2026-11-07', window: 'afternoon' });
+    const a = await chat(w.ctx, ['saturday afternoon please']);
+    expect(a.last.messages[0].body).toBe('I understood: Saturday 7 November, afternoon. Is that right?');
+    const b = await chat(w.ctx, [{ id: 'u:yes' }], a.state);
+    expect(b.state.step).toBe('service');
+    const c = await chat(w.ctx, [{ id: 'svc:sp' }], b.state);
+    expect(c.state).toMatchObject({ step: 'time', serviceId: 'sp', date: '2026-11-07', period: 'afternoon' });
+    const list = c.last.messages.find((x) => x.type === 'list');
+    expect(list?.type === 'list' && list.rows.map((r) => r.id)).toEqual(['time:13:00', 'time:day']);
+  });
+
+  it('explains when the requested day is not open and offers the days that are', async () => {
+    const w = withModel({ serviceId: 'kn', date: '2026-11-08' });
+    const a = await chat(w.ctx, ['braids on sunday']);
+    const b = await chat(w.ctx, [{ id: 'u:yes' }], a.state);
+    expect(bodies(b.last.messages)).toContain('Nothing is open on Sunday 8 November');
+    expect(b.state.step).toBe('day');
+  });
+
+  it('shows the whole day when nothing is open in the wished-for part of it', async () => {
+    const w = withModel({ serviceId: 'kn', date: '2026-11-10', window: 'evening' });
+    const a = await chat(w.ctx, ['braids tuesday evening']);
+    const b = await chat(w.ctx, [{ id: 'u:yes' }], a.state);
+    expect(bodies(b.last.messages)).toContain('Nothing is open in the evening');
+    const list = b.last.messages.find((x) => x.type === 'list');
+    expect(list?.type === 'list' && list.rows.map((r) => r.id)).toEqual(['time:09:00', 'time:10:00', 'time:day']);
+  });
+
+  it('goes back to the normal steps when the customer says it is wrong', async () => {
+    const w = withModel({ serviceId: 'kn', date: '2026-11-07' });
+    const a = await chat(w.ctx, ['braids on saturday']);
+    const b = await chat(w.ctx, [{ id: 'u:no' }], a.state);
+    expect(b.state.step).toBe('service');
+    expect(b.last.messages.some((m) => m.type === 'list')).toBe(true);
+    expect(w.appts).toHaveLength(0);
+  });
+
+  it('is honest that a named person cannot be picked yet', async () => {
+    const w = withModel({ serviceId: 'kn', staff: 'Thandi' });
+    const a = await chat(w.ctx, ['braids with thandi']);
+    expect(a.last.messages[0].body).toContain("can't book a particular person");
+  });
+
+  it('refuses to offer a service that does not exist', async () => {
+    const w = withModel({ serviceId: 'ghost' });
+    const { last } = await chat(w.ctx, ['something odd']);
+    expect(bodies(last.messages)).toContain("didn't catch that");
+  });
+
+  it('works inside the day and time steps too', async () => {
+    const w = withModel({ date: '2026-11-10', window: 'morning' });
+    const a = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:kn' }, 'the tuesday one after the weekend']);
+    expect(a.state.step).toBe('understood');
+    expect(a.state.hint).toMatchObject({ serviceId: 'kn', date: '2026-11-10' }); // keeps the service already chosen
+  });
+
+  it.each([['returns nothing', null], ['throws', 'throws' as const]])('falls back to the keyword parser when the interpreter %s', async (_n, found) => {
+    const w = withModel(found);
+    const a = await chat(w.ctx, ['asdf qwerty']);
+    expect(bodies(a.last.messages)).toContain("didn't catch that");
+    // Keywords alone still drive the whole booking.
+    const b = await chat(w.ctx, [{ id: 'menu:book' }, 'knotless', 'sat', '11am', 'yes']);
+    expect(b.state.step).toBe('menu');
+    expect(w.appts).toHaveLength(1);
+  });
+
+  it('does not ask the interpreter when the keywords already understood', async () => {
+    const w = withModel({ serviceId: 'sp' });
+    await chat(w.ctx, [{ id: 'menu:book' }, 'knotless', 'sat', '11am']);
+    expect(w.calls).toEqual([]);
+  });
+
+  it('does not use the interpreter for a brand new customer, who gets the consent greeting first', async () => {
+    const w = withModel({ serviceId: 'kn' }, { isNew: true });
+    const { last } = await chat(w.ctx, ['braids on saturday']);
+    expect(w.calls).toEqual([]);
+    expect(bodies(last.messages)).toContain('By chatting with me you agree');
+  });
+
+  it('never calls it while a person has the chat or after STOP', async () => {
+    const w = withModel({ serviceId: 'kn' });
+    await chat(w.ctx, ['hello?'], { step: 'handover' });
+    await chat(w.ctx, ['stop']);
+    expect(w.calls).toEqual([]);
   });
 });
