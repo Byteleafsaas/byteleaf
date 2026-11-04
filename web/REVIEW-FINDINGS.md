@@ -2,19 +2,19 @@
 
 Baseline before any change: `tsc --noEmit` clean, `vitest run` 17 files / 209 tests passing. Nothing was run against a database, Meta or DeepSeek, so every item below comes from reading the code, except the SSRF one, which was reproduced with Node's URL parser.
 
-## Fixed in this PR (2 commits, each with a test)
+## Fixed in this PR (2 review commits + 3 follow-up commits, each with a test)
 
 1. **SSRF bypass in `lib/assistant/net.ts`.** `new URL('http://[::ffff:127.0.0.1]/').hostname` is `[::ffff:7f00:1]`. `isPrivateIp` only recognised the dotted form, so this (and `[::ffff:169.254.169.254]`, `[::127.0.0.1]`, NAT64 and 6to4 forms) passed the check and `fetchHtml` would fetch loopback and cloud-metadata addresses. Now the embedded IPv4 address is extracted and judged.
 2. **`lib/whatsapp/flow.ts`: a typed correction at "Is that right?" lost the service.** The interpreter fallback read `state.serviceId`, which the `understood` state does not have, so "no, tuesday" produced "I understood: Tuesday…" and then asked for the service again.
 
 ## Findings not fixed, ranked
 
-### High
+### High: now fixed (follow-up commits, each with a test)
 
-- **No cap or per-customer limit on DeepSeek calls from WhatsApp.** `lib/server/whatsapp/understand.ts:9`, `lib/server/assistant/llm.ts` (`askBookingModel`). The chatbot has `ASSISTANT_DAILY_LIMIT`; the interpreter has none. The public simulator (`lib/server/actions/whatsapp.ts:23`) allows 60 messages per 10 minutes per IP, and the IP comes from a client-controlled header (next item), so the spend is effectively unbounded. A real customer can also trigger one paid call per unparseable message. Fix: a per-business daily `rateLimit` before `askBookingModel`, plus a short per-phone limit.
-- **No reaper for `WaSlotLock`, so a crash leaves a time blocked forever.** `lib/server/whatsapp/calendar.ts:93-115`, `models.ts:481`. Locks are inserted before the appointment. If the process dies between the lock insert and `WaAppointment.create` (or `cancelSlot` fails after marking the booking cancelled and before `deleteMany`), the lock stays. `loadBusy` shows the time as free, the offer is made, and every booking attempt returns "taken". There is no TTL and no cleanup job. Fix: a job that deletes locks whose `apptId` has no `booked` appointment and are older than a few minutes; and delete past-dated locks.
-- **Reminder double-send.** `lib/server/whatsapp/reminders.ts:30-47`. The "already sent" check reads `reminders` and the push happens after the network send. Two overlapping scheduler runs (or a slow run plus the next tick) both pass `isDue` and both send. Fix: claim first with `updateOne({_id, 'reminders.kind': {$ne: kind}}, {$push})` and send only when `modifiedCount === 1`; `$pull` it if the send fails.
-- **Reminder template parameters disagree with the docs.** `reminders.ts:40` passes five body values (first name, service, day, time, business name); `WHATSAPP.md` tells you to create the template with four. A four-variable template makes Meta reject every out-of-window reminder (silently: the code only logs and counts it as skipped). Decide which is right and make the docs and code match before submitting the template for approval.
+- **Interpreter spend:** 15 model calls per customer per 10 minutes and `ASSISTANT_DAILY_LIMIT` per business per day, then it falls back to the keyword parser. Note the per-IP limits elsewhere still trust `x-forwarded-for` (see Medium).
+- **Stale slot locks:** `releaseOrphanLocks` (run at the start of each reminder tick) deletes future locks older than 10 minutes whose booking is missing or not `booked`.
+- **Reminder double-send:** the reminder is claimed with an atomic update before sending and released if the send fails.
+- **Template parameters:** code now sends the four values `WHATSAPP.md` specifies (first name, service, day, time). If you would rather include the business name, change the guide and the template together.
 
 ### Medium
 
