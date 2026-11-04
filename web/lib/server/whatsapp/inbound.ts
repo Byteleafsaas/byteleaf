@@ -3,8 +3,10 @@ import { Types } from 'mongoose';
 import { START, step, type Appt, type Ctx, type State } from '@/lib/whatsapp/flow';
 import { fromMin, toMin } from '@/lib/whatsapp/slots';
 import { validateOut, type Input, type Out } from '@/lib/whatsapp/types';
+import { todaySast } from '../time';
 import { connectDB } from '../db';
 import { WaAppointment, WaChat, WaClient } from '../models';
+import { makeInterpreter } from './understand';
 import { bookSlot, cancelSlot, daysFor, loadData, moveSlot, timesFor, type Booked, type Data } from './calendar';
 
 export type Source = 'whatsapp' | 'simulator';
@@ -30,6 +32,7 @@ function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: str
     business: { name: d.biz.name, cancelWindowHours: d.biz.cancelWindowHours, replyNote: d.biz.replyNote, payNote: d.biz.payNote },
     client: { name: client.name || undefined, isNew: client.isNew, optedOut: client.optedOut },
     now,
+    interpret: makeInterpreter(d, todaySast(now)),
     services: async () => d.services.map((s) => ({ id: String(s.id), name: s.name, minutes: s.minutes, priceCents: s.priceCents })),
     days: async (serviceId, excl) => { const s = svc(serviceId); return s ? daysFor(d, s, now, excl) : []; },
     times: async (serviceId, date, excl) => { const s = svc(serviceId); return s ? timesFor(d, s, date, now, excl) : []; },
