@@ -32,7 +32,7 @@ function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: str
     business: { name: d.biz.name, cancelWindowHours: d.biz.cancelWindowHours, replyNote: d.biz.replyNote, payNote: d.biz.payNote },
     client: { name: client.name || undefined, isNew: client.isNew, optedOut: client.optedOut },
     now,
-    interpret: makeInterpreter(d, todaySast(now)),
+    interpret: makeInterpreter(d, todaySast(now), client.phone),
     services: async () => d.services.map((s) => ({ id: String(s.id), name: s.name, minutes: s.minutes, priceCents: s.priceCents })),
     days: async (serviceId, excl) => { const s = svc(serviceId); return s ? daysFor(d, s, now, excl) : []; },
     times: async (serviceId, date, excl) => { const s = svc(serviceId); return s ? timesFor(d, s, date, now, excl) : []; },
