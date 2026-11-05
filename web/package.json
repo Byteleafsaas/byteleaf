@@ -12,6 +12,7 @@
     "seed": "tsx --env-file=.env.local --conditions=react-server scripts/seed.ts",
     "seed-assistant": "tsx --env-file=.env.local --conditions=react-server scripts/seed-assistant.ts",
     "seed-whatsapp": "tsx --env-file=.env.local --conditions=react-server scripts/seed-whatsapp.ts",
+    "wa-connect": "tsx --env-file=.env.local --conditions=react-server scripts/wa-connect.ts",
     "wa-simulate": "tsx --env-file=.env.local --conditions=react-server scripts/wa-simulate.ts",
     "starter-projects": "tsx --env-file=.env.local --conditions=react-server scripts/starter-projects.ts",
     "db:up": "docker compose up -d",

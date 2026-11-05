@@ -1,27 +1,34 @@
-// When is a reminder due? Pure, so the rules can be tested without sending anything.
+// When is the reminder due? Pure, so the rules can be tested without sending anything.
+import { addDays, sastToUtc } from '@/lib/server/time';
+
+/** The one reminder a booking gets: the evening before, at the business's reminder hour (18:00 by default, SAST). */
+export const KIND = 'day-before';
+export const DEFAULT_HOUR = 18;
 
 export type DueInput = {
+  /** The appointment's date, as 'YYYY-MM-DD' in South Africa. */
+  date: string;
   startsAt: Date;
   /** When the booking was made. */
   createdAt: Date;
   now: Date;
-  /** How long before the appointment this reminder goes out, in hours (for example 24 or 2). */
-  hours: number;
-  /** Reminder kinds already sent for this booking, such as '24h'. */
+  /** The hour of the evening before that it goes out, 0 to 23. */
+  hour: number;
+  /** Reminder kinds already sent for this booking. */
   sent: string[];
 };
 
-export const kindOf = (hours: number) => `${hours}h`;
+/** The moment the reminder is meant to go out. */
+export const reminderAt = (date: string, hour: number) => sastToUtc(addDays(date, -1), `${String(hour).padStart(2, '0')}:00`);
 
 /**
- * True when a reminder should go out now. It is due once we are inside the reminder window, the appointment hasn't
- * started, and it hasn't been sent. A booking made inside the window gets no reminder for it: someone who booked
- * an hour ago doesn't need telling about an appointment "tomorrow".
+ * True when the reminder should go out now: it is past the evening-before hour, the appointment hasn't started, and it
+ * hasn't been sent. A booking made after that hour gets no reminder: someone who booked an hour ago doesn't need telling
+ * about an appointment "tomorrow".
  */
 export function isDue(i: DueInput): boolean {
-  const lead = i.hours * 3600000;
-  const untilStart = i.startsAt.getTime() - i.now.getTime();
-  if (untilStart <= 0 || untilStart > lead) return false;
-  if (i.sent.includes(kindOf(i.hours))) return false;
-  return i.startsAt.getTime() - i.createdAt.getTime() > lead;
+  const at = reminderAt(i.date, i.hour);
+  if (i.now.getTime() < at.getTime() || i.now.getTime() >= i.startsAt.getTime()) return false;
+  if (i.sent.includes(KIND)) return false;
+  return i.createdAt.getTime() < at.getTime();
 }

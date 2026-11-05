@@ -5,6 +5,7 @@ import { upcomingHolidays } from '@/lib/whatsapp/holidays';
 import { toMin, type WeekHours } from '@/lib/whatsapp/slots';
 import { addDays, isoWeekday, todaySast } from '../time';
 import { connectDB } from '../db';
+import { env } from '../env';
 import { WaAppointment, WaBusiness, WaService, WaStaff } from '../models';
 
 /** The business the booking admin shows. One demo salon for now, as the knowledge assistant shows one demo client. */
@@ -22,8 +23,8 @@ export async function loadBookingInfo(): Promise<BookingInfo> {
     sub: `Randburg · ${staff} staff`,
     mark: (b?.name ?? 'L')[0].toUpperCase(),
     brand: b?.brand ?? 'byteleaf',
-    // A real number needs Meta credentials. Until one is saved, the demo shows the design's connected state.
-    numberOk: true,
+    // Until a real number is saved the demo shows the design's connected state. Once one is, it needs the token and a send that wasn't refused.
+    numberOk: connected ? Boolean(env.WHATSAPP_TOKEN) && !b?.numberProblemAt : true,
     numberText: connected ? 'WhatsApp connected' : 'WhatsApp +27 [number] · connected',
     staffCount: staff,
   };

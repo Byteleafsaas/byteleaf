@@ -383,6 +383,9 @@ const waBusinessSchema = new Schema(
     name: { type: String, required: true },
     // The WhatsApp number's id from Meta. Inbound messages are matched to a business by it.
     phoneNumberId: { type: String, index: true, sparse: true },
+    // Set when WhatsApp refuses our credentials (an expired or revoked token), cleared by the next send that works.
+    // The booking admin shows "WhatsApp number needs attention" while it is set.
+    numberProblemAt: { type: Date, default: null },
     hours: { type: Schema.Types.Mixed, default: {} },
     daysOff: [daysOffSchema],
     minNoticeMin: { type: Number, default: 120 },
@@ -402,7 +405,8 @@ const waBusinessSchema = new Schema(
     // Public holidays the owner has chosen to open. Every other upcoming holiday is a closed day.
     holidayOpen: { type: [String], default: [] },
     payNote: { type: String, default: 'paid at the salon' },
-    reminderHours: { type: [Number], default: [24, 2] },
+    // The hour of the evening before that the reminder goes out (SAST).
+    reminderHour: { type: Number, default: 18, min: 0, max: 23 },
     active: { type: Boolean, default: true },
   },
   { timestamps: true },
@@ -507,9 +511,25 @@ export const WaAppointment = model('WaAppointment', waAppointmentSchema);
 
 // One row per staff member per 15 minutes that is taken. The unique index is what makes double-booking impossible,
 // even when two customers confirm the same slot in the same instant: the second insert fails.
-const waSlotLockSchema = new Schema({ staffId: { type: Schema.Types.ObjectId, required: true }, grain: { type: Date, required: true }, apptId: { type: Schema.Types.ObjectId, required: true, index: true } });
+// `expiresAt` is set only on a hold (a slot kept for a client while they decide). Mongo removes the row when it passes.
+const waSlotLockSchema = new Schema({ staffId: { type: Schema.Types.ObjectId, required: true }, grain: { type: Date, required: true }, apptId: { type: Schema.Types.ObjectId, required: true, index: true }, expiresAt: { type: Date } });
 waSlotLockSchema.index({ staffId: 1, grain: 1 }, { unique: true });
+waSlotLockSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 export const WaSlotLock = model('WaSlotLock', waSlotLockSchema);
+
+// A slot held for five minutes while a client reads the confirmation. Its locks carry the hold's id and the same expiry.
+const waHoldSchema = new Schema({
+  business: { type: String, required: true },
+  clientId: { type: Schema.Types.ObjectId, required: true, index: true },
+  staffId: { type: Schema.Types.ObjectId, required: true },
+  serviceId: { type: Schema.Types.ObjectId, required: true },
+  startsAt: { type: Date, required: true },
+  blocksUntil: { type: Date, required: true },
+  expiresAt: { type: Date, required: true },
+});
+waHoldSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+waHoldSchema.index({ business: 1, startsAt: 1 });
+export const WaHold = model('WaHold', waHoldSchema);
 
 // Message ids we have already handled, because WhatsApp sends the same webhook again when it doesn't hear back in time.
 const waSeenSchema = new Schema({ messageId: { type: String, required: true, unique: true }, createdAt: { type: Date, default: Date.now, expires: 172800 } });

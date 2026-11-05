@@ -5,9 +5,10 @@
 import mongoose from 'mongoose';
 import { connectDB } from '@/lib/server/db';
 import { handleInbound } from '@/lib/server/whatsapp/inbound';
-import { WaAppointment, WaChat, WaClient, WaSlotLock } from '@/lib/server/models';
+import { WaAppointment, WaChat, WaClient, WaHold, WaSlotLock } from '@/lib/server/models';
+import { Types } from 'mongoose';
 import type { Out } from '@/lib/whatsapp/types';
-import { loadData } from '@/lib/server/whatsapp/calendar';
+import { bookSlot, holdSlot, loadData, timesFor } from '@/lib/server/whatsapp/calendar';
 import { addManualBooking, cancelBooking, moveBooking, restoreBooking } from '@/lib/server/whatsapp/manual';
 import { addDays, todaySast } from '@/lib/server/time';
 
@@ -72,9 +73,9 @@ async function main() {
   // Both silk-press staff exist, so the same time can go to the other person once. Fill it, then it must disappear.
   check(true, `the second customer sees the slot ${stillOffered ? 'still (the other stylist is free)' : 'gone'}`);
 
-  console.log('\n3. Ten customers confirm the same slot at the same instant');
+  console.log('\n3. Ten customers go for the same slot at the same instant');
   const racers = Array.from({ length: 10 }, (_, i) => phone(100 + i));
-  // Knotless braids can only be done by Lerato, so at most one of them can win a given time.
+  // Two people (Lerato and Thandeka) can do knotless braids, so two clients can hold a time and no more.
   const prepared: { p: string; day: string; time: string }[] = [];
   for (const p of racers) {
     await newCustomer(p);
@@ -82,19 +83,28 @@ async function main() {
     const dd = rows(x.messages).find((y) => y.startsWith('day:'))!;
     x = await timesAfterDay(p, await tap(p, dd));
     const tt = rows(x.messages).find((y) => y.startsWith('time:'))!;
-    await tap(p, tt);
-    await say(p, 'Racer');
     prepared.push({ p, day: dd, time: tt });
   }
   const target = prepared[0];
-  // Nobody has booked yet, so all ten were shown the same first day and time and are now sitting on the confirm screen.
-  const results = await Promise.all(prepared.map((x) => tap(x.p, 'ok')));
+  // Nobody has chosen yet, so all ten are looking at the same list. Now all ten tap the same time together.
+  const named = await Promise.all(prepared.map(async (x) => { await tap(x.p, target.time); return x; }));
+  const askedName = await Promise.all(named.map((x) => say(x.p, 'Racer')));
+  const holders = askedName.filter((x) => text(x.messages).includes('Please confirm your booking'));
+  const sorry = askedName.filter((x) => /was booked by someone else|just taken/.test(text(x.messages)));
+  // How many can hold it is however many of the two people are free at that time: never more, and never zero.
+  const n = holders.length;
+  check(n >= 1 && n <= 2, `no more clients hold the time than people who can do it, and someone does (got ${n})`);
+  check(sorry.length === 10 - n, `everyone else is told straight away that it was taken (got ${sorry.length})`);
+  const holdRows = await WaHold.countDocuments({ clientId: { $in: (await WaClient.find({ business: SLUG, phone: { $in: racers } }, { _id: 1 }).lean()).map((x) => x._id) } });
+  check(holdRows === n, `one hold exists per holder (got ${holdRows})`);
+  // The holders confirm together and all of them get their booking.
+  const holderPhones = askedName.map((x, i) => (holders.includes(x) ? prepared[i].p : '')).filter(Boolean);
+  const results = await Promise.all(holderPhones.map((p) => tap(p, 'ok')));
   const wins = results.filter((x) => text(x.messages).includes("You're booked")).length;
-  const sorry = results.filter((x) => /was booked by someone else|just taken/.test(text(x.messages))).length;
-  check(wins === 1, `exactly one of ten booked the slot (got ${wins})`);
-  check(sorry === 9, `the other nine were told it was taken (got ${sorry})`);
-  const locks = await WaSlotLock.countDocuments({ apptId: { $in: (await WaAppointment.find({ business: SLUG, clientPhone: { $in: racers }, status: 'booked' }).lean()).map((x) => x._id) } });
-  check(locks === 17, `the winner holds 17 quarter-hour locks (4 hours plus 15 minutes of buffer) (got ${locks})`);
+  check(wins === n, `every holder is booked when they confirm (got ${wins})`);
+  const mineLocks = await WaSlotLock.countDocuments({ apptId: { $in: (await WaAppointment.find({ business: SLUG, clientPhone: { $in: racers }, status: 'booked' }).lean()).map((x) => x._id) } });
+  check(mineLocks === 17 * n, `each winner holds 17 quarter-hour locks (4 hours plus 15 minutes of buffer) (got ${mineLocks})`);
+  check((await WaHold.countDocuments({ clientId: { $in: (await WaClient.find({ business: SLUG, phone: { $in: racers } }, { _id: 1 }).lean()).map((x) => x._id) } })) === 0, 'no holds are left once they are booked');
 
   console.log('\n4. Changing a booking');
   r = await tap(a, 'menu:mine');
@@ -173,6 +183,33 @@ async function main() {
   await WaSlotLock.deleteMany({ apptId: { $in: mine.map((x) => x._id) } });
   await WaAppointment.deleteMany({ _id: { $in: mine.map((x) => x._id) } });
   await WaClient.deleteMany({ business: SLUG, name: /^Hand / });
+
+  {
+  console.log('\n9. Holding a slot while the client decides');
+  const knot = d.services.find((x) => x.name === 'Knotless braids')!;
+  const ids = [new Types.ObjectId(), new Types.ObjectId(), new Types.ObjectId()];
+  const nowH = new Date();
+  const holds = [];
+  for (const id of ids) holds.push(await holdSlot(d, knot, { id }, handDay, '09:00', nowH));
+  check(holds[0] && holds[1] && !holds[2], 'as many clients can hold a time as there are people to do it (two here), and no more');
+  const seen = (viewer: Types.ObjectId) => timesFor(d, knot, handDay, nowH, undefined, viewer);
+  check(!(await seen(ids[2])).includes('09:00'), 'a time other clients are holding is no longer offered to someone else');
+  check((await seen(ids[0])).includes('09:00'), 'the client holding it still sees it');
+  await WaHold.updateMany({ clientId: ids[0] }, { $set: { expiresAt: new Date(Date.now() - 1000) } });
+  await WaSlotLock.updateMany({ apptId: { $in: (await WaHold.find({ clientId: ids[0] }).lean()).map((x) => x._id) } }, { $set: { expiresAt: new Date(Date.now() - 1000) } });
+  check(await holdSlot(d, knot, { id: ids[2] }, handDay, '09:00', new Date()), 'when a hold runs out, the time can be held by someone else straight away');
+  const booked = await bookSlot(d, knot, { id: ids[2], name: 'Hold Test', phone: 'hold-test-1' }, handDay, '09:00', new Date(), 'simulator');
+  check(booked !== 'taken', 'confirming turns the hold into the booking');
+  check((await WaHold.countDocuments({ clientId: ids[2] })) === 0, 'and the hold is gone');
+  if (booked !== 'taken') check((await WaSlotLock.countDocuments({ apptId: booked.id, expiresAt: { $exists: true } })) === 0 && (await WaSlotLock.countDocuments({ apptId: booked.id })) > 0, 'its rows are now permanent, not expiring');
+  const late = await bookSlot(d, knot, { id: new Types.ObjectId(), name: 'Hold Late', phone: 'hold-test-2' }, handDay, '09:00', new Date(), 'simulator');
+  check(late === 'taken', 'someone who never held it cannot book a time another client is holding');
+  const mineH = await WaAppointment.find({ clientPhone: /^hold-test/ }).lean();
+  await WaSlotLock.deleteMany({ apptId: { $in: [...mineH.map((x) => x._id), ...(await WaHold.find({ clientId: { $in: ids } }).lean()).map((x) => x._id)] } });
+  await WaAppointment.deleteMany({ clientPhone: /^hold-test/ });
+  await WaHold.deleteMany({ clientId: { $in: ids } });
+
+  }
 
   // Clean up everything this run created.
   const created = await WaClient.find({ business: SLUG, phone: { $regex: '^2700000' } }, { _id: 1 }).lean();

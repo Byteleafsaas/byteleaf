@@ -7,7 +7,7 @@ import { todaySast } from '../time';
 import { connectDB } from '../db';
 import { WaAppointment, WaChat, WaClient } from '../models';
 import { makeInterpreter } from './understand';
-import { bookSlot, cancelSlot, daysFor, loadData, moveSlot, staffAtFor, timesFor, type Booked, type Data } from './calendar';
+import { bookSlot, cancelSlot, daysFor, holdSlot, loadData, moveSlot, releaseHolds, staffAtFor, timesFor, type Booked, type Data } from './calendar';
 
 export type Source = 'whatsapp' | 'simulator';
 
@@ -26,8 +26,13 @@ const toAppt = (a: { _id: unknown; serviceId: unknown; serviceName?: string | nu
 const fromBooked = (b: Booked): Appt => ({ id: String(b.id), serviceId: String(b.serviceId), serviceName: b.serviceName, staffName: b.staffName, date: b.date, time: b.time, endTime: endOf(b.startsAt, b.endsAt, b.time), priceCents: b.priceCents, startsAt: b.startsAt });
 
 /** Wires the conversation to the real calendar for one customer. */
+/** What clients are told a service is called: "Appointment" when its name is kept out of messages (a clinic). */
+const label = (d: Data, id: unknown, name: string) => (d.hidden.has(String(id)) ? 'Appointment' : name);
+
 function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: string; isNew: boolean; optedOut: boolean; nameConfirmed: boolean; last?: { serviceId: string; serviceName: string; staffName?: string } }, now: Date, source: Source): Ctx {
   const svc = (id: string) => d.services.find((s) => String(s.id) === id);
+  // Every booking shown to the client goes through here, so a clinic service is never named in a message.
+  const lab = (a: Appt): Appt => ({ ...a, serviceName: label(d, a.serviceId, a.serviceName) });
   return {
     business: {
       name: d.biz.name, cancelWindowHours: d.biz.cancelWindowHours, replyTime: d.biz.replyTime, payNote: d.biz.payNote, address: d.biz.address, privacyUrl: d.biz.privacyUrl, lateFee: d.biz.lateFee,
@@ -36,21 +41,23 @@ function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: str
     client: { name: client.name || undefined, nameConfirmed: client.nameConfirmed, isNew: client.isNew, optedOut: client.optedOut, last: client.last },
     now,
     interpret: makeInterpreter(d, todaySast(now), client.phone),
-    services: async () => d.services.map((s) => ({ id: String(s.id), name: s.name, minutes: s.minutes, priceCents: s.priceCents })),
-    days: async (serviceId, excl) => { const s = svc(serviceId); return s ? daysFor(d, s, now, excl) : []; },
-    times: async (serviceId, date, excl) => { const s = svc(serviceId); return s ? timesFor(d, s, date, now, excl) : []; },
-    staffAt: async (serviceId, date, excl) => { const s = svc(serviceId); return s ? staffAtFor(d, s, date, now, excl) : {}; },
-    upcoming: async () => (await WaAppointment.find({ business: d.biz.slug, clientId: client.id, status: 'booked', startsAt: { $gt: now } }).sort({ startsAt: 1 }).limit(10).lean()).map(toAppt),
+    services: async () => d.services.map((s) => ({ id: String(s.id), name: label(d, s.id, s.name), minutes: s.minutes, priceCents: s.priceCents, hideName: d.hidden.has(String(s.id)) })),
+    days: async (serviceId, excl) => { const s = svc(serviceId); return s ? daysFor(d, s, now, excl, client.id) : []; },
+    times: async (serviceId, date, excl) => { const s = svc(serviceId); return s ? timesFor(d, s, date, now, excl, client.id) : []; },
+    staffAt: async (serviceId, date, excl) => { const s = svc(serviceId); return s ? staffAtFor(d, s, date, now, excl, client.id) : {}; },
+    upcoming: async () => (await WaAppointment.find({ business: d.biz.slug, clientId: client.id, status: 'booked', startsAt: { $gt: now } }).sort({ startsAt: 1 }).limit(10).lean()).map((x) => lab(toAppt(x))),
     appointment: async (id) => {
       if (!Types.ObjectId.isValid(id)) return null;
       const a = await WaAppointment.findOne({ _id: id, business: d.biz.slug, clientId: client.id, status: 'booked' }).lean();
-      return a ? toAppt(a) : null;
+      return a ? lab(toAppt(a)) : null;
     },
+    hold: async ({ serviceId, date, time }) => { const s = svc(serviceId); return s ? holdSlot(d, s, client, date, time, now) : false; },
+    release: () => releaseHolds(client.id),
     book: async ({ serviceId, date, time }) => {
       const s = svc(serviceId);
       if (!s) return { ok: false, reason: 'invalid' };
       const r = await bookSlot(d, s, client, date, time, now, source);
-      return r === 'taken' ? { ok: false, reason: 'taken' } : { ok: true, appt: fromBooked(r) };
+      return r === 'taken' ? { ok: false, reason: 'taken' } : { ok: true, appt: lab(fromBooked(r)) };
     },
     move: async (apptId, date, time) => {
       const own = await WaAppointment.exists({ _id: apptId, clientId: client.id });
@@ -58,7 +65,7 @@ function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: str
       const r = await moveSlot(d, apptId, date, time, now);
       if (r === 'taken' || r === 'gone') return { ok: false, reason: r === 'taken' ? 'taken' : 'invalid' };
       await WaAppointment.updateOne({ _id: apptId }, { $set: { movedByClient: true, movedBy: 'client', confirmedAt: null } });
-      return { ok: true, appt: fromBooked(r) };
+      return { ok: true, appt: lab(fromBooked(r)) };
     },
     cancel: async (apptId) => {
       const own = await WaAppointment.exists({ _id: apptId, clientId: client.id });

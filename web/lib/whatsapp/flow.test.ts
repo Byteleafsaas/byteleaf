@@ -139,6 +139,69 @@ describe('the booking conversation', () => {
     expect(w.appts).toHaveLength(1); // only the other person's booking
   });
 
+  it('holds the chosen time while the customer reads the confirmation, and gives it back if they change or cancel', async () => {
+    const w = world();
+    const held: string[] = [];
+    let released = 0;
+    const ctx: Ctx = { ...w.ctx, hold: async (i) => { held.push(`${i.date} ${i.time}`); return true; }, release: async () => { released++; } };
+    const a = await chat(ctx, [{ id: 'menu:book' }, { id: 'svc:sp' }, { id: 'day:2026-11-07' }, { id: 'time:08:00' }]);
+    expect(a.state.step).toBe('confirm');
+    expect(held).toEqual(['2026-11-07 08:00']);
+    await chat(ctx, [{ id: 'change' }], a.state);
+    await chat(ctx, [{ id: 'cancel' }], a.state);
+    expect(released).toBe(2);
+  });
+
+  it('tells the customer straight away when the time can no longer be held, instead of at the last tap', async () => {
+    const w = world();
+    const ctx: Ctx = { ...w.ctx, hold: async () => false };
+    const a = await chat(ctx, [{ id: 'menu:book' }, { id: 'svc:sp' }, { id: 'day:2026-11-07' }, { id: 'time:08:00' }]);
+    expect(a.state.step).toBe('time');
+    expect(bodies(a.last.messages)).toContain('*08:00 on Saturday 7 Nov* was booked by someone else a moment ago');
+  });
+
+  it('holds the time after a new customer gives their name, not before', async () => {
+    const w = world({ named: false });
+    const held: string[] = [];
+    const ctx: Ctx = { ...w.ctx, hold: async (i) => { held.push(i.time); return true; } };
+    const a = await chat(ctx, [{ id: 'menu:book' }, { id: 'svc:gn' }, { id: 'day:2026-11-07' }, { id: 'time:08:00' }]);
+    expect(a.state.step).toBe('name');
+    expect(held).toEqual([]);
+    await chat(ctx, ['Lindiwe M'], a.state);
+    expect(held).toEqual(['08:00']);
+  });
+
+  it('shows the next open times when nothing is free this week (B11), and the plain list of days on request', async () => {
+    const w = world({ times: { '2026-11-16': ['09:00', '10:00'], '2026-11-17': ['09:00'], '2026-11-18': ['09:00'] } });
+    const a = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:gn' }]);
+    const m = a.last.messages[0];
+    expect(m.body).toBe('Gel nails are fully booked this week. The next open times are:');
+    const rows = m.type === 'list' ? m.rows : [];
+    expect(rows.map((r) => r.id)).toEqual(['slot:2026-11-16|09:00', 'slot:2026-11-16|10:00', 'slot:2026-11-17|09:00', 'day:list', 'menu:person']);
+    expect(rows[0].title).toBe('Mon 16 Nov, 09:00');
+    const pick = await chat(w.ctx, [{ id: 'slot:2026-11-16|10:00' }], a.state);
+    expect(pick.state).toMatchObject({ step: 'confirm', date: '2026-11-16', time: '10:00' });
+    const later = await chat(w.ctx, [{ id: 'day:list' }], a.state);
+    const days = later.last.messages[0];
+    expect(days.type === 'list' && days.rows.map((r) => r.id)).toEqual(['day:2026-11-16', 'day:2026-11-17', 'day:2026-11-18']);
+  });
+
+  it('does not show that list when something is free within the week', async () => {
+    const w = world();
+    const a = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:gn' }]);
+    expect(a.last.messages[0].body).toContain('Which day suits you?');
+  });
+
+  it('never names a clinic service: the list, the confirmation and the booking all say "Appointment"', async () => {
+    const w = world();
+    const ctx: Ctx = { ...w.ctx, services: async () => [{ id: 'kn', name: 'Appointment', minutes: 60, priceCents: 50000, hideName: true }] };
+    const a = await chat(ctx, [{ id: 'menu:book' }, { id: 'svc:kn' }, { id: 'day:2026-11-07' }, { id: 'time:08:00' }]);
+    expect(bodies(a.last.messages)).toContain('*Appointment* with Dr [name]');
+    expect(bodies(a.log[0].messages)).not.toContain('Knotless');
+    const list = a.log[0].messages[0];
+    expect(list.type === 'list' && list.rows[0].title).toBe('Appointment');
+  });
+
   it('asks morning, afternoon or evening when there are too many times for one list', async () => {
     const many = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '13:00', '13:30', '14:00', '14:30', '15:00'];
     const w = world({ times: { '2026-11-07': many } });

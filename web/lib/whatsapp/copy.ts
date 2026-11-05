@@ -87,6 +87,8 @@ export const T = {
   dayButton: 'See days',
   moreDays: 'Later dates',
   moreDaysNote: 'Show the week after',
+  fullWeek: (service: string) => `${service} ${/s$/i.test(service) ? 'are' : 'is'} fully booked this week. The next open times are:`,
+  askPersonCancel: 'We sometimes have cancellations',
   noDays: 'Nothing is free in the next few weeks. Would you like a person to help you find a time?',
   // B05 times
   timeBody: (date: string) => `These times are open on *${fmtLong(date)}*. Tap one to choose.`,
@@ -171,6 +173,8 @@ export const T = {
   start: "Welcome back. We'll send your confirmations and reminders here again.",
   // C01 and C02 reminders
   reminder: (first: string, service: string, business: string, when: string, date: string, time: string) => `Hi ${first}, this is a reminder of your ${service} appointment at ${business} ${when === 'today' || when === 'tomorrow' ? `${when}, ${fmtMid(date)}` : `on ${fmtMid(date)}`}, at ${time}.\n\nCan you still make it?`,
+  // C03: the clinic reminder names the practitioner and never the service or the reason for the visit.
+  reminderClinic: (first: string, who: string, when: string, date: string, time: string) => `Hi ${first}, a reminder of your appointment with ${who} ${when === 'today' || when === 'tomorrow' ? `${when}, ${fmtMid(date)}` : `on ${fmtMid(date)}`}, at ${time}. Reply to confirm or change.`,
   reminderOk: (name: string | undefined, when: string, time: string) => `Thanks${name ? `, ${name}` : ''}. See you ${when} at ${time}!`,
   seeYou: 'Great, see you then!',
   btnSeeYou: 'Yes, see you',

@@ -29,6 +29,8 @@ export const env = {
   WHATSAPP_VERIFY_TOKEN: process.env.WHATSAPP_VERIFY_TOKEN ?? '',
   WHATSAPP_API_VERSION: process.env.WHATSAPP_API_VERSION ?? 'v21.0',
   WHATSAPP_REMINDER_TEMPLATE: process.env.WHATSAPP_REMINDER_TEMPLATE ?? '',
+  // The clinic version names the practitioner and never the service (approved separately).
+  WHATSAPP_REMINDER_TEMPLATE_CLINIC: process.env.WHATSAPP_REMINDER_TEMPLATE_CLINIC ?? '',
   WHATSAPP_TEMPLATE_LANG: process.env.WHATSAPP_TEMPLATE_LANG ?? 'en',
   // Shared secret for the scheduled call that sends appointment reminders.
   CRON_SECRET: process.env.CRON_SECRET ?? '',

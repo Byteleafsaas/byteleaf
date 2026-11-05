@@ -3,11 +3,13 @@
 // so every path can be tested with a pretend calendar. The wording lives in `copy.ts`; the order of checks follows the design handoff.
 import { PERSON_FOOTER, T, clip, fmtDay, fmtLength, fmtLong, fmtMid, fmtMoney, rowTitle, timesOpen, weekdayName } from './copy';
 import { isStart, isStop, no, norm, parseDay, parseTime, parseWhen, wantsBook, wantsMenu, wantsMine, wantsPerson, yes } from './parse';
+import { addDays, todaySast } from '@/lib/server/time';
 import { fromMin, toMin } from './slots';
 import { LIMITS, type Input, type Out, type Row } from './types';
 import type { Interpretation, Interpreter } from './understand';
 
-export type Svc = { id: string; name: string; minutes: number; priceCents: number };
+/** `name` is what clients are told: "Appointment" for a service whose name is kept out of messages (a clinic), and `hideName` says so. */
+export type Svc = { id: string; name: string; minutes: number; priceCents: number; hideName?: boolean };
 export type Appt = { id: string; serviceId: string; serviceName: string; staffName?: string; date: string; time: string; endTime: string; priceCents: number; startsAt: Date };
 
 export type BookResult = { ok: true; appt: Appt } | { ok: false; reason: 'taken' | 'invalid' };
@@ -50,6 +52,10 @@ export type Ctx = {
   staffAt?(serviceId: string, date: string, excludeApptId?: string): Promise<Record<string, string>>;
   upcoming(): Promise<Appt[]>;
   appointment(id: string): Promise<Appt | null>;
+  /** Keeps a slot for this customer for five minutes while they read the confirmation. False when it was taken. Absent means no holding. */
+  hold?(i: { serviceId: string; date: string; time: string }): Promise<boolean>;
+  /** Gives back a slot this customer was holding. */
+  release?(): Promise<void>;
   book(i: { serviceId: string; date: string; time: string }): Promise<BookResult>;
   move(apptId: string, date: string, time: string): Promise<BookResult>;
   cancel(apptId: string): Promise<{ ok: true; late: boolean } | { ok: false }>;
@@ -72,6 +78,8 @@ export type State = {
   period?: 'morning' | 'afternoon' | 'evening';
   /** The closed-hours message has been shown, so it isn't repeated on the next message. */
   hoursShown?: boolean;
+  /** They asked for later dates, so the plain list of days is shown instead of the next open times. */
+  seeAll?: boolean;
 };
 export type Effect = 'handover' | 'optout' | 'optin' | 'consent:yes' | 'consent:no' | `name:${string}` | `confirm:${string}`;
 export type Result = { state: State; messages: Out[]; effects: Effect[] };
@@ -127,6 +135,23 @@ async function dayPrompt(ctx: Ctx, s: State, lead?: string): Promise<{ state: St
   if (!svc || !days.length) {
     return { state: { step: 'menu' }, messages: [...lead1(lead), { type: 'buttons', body: T.noDays, buttons: [personBtn, { id: 'menu:book', title: T.btnBook }] }] };
   }
+  // Nothing in the next seven days: show the next open times themselves (B11) instead of a list that starts a week away.
+  if (!moving && !s.seeAll && days[0].date > addDays(todaySast(ctx.now), 6)) {
+    const who = (await ctx.staffAt?.(s.serviceId!, days[0].date)) ?? {};
+    const picks: { date: string; time: string }[] = [];
+    for (const d of days.slice(0, 3)) {
+      for (const time of (await ctx.times(s.serviceId!, d.date)).slice(0, 2)) if (picks.length < 3) picks.push({ date: d.date, time });
+      if (picks.length >= 3) break;
+    }
+    if (picks.length) {
+      const rows: Row[] = [
+        ...picks.map((p) => ({ id: `slot:${p.date}|${p.time}`, title: `${fmtDay(p.date)}, ${p.time}`, description: T.timeRow(fromMin(toMin(p.time) + svc.minutes), p.date === days[0].date ? who[p.time] : undefined) })),
+        { id: 'day:list', title: T.moreDays, description: T.moreDaysNote },
+        { id: 'menu:person', title: T.personRow, description: T.askPersonCancel },
+      ];
+      return { state: { ...s, step: 'day', dayPage: 0 }, messages: [...lead1(lead), { type: 'list', body: T.fullWeek(svc.name), footer: PERSON_FOOTER, button: T.timeButton, rows }] };
+    }
+  }
   const page = s.dayPage ?? 0;
   const slice = days.slice(page * DAY_PAGE, page * DAY_PAGE + DAY_PAGE);
   const rows: Row[] = slice.map((d) => ({ id: `day:${d.date}`, title: fmtDay(d.date), description: timesOpen(d.count) }));
@@ -168,6 +193,17 @@ async function timePrompt(ctx: Ctx, s: State, lead?: string, taken?: { time: str
 /** After a time is chosen: ask a new customer for their name, otherwise go straight to the confirmation. */
 async function afterTime(ctx: Ctx, s: State): Promise<{ state: State; messages: Out[] }> {
   if (s.mode !== 'move' && !ctx.client.nameConfirmed) return { state: { ...s, step: 'name' }, messages: [text(T.askName)] };
+  return holdThenConfirm(ctx, s);
+}
+
+/**
+ * The confirmation screen for a new booking. The slot is held for five minutes first, so nobody else can take it while the
+ * customer decides. If it was taken a moment ago, they are told and shown the times that are still open.
+ */
+async function holdThenConfirm(ctx: Ctx, s: State): Promise<{ state: State; messages: Out[] }> {
+  if (s.mode !== 'move' && ctx.hold && !(await ctx.hold({ serviceId: s.serviceId!, date: s.date!, time: s.time! }))) {
+    return timePrompt(ctx, { ...s, step: 'time', time: undefined, period: undefined }, undefined, { time: s.time!, date: s.date! });
+  }
   return confirmPrompt(ctx, s);
 }
 
@@ -175,7 +211,8 @@ async function confirmPrompt(ctx: Ctx, s: State): Promise<{ state: State; messag
   const svc = (await ctx.services()).find((x) => x.id === s.serviceId)!;
   const end = fromMin(toMin(s.time!) + svc.minutes);
   const moving = s.mode === 'move';
-  const who = (await ctx.staffAt?.(s.serviceId!, s.date!, moving ? s.apptId : undefined))?.[s.time!];
+  // A clinic visit that doesn't name the service says who it is with, even when we haven't picked a person yet.
+  const who = (await ctx.staffAt?.(s.serviceId!, s.date!, moving ? s.apptId : undefined))?.[s.time!] ?? (svc.hideName ? 'Dr [name]' : undefined);
   if (moving) {
     const old = s.apptId ? await ctx.appointment(s.apptId) : null;
     const was = old ? `${fmtDay(old.date)}, ${old.time}` : '';
@@ -386,7 +423,13 @@ export async function step(state: State, input: Input, ctx: Ctx): Promise<Result
     case 'day': {
       if (id === 'keep') return out(START, [text(T.kept)]);
       if (id === 'day:more') return done(await dayPrompt(ctx, { ...state, dayPage: (state.dayPage ?? 0) + 1 }));
-      if (id === 'day:list') return done(await dayPrompt(ctx, { ...state, dayPage: 0 }));
+      if (id === 'day:list') return done(await dayPrompt(ctx, { ...state, dayPage: 0, seeAll: true }));
+      if (id.startsWith('slot:')) {
+        const [date, time] = id.slice(5).split('|');
+        const open = date && time ? await ctx.times(state.serviceId!, date) : [];
+        if (!open.includes(time)) return reprompt(ctx, state, T.expired);
+        return done(await afterTime(ctx, { ...state, step: 'time', date, time }));
+      }
       const days = (await ctx.days(state.serviceId!, state.mode === 'move' ? state.apptId : undefined)).map((d) => d.date);
       const date = id.startsWith('day:') ? (days.includes(id.slice(4)) ? id.slice(4) : null) : parseDay(input.type === 'text' ? input.text : '', days, ctx.now);
       if (!date) return (!id && ((await explainDay(ctx, state, input)) ?? (await understand(ctx, state, input)))) || reprompt(ctx, state, id ? T.expired : T.notUnderstood);
@@ -409,14 +452,14 @@ export async function step(state: State, input: Input, ctx: Ctx): Promise<Result
       if (!name || /[\d@:/\\<>]/.test(name)) return reprompt(ctx, state, T.notUnderstood);
       ctx.client.name = name;
       ctx.client.nameConfirmed = true;
-      const r = await confirmPrompt(ctx, { ...state, step: 'confirm' });
+      const r = await holdThenConfirm(ctx, { ...state, step: 'confirm' });
       return { ...r, effects: [`name:${name}`] };
     }
 
     case 'confirm': {
       if (id === 'keep') return out(START, [text(T.kept)]);
-      if (id === 'change' || (t && /^change/.test(t))) return done(await timePrompt(ctx, { ...state, step: 'time', time: undefined, period: undefined }));
-      if (id === 'cancel' || no(t)) return out(START, [text(T.notBooked), ...menu(ctx)]);
+      if (id === 'change' || (t && /^change/.test(t))) { await ctx.release?.(); return done(await timePrompt(ctx, { ...state, step: 'time', time: undefined, period: undefined })); }
+      if (id === 'cancel' || no(t)) { await ctx.release?.(); return out(START, [text(T.notBooked), ...menu(ctx)]); }
       if (id === 'ok' || yes(t)) {
         const s = state;
         const res = s.mode === 'move' && s.apptId ? await ctx.move(s.apptId, s.date!, s.time!) : await ctx.book({ serviceId: s.serviceId!, date: s.date!, time: s.time! });

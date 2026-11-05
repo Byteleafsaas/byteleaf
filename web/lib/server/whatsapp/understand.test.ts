@@ -10,7 +10,7 @@ vi.mock('../env', () => ({ env: { ASSISTANT_DAILY_LIMIT: 100 } }));
 import { makeInterpreter } from './understand';
 import type { Data } from './calendar';
 
-const d = { biz: { slug: 'lerato' }, services: [{ id: 's1', name: 'Silk press' }], staff: [] } as unknown as Data;
+const d = { biz: { slug: 'lerato' }, services: [{ id: 's1', name: 'Silk press' }, { id: 's2', name: 'Private consult' }], staff: [], hidden: new Set(['s2']) } as unknown as Data;
 
 describe('the WhatsApp interpreter spend limits', () => {
   beforeEach(() => { rateLimit.mockReset(); askBookingModel.mockReset(); askBookingModel.mockResolvedValue({ service: 1 }); });
@@ -20,6 +20,13 @@ describe('the WhatsApp interpreter spend limits', () => {
     expect(await makeInterpreter(d, '2026-11-06', '27821234567')('silk press')).toMatchObject({ serviceId: 's1' });
     expect(rateLimit).toHaveBeenCalledWith('wa-ai:lerato:27821234567', 15, 600000);
     expect(rateLimit).toHaveBeenCalledWith('wa-ai-day:lerato', 100, 86400000);
+  });
+
+  it('never sends the name of a clinic service (kept out of messages) to the model', async () => {
+    rateLimit.mockResolvedValue(true);
+    await makeInterpreter(d, '2026-11-06', '27821234567')('silk press');
+    expect(JSON.stringify(askBookingModel.mock.calls)).not.toContain('Private consult');
+    expect(JSON.stringify(askBookingModel.mock.calls)).toContain('Silk press');
   });
 
   it('does not call the model once the customer is over their limit', async () => {

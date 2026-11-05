@@ -4,13 +4,14 @@ import { freeStarts, intersect, rangesOn, windowDates, type Busy, type Range, ty
 import { closedHolidays } from '@/lib/whatsapp/holidays';
 import { sastToUtc, todaySast } from '@/lib/server/time';
 import { connectDB } from '../db';
-import { WaAppointment, WaBusiness, WaService, WaSlotLock, WaStaff } from '../models';
+import { WaAppointment, WaBusiness, WaHold, WaService, WaSlotLock, WaStaff } from '../models';
 
 type Id = Types.ObjectId;
 export type Biz = { slug: string; name: string; hours: WeekHours; daysOff: { from: string; to: string }[]; minNoticeMin: number; bufferMin: number; stepMin: number; windowDays: number; cancelWindowHours: number; replyTime: string; payNote: string; address: string; privacyUrl: string; lateFee: string; brand: string; clinic: boolean };
 export type Service = { id: Id; name: string; minutes: number; priceCents: number; bufferMin: number | null; staff: Id[]; hideName: boolean };
 export type Staff = { id: Id; name: string; hours: WeekHours; daysOff: { from: string; to: string }[] };
-export type Data = { biz: Biz; services: Service[]; staff: Staff[] };
+/** `hidden` lists every active service whose name is kept out of client messages, offered on WhatsApp or not. */
+export type Data = { biz: Biz; services: Service[]; staff: Staff[]; hidden: Set<string> };
 
 const GRAIN = 15 * 60000;
 const asHours = (x: unknown): WeekHours => (x && typeof x === 'object' ? (x as WeekHours) : {});
@@ -21,12 +22,13 @@ export async function loadData(slug: string, opts: { all?: boolean } = {}): Prom
   const b = await WaBusiness.findOne({ slug, active: true }).lean();
   if (!b) return null;
   const [services, staff] = await Promise.all([
-    WaService.find({ business: slug, active: true, ...(opts.all ? {} : { onWhatsApp: { $ne: false } }) }).sort({ order: 1 }).lean(),
+    WaService.find({ business: slug, active: true }).sort({ order: 1 }).lean(),
     WaStaff.find({ business: slug, active: true }).sort({ order: 1 }).lean(),
   ]);
   return {
     biz: { slug, name: b.name, hours: asHours(b.hours), daysOff: [...(b.daysOff ?? []), ...closedHolidays(todaySast(), b.holidayOpen ?? [])], minNoticeMin: b.minNoticeMin, bufferMin: b.bufferMin, stepMin: b.stepMin, windowDays: b.windowDays, cancelWindowHours: b.cancelWindowHours, replyTime: b.replyTime ?? '[time]', payNote: b.payNote, address: b.address ?? '[Salon address]', privacyUrl: b.privacyUrl ?? '[privacy link]', lateFee: b.lateFee ?? 'R [amount]', brand: b.brand ?? 'byteleaf', clinic: Boolean(b.clinic) },
-    services: services.map((s) => ({ id: s._id as Id, name: s.name, minutes: s.minutes, priceCents: s.priceCents, bufferMin: s.bufferMin ?? null, staff: (s.staff ?? []) as Id[], hideName: Boolean(s.hideName) })),
+    hidden: new Set(services.filter((s) => s.hideName).map((s) => String(s._id))),
+    services: services.filter((s) => opts.all || s.onWhatsApp !== false).map((s) => ({ id: s._id as Id, name: s.name, minutes: s.minutes, priceCents: s.priceCents, bufferMin: s.bufferMin ?? null, staff: (s.staff ?? []) as Id[], hideName: Boolean(s.hideName) })),
     staff: staff.map((s) => ({ id: s._id as Id, name: s.name, hours: asHours(s.hours), daysOff: s.daysOff ?? [] })),
   };
 }
@@ -41,9 +43,19 @@ export function staffRanges(d: Data, st: Staff, date: string): Range[] {
 export const eligibleStaff = (d: Data, svc: Service) => (svc.staff.length ? d.staff.filter((s) => svc.staff.some((x) => x.equals(s.id))) : d.staff);
 export const bufferFor = (d: Data, svc: Service) => svc.bufferMin ?? d.biz.bufferMin;
 
-/** Booked time per staff member between two instants, optionally ignoring one booking (when it is being moved). */
-export async function loadBusy(slug: string, from: Date, to: Date, exclude?: string): Promise<Map<string, Busy[]>> {
-  const rows = await WaAppointment.find({ business: slug, status: 'booked', startsAt: { $lt: to }, blocksUntil: { $gt: from }, ...(exclude ? { _id: { $ne: exclude } } : {}) }, { staffId: 1, startsAt: 1, blocksUntil: 1 }).lean();
+/** How long a slot is kept for a client while they read the confirmation. */
+export const HOLD_MS = 5 * 60000;
+
+/**
+ * Booked time per staff member between two instants, optionally ignoring one booking (when it is being moved).
+ * Slots other clients are holding count as busy, so nobody is offered a time someone is about to confirm. The `viewer`'s own hold does not.
+ */
+export async function loadBusy(slug: string, from: Date, to: Date, exclude?: string, viewer?: Id): Promise<Map<string, Busy[]>> {
+  const [booked, holds] = await Promise.all([
+    WaAppointment.find({ business: slug, status: 'booked', startsAt: { $lt: to }, blocksUntil: { $gt: from }, ...(exclude ? { _id: { $ne: exclude } } : {}) }, { staffId: 1, startsAt: 1, blocksUntil: 1 }).lean(),
+    WaHold.find({ business: slug, expiresAt: { $gt: new Date() }, startsAt: { $lt: to }, blocksUntil: { $gt: from }, ...(viewer ? { clientId: { $ne: viewer } } : {}) }, { staffId: 1, startsAt: 1, blocksUntil: 1 }).lean(),
+  ]);
+  const rows = [...booked, ...holds];
   const map = new Map<string, Busy[]>();
   for (const r of rows) {
     const k = String(r.staffId);
@@ -63,14 +75,14 @@ export function timesOn(d: Data, svc: Service, date: string, busy: Map<string, B
   return out;
 }
 
-export async function timesFor(d: Data, svc: Service, date: string, now: Date, exclude?: string): Promise<string[]> {
-  const busy = await loadBusy(d.biz.slug, sastToUtc(date, '00:00'), new Date(sastToUtc(date, '00:00').getTime() + 86400000), exclude);
+export async function timesFor(d: Data, svc: Service, date: string, now: Date, exclude?: string, viewer?: Id): Promise<string[]> {
+  const busy = await loadBusy(d.biz.slug, sastToUtc(date, '00:00'), new Date(sastToUtc(date, '00:00').getTime() + 86400000), exclude, viewer);
   return [...timesOn(d, svc, date, busy, now).keys()].sort();
 }
 
 /** For each start time that exactly one person could take, that person's name. Times where we choose between people are left out. */
-export async function staffAtFor(d: Data, svc: Service, date: string, now: Date, exclude?: string): Promise<Record<string, string>> {
-  const busy = await loadBusy(d.biz.slug, sastToUtc(date, '00:00'), new Date(sastToUtc(date, '00:00').getTime() + 86400000), exclude);
+export async function staffAtFor(d: Data, svc: Service, date: string, now: Date, exclude?: string, viewer?: Id): Promise<Record<string, string>> {
+  const busy = await loadBusy(d.biz.slug, sastToUtc(date, '00:00'), new Date(sastToUtc(date, '00:00').getTime() + 86400000), exclude, viewer);
   const out: Record<string, string> = {};
   for (const [time, ids] of timesOn(d, svc, date, busy, now)) {
     if (ids.length === 1) { const st = d.staff.find((s) => s.id.equals(ids[0])); if (st) out[time] = st.name; }
@@ -79,9 +91,9 @@ export async function staffAtFor(d: Data, svc: Service, date: string, now: Date,
 }
 
 /** The next dates with space, soonest first (at most 14). */
-export async function daysFor(d: Data, svc: Service, now: Date, exclude?: string): Promise<{ date: string; count: number }[]> {
+export async function daysFor(d: Data, svc: Service, now: Date, exclude?: string, viewer?: Id): Promise<{ date: string; count: number }[]> {
   const dates = windowDates(now, d.biz.windowDays);
-  const busy = await loadBusy(d.biz.slug, now, new Date(sastToUtc(dates[dates.length - 1], '00:00').getTime() + 86400000), exclude);
+  const busy = await loadBusy(d.biz.slug, now, new Date(sastToUtc(dates[dates.length - 1], '00:00').getTime() + 86400000), exclude, viewer);
   const out: { date: string; count: number }[] = [];
   for (const date of dates) {
     const n = timesOn(d, svc, date, busy, now).size;
@@ -101,10 +113,78 @@ export const isDuplicate = (e: unknown) => (e as { code?: number; writeErrors?: 
 
 export type Booked = { id: Id; serviceId: Id; serviceName: string; date: string; time: string; startsAt: Date; endsAt: Date; priceCents: number; staffName: string };
 
-/** Books the slot for the first free staff member (the one with the fewest bookings that day). `taken` if nobody is free. */
+/** Frees any slot this client was holding. Safe to call when they hold nothing. */
+export async function releaseHolds(clientId: Id): Promise<void> {
+  const mine = await WaHold.find({ clientId }, { _id: 1 }).lean();
+  if (!mine.length) return;
+  await WaSlotLock.deleteMany({ apptId: { $in: mine.map((h) => h._id) } });
+  await WaHold.deleteMany({ _id: { $in: mine.map((h) => h._id) } });
+}
+
+/** Removes holds that have run out, so their rows can't block a booking in the gap before Mongo's own clean-up. */
+async function purgeExpired(now: Date): Promise<void> {
+  const gone = await WaHold.find({ expiresAt: { $lte: now } }, { _id: 1 }).lean();
+  if (!gone.length) return;
+  await WaSlotLock.deleteMany({ apptId: { $in: gone.map((h) => h._id) } });
+  await WaHold.deleteMany({ _id: { $in: gone.map((h) => h._id) } });
+}
+
+/**
+ * Keeps a slot for this client for five minutes while they read the confirmation. The same unique rows that stop a
+ * double booking also stop anyone else taking a held slot. Returns false when nobody is free at that time.
+ */
+export async function holdSlot(d: Data, svc: Service, client: { id: Id }, date: string, time: string, now: Date): Promise<boolean> {
+  await releaseHolds(client.id);
+  await purgeExpired(now);
+  const startsAt = sastToUtc(date, time);
+  const busy = await loadBusy(d.biz.slug, startsAt, new Date(startsAt.getTime() + 86400000), undefined, client.id);
+  const candidates = timesOn(d, svc, date, busy, now).get(time) ?? [];
+  if (!candidates.length) return false;
+  const load = (id: Id) => (busy.get(String(id)) ?? []).length;
+  const blocksUntil = new Date(startsAt.getTime() + (svc.minutes + bufferFor(d, svc)) * 60000);
+  const expiresAt = new Date(now.getTime() + HOLD_MS);
+  for (const staffId of [...candidates].sort((a, b) => load(a) - load(b))) {
+    const holdId = new Types.ObjectId();
+    try {
+      await WaSlotLock.insertMany(grainsOf(staffId, startsAt, blocksUntil).map((g) => ({ ...g, apptId: holdId, expiresAt })), { ordered: true });
+    } catch (e) {
+      await WaSlotLock.deleteMany({ apptId: holdId });
+      if (isDuplicate(e)) continue;
+      throw e;
+    }
+    await WaHold.create({ _id: holdId, business: d.biz.slug, clientId: client.id, staffId, serviceId: svc.id, startsAt, blocksUntil, expiresAt });
+    return true;
+  }
+  return false;
+}
+
+/** Books the slot for the first free staff member (the one with the fewest bookings that day). `taken` if nobody is free. A hold this client has on exactly that slot is turned into the booking, so nobody can slip in between. */
 export async function bookSlot(d: Data, svc: Service, client: { id: Id; name: string; phone: string }, date: string, time: string, now: Date, source: 'whatsapp' | 'simulator' | 'manual'): Promise<Booked | 'taken'> {
   const startsAt = sastToUtc(date, time);
-  const busy = await loadBusy(d.biz.slug, startsAt, new Date(startsAt.getTime() + 86400000));
+  const held = await WaHold.findOne({ clientId: client.id, serviceId: svc.id, startsAt, expiresAt: { $gt: now } }).lean();
+  if (held) {
+    const apptId = new Types.ObjectId();
+    const taken = await WaSlotLock.updateMany({ apptId: held._id }, { $set: { apptId }, $unset: { expiresAt: 1 } });
+    if (taken.modifiedCount) {
+      const st = d.staff.find((s) => s.id.equals(held.staffId as Id));
+      const endsAt = new Date(startsAt.getTime() + svc.minutes * 60000);
+      try {
+        await WaAppointment.create({
+          _id: apptId, business: d.biz.slug, serviceId: svc.id, staffId: held.staffId, clientId: client.id, serviceName: svc.name, staffName: st?.name, clientName: client.name, clientPhone: client.phone,
+          date, time, startsAt, endsAt, blocksUntil: held.blocksUntil, priceCents: svc.priceCents, status: 'booked', source,
+        });
+      } catch (e) {
+        await WaSlotLock.deleteMany({ apptId });
+        throw e;
+      } finally {
+        await WaHold.deleteOne({ _id: held._id });
+      }
+      return { id: apptId, serviceId: svc.id, serviceName: svc.name, date, time, startsAt, endsAt, priceCents: svc.priceCents, staffName: st?.name ?? '' };
+    }
+  }
+  await releaseHolds(client.id);
+  await purgeExpired(now);
+  const busy = await loadBusy(d.biz.slug, startsAt, new Date(startsAt.getTime() + 86400000), undefined, client.id);
   const candidates = timesOn(d, svc, date, busy, now).get(time) ?? [];
   if (!candidates.length) return 'taken';
   const load = (id: Id) => (busy.get(String(id)) ?? []).length;
@@ -142,7 +222,7 @@ export async function moveSlot(d: Data, apptId: string, date: string, time: stri
   const svc = d.services.find((s) => s.id.equals(appt?.serviceId as Id));
   if (!appt || !svc) return 'gone';
   const startsAt = sastToUtc(date, time);
-  const busy = await loadBusy(d.biz.slug, startsAt, new Date(startsAt.getTime() + 86400000), apptId);
+  const busy = await loadBusy(d.biz.slug, startsAt, new Date(startsAt.getTime() + 86400000), apptId, appt.clientId as Id);
   const candidates = timesOn(d, svc, date, busy, now).get(time) ?? [];
   if (!candidates.length) return 'taken';
   const ordered = [...candidates].sort((a, b) => Number(b.equals(appt.staffId as Id)) - Number(a.equals(appt.staffId as Id)));
