@@ -1,0 +1,22 @@
+/* The drawn browser and phone on the law-firm showcase page (HANDOFF-LAW §5). Classes are prefixed ld-. The mini pages use the sample firm's two fonts. */
+.ld-ptabs{display:flex;flex-wrap:wrap;gap:6px}
+.ld-ptab{font:inherit;cursor:pointer;min-height:42px;padding:0 16px;border-radius:999px;border:1px solid #E3E9F2;background:#FFFFFF;color:#33405A;font-size:15px;font-weight:500;transition:all .2s}
+.ld-ptab[aria-selected="true"]{background:#0B1220;border-color:#0B1220;color:#FFFFFF}
+.ld-ptab:hover{border-color:#0B1220}
+.ld-co{font:inherit;cursor:pointer;text-align:left;display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:16px;border:1px solid #E3E9F2;background:#FFFFFF;color:#0B1220;transition:all .2s;min-width:0}
+.ld-co[aria-pressed="true"]{border-color:#166FE5;box-shadow:0 0 0 1px #166FE5;background:#F5F9FF}
+.ld-co .ld-n{flex:none;width:28px;height:28px;border-radius:50%;background:#0B1220;color:#FFFFFF;display:grid;place-items:center;font-family:var(--font-mono),ui-monospace,monospace;font-size:13px}
+.ld-frame{border-radius:14px;overflow:hidden;background:#FFFFFF;box-shadow:0 30px 60px -36px rgba(11,18,32,.5);border:1px solid #D5DEEB}
+.ld-chrome{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#F4F7FB;border-bottom:1px solid #E3E9F2}
+.ld-chrome i{width:9px;height:9px;border-radius:50%;background:#D5DEEB;display:block}
+.ld-url{flex:1;margin-left:8px;font-family:var(--font-mono),ui-monospace,monospace;font-size:11px;color:#4B5872;background:#FFFFFF;border:1px solid #E3E9F2;padding:4px 10px;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ld-phone{width:270px;max-width:100%;border-radius:36px;background:#0B1220;padding:8px;box-sizing:border-box;box-shadow:0 30px 60px -30px rgba(11,18,32,.55);flex:none}
+.ld-scr{border-radius:28px;overflow:hidden;height:540px;background:#F7F4EF;position:relative;display:flex;flex-direction:column}
+.ld-mf{font-family:var(--lf-sans),'Segoe UI',system-ui,sans-serif;color:#1F1C18;background:#F7F4EF;position:relative}
+.ld-mf .ld-s{font-family:var(--lf-serif),Georgia,serif;font-weight:500;letter-spacing:-0.015em;line-height:1.1}
+.ld-mb{display:inline-flex;align-items:center;justify-content:center;font-weight:600;border-radius:7px;padding:0 12px;min-height:30px;font-size:11px;white-space:nowrap}
+.ld-mc{background:#FFFFFF;border:1px solid #DCD3C5;border-radius:9px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;font-size:11px;min-width:0}
+.ld-pin{position:absolute;z-index:3;width:30px;height:30px;border-radius:50%;background:#166FE5;color:#FFFFFF;display:grid;place-items:center;font-family:var(--font-mono),ui-monospace,monospace;font-size:13px;font-weight:500;box-shadow:0 0 0 4px rgba(22,111,229,.25);animation:pp 1.8s ease-in-out infinite}
+@keyframes pp{0%,100%{box-shadow:0 0 0 4px rgba(22,111,229,.25)}50%{box-shadow:0 0 0 10px rgba(22,111,229,.12)}}
+.ld-ring{box-shadow:0 0 0 2px #FFFFFF,0 0 0 4px #166FE5}
+@media (max-width: 900px){.ld-stage-site{flex-direction:column;align-items:center}.ld-bframe{display:none!important}}

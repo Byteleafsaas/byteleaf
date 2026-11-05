@@ -79,6 +79,23 @@ const STARTERS = [
     featured: false,
     live: true,
   },
+  {
+    slug: 'law-firm-website',
+    name: 'Law firm website',
+    client: CONCEPT,
+    type: 'Website',
+    industry: 'Legal',
+    categories: ['Design', 'Frontend'],
+    stack: ['Next.js', 'TypeScript', 'CSS'],
+    summary: 'A calm, credible website for a small law firm, with fees, privacy and urgent-matter wording built in.',
+    challenge: 'People come to a law firm worried and short of time. They need to know quickly whether the firm handles their matter, what it costs and how to start, and they need to trust it before the first call.',
+    whatWeDid:
+      'A seven-page site with its own identity, a consultation request form that behaves like the real thing, plain-language practice area pages and guides, and the trust work built in: a fees page, not-legal-advice notes, privacy wording and an urgent-matters note where people need it.',
+    result: 'Browse the sample firm, built around a made-up practice. It is frontend only for now, and an admin, enquiry inbox and booking can be added later.',
+    demoUrl: '/projects/law-firm',
+    featured: false,
+    live: false,
+  },
 ];
 
 async function main() {
