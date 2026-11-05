@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>byteleaf — Launch website with admin demo</title>
+<!-- REFERENCE BUILD generated from design/LwDemo.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=Inter:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+:focus-visible{outline:3px solid #166FE5;outline-offset:2px}
+.navlink{color:#33405A;font-size:15px;font-weight:500;padding:10px 14px;border-radius:999px;transition:background .2s,color .2s}
+.navlink:hover{background:#EEF4FE;color:#0B1220}
+.navlink.on{background:#EEF4FE;color:#166FE5}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;font-weight:600;font-size:16px;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s,color .25s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(22,111,229,.7)}
+.btn-ghost{color:#0B1220;border:1px solid #D5DEEB;background:#FFFFFF}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.btn-light{background:#FFFFFF;color:#0B1220}
+.btn-light:hover{color:#0B1220;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(0,0,0,.5)}
+.btn-sm{min-height:40px;padding:0 16px;font-size:14px}
+.arr{transition:transform .25s}.btn:hover .arr{transform:translateX(4px)}
+.flink{color:#B7C3D9}.flink:hover{color:#FFFFFF}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}
+.mnav{display:none}
+.menu-btn{list-style:none;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid #D5DEEB;display:grid;place-items:center;color:#0B1220;background:#FFFFFF}
+.menu-btn::-webkit-details-marker{display:none}
+.mnav[open] .menu-btn{border-color:#166FE5;color:#166FE5}
+.mnav .i-close{display:none}.mnav[open] .i-close{display:block}.mnav[open] .i-open{display:none}
+.mpanel{position:absolute;left:0;right:0;top:100%;background:#FFFFFF;border-bottom:1px solid #E8EDF5;box-shadow:0 24px 40px -24px rgba(11,18,32,.25);padding:12px 20px 20px;display:flex;flex-direction:column;gap:4px}
+.mlink{display:flex;align-items:center;min-height:52px;padding:0 12px;border-radius:12px;font-size:18px;font-weight:500;color:#0B1220;border-bottom:1px solid #F1F4F9}
+@media (max-width: 760px){.dnav,.dcta{display:none!important}.mnav{display:block}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@keyframes slide{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+.vseg{display:inline-flex;padding:4px;border-radius:999px;background:#F4F7FB;border:1px solid #E3E9F2;gap:2px;flex-wrap:wrap}
+.vseg button{font:inherit;cursor:pointer;border:0;min-height:42px;padding:0 18px;border-radius:999px;font-size:15px;font-weight:600;background:transparent;color:#33405A;transition:all .2s}
+.vseg button[aria-pressed="true"]{background:#0B1220;color:#FFFFFF}
+.ftab{font:inherit;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:48px;padding:0 16px;border-radius:14px;border:1px solid #E3E9F2;background:#FFFFFF;color:#33405A;font-size:15px;font-weight:500;text-align:left;transition:all .2s}
+.ftab[aria-selected="true"]{border-color:#0B1220;background:#0B1220;color:#FFFFFF}
+.ftab .n{font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#EEF2F8;color:#33405A}
+.ftab[aria-selected="true"] .n{background:#FFFFFF;color:#0B1220}
+.frame{border-radius:14px;overflow:hidden;background:#FFFFFF;box-shadow:0 30px 60px -36px rgba(11,18,32,.5);border:1px solid #D5DEEB}
+.chrome{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#F4F7FB;border-bottom:1px solid #E3E9F2}
+.chrome i{width:9px;height:9px;border-radius:50%;background:#D5DEEB;display:block}
+.url{flex:1;margin-left:8px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;color:#4B5872;background:#FFFFFF;border:1px solid #E3E9F2;padding:4px 10px;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phone{width:260px;max-width:100%;border-radius:36px;background:#0B1220;padding:8px;box-sizing:border-box;box-shadow:0 30px 60px -30px rgba(11,18,32,.55);flex:none}
+.scr{border-radius:28px;overflow:hidden;height:500px;background:#FAF6EC;position:relative;display:flex;flex-direction:column}
+.ms{font-family:'Inter',system-ui,sans-serif;color:#10261B;background:#FAF6EC}
+.ms .d{font-family:'Bricolage Grotesque','Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-0.025em;line-height:1.05}
+.mb{display:inline-flex;align-items:center;justify-content:center;font-weight:600;border-radius:9px;padding:0 12px;min-height:34px;font-size:12px}
+.go{position:relative;box-shadow:0 0 0 3px #FFFFFF,0 0 0 6px #166FE5!important;animation:hint 1.6s ease-in-out infinite}
+@keyframes hint{0%,100%{box-shadow:0 0 0 3px #FFFFFF,0 0 0 6px #166FE5}50%{box-shadow:0 0 0 3px #FFFFFF,0 0 0 11px rgba(22,111,229,.25)}}
+.tapb{font:inherit;cursor:pointer;border:0}
+.flash{animation:fl 1.6s ease-out both}
+@keyframes fl{0%{background:#FFF4C2}100%{background:transparent}}
+.adm{font-family:'Geist',system-ui,sans-serif;color:#0B1220;display:flex;min-height:420px;--acc:#1D6B47;--acc-t:#175A3B;--acc-soft:#E8F3EC}
+.side{flex:0 0 150px;background:#07101F;color:#B7C3D9;padding:12px 10px;display:flex;flex-direction:column;gap:4px;font-size:12px;box-sizing:border-box}
+.side .on{background:var(--acc);color:#FFFFFF;box-shadow:inset 3px 0 0 #FFFFFF}
+.side span{display:block;padding:7px 9px;border-radius:8px}
+.arow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid #EEF2F8;font-size:12px}
+.pill2{font-family:'Geist Mono',ui-monospace,monospace;font-size:9px;padding:2px 6px;border-radius:99px}
+@media (max-width: 900px){.stage-site{flex-direction:column;align-items:center}.bframe{display:none!important}}
+@media (max-width: 600px){.adm .side{display:none}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="background: #FFFFFF">
+<header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid #E8EDF5">
+<nav aria-label="Main" style="max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="home.html" aria-label="byteleaf home" style="display: flex; align-items: center; gap: 10px; color: #0B1220; font-weight: 700; font-size: 22px; letter-spacing: -0.04em">
+<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byte<span style="color: #1877F2">leaf</span></span>
+</a>
+<div class="dnav" style="display: flex; flex-wrap: wrap; align-items: center; gap: 2px">
+<a class="navlink" href="services.html">Services</a>
+<a class="navlink" href="process.html">Process</a>
+<a class="navlink on" href="projects.html" aria-current="page">Projects</a>
+<a class="navlink" href="about.html">About</a>
+<a class="navlink" href="contact.html">Contact</a>
+</div>
+<a class="btn btn-primary dcta" href="book.html" style="min-height: 44px; padding: 0 20px; font-size: 15px">Book a call<svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<details class="mnav">
+<summary class="menu-btn" aria-label="Menu"><svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></summary>
+<div class="mpanel">
+<a class="mlink" href="services.html">Services</a>
+<a class="mlink" href="process.html">Process</a>
+<a class="mlink" href="projects.html">Projects</a>
+<a class="mlink" href="about.html">About</a>
+<a class="mlink" href="contact.html">Contact</a>
+<a class="btn btn-primary" href="book.html" style="justify-content: center; margin-top: 12px">Book a call</a>
+</div>
+</details>
+</nav>
+</header>
+
+
+<section class="hero" style="padding: 56px 24px 32px; background: #FBFCFE; border-bottom: 1px solid #EEF2F8">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px">
+<nav aria-label="Breadcrumb" class="mono" style="font-size: 12px; color: #4B5872"><a href="projects.html" style="color: #0F5FCC">Projects</a> / Launch website with admin</nav>
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 840px">
+<span class="rise mono" style="font-size: 13px; color: #0F5FCC; letter-spacing: 0.08em">SHOWCASE PROJECT 3 OF 4 · WEBSITE AND ADMIN</span>
+<h1 class="rise d1" style="margin: 0; font-size: clamp(36px, 4.6vw, 60px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance">Look established on day one. <span style="color: #1877F2">Run it yourself after that.</span></h1>
+<p class="rise d2" style="margin: 0; font-size: 18px; line-height: 1.6; color: #4B5872">A fast site for a brand-new business, and a simple admin to keep it current. Switch between the two below, or play one of the stories.</p>
+</div>
+<div role="note" class="rise d3" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: #FFF4E0; color: #6B3F00; font-size: 14px; line-height: 1.5">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>
+<span><strong>This is a demo with sample data.</strong> Tsela Mobile Wash is a made-up business, and its prices, reviews and enquiries are invented. The browser and phone are our own drawings.</span>
+</div>
+</div>
+</section>
+
+<section style="padding: 32px 24px 72px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div class="vseg" role="group" aria-label="View"><button type="button" aria-pressed="{{vSite}}" onClick="{{toSite}}">What your customers see</button><button type="button" aria-pressed="{{vAdmin}}" onClick="{{toAdmin}}">What you manage</button></div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono" role="status" style="font-size: 13px; color: #4B5872">{{stepLabel}}</span><button type="button" class="btn btn-ghost btn-sm" onClick="{{restart}}" disabled="{{noStory}}" style="{{restartSt}}">Restart</button><button type="button" class="btn btn-primary btn-sm" onClick="{{next}}" disabled="{{noNext}}" style="{{nextSt}}">Next step</button></div>
+</div>
+<div role="tablist" aria-label="Stories" style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{stories}}" as="s" hint-placeholder-count="3"><button type="button" role="tab" class="ftab" aria-selected="{{s.on}}" onClick="{{s.pick}}"><span class="n" aria-hidden="true">{{s.n}}</span>{{s.l}}</button></sc-for></div>
+<p aria-live="polite" style="margin: 0; min-height: 26px; font-size: 17px; line-height: 1.5; color: #0B1220"><strong>{{capTitle}}</strong> {{capText}}</p>
+
+<div style="border-radius: 24px; background: #EEF2F8; padding: clamp(14px, 3vw, 32px)">
+<sc-if value="{{isSite}}" hint-placeholder-val="{{ true }}">
+<div class="stage-site" style="display: flex; gap: 28px; align-items: flex-start; justify-content: center">
+<div class="frame bframe" style="flex: 1 1 640px; min-width: 0">
+<div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url">[yourdomain.co.za]{{path}}</span></div>
+<div class="ms" style="height: 520px; overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 22px; border-bottom: 1px solid #E2D8C3"><span class="d" style="font-size: 22px">tsela<span style="color: #D99F00">.</span></span><span style="display: flex; gap: 14px; align-items: center; font-size: 12px"><span>Services and prices</span><span>About</span><span>Gallery</span><span>Contact</span><span class="mb" style="background: #F5B700">Book a wash</span></span></div>
+<sc-if value="{{sHome}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 22px; padding: 30px 22px; align-items: center">
+<div style="flex: 1.1; display: flex; flex-direction: column; gap: 12px"><span style="font-size: 9px; font-weight: 600; letter-spacing: .1em; color: #1E5B3F">MOBILE CAR WASH · PRETORIA</span><span class="d" style="font-size: 36px">A spotless car, washed in your driveway.</span><span style="font-size: 12px; line-height: 1.55; color: #4D5A50">We come to your home or office, bring our own water and power, and leave your car cleaner than the day you bought it.</span><span style="display: flex; gap: 8px"><span class="mb" style="background: #F5B700">Book a wash</span><span class="mb" style="box-shadow: inset 0 0 0 1.5px #10261B">Message us on WhatsApp</span></span></div>
+<div style="flex: 1; aspect-ratio: 4 / 3; border-radius: 14px; background: linear-gradient(135deg,#CFE0D4,#9FB5A6); display: flex; align-items: flex-end"><span style="margin: 8px; font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 99px; background: rgba(16,38,27,.8); color: #FFFFFF">Sample photo</span></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 22px"><span style="border: 1px solid #E2D8C3; border-radius: 12px; background: #FFFFFF; padding: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 11px"><strong>Express wash</strong><span class="d" style="font-size: 18px">R 120</span></span><span style="border: 1px solid #E2D8C3; border-radius: 12px; background: #FFFFFF; padding: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 11px"><strong>Full wash and vacuum</strong><span class="d" style="font-size: 18px">{{price}}</span></span><span style="border: 1px solid #E2D8C3; border-radius: 12px; background: #FFFFFF; padding: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 11px"><strong>Interior deep clean</strong><span class="d" style="font-size: 18px">R 480</span></span><span style="border: 1px solid #E2D8C3; border-radius: 12px; background: #FFFFFF; padding: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 11px"><strong>Polish and wax</strong><span class="d" style="font-size: 18px">R 650</span></span></div>
+</sc-if>
+<sc-if value="{{sForm}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 22px; padding: 30px 22px"><div style="flex: 1; display: flex; flex-direction: column; gap: 10px"><span class="d" style="font-size: 32px">Tell us where the car is.</span><span style="font-size: 12px; color: #4D5A50">Send the form and we’ll confirm a time.</span></div><div style="flex: 1.2; border: 1px solid #E2D8C3; border-radius: 14px; background: #FFFFFF; padding: 16px; display: flex; flex-direction: column; gap: 8px; font-size: 11px"><strong style="font-size: 15px">Ask for a booking</strong><span>Your name</span><span style="border: 1.5px solid #E2D8C3; border-radius: 8px; padding: 7px 9px">Lerato Mokoena</span><span>Phone number</span><span style="border: 1.5px solid #E2D8C3; border-radius: 8px; padding: 7px 9px">082 123 4567</span><span style="display: flex; gap: 8px"><span style="flex: 1; border: 1.5px solid #E2D8C3; border-radius: 8px; padding: 7px 9px">Hatfield</span><span style="flex: 1; border: 1.5px solid #E2D8C3; border-radius: 8px; padding: 7px 9px">Full wash and vacuum</span></span><span class="mb" style="background: #F5B700; align-self: flex-start">Send request</span></div></div>
+</sc-if>
+<sc-if value="{{sSent}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 22px; padding: 30px 22px"><div style="flex: 1; display: flex; flex-direction: column; gap: 10px"><span class="d" style="font-size: 32px">Tell us where the car is.</span></div><div style="flex: 1.2; border: 1.5px solid #1E5B3F; border-radius: 14px; background: #FFFFFF; padding: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 12px"><span class="d" style="font-size: 20px">Thanks, Lerato. We’ve got it.</span><span>We’ll message you on <strong>082 123 4567</strong> within [reply time] to confirm a time for your Full wash and vacuum in Hatfield.</span></div></div>
+</sc-if>
+<sc-if value="{{sPrices}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 26px 22px; display: flex; flex-direction: column; gap: 12px"><span class="d" style="font-size: 30px">Pick a wash. We bring the rest.</span>
+<span style="border: 1px solid #E2D8C3; border-radius: 12px; background: #FFFFFF; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 12px"><span><strong style="font-size: 14px">Express wash</strong><br>45 minutes</span><span class="d" style="font-size: 22px">R 120</span></span>
+<span class="{{flashCls}}" style="border: 2px solid #1E5B3F; border-radius: 12px; background: #FFFFFF; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 12px"><span><strong style="font-size: 14px">Full wash and vacuum</strong><br>1 hour 30 minutes · <span style="color: #1E5B3F; font-weight: 600">Updated just now</span></span><span class="d" style="font-size: 22px">{{price}}</span></span>
+<span style="border: 1px solid #E2D8C3; border-radius: 12px; background: #FFFFFF; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 12px"><span><strong style="font-size: 14px">Interior deep clean</strong><br>2 hours</span><span class="d" style="font-size: 22px">R 480</span></span></div>
+</sc-if>
+<sc-if value="{{sGallery}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 26px 22px; display: flex; flex-direction: column; gap: 12px"><span class="d" style="font-size: 30px">Before and after</span><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px"><sc-for list="{{gal}}" as="p" hint-placeholder-count="3"><div class="flash" style="display: flex; flex-direction: column; gap: 5px; border-radius: 10px; padding: 4px"><span style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px"><span style="aspect-ratio: 1; border-radius: 8px; background: linear-gradient(135deg,#C9BFA8,#A99E86); display: flex; align-items: flex-end"><span style="margin: 4px; font-size: 8px; color: #FFFFFF; background: rgba(16,38,27,.8); padding: 1px 5px; border-radius: 99px">Before</span></span><span style="aspect-ratio: 1; border-radius: 8px; background: {{p.bg}}; display: flex; align-items: flex-end"><span style="margin: 4px; font-size: 8px; color: #FFFFFF; background: rgba(16,38,27,.8); padding: 1px 5px; border-radius: 99px">After</span></span></span><span style="font-size: 10px; color: #4D5A50">{{p.l}}</span></div></sc-for></div></div>
+</sc-if>
+
+</div>
+</div>
+<div class="phone" aria-label="Phone view (demo)" role="region">
+<div class="scr ms">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 22px 14px 8px; border-bottom: 1px solid #E2D8C3"><span class="d" style="font-size: 18px">tsela<span style="color: #D99F00">.</span></span><span class="mb" style="min-height: 26px; font-size: 10px; box-shadow: inset 0 0 0 1.5px #10261B">Menu</span></div>
+<div style="flex: 1; overflow: hidden"><sc-if value="{{sHome}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 18px 14px; display: flex; flex-direction: column; gap: 10px"><span style="font-size: 8px; font-weight: 600; letter-spacing: .1em; color: #1E5B3F">MOBILE CAR WASH · PRETORIA</span><span class="d" style="font-size: 26px">A spotless car, washed in your driveway.</span><span style="font-size: 11px; line-height: 1.5; color: #4D5A50">We come to your home or office and bring our own water and power.</span><button type="button" class="tapb mb {{gBook}}" onClick="{{tapBook}}" style="background: #F5B700; color: #10261B; align-self: flex-start">Book a wash</button><span style="border-radius: 12px; background: #1E5B3F; color: #FAF6EC; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; font-size: 10px"><span style="display: flex; justify-content: space-between"><span>Express wash</span><strong>R 120</strong></span><span style="display: flex; justify-content: space-between"><span>Full wash and vacuum</span><strong>{{price}}</strong></span></span></div>
+</sc-if>
+<sc-if value="{{sForm}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 14px; display: flex; flex-direction: column; gap: 7px; font-size: 10px"><span class="d" style="font-size: 20px">Ask for a booking</span><span style="font-weight: 600">Your name</span><span style="border: 1.5px solid #E2D8C3; border-radius: 8px; padding: 7px 9px; background: #FFFFFF; font-size: 12px">Lerato Mokoena</span><span style="font-weight: 600">Phone number</span><span style="border: 1.5px solid #E2D8C3; border-radius: 8px; padding: 7px 9px; background: #FFFFFF; font-size: 12px">082 123 4567</span><span style="font-weight: 600">Area</span><span style="border: 1.5px solid #E2D8C3; border-radius: 8px; padding: 7px 9px; background: #FFFFFF; font-size: 12px">Hatfield</span><span style="font-weight: 600">Wash</span><span style="border: 1.5px solid #E2D8C3; border-radius: 8px; padding: 7px 9px; background: #FFFFFF; font-size: 12px">Full wash and vacuum</span><button type="button" class="tapb mb {{gSend}}" onClick="{{tapSend}}" style="background: #F5B700; color: #10261B; align-self: flex-start; margin-top: 4px">Send request</button></div>
+</sc-if>
+<sc-if value="{{sSent}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 18px 14px"><div style="border: 1.5px solid #1E5B3F; border-radius: 14px; background: #FFFFFF; padding: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 11px; line-height: 1.5"><span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 50%; background: #1E5B3F; color: #FFFFFF; display: grid; place-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span><span class="d" style="font-size: 18px">Thanks, Lerato. We’ve got it.</span><span>We’ll message you on <strong>082 123 4567</strong> within [reply time] to confirm a time.</span><button type="button" class="tapb mb {{gNext}}" onClick="{{tapNext}}" style="background: #FFFFFF; color: #10261B; box-shadow: inset 0 0 0 1.5px #10261B; align-self: flex-start">See the owner’s side</button></div></div>
+</sc-if>
+<sc-if value="{{sPrices}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 10px"><span class="d" style="font-size: 20px">Services and prices</span><span style="border: 1px solid #E2D8C3; border-radius: 10px; background: #FFFFFF; padding: 10px; display: flex; justify-content: space-between"><strong>Express wash</strong><strong>R 120</strong></span><span class="flash" style="border: 2px solid #1E5B3F; border-radius: 10px; background: #FFFFFF; padding: 10px; display: flex; justify-content: space-between"><strong>Full wash and vacuum</strong><strong>{{price}}</strong></span><span style="border: 1px solid #E2D8C3; border-radius: 10px; background: #FFFFFF; padding: 10px; display: flex; justify-content: space-between"><strong>Interior deep clean</strong><strong>R 480</strong></span></div>
+</sc-if>
+<sc-if value="{{sGallery}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 14px; display: flex; flex-direction: column; gap: 8px"><span class="d" style="font-size: 20px">Before and after</span><sc-for list="{{gal}}" as="p" hint-placeholder-count="3"><span class="flash" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; border-radius: 8px"><span style="height: 64px; border-radius: 8px; background: linear-gradient(135deg,#C9BFA8,#A99E86)"></span><span style="height: 64px; border-radius: 8px; background: {{p.bg}}"></span></span></sc-for></div>
+</sc-if>
+</div>
+<div style="display: flex; gap: 6px; padding: 8px; border-top: 1px solid #E2D8C3; background: #FAF6EC"><span class="mb" style="flex: 1; min-height: 32px; font-size: 11px; box-shadow: inset 0 0 0 1.5px #10261B">Call</span><span class="mb" style="flex: 2; min-height: 32px; font-size: 11px; background: #F5B700">WhatsApp us</span></div>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isAdmin}}" hint-placeholder-val="{{ false }}">
+<div class="frame" style="max-width: 1000px; margin: 0 auto">
+<div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url">[yourdomain.co.za]/admin{{apath}}</span></div>
+<div class="adm" style="position: relative">
+<div class="side"><span style="color: #FFFFFF; font-weight: 700; font-size: 14px; padding-bottom: 10px; white-space: nowrap">Tsela <span class="mono" style="font-size: 8px; border: 1px solid #33415E; border-radius: 4px; padding: 1px 4px; color: #B7C3D9">ADMIN</span></span><sc-for list="{{anav}}" as="a" hint-placeholder-count="6"><span class="{{a.cls}}">{{a.l}}</span></sc-for></div>
+<div style="flex: 1; min-width: 0; background: #F4F7FB; display: flex; flex-direction: column; position: relative">
+<sc-if value="{{aOverview}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 18px; display: flex; flex-direction: column; gap: 12px"><strong style="font-size: 18px">Good morning, [Owner name]</strong><div style="background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; padding: 12px 14px; font-size: 12px; display: flex; gap: 10px; align-items: center"><span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 8px; background: #E6F6EF; color: #0B6B4B; display: grid; place-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span><span><strong>Your site is live and up to date</strong><br>[yourdomain.co.za]</span></div><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px"><span style="background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; padding: 12px; font-size: 12px"><strong>Edit a page</strong></span><span style="background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; padding: 12px; font-size: 12px"><strong>Change a price</strong></span><span style="background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; padding: 12px; font-size: 12px"><strong>Add photos</strong></span></div><div style="background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; overflow: hidden"><span style="display: block; padding: 10px 12px; font-weight: 600; font-size: 13px">New enquiries</span><span class="arow"><strong style="flex: 1">Sipho Dlamini</strong><span style="color: #4B5872">Polish and wax · Menlyn</span></span></div></div>
+</sc-if>
+<sc-if value="{{aEnq}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 18px; display: flex; flex-direction: column; gap: 12px"><span style="display: flex; justify-content: space-between; align-items: center"><strong style="font-size: 18px">Enquiries</strong><span class="pill2" style="background: var(--acc-soft); color: var(--acc-t)">1 NEW</span></span>
+<div style="display: flex; gap: 12px; flex-wrap: wrap"><div style="flex: 1 1 220px; background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; overflow: hidden"><span class="arow slide" style="background: var(--acc-soft); box-shadow: inset 3px 0 0 var(--acc)"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><strong>Lerato Mokoena</strong><span style="color: #4B5872">Full wash and vacuum · Hatfield</span></span><span class="mono" style="font-size: 10px; color: #4B5872">now</span></span><span class="arow"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><strong>Sipho Dlamini</strong><span style="color: #4B5872">Polish and wax · Menlyn</span></span><span class="mono" style="font-size: 10px; color: #4B5872">Yesterday</span></span></div>
+<div class="slide" style="flex: 1.3 1 260px; background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 12px; line-height: 1.5"><strong style="font-size: 14px">Lerato Mokoena</strong><span style="color: #4B5872">082 123 4567 · Hatfield · Full wash and vacuum</span><span style="padding: 8px 10px; border-radius: 8px; background: #F4F7FB">“Parked at the office on Burnett Street. Any time after 10.”</span><span style="display: flex; gap: 6px; flex-wrap: wrap"><span class="mb" style="background: var(--acc); color: #FFFFFF">Reply on WhatsApp</span><span class="mb" style="box-shadow: inset 0 0 0 1px #D5DEEB">Reply by email</span><span class="mb" style="box-shadow: inset 0 0 0 1px #D5DEEB">Archive</span></span><span class="mono" style="font-size: 10px; color: #4B5872">ALSO SENT TO [email address]</span></div></div>
+</div>
+</sc-if>
+<sc-if value="{{aSvc}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 18px; display: flex; gap: 12px; flex: 1"><div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px"><strong style="font-size: 18px">Services &amp; prices</strong>
+<div style="background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; overflow: hidden">
+<span class="arow"><span style="flex: 1"><strong>Express wash</strong></span><span>45 min</span><strong style="width: 52px; text-align: right">R 120</strong></span>
+<button type="button" class="tapb arow {{gRow}}" onClick="{{tapRow}}" style="width: 100%; text-align: left; background: {{rowBg}}; font-family: inherit; color: #0B1220"><span style="flex: 1; display: flex; gap: 6px; align-items: center"><strong>Full wash and vacuum</strong><sc-if value="{{rowUnpub}}" hint-placeholder-val="{{ false }}"><span class="pill2" style="background: #EEF4FE; color: #0B3A80">NOT PUBLISHED</span></sc-if></span><span>1 h 30</span><strong style="width: 52px; text-align: right">{{fullPrice}}</strong></button>
+<span class="arow"><span style="flex: 1"><strong>Interior deep clean</strong></span><span>2 h</span><strong style="width: 52px; text-align: right">R 480</strong></span>
+<span class="arow"><span style="flex: 1"><strong>Polish and wax</strong></span><span>3 h</span><strong style="width: 52px; text-align: right">R 650</strong></span>
+</div></div>
+<sc-if value="{{aEdit}}" hint-placeholder-val="{{ false }}"><div class="slide" style="flex: 0 0 230px; background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 12px"><span class="mono" style="font-size: 9px; color: #4B5872">EDIT SERVICE</span><strong style="font-size: 15px">Full wash and vacuum</strong><span>Price (R)</span><span style="border: 1.5px solid var(--acc); border-radius: 8px; padding: 7px 9px; box-shadow: 0 0 0 3px rgba(29,107,71,.15)">270</span><span style="color: #4B5872">Was R 250 on your live site.</span><span>How long it takes</span><span style="border: 1px solid #D5DEEB; border-radius: 8px; padding: 7px 9px">1 hour 30 minutes</span><button type="button" class="tapb mb {{gSave}}" onClick="{{tapSave}}" style="background: var(--acc); color: #FFFFFF; margin-top: 4px">Save</button><span style="color: #4B5872; font-size: 11px">Saving keeps it as a draft.</span></div></sc-if>
+</div>
+<sc-if value="{{aPub}}" hint-placeholder-val="{{ false }}"><div class="slide" style="margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 14px; background: #0B1220; color: #FFFFFF; font-size: 12px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #F79009"></span><strong style="flex: 1">1 change not published</strong><span class="mb" style="box-shadow: inset 0 0 0 1px #33415E">Preview</span><span class="mb" style="box-shadow: inset 0 0 0 1px #33415E">Discard</span><button type="button" class="tapb mb {{gPublish}}" onClick="{{tapPublish}}" style="background: #FFFFFF; color: #0B1220">Publish</button></div></sc-if>
+</sc-if>
+<sc-if value="{{aPhotos}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 18px; display: flex; flex-direction: column; gap: 12px; flex: 1"><span style="display: flex; justify-content: space-between; align-items: center"><strong style="font-size: 18px">Photos</strong><button type="button" class="tapb mb {{gUpload}}" onClick="{{tapUpload}}" style="background: var(--acc); color: #FFFFFF">Upload photos</button></span>
+<sc-if value="{{aPhotos0}}" hint-placeholder-val="{{ true }}"><div style="border: 2px dashed #A9B8CF; border-radius: 12px; background: #FFFFFF; padding: 24px; text-align: center; font-size: 12px; line-height: 1.55; color: #33405A"><strong style="font-size: 14px; color: #0B1220">No photos yet</strong><br>Your site still looks finished: it shows your prices instead. Photos from your phone are fine.</div></sc-if>
+<sc-if value="{{aPhotos3}}" hint-placeholder-val="{{ false }}"><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px"><sc-for list="{{gal}}" as="p" hint-placeholder-count="3"><div class="slide" style="background: #FFFFFF; border: 1px solid #E3E9F2; border-radius: 12px; overflow: hidden; font-size: 11px"><span style="display: block; height: 70px; background: {{p.bg}}"></span><span style="display: flex; flex-direction: column; gap: 4px; padding: 8px"><span>{{p.l}}</span><span style="display: flex; gap: 4px; align-items: center"><span class="pill2" style="background: #E6F6EF; color: #0B6B4B">ADDED</span><span class="pill2" style="background: #EEF4FE; color: #0B3A80">NOT PUBLISHED</span></span></span></div></sc-for></div></sc-if>
+</div>
+<sc-if value="{{aPhotos3}}" hint-placeholder-val="{{ false }}"><div class="slide" style="margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 14px; background: #0B1220; color: #FFFFFF; font-size: 12px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #F79009"></span><strong style="flex: 1">3 changes not published</strong><span class="mb" style="box-shadow: inset 0 0 0 1px #33415E">Discard</span><button type="button" class="tapb mb {{gPublish}}" onClick="{{tapPublish}}" style="background: #FFFFFF; color: #0B1220">Publish</button></div></sc-if>
+</sc-if>
+
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{done}}" hint-placeholder-val="{{ false }}"><div role="status" class="slide" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #E6F6EF; color: #0B4D36; font-size: 15px"><span style="flex: 1 1 240px"><strong>{{doneTitle}}</strong> {{doneText}}</span><sc-if value="{{hasNextStory}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn btn-ghost btn-sm" onClick="{{goNextStory}}">{{nextStoryLabel}}</button></sc-if></div></sc-if>
+<sc-if value="{{hint}}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 0; font-size: 14px; color: #4B5872">This story follows one path. Tap the highlighted button, or use Next step.</p></sc-if>
+</div>
+</section>
+
+<section style="padding: 0 24px 96px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px">
+<div style="flex: 1 1 420px; min-width: 0; padding: 28px; border-radius: 20px; border: 1px solid #E3E9F2; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 26px; letter-spacing: -0.03em">What’s included</h2>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; line-height: 1.5; color: #33405A">
+<li>A five-page site with your own look: a name-based logo, colours and type</li>
+<li>Built for phones and weak data, with call and WhatsApp buttons always in reach</li>
+<li>An enquiry form that lands in your admin and your email</li>
+<li>Your admin: pages, prices, photos, details, enquiries and bookings</li>
+<li>Your web address, secure hosting and renewals looked after</li>
+<li>Room to add bookings, payments or a shop later, without starting again</li>
+</ul>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; padding: 28px; border-radius: 20px; background: #F4F7FB; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="mono" style="font-size: 12px; color: #4B5872; letter-spacing: .06em">LIVE IN</span><strong style="font-size: 30px; letter-spacing: -0.03em">[delivery time]</strong></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="mono" style="font-size: 12px; color: #4B5872; letter-spacing: .06em">FROM</span><strong style="font-size: 30px; letter-spacing: -0.03em">[from price]</strong></div>
+<span style="font-size: 14px; color: #4B5872; line-height: 1.5">Not included yet: online payments, a shop, a blog and more than one language. Each can be added later.</span>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 24px 120px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.035em; font-weight: 600">How we set it up for you</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 20px">
+<sc-for list="{{how}}" as="h" hint-placeholder-count="3"><li style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 12px"><span class="mono" style="width: 44px; height: 44px; border-radius: 12px; background: #EEF4FE; color: #0F5FCC; display: grid; place-items: center; font-size: 14px">{{h.n}}</span><h3 style="margin: 0; font-size: 19px; font-weight: 600">{{h.t}}</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">{{h.d}}</p></li></sc-for>
+</ol>
+<div style="position: relative; border-radius: 28px; background: #1877F2; color: #FFFFFF; padding: clamp(32px, 5vw, 64px); overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 600px"><h2 style="margin: 0; font-size: clamp(28px, 3.4vw, 44px); letter-spacing: -0.035em; font-weight: 600">Want a site like this?</h2><p style="margin: 0; font-size: 17px; line-height: 1.6">Tell us about your business. You’ll see a working first version before anything goes live.</p></div>
+<a class="btn btn-light" href="book.html">Book a call<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</div>
+</section>
+<footer style="background: #07101F; color: #FFFFFF; padding: 72px 24px 40px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: -0.04em"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>byteleaf</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #B7C3D9">Design, frontend, backend and AI integrations for established businesses.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">COMPANY</span>
+<a class="flink" href="services.html">Services</a><a class="flink" href="process.html">Process</a><a class="flink" href="projects.html">Projects</a><a class="flink" href="about.html">About</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">GET IN TOUCH</span>
+<a class="flink" href="contact.html">Contact</a><a class="flink" href="book.html">Book a call</a><span style="color: #B7C3D9">[hello@yourdomain.co.za]</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">STUDIO</span>
+<span style="color: #B7C3D9; line-height: 1.6">Johannesburg<br>South Africa</span>
+</div>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 28px; border-top: 1px solid #1C2840; font-size: 12px; color: #8A98B3">
+<span>© 2026 byteleaf</span><span>Made in Jozi</span>
+</div>
+</div>
+</footer>
+
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { view: 'site', story: '', step: 0, hint: false, price: 'R 250', photos: 0 };
+}
+script(k) {
+if (k === 'enquiry') return [
+{ view: 'site', scene: 'home', go: 'book', t: 'A customer in Hatfield finds you.', d: 'She opens your site on her phone and taps Book a wash.' },
+{ view: 'site', scene: 'form', go: 'send', t: 'She fills in four fields.', d: 'Name, number, area and the wash she wants. Then Send request.' },
+{ view: 'site', scene: 'sent', go: 'next', t: 'She knows what happens next.', d: 'The sent message says you’ll confirm within [reply time].' },
+{ view: 'admin', scene: 'enq', go: null, t: 'It lands in your admin, and your email.', d: 'Everything she typed, ready for a reply on WhatsApp or email.' }
+];
+if (k === 'price') return [
+{ view: 'admin', scene: 'svc', go: 'row', t: 'Prices went up this month.', d: 'Open Services & prices and tap the wash to change.' },
+{ view: 'admin', scene: 'edit', go: 'save', t: 'Change the number, then Save.', d: 'Saving keeps it as a draft. Nothing changes for customers yet.' },
+{ view: 'admin', scene: 'pub', go: 'publish', t: 'One change is waiting.', d: 'The bar at the bottom shows it. Tap Publish when you’re ready.' },
+{ view: 'site', scene: 'prices', go: null, t: 'Your site is updated.', d: 'The new price shows everywhere it appears. You could undo for 10 seconds.' }
+];
+return [
+{ view: 'admin', scene: 'photos0', go: 'upload', t: 'Your gallery is empty.', d: 'The site still looks finished. When you have photos, tap Upload photos.' },
+{ view: 'admin', scene: 'photos3', go: 'publish', t: 'Three photos from your phone.', d: 'They upload, get a short description, and wait for you to publish.' },
+{ view: 'site', scene: 'gallery', go: null, t: 'Your gallery fills in.', d: 'Before-and-after pairs, sized to load quickly on any phone.' }
+];
+}
+renderVals() {
+const st = this.state;
+const sc = st.story ? this.script(st.story) : [];
+const cur = sc[st.step] || null;
+const scene = cur ? cur.scene : (st.view === 'site' ? 'home' : 'overview');
+const go = cur ? cur.go : null;
+const adv = (what) => {
+if (!cur || !cur.go) return;
+if (what !== cur.go) { this.setState({ hint: true }); return; }
+const nx = sc[st.step + 1];
+const patch = { step: st.step + 1, hint: false, view: nx ? nx.view : st.view };
+if (st.story === 'price' && cur.scene === 'pub') patch.price = 'R 270';
+if (st.story === 'photos' && cur.scene === 'photos3') patch.photos = 3;
+this.setState(patch);
+};
+const done = !!cur && !cur.go;
+const ST = { enquiry: ['1', 'A customer sends an enquiry'], price: ['2', 'You change a price'], photos: ['3', 'You add photos'] };
+const order = ['enquiry', 'price', 'photos'];
+const fi = order.indexOf(st.story);
+const pick = (k) => this.setState({ story: k, step: 0, hint: false, view: this.script(k)[0].view, price: 'R 250', photos: 0 });
+const g = (k) => (go === k ? 'go' : '');
+const AN = { svc: 'Services & prices', edit: 'Services & prices', pub: 'Services & prices', enq: 'Enquiries', photos0: 'Photos', photos3: 'Photos', overview: 'Overview' };
+const sn = AN[scene] || 'Overview';
+return {
+vSite: st.view === 'site' ? 'true' : 'false', vAdmin: st.view === 'admin' ? 'true' : 'false',
+toSite: () => this.setState({ view: 'site' }), toAdmin: () => this.setState({ view: 'admin' }),
+isSite: st.view === 'site', isAdmin: st.view === 'admin',
+stories: order.map((k) => ({ n: ST[k][0], l: ST[k][1], on: st.story === k ? 'true' : 'false', pick: () => pick(k) })),
+stepLabel: !st.story ? 'Pick a story, or explore' : done ? 'Done · ' + sc.length + ' of ' + sc.length : 'Step ' + (st.step + 1) + ' of ' + sc.length,
+noStory: !st.story, restartSt: !st.story ? 'opacity: .5; cursor: default;' : '', restart: () => st.story && pick(st.story),
+noNext: !go, nextSt: !go ? 'opacity: .5; cursor: default; transform: none; box-shadow: none;' : '', next: () => adv(go),
+capTitle: cur ? cur.t : 'Two views of one business.', capText: cur ? cur.d : 'Customers see a calm, quick site. You see a few clear screens to keep it current.',
+done: done, doneTitle: st.story === 'enquiry' ? 'No missed customers.' : st.story === 'price' ? 'Two minutes, no developer.' : 'Photos whenever you have them.', doneText: st.story === 'enquiry' ? 'Every enquiry is in one place, with a reply button.' : st.story === 'price' ? 'You changed it, checked it and published it yourself.' : 'The site looked finished before, and better after.',
+hasNextStory: fi > -1 && fi < 2, nextStoryLabel: fi > -1 && fi < 2 ? 'Next: ' + ST[order[fi + 1]][1] : '', goNextStory: () => pick(order[fi + 1]),
+hint: st.hint,
+path: { home: '', form: '/contact', sent: '/contact', prices: '/services', gallery: '/gallery' }[scene] || '',
+apath: { svc: '/services', edit: '/services', pub: '/services', enq: '/enquiries', photos0: '/photos', photos3: '/photos' }[scene] || '',
+anav: ['Overview', 'Pages', 'Services & prices', 'Photos', 'Enquiries', 'Bookings', 'Site settings'].map((l) => ({ l: l, cls: l === sn ? 'on' : '' })),
+sHome: scene === 'home', sForm: scene === 'form', sSent: scene === 'sent', sPrices: scene === 'prices', sGallery: scene === 'gallery',
+aSvc: scene === 'svc' || scene === 'edit' || scene === 'pub', aEdit: scene === 'edit', aPub: scene === 'pub', aEnq: scene === 'enq', aPhotos: scene === 'photos0' || scene === 'photos3', aPhotos3: scene === 'photos3', aPhotos0: scene === 'photos0', aOverview: scene === 'overview',
+gBook: g('book'), gSend: g('send'), gNext: g('next'), gRow: g('row'), gSave: g('save'), gPublish: g('publish'), gUpload: g('upload'),
+tapBook: () => adv('book'), tapSend: () => adv('send'), tapNext: () => adv('next'), tapRow: () => adv('row'), tapSave: () => adv('save'), tapPublish: () => adv('publish'), tapUpload: () => adv('upload'),
+price: st.price, priceNew: st.price === 'R 270', fullPrice: scene === 'edit' || scene === 'pub' ? 'R 270' : st.price, rowUnpub: scene === 'pub', rowBg: scene === 'edit' || scene === 'pub' ? 'var(--acc-soft)' : '#FFFFFF', flashCls: scene === 'prices' ? 'flash' : '',
+gal: [0, 1, 2].map((i) => ({ bg: ['linear-gradient(135deg,#CFE0D4,#9FB5A6)', 'linear-gradient(135deg,#E6DCC6,#BFAE8B)', 'linear-gradient(135deg,#C9D6E6,#93A7C2)'][i], l: ['Hatchback · Full wash', 'Bakkie · Express wash', 'SUV · Interior deep clean'][i] })),
+how: [{ n: '01', t: 'Tell us about the business', d: 'A 30-minute call. We pick a name-based logo, colours and words that sound like you.' }, { n: '02', t: 'See it before it’s live', d: 'You get a working version on your phone within [delivery time]. Change anything you like.' }, { n: '03', t: 'Go live, then run it yourself', d: 'We connect your web address, show you the admin, and stay a message away.' }]
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+    if (window.__mounted && comp.componentDidUpdate) comp.componentDidUpdate();
+    if (!window.__mounted) { window.__mounted = true; if (comp.componentDidMount) comp.componentDidMount(); }
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

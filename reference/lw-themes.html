@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website admin — Re-skin tokens</title>
+<!-- REFERENCE BUILD generated from design/LwThemes.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.card{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px;overflow:hidden}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-weight:500;color:#4B5872;font-size:12px;padding:10px 14px;border-bottom:1px solid #E3E9F2}
+td{padding:10px 14px;border-bottom:1px solid #EEF2F8;vertical-align:middle}
+.sw0{display:inline-block;width:22px;height:22px;border-radius:6px;border:1px solid rgba(11,18,32,.12);vertical-align:middle;margin-right:8px}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="padding: 48px; box-sizing: border-box; min-height: 100vh; display: flex; flex-direction: column; gap: 28px">
+<header style="display: flex; flex-direction: column; gap: 10px; max-width: 920px">
+<span class="mono" style="font-size: 12px; letter-spacing: 0.08em; color: #0F5FCC">RE-SKIN · TOKENS AND 3 BRAND VARIATIONS</span>
+<h1 style="margin: 0; font-size: 40px; letter-spacing: -0.04em; font-weight: 600; line-height: 1.1">One accent, a logo and a name</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #33405A">The website admin is installed for each business, in that business’s colour. Only five accent tokens, the logo mark and the business name change. Everything else, including the dark sidebar, greys, status colours and type, stays fixed so every install is tested once. Contrast is checked live for every pair the accent is used in.</p>
+</header>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{brands}}" as="b" hint-placeholder-count="3">
+<section class="card" aria-labelledby="{{b.hid}}" style="display: flex; flex-direction: column">
+<div style="padding: 16px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #EEF2F8">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: {{b.acc}}; color: #FFFFFF; display: grid; place-items: center; font-weight: 700">{{b.mark}}</span>
+<span style="display: flex; flex-direction: column"><h2 id="{{b.hid}}" style="margin: 0; font-size: 17px; font-weight: 600">{{b.name}}</h2><span style="font-size: 13px; color: #4B5872">{{b.kind}}</span></span>
+</div>
+<div aria-hidden="true" style="display: flex; height: 300px; {{b.vars}}">
+<div style="flex: 0 0 120px; background: #07101F; padding: 14px 10px; display: flex; flex-direction: column; gap: 6px; box-sizing: border-box">
+<span style="display: flex; align-items: center; gap: 6px; color: #FFFFFF; font-weight: 700; font-size: 13px; margin-bottom: 8px"><span style="width: 18px; height: 18px; border-radius: 5px; background: var(--acc); display: grid; place-items: center; font-size: 10px">{{b.mark}}</span>{{b.short}}</span>
+<span style="display: block; padding: 7px 8px; border-radius: 8px; background: var(--acc); box-shadow: inset 3px 0 0 #FFFFFF; color: #FFFFFF; font-size: 11px; font-weight: 500">Pages</span>
+<span style="display: block; padding: 7px 8px; border-radius: 8px; color: #B7C3D9; font-size: 11px">Services &amp; prices</span>
+<span style="display: block; padding: 7px 8px; border-radius: 8px; color: #B7C3D9; font-size: 11px">Photos</span>
+</div>
+<div style="flex: 1; min-width: 0; background: #F4F7FB; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+<span style="display: flex; justify-content: space-between; align-items: center; gap: 6px"><strong style="font-size: 13px">Services &amp; prices</strong><span style="font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: var(--acc); color: #FFFFFF">Publish</span></span>
+<span style="display: flex; flex-direction: column; gap: 1px; padding: 8px 10px; border-radius: 8px; background: var(--acc-soft); box-shadow: inset 3px 0 0 var(--acc); font-size: 11px"><span class="mono" style="font-size: 10px; color: #33405A">ENQUIRY · NEW</span><strong>{{b.c1}}</strong><span style="color: #33405A">{{b.s1}}</span></span>
+<span style="display: flex; flex-direction: column; gap: 1px; padding: 8px 10px; border-radius: 8px; background: #FFFFFF; border: 1.5px dashed #6B7891; font-size: 11px"><span class="mono" style="font-size: 10px; color: #33405A">BOOKING · 14:00</span><strong>{{b.c2}}</strong><span style="color: #33405A">{{b.s2}}</span><span style="align-self: flex-start; margin-top: 2px; font-weight: 600; font-size: 10px; padding: 1px 5px; border-radius: 5px; background: #FFF4E0; color: #8A5200">Not published</span></span>
+<span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 8px; background: #FFFFFF; font-size: 11px"><span style="color: var(--acc-t); text-decoration: underline; font-weight: 500">+ Add a line</span><span style="position: relative; width: 34px; height: 20px; border-radius: 999px; background: var(--acc)"><span style="position: absolute; top: 3px; left: 17px; width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF"></span></span></span>
+<span style="align-self: flex-start; font-size: 11px; font-weight: 500; padding: 5px 9px; border-radius: 999px; background: var(--acc-soft); color: var(--acc-t)">Saved · not published</span>
+</div>
+</div>
+<div role="table" aria-label="{{b.name}} tokens" style="font-size: 14px">
+<div role="row" style="display: grid; grid-template-columns: 1fr 1fr; padding: 10px 14px; border-bottom: 1px solid #E3E9F2; font-size: 12px; font-weight: 500; color: #4B5872"><span role="columnheader">Token</span><span role="columnheader">Value</span></div>
+<sc-for list="{{b.tokens}}" as="t" hint-placeholder-count="5"><div role="row" style="display: grid; grid-template-columns: 1fr 1fr; padding: 9px 14px; border-bottom: 1px solid #EEF2F8; align-items: center"><span role="cell" class="mono" style="font-size: 12px">{{t.k}}</span><span role="cell"><span class="sw0" style="background: {{t.v}}"></span><span class="mono" style="font-size: 12px">{{t.v}}</span></span></div></sc-for>
+</div>
+<div role="table" aria-label="{{b.name}} contrast checks" style="font-size: 13px">
+<div role="row" style="display: grid; grid-template-columns: minmax(0,1fr) 90px 44px; gap: 8px; padding: 10px 14px; border-bottom: 1px solid #E3E9F2; font-size: 12px; font-weight: 500; color: #4B5872"><span role="columnheader">Pair</span><span role="columnheader">Ratio</span><span role="columnheader">AA</span></div>
+<sc-for list="{{b.checks}}" as="c" hint-placeholder-count="6"><div role="row" style="display: grid; grid-template-columns: minmax(0,1fr) 90px 44px; gap: 8px; padding: 9px 14px; border-bottom: 1px solid #EEF2F8; align-items: center"><span role="cell">{{c.l}}</span><span role="cell" class="mono" style="font-size: 12px">{{c.r}}</span><span role="cell" style="font-weight: 600; font-size: 12px; color: {{c.col}}">{{c.ok}}</span></div></sc-for>
+</div>
+</section>
+</sc-for>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px">Changes per client</h2>
+<ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.7; color: #33405A"><li>Accent: <span class="mono">--acc</span> plus four derived tokens</li><li>Logo mark (square, shown at 30px) and business name</li><li>Business details from Site settings: name, phone, areas, hours</li><li>The sample site keeps its own identity; this only re-skins the admin</li></ul>
+</section>
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px">Never changes</h2>
+<ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.7; color: #33405A"><li>Sidebar #07101F, ink #0B1220, page #F4F7FB, borders #E3E9F2</li><li>Status colours: green confirmed, amber unconfirmed, red errors</li><li>Geist / Geist Mono, spacing, radii, motion</li><li>Publish bar, status pills and the sample-site preview colours</li></ul>
+</section>
+<section class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px">Deriving the tokens</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #33405A"><span class="mono">--acc-h</span> and <span class="mono">--acc-t</span> are the accent darkened until text on <span class="mono">#F4F7FB</span> reaches 4.5:1. <span class="mono">--acc-soft</span> is the accent at about 8% on white; <span class="mono">--acc-ring</span> at 20% opacity. If white text on the accent is under 4.5:1, the set-up screen asks for a darker shade before it saves.</p>
+</section>
+</div>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+lum(h) { const c = [1, 3, 5].map((i) => parseInt(h.substr(i, 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4))); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+cr(a, b) { const x = this.lum(a), y = this.lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+renderVals() {
+const B = [
+{ name: 'Tsela Mobile Wash', short: 'Tsela', mark: 't', kind: 'Pine green · the sample business', acc: '#1D6B47', h: '#175A3B', t: '#175A3B', soft: '#E8F3EC', ring: 'rgba(29,107,71,.2)', c1: 'Pieter van Wyk', s1: 'Express wash', c2: 'Kamo Molefe', s2: 'Full wash and vacuum' },
+{ name: 'byteleaf', short: 'byteleaf', mark: 'b', kind: 'Our default · demo installs', acc: '#166FE5', h: '#0F5FCC', t: '#0F5FCC', soft: '#EEF4FE', ring: 'rgba(22,111,229,.2)', c1: 'Pieter van Wyk', s1: 'Express wash', c2: 'Kamo Molefe', s2: 'Full wash and vacuum' },
+{ name: 'Bright Spark Electrical', short: 'Bright Spark', mark: 'B', kind: 'Burnt orange · an electrician', acc: '#C2410C', h: '#A3360A', t: '#A3360A', soft: '#FDF0E8', ring: 'rgba(194,65,12,.2)', c1: 'Nomsa Zulu', s1: 'Compliance certificate', c2: 'Ravi Pillay', s2: 'Geyser repair' }
+];
+return {
+brands: B.map((b, i) => {
+const pair = (l, fg, bg, min) => { const r = this.cr(fg, bg); return { l: l, r: r.toFixed(2) + ' : 1', ok: r >= min ? 'Pass' : 'Fail', col: r >= min ? '#0B6B4B' : '#B42318' }; };
+return {
+hid: 'b' + i, name: b.name, short: b.short, mark: b.mark, kind: b.kind, acc: b.acc, c1: b.c1, s1: b.s1, c2: b.c2, s2: b.s2,
+vars: '--acc: ' + b.acc + '; --acc-t: ' + b.t + '; --acc-soft: ' + b.soft + ';',
+tokens: [{ k: '--acc', v: b.acc }, { k: '--acc-h (hover)', v: b.h }, { k: '--acc-t (text)', v: b.t }, { k: '--acc-soft', v: b.soft }, { k: '--acc-ring', v: b.ring }],
+checks: [pair('White text on accent (buttons, active nav)', '#FFFFFF', b.acc, 4.5), pair('Accent text on white (links)', b.acc, '#FFFFFF', 4.5), pair('Accent text on page grey', b.t, '#F4F7FB', 4.5), pair('Accent text on soft (chips, slots)', b.t, b.soft, 4.5), pair('Ink on soft (highlighted rows)', '#0B1220', b.soft, 4.5), (() => { const r = this.cr(b.acc, '#07101F'); return { l: 'Accent fill on sidebar (active item also gets a white edge)', r: r.toFixed(2) + ' : 1', ok: r >= 3 ? 'Pass' : 'Edge', col: r >= 3 ? '#0B6B4B' : '#8A5200' }; })()]
+};
+})
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+    if (window.__mounted && comp.componentDidUpdate) comp.componentDidUpdate();
+    if (!window.__mounted) { window.__mounted = true; if (comp.componentDidMount) comp.componentDidMount(); }
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

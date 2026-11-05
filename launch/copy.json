@@ -1,0 +1,367 @@
+{
+  "note": "All copy for the Launch website demo. Sample business: Tsela Mobile Wash (made up). Keep [square brackets] as written; they are placeholders the owner fills in.",
+  "business": {
+    "name": "Tsela Mobile Wash",
+    "logoWord": "tsela",
+    "logoPeriodColour": "#D99F00 (#F5B700 on dark)",
+    "descriptor": "Mobile car wash",
+    "location": "Pretoria",
+    "tagline": "We come to you.",
+    "demoStrip": "Demo site by byteleaf · a sample business with made-up details",
+    "phone": "[phone number]",
+    "email": "[email address]",
+    "hours": "Mon–Sat, 07:00–17:00 · closed Sundays and public holidays",
+    "areas": [
+      "Centurion",
+      "Hatfield",
+      "Brooklyn",
+      "Menlyn",
+      "Waterkloof"
+    ],
+    "areasNote": "[Add or remove areas.]"
+  },
+  "home": {
+    "eyebrow": "Mobile car wash · Pretoria",
+    "h1": "A spotless car, washed in your driveway.",
+    "intro": "We come to your home or office, bring our own water and power, and leave your car cleaner than the day you bought it.",
+    "primaryButton": "Book a wash",
+    "secondaryButton": "Message us on WhatsApp",
+    "facts": [
+      "Mon–Sat, 07:00–17:00",
+      "Centurion to Menlyn",
+      "From R 120"
+    ],
+    "noPhotoCardLabel": "Today’s prices",
+    "howItWorksTitle": "How it works",
+    "steps": [
+      {
+        "n": "1",
+        "t": "Book in a minute",
+        "d": "Use the form or WhatsApp. Tell us where the car is and when."
+      },
+      {
+        "n": "2",
+        "t": "We arrive ready",
+        "d": "We bring water, power and everything else. You carry on with your day."
+      },
+      {
+        "n": "3",
+        "t": "Pay when you’re happy",
+        "d": "Check the car first, then pay by card, EFT or cash."
+      }
+    ],
+    "servicesTitle": "Washes and prices",
+    "servicesLink": "What’s included in each",
+    "areasTitle": "Where we wash",
+    "areasText": "Not on the list? Message us. If we’re nearby that day, we’ll come.",
+    "reviewsTitle": "What customers say",
+    "reviewTag": "Sample review",
+    "reviews": [
+      {
+        "q": "They washed my car in the office parking while I was in meetings. It looked new.",
+        "w": "Thandi, Menlyn"
+      },
+      {
+        "q": "On time, friendly, and the inside smells clean for the first time in years.",
+        "w": "Pieter, Centurion"
+      },
+      {
+        "q": "Booked on WhatsApp in two minutes. Easiest errand of my week.",
+        "w": "Kamo, Hatfield"
+      }
+    ],
+    "faqTitle": "Questions",
+    "faq": [
+      {
+        "q": "Do you bring your own water and power?",
+        "a": "Yes. Our van carries water and a quiet generator, so we only need space around the car."
+      },
+      {
+        "q": "How do I pay?",
+        "a": "Card, EFT or cash, after you’ve checked the car."
+      },
+      {
+        "q": "What if it rains?",
+        "a": "We’ll message you the day before to move your booking at no charge."
+      },
+      {
+        "q": "Can you do a fleet or several cars?",
+        "a": "Yes. Ask for a quote and we’ll plan a visit that suits your business."
+      }
+    ],
+    "cta": "Ready for a clean car?",
+    "ctaButtons": [
+      "Book a wash",
+      "Call [phone number]"
+    ],
+    "stickyBar": [
+      "Call",
+      "WhatsApp us"
+    ]
+  },
+  "services": {
+    "eyebrow": "Services and prices",
+    "h1": "Pick a wash. We bring the rest.",
+    "intro": "Prices are per car and include travel within our areas. Bakkies and 7-seaters add R 40.",
+    "items": [
+      {
+        "name": "Express wash",
+        "time": "45 minutes",
+        "price": "R 120",
+        "summary": "Outside wash, wheels and windows.",
+        "included": [
+          "Hand wash and dry, outside",
+          "Wheels and tyres",
+          "Windows inside and out"
+        ]
+      },
+      {
+        "name": "Full wash and vacuum",
+        "time": "1 hour 30 minutes",
+        "price": "R 250",
+        "summary": "Everything in the express, plus a full vacuum and wipe-down.",
+        "included": [
+          "Everything in the Express wash",
+          "Vacuum seats, carpets and boot",
+          "Dashboard and doors wiped"
+        ]
+      },
+      {
+        "name": "Interior deep clean",
+        "time": "2 hours",
+        "price": "R 480",
+        "summary": "Seats shampooed, stains lifted, smells gone.",
+        "included": [
+          "Seats and carpets shampooed",
+          "Stain treatment",
+          "Vents, seams and cup holders detailed"
+        ]
+      },
+      {
+        "name": "Polish and wax",
+        "time": "3 hours",
+        "price": "R 650",
+        "summary": "A deep shine that keeps rain and dust off for weeks.",
+        "included": [
+          "Full wash and clay treatment",
+          "Machine polish",
+          "Hand wax for protection"
+        ]
+      }
+    ],
+    "itemButton": "Book this wash",
+    "addOnsTitle": "Add-ons",
+    "addOns": [
+      {
+        "n": "Engine bay clean",
+        "p": "R 150"
+      },
+      {
+        "n": "Pet hair removal",
+        "p": "R 90"
+      },
+      {
+        "n": "Headlight restore",
+        "p": "R 200"
+      }
+    ],
+    "howToBook": "To book, send the form on the contact page or message us on WhatsApp. We confirm a time within [reply time]."
+  },
+  "about": {
+    "eyebrow": "About us",
+    "h1": "Started by one person who hated queuing at the car wash.",
+    "story": "[Owner name] started Tsela Mobile Wash after [a plain reason, in one sentence]. [Two sentences about doing it carefully and on time.]",
+    "body": "We use low-water products that are safe on paint, glass and leather, and we never leave until you’ve had a look and you’re happy.",
+    "values": [
+      {
+        "t": "On time",
+        "d": "We message when we’re on our way."
+      },
+      {
+        "t": "Careful",
+        "d": "Soft cloths, no harsh brushes."
+      },
+      {
+        "t": "Insured",
+        "d": "[Insurance detail to confirm]."
+      }
+    ],
+    "photoPlaceholder": "Placeholder · portrait of [Owner name]",
+    "noPhotoCard": "[Owner name], founder · Washing cars in Pretoria since [year]"
+  },
+  "gallery": {
+    "eyebrow": "Gallery",
+    "h1": "Before and after",
+    "intro": "Real cars from around Pretoria. Tap a photo to see it bigger.",
+    "captions": [
+      "Hatchback · Full wash and vacuum",
+      "Bakkie · Express wash",
+      "SUV · Interior deep clean",
+      "Sedan · Polish and wax",
+      "Family car · Full wash and vacuum",
+      "Hatchback · Interior deep clean"
+    ],
+    "pairLabels": [
+      "Before",
+      "After"
+    ],
+    "empty": {
+      "title": "Photos are on their way",
+      "text": "We’re collecting before-and-after shots from this month’s washes. In the meantime, ask us on WhatsApp for pictures of a car like yours.",
+      "button": "Message us on WhatsApp"
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact and booking",
+    "h1": "Tell us where the car is.",
+    "intro": "Send the form and we’ll confirm a time. Quicker on WhatsApp.",
+    "formTitle": "Ask for a booking",
+    "labels": [
+      "Your name",
+      "Phone number",
+      "Area",
+      "Wash",
+      "Anything we should know? (optional)"
+    ],
+    "areaOptions": [
+      "Centurion",
+      "Hatfield",
+      "Brooklyn",
+      "Menlyn",
+      "Waterkloof",
+      "Somewhere else"
+    ],
+    "messagePlaceholder": "e.g. parked in the basement at work",
+    "phoneHint": "So we can confirm your time. We don’t share it.",
+    "errors": {
+      "missingPhone": "Please add your phone number so we can confirm a time.",
+      "badPhone": "That number looks short. Use 10 digits, like 082 123 4567.",
+      "sendFailed": "That didn’t send. Your details are still here. Check your signal and try again, or message us on WhatsApp."
+    },
+    "button": [
+      "Send request",
+      "Sending…"
+    ],
+    "privacy": "We only use your number to arrange the wash. [Privacy notice link]",
+    "sent": {
+      "title": "Thanks, {first name}. We’ve got it.",
+      "text": "We’ll message you on {phone} within [reply time] to confirm a time for your {wash} in {area}.",
+      "sub": "Need it sooner? Message us on WhatsApp and mention your name.",
+      "button": "Send another request"
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 Tsela Mobile Wash · sample business",
+    "credit": "Website by byteleaf (demo)"
+  },
+  "showcase": {
+    "eyebrow": "Showcase project 3 of 4 · Website and admin",
+    "h1": [
+      "Look established on day one.",
+      "Run it yourself after that."
+    ],
+    "intro": "A fast site for a brand-new business, and a simple admin to keep it current. Switch between the two below, or play one of the stories.",
+    "demoNote": "This is a demo with sample data. Tsela Mobile Wash is a made-up business, and its prices, reviews and enquiries are invented. The browser and phone are our own drawings.",
+    "views": [
+      "What your customers see",
+      "What you manage"
+    ],
+    "idleCaption": "Two views of one business. Customers see a calm, quick site. You see a few clear screens to keep it current.",
+    "stories": {
+      "enquiry": {
+        "tab": "A customer sends an enquiry",
+        "steps": [
+          {
+            "view": "site",
+            "caption": "A customer in Hatfield finds you. She opens your site on her phone and taps Book a wash."
+          },
+          {
+            "view": "site",
+            "caption": "She fills in four fields. Name, number, area and the wash she wants. Then Send request."
+          },
+          {
+            "view": "site",
+            "caption": "She knows what happens next. The sent message says you’ll confirm within [reply time]."
+          },
+          {
+            "view": "admin",
+            "caption": "It lands in your admin, and your email. Everything she typed, ready for a reply on WhatsApp or email."
+          }
+        ],
+        "done": "No missed customers. Every enquiry is in one place, with a reply button."
+      },
+      "price": {
+        "tab": "You change a price",
+        "steps": [
+          {
+            "view": "admin",
+            "caption": "Prices went up this month. Open Services & prices and tap the wash to change."
+          },
+          {
+            "view": "admin",
+            "caption": "Change the number, then Save. Saving keeps it as a draft. Nothing changes for customers yet."
+          },
+          {
+            "view": "admin",
+            "caption": "One change is waiting. The bar at the bottom shows it. Tap Publish when you’re ready."
+          },
+          {
+            "view": "site",
+            "caption": "Your site is updated. The new price shows everywhere it appears. You could undo for 10 seconds."
+          }
+        ],
+        "done": "Two minutes, no developer. You changed it, checked it and published it yourself."
+      },
+      "photos": {
+        "tab": "You add photos",
+        "steps": [
+          {
+            "view": "admin",
+            "caption": "Your gallery is empty. The site still looks finished. When you have photos, tap Upload photos."
+          },
+          {
+            "view": "admin",
+            "caption": "Three photos from your phone. They upload, get a short description, and wait for you to publish."
+          },
+          {
+            "view": "site",
+            "caption": "Your gallery fills in. Before-and-after pairs, sized to load quickly on any phone."
+          }
+        ],
+        "done": "Photos whenever you have them. The site looked finished before, and better after."
+      }
+    },
+    "offPathHint": "This story follows one path. Tap the highlighted button, or use Next step.",
+    "included": [
+      "A five-page site with your own look: a name-based logo, colours and type",
+      "Built for phones and weak data, with call and WhatsApp buttons always in reach",
+      "An enquiry form that lands in your admin and your email",
+      "Your admin: pages, prices, photos, details, enquiries and bookings",
+      "Your web address, secure hosting and renewals looked after",
+      "Room to add bookings, payments or a shop later, without starting again"
+    ],
+    "liveIn": "[delivery time]",
+    "from": "[from price]",
+    "notIncluded": "Not included yet: online payments, a shop, a blog and more than one language. Each can be added later.",
+    "howTitle": "How we set it up for you",
+    "how": [
+      {
+        "t": "Tell us about the business",
+        "d": "A 30-minute call. We pick a name-based logo, colours and words that sound like you."
+      },
+      {
+        "t": "See it before it’s live",
+        "d": "You get a working version on your phone within [delivery time]. Change anything you like."
+      },
+      {
+        "t": "Go live, then run it yourself",
+        "d": "We connect your web address, show you the admin, and stay a message away."
+      }
+    ],
+    "cta": {
+      "title": "Want a site like this?",
+      "text": "Tell us about your business. You’ll see a working first version before anything goes live.",
+      "button": "Book a call"
+    }
+  }
+}

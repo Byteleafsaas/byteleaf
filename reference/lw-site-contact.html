@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tsela Mobile Wash — Contact (sample site)</title>
+<!-- REFERENCE BUILD generated from design/LwSiteContact.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Inter:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#FAF6EC}
+.ts{--ink:#10261B;--pine:#1E5B3F;--sun:#F5B700;--cream:#FAF6EC;--sand:#EFE6D2;--line:#E2D8C3;--muted:#4D5A50;font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--cream);-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.6}
+.ts h1,.ts h2,.ts h3,.disp{font-family:'Bricolage Grotesque','Inter',system-ui,sans-serif;letter-spacing:-0.025em;line-height:1.05;margin:0;font-weight:800}
+.ts a{color:var(--pine);text-decoration:underline;text-underline-offset:3px}
+.ts :focus-visible{outline:3px solid var(--ink);outline-offset:3px;box-shadow:0 0 0 6px var(--sun)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px;box-sizing:border-box}
+.b{font:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:14px;font-weight:600;font-size:17px;text-decoration:none!important;border:0;transition:transform .15s,background .15s}
+.b:active{transform:translateY(1px)}
+.b-sun{background:var(--sun);color:var(--ink)!important}.b-sun:hover{background:#FFC61A}
+.b-pine{background:var(--pine);color:#FFFFFF!important}.b-pine:hover{background:#174A33}
+.b-line{background:transparent;color:var(--ink)!important;box-shadow:inset 0 0 0 2px var(--ink)}.b-line:hover{background:var(--sand)}
+.nl{font:inherit;cursor:pointer;border:0;background:transparent;color:var(--ink);font-size:16px;font-weight:500;padding:10px 12px;border-radius:10px;text-decoration:none!important}
+.nl[aria-current="page"]{box-shadow:inset 0 -3px 0 var(--sun)}
+.nl:hover{background:var(--sand)}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--pine)}
+.card{background:#FFFFFF;border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.ph{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#CFE0D4,#B7C9BD 55%,#9FB5A6);display:flex;align-items:flex-end}
+.ph .cap{margin:12px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(16,38,27,.82);color:#FFFFFF}
+.ph svg{position:absolute;left:50%;top:50%;transform:translate(-50%,-55%);opacity:.55}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld label{font-weight:600;font-size:15px}
+.in{font:inherit;font-size:17px;color:var(--ink);background:#FFFFFF;min-height:52px;box-sizing:border-box;width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px}
+.in:focus{outline:none;border-color:var(--pine);box-shadow:0 0 0 4px rgba(30,91,63,.18)}
+.in[aria-invalid="true"]{border-color:#B42318}
+details.fq{border-top:1px solid var(--line);padding:4px 0}
+details.fq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:56px;font-weight:600;font-size:18px}
+details.fq summary::-webkit-details-marker{display:none}
+details.fq summary::after{content:'+';font-size:26px;font-weight:400;color:var(--pine);transition:transform .2s}
+details.fq[open] summary::after{transform:rotate(45deg)}
+.mnav{display:none}
+.callbar{display:none}
+.spin{width:18px;height:18px;border-radius:50%;border:3px solid rgba(16,38,27,.25);border-top-color:var(--ink);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (max-width: 860px){.dnav{display:none!important}.mnav{display:flex}.callbar{display:flex}.ts{padding-bottom:84px}.hero-h{font-size:44px!important}}
+@media (max-width: 400px){.hero-h{font-size:38px!important}.wrap{padding:0 16px}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="ts" style="min-height: 100vh">
+<div role="note" style="background: #10261B; color: #FAF6EC; font-size: 13px; text-align: center; padding: 8px 16px; line-height: 1.4">Demo site by byteleaf · a sample business with made-up details</div>
+
+<header style="position: sticky; top: 0; z-index: 20; background: rgba(250,246,236,.96); border-bottom: 1px solid #E2D8C3">
+<div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 72px">
+<button type="button" onClick="{{goHome}}" aria-label="{{bizName}} home" style="font: inherit; cursor: pointer; border: 0; background: transparent; padding: 4px 0; display: flex; flex-direction: column; align-items: flex-start; color: #10261B">
+<span class="disp" style="font-size: 30px; line-height: 1">{{logo}}<span style="color: #D99F00">.</span></span>
+<span style="font-size: 10px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; margin-top: 2px">Mobile car wash</span>
+</button>
+<nav class="dnav" aria-label="Main" style="display: flex; align-items: center; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="4"><button type="button" class="nl" aria-current="{{n.cur}}" onClick="{{n.go}}">{{n.l}}</button></sc-for>
+<button type="button" class="b b-sun" onClick="{{goContact}}" style="min-height: 46px; margin-left: 10px">Book a wash</button>
+</nav>
+<div class="mnav" style="align-items: center; gap: 8px">
+<a class="b b-line" href="tel:{{tel}}" aria-label="Call us" style="min-height: 44px; width: 44px; padding: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></a>
+<button type="button" class="b b-line" aria-expanded="{{menuA}}" aria-controls="mmenu" onClick="{{toggleMenu}}" style="min-height: 44px; padding: 0 14px; font-size: 15px">Menu</button>
+</div>
+</div>
+<sc-if value="{{menu}}" hint-placeholder-val="{{ false }}">
+<nav id="mmenu" aria-label="Main" style="border-top: 1px solid #E2D8C3; background: #FAF6EC; padding: 8px 16px 16px; display: flex; flex-direction: column">
+<sc-for list="{{navM}}" as="n" hint-placeholder-count="5"><button type="button" class="nl" aria-current="{{n.cur}}" onClick="{{n.go}}" style="text-align: left; min-height: 52px; font-size: 19px; border-bottom: 1px solid #E2D8C3; border-radius: 0">{{n.l}}</button></sc-for>
+</nav>
+</sc-if>
+</header>
+
+<main id="main">
+<sc-if value="{{isHome}}" hint-placeholder-val="{{ true }}">
+<section style="padding: 56px 0 64px">
+<div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center">
+<div style="flex: 1 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+<span class="tag">Mobile car wash · Pretoria</span>
+<h1 class="hero-h" style="font-size: 66px; text-wrap: balance">{{heroTitle}}</h1>
+<p style="margin: 0; font-size: 19px; color: #4D5A50; max-width: 34em">We come to your home or office, bring our own water and power, and leave your car cleaner than the day you bought it.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px"><button type="button" class="b b-sun" onClick="{{goContact}}">Book a wash</button><a class="b b-line" href="#" aria-label="Message us on WhatsApp">Message us on WhatsApp</a></div>
+<ul style="list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 15px; color: #4D5A50">
+<li>Mon–Sat, 07:00–17:00</li><li>Centurion to Menlyn</li><li>From <strong style="color: #10261B">{{fromPrice}}</strong></li>
+</ul>
+</div>
+<div style="flex: 1 1 380px; min-width: 0">
+<sc-if value="{{photos}}" hint-placeholder-val="{{ true }}"><div class="ph" style="aspect-ratio: 4 / 3"><svg width="180" height="90" viewBox="0 0 180 90" aria-hidden="true"><path d="M20 62h140v-14l-20-6-22-20H62L40 42l-20 6z" fill="#FAF6EC"></path><circle cx="52" cy="66" r="12" fill="#10261B"></circle><circle cx="128" cy="66" r="12" fill="#10261B"></circle></svg><span class="cap">Sample photo · a freshly washed car in a driveway</span></div></sc-if>
+<sc-if value="{{noPhotos}}" hint-placeholder-val="{{ false }}">
+<div style="border-radius: 24px; background: #1E5B3F; color: #FAF6EC; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #F5B700">Today’s prices</span>
+<sc-for list="{{svcTop}}" as="s" hint-placeholder-count="4"><div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 10px 0; border-top: 1px solid rgba(250,246,236,.2)"><span style="display: flex; flex-direction: column"><span class="disp" style="font-size: 22px; font-weight: 600">{{s.n}}</span><span style="font-size: 14px; color: #CFE0D4">{{s.t}}</span></span><span class="disp" style="font-size: 26px; white-space: nowrap">{{s.p}}</span></div></sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="hw" style="padding: 56px 0; background: #FFFFFF; border-block: 1px solid #E2D8C3">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 28px">
+<h2 id="hw" style="font-size: 40px">How it works</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 16px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="3"><li style="display: flex; gap: 16px; align-items: flex-start"><span class="disp" aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 14px; background: #F5B700; display: grid; place-items: center; font-size: 22px">{{s.n}}</span><span style="display: flex; flex-direction: column; gap: 4px"><h3 style="font-size: 22px">{{s.t}}</h3><span style="color: #4D5A50">{{s.d}}</span></span></li></sc-for>
+</ol>
+</div>
+</section>
+
+<section aria-labelledby="sv" style="padding: 64px 0">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px"><h2 id="sv" style="font-size: 40px">Washes and prices</h2><button type="button" class="nl" onClick="{{goServices}}" style="text-decoration: underline; text-underline-offset: 4px; color: #1E5B3F; font-weight: 600">What’s included in each</button></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px">
+<sc-for list="{{svcTop}}" as="s" hint-placeholder-count="4"><div class="card"><span style="font-size: 14px; color: #4D5A50">{{s.t}}</span><h3 style="font-size: 24px">{{s.n}}</h3><span style="color: #4D5A50; font-size: 15px; flex: 1">{{s.short}}</span><span class="disp" style="font-size: 30px">{{s.p}}</span></div></sc-for>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="ar" style="padding: 56px 0; background: #1E5B3F; color: #FAF6EC">
+<div class="wrap" style="display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: center">
+<div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 10px"><h2 id="ar" style="font-size: 40px">Where we wash</h2><p style="margin: 0; color: #CFE0D4">Not on the list? Message us. If we’re nearby that day, we’ll come.</p></div>
+<ul style="flex: 2 1 420px; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px"><sc-for list="{{areas}}" as="a" hint-placeholder-count="5"><li style="padding: 10px 18px; border-radius: 999px; background: rgba(250,246,236,.12); font-weight: 600">{{a}}</li></sc-for></ul>
+</div>
+</section>
+
+<section aria-labelledby="rv" style="padding: 64px 0">
+<div class="wrap" style="display: flex; flex-direction: column; gap: 24px">
+<h2 id="rv" style="font-size: 40px">What customers say</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px">
+<sc-for list="{{reviews}}" as="r" hint-placeholder-count="3"><figure class="card" style="margin: 0"><span style="align-self: flex-start; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; background: #EFE6D2; color: #4D5A50">Sample review</span><blockquote style="margin: 0; font-size: 18px; line-height: 1.5">“{{r.q}}”</blockquote><figcaption style="font-size: 14px; color: #4D5A50">{{r.w}}</figcaption></figure></sc-for>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="fq" style="padding: 0 0 64px">
+<div class="wrap" style="display: flex; flex-wrap: wrap; gap: 24px 64px">
+<h2 id="fq" style="font-size: 40px; flex: 1 1 260px">Questions</h2>
+<div style="flex: 2 1 480px; border-bottom: 1px solid #E2D8C3">
+<sc-for list="{{faq}}" as="f" hint-placeholder-count="4"><details class="fq"><summary>{{f.q}}</summary><p style="margin: 0 0 16px; color: #4D5A50">{{f.a}}</p></details></sc-for>
+</div>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{isServices}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 56px 0 24px"><div class="wrap" style="display: flex; flex-direction: column; gap: 14px"><span class="tag">Services and prices</span><h1 class="hero-h" style="font-size: 58px">Pick a wash. We bring the rest.</h1><p style="margin: 0; font-size: 19px; color: #4D5A50; max-width: 36em">Prices are per car and include travel within our areas. Bakkies and 7-seaters add R 40.</p></div></section>
+<section style="padding: 16px 0 48px"><div class="wrap" style="display: flex; flex-direction: column; gap: 16px">
+<sc-for list="{{svcAll}}" as="s" hint-placeholder-count="4">
+<article class="card" style="flex-direction: row; flex-wrap: wrap; gap: 16px 32px; align-items: flex-start">
+<div style="flex: 2 1 320px; display: flex; flex-direction: column; gap: 8px"><h2 style="font-size: 30px">{{s.n}}</h2><span style="color: #4D5A50">{{s.t}}</span>
+<ul style="margin: 6px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px"><sc-for list="{{s.inc}}" as="i" hint-placeholder-count="3"><li>{{i}}</li></sc-for></ul></div>
+<div style="flex: 1 1 180px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start"><span class="disp" style="font-size: 40px">{{s.p}}</span><button type="button" class="b b-pine" onClick="{{goContact}}">Book this wash</button></div>
+</article>
+</sc-for>
+<div class="card" style="background: #EFE6D2"><h2 style="font-size: 26px">Add-ons</h2><ul style="list-style: none; margin: 0; padding: 0"><sc-for list="{{extras}}" as="x" hint-placeholder-count="3"><li style="display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-top: 1px solid #E2D8C3"><span>{{x.n}}</span><strong>{{x.p}}</strong></li></sc-for></ul></div>
+<p style="margin: 0; color: #4D5A50">To book, send the form on the <button type="button" onClick="{{goContact}}" style="font: inherit; cursor: pointer; border: 0; background: transparent; padding: 0; color: #1E5B3F; text-decoration: underline; text-underline-offset: 3px; font-weight: 600">contact page</button> or message us on WhatsApp. We confirm a time within [reply time].</p>
+</div></section>
+</sc-if>
+
+<sc-if value="{{isAbout}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 56px 0 64px"><div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+<div style="flex: 1 1 320px; min-width: 0">
+<sc-if value="{{photos}}" hint-placeholder-val="{{ true }}"><div class="ph" style="aspect-ratio: 4 / 5"><svg width="120" height="140" viewBox="0 0 120 140" aria-hidden="true"><circle cx="60" cy="44" r="28" fill="#FAF6EC"></circle><path d="M10 140c4-36 26-54 50-54s46 18 50 54z" fill="#FAF6EC"></path></svg><span class="cap">Placeholder · portrait of [Owner name]</span></div></sc-if>
+<sc-if value="{{noPhotos}}" hint-placeholder-val="{{ false }}"><div style="aspect-ratio: 4 / 5; border-radius: 24px; background: #F5B700; display: flex; flex-direction: column; justify-content: space-between; padding: 28px; box-sizing: border-box"><span class="disp" style="font-size: 96px; line-height: .9">tsela<span style="color: #FAF6EC">.</span></span><span style="font-weight: 600">[Owner name], founder<br><span style="font-weight: 400">Washing cars in Pretoria since [year]</span></span></div></sc-if>
+</div>
+<div style="flex: 2 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+<span class="tag">About us</span>
+<h1 class="hero-h" style="font-size: 54px">Started by one person who hated queuing at the car wash.</h1>
+<p style="margin: 0; font-size: 19px">[Owner name] started {{bizName}} after [a plain reason, in one sentence]. [Two sentences about doing it carefully and on time.]</p>
+<p style="margin: 0; color: #4D5A50">We use low-water products that are safe on paint, glass and leather, and we never leave until you’ve had a look and you’re happy.</p>
+<ul style="list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px">
+<li class="card" style="padding: 18px"><strong>On time</strong><span style="color: #4D5A50; font-size: 15px">We message when we’re on our way.</span></li>
+<li class="card" style="padding: 18px"><strong>Careful</strong><span style="color: #4D5A50; font-size: 15px">Soft cloths, no harsh brushes.</span></li>
+<li class="card" style="padding: 18px"><strong>Insured</strong><span style="color: #4D5A50; font-size: 15px">[Insurance detail to confirm].</span></li>
+</ul>
+<div><button type="button" class="b b-sun" onClick="{{goContact}}">Book a wash</button></div>
+</div>
+</div></section>
+</sc-if>
+
+<sc-if value="{{isGallery}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 56px 0 24px"><div class="wrap" style="display: flex; flex-direction: column; gap: 14px"><span class="tag">Gallery</span><h1 class="hero-h" style="font-size: 58px">Before and after</h1><p style="margin: 0; font-size: 19px; color: #4D5A50">Real cars from around Pretoria. Tap a photo to see it bigger.</p></div></section>
+<section style="padding: 16px 0 64px"><div class="wrap">
+<sc-if value="{{photos}}" hint-placeholder-val="{{ true }}">
+<ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 20px">
+<sc-for list="{{gallery}}" as="g" hint-placeholder-count="6"><li style="display: flex; flex-direction: column; gap: 8px"><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px"><div class="ph" style="aspect-ratio: 1; background: linear-gradient(135deg,#C9BFA8,#A99E86)"><span class="cap">Before</span></div><div class="ph" style="aspect-ratio: 1"><span class="cap">After</span></div></div><span style="font-size: 15px; color: #4D5A50">{{g}}</span></li></sc-for>
+</ul>
+</sc-if>
+<sc-if value="{{noPhotos}}" hint-placeholder-val="{{ false }}">
+<div class="card" style="align-items: center; text-align: center; padding: 48px 24px; gap: 14px"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1E5B3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="11" r="2"></circle><path d="M21 17l-5-5-8 7"></path></svg><h2 style="font-size: 30px">Photos are on their way</h2><p style="margin: 0; color: #4D5A50; max-width: 30em">We’re collecting before-and-after shots from this month’s washes. In the meantime, ask us on WhatsApp for pictures of a car like yours.</p><a class="b b-pine" href="#">Message us on WhatsApp</a></div>
+</sc-if>
+</div></section>
+</sc-if>
+
+<sc-if value="{{isContact}}" hint-placeholder-val="{{ false }}">
+<section style="padding: 56px 0 64px"><div class="wrap" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+<span class="tag">Contact and booking</span>
+<h1 class="hero-h" style="font-size: 54px">Tell us where the car is.</h1>
+<p style="margin: 0; font-size: 19px; color: #4D5A50">Send the form and we’ll confirm a time. Quicker on WhatsApp.</p>
+<a class="b b-sun" href="#" style="align-self: flex-start">Message us on WhatsApp</a>
+<dl style="margin: 8px 0 0; display: flex; flex-direction: column; gap: 14px">
+<div><dt style="font-weight: 600">Phone</dt><dd style="margin: 0"><a href="tel:{{tel}}">{{telShown}}</a></dd></div>
+<div><dt style="font-weight: 600">Hours</dt><dd style="margin: 0">Monday to Saturday, 07:00–17:00</dd></div>
+<div><dt style="font-weight: 600">Areas</dt><dd style="margin: 0">{{areaText}}</dd></div>
+</dl>
+</div>
+<div style="flex: 1.4 1 420px; min-width: 0">
+<sc-if value="{{formOpen}}" hint-placeholder-val="{{ true }}">
+<form class="card" onSubmit="{{send}}" novalidate aria-labelledby="fh" style="padding: 28px; gap: 18px">
+<h2 id="fh" style="font-size: 28px">Ask for a booking</h2>
+<sc-if value="{{failed}}" hint-placeholder-val="{{ false }}"><div role="alert" style="padding: 14px 16px; border-radius: 12px; background: #FEF3F2; color: #8A1C12; font-size: 15px; line-height: 1.5"><strong>That didn’t send.</strong> Your details are still here. Check your signal and try again, or message us on WhatsApp.</div></sc-if>
+<div class="fld"><label for="f1">Your name</label><input id="f1" class="in" autocomplete="name" value="{{f.name}}" onInput="{{onName}}"></div>
+<div class="fld"><label for="f2">Phone number</label><input id="f2" class="in" type="tel" autocomplete="tel" inputmode="tel" value="{{f.tel}}" onInput="{{onTel}}" aria-invalid="{{telBad}}" aria-describedby="f2h"><span id="f2h" role="{{telRole}}" style="font-size: 14px; color: {{telC}}">{{telHint}}</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div class="fld" style="flex: 1 1 180px"><label for="f3">Area</label><select id="f3" class="in" onChange="{{onArea}}"><sc-for list="{{areaOpts}}" as="o" hint-placeholder-count="6"><option value="{{o}}">{{o}}</option></sc-for></select></div>
+<div class="fld" style="flex: 1 1 180px"><label for="f4">Wash</label><select id="f4" class="in" onChange="{{onSvc}}"><sc-for list="{{svcOpts}}" as="o" hint-placeholder-count="4"><option value="{{o}}">{{o}}</option></sc-for></select></div>
+</div>
+<div class="fld"><label for="f5">Anything we should know? <span style="font-weight: 400; color: #4D5A50">(optional)</span></label><textarea id="f5" class="in" rows="3" onInput="{{onMsg}}" placeholder="e.g. parked in the basement at work">{{f.msg}}</textarea></div>
+<button type="submit" class="b b-sun" disabled="{{sending}}" style="align-self: flex-start">{{sendLabel}}</button>
+<p style="margin: 0; font-size: 14px; color: #4D5A50">We only use your number to arrange the wash. [Privacy notice link]</p>
+</form>
+</sc-if>
+<sc-if value="{{sent}}" hint-placeholder-val="{{ false }}">
+<div class="card" role="status" style="padding: 32px; gap: 14px; border-color: #1E5B3F; box-shadow: inset 0 0 0 1px #1E5B3F">
+<span aria-hidden="true" style="width: 52px; height: 52px; border-radius: 50%; background: #1E5B3F; color: #FFFFFF; display: grid; place-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span>
+<h2 style="font-size: 30px">Thanks, {{firstName}}. We’ve got it.</h2>
+<p style="margin: 0">We’ll message you on <strong>{{f.tel}}</strong> within [reply time] to confirm a time for your {{f.svc}} in {{f.area}}.</p>
+<p style="margin: 0; color: #4D5A50">Need it sooner? Message us on WhatsApp and mention your name.</p>
+<button type="button" class="b b-line" onClick="{{resetForm}}" style="align-self: flex-start">Send another request</button>
+</div>
+</sc-if>
+</div>
+</div></section>
+</sc-if>
+
+<section aria-labelledby="cta" style="padding: 56px 0; background: #F5B700">
+<div class="wrap" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px"><h2 id="cta" style="font-size: 40px">Ready for a clean car?</h2><span style="display: flex; flex-wrap: wrap; gap: 12px"><button type="button" class="b b-pine" onClick="{{goContact}}">Book a wash</button><a class="b b-line" href="tel:{{tel}}">Call {{telShown}}</a></span></div>
+</section>
+</main>
+
+<footer style="background: #10261B; color: #FAF6EC; padding: 48px 0 32px">
+<div class="wrap" style="display: flex; flex-wrap: wrap; gap: 28px 48px; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="disp" style="font-size: 28px">{{logo}}<span style="color: #F5B700">.</span></span><span style="color: #B7C9BD; font-size: 15px">Mobile car wash · Pretoria</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 15px"><strong>Hours</strong><span style="color: #B7C9BD">Mon–Sat, 07:00–17:00</span><span style="color: #B7C9BD">Closed Sundays and public holidays</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 15px"><strong>Contact</strong><a href="tel:{{tel}}" style="color: #FAF6EC">{{telShown}}</a><span style="color: #B7C9BD">[email address]</span></div>
+</div>
+<div class="wrap" style="margin-top: 32px; padding-top: 18px; border-top: 1px solid rgba(250,246,236,.15); font-size: 13px; color: #B7C9BD; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px"><span>© 2026 {{bizName}} · sample business</span><span>Website by byteleaf (demo)</span></div>
+</footer>
+
+<div class="callbar" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; gap: 8px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: #FAF6EC; border-top: 1px solid #E2D8C3; box-shadow: 0 -10px 30px -20px rgba(16,38,27,.5)">
+<a class="b b-line" href="tel:{{tel}}" style="flex: 1; min-height: 50px; padding: 0 12px">Call</a>
+<a class="b b-sun" href="#" style="flex: 2; min-height: 50px; padding: 0 12px">WhatsApp us</a>
+</div>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { page: props.page || 'contact', menu: false, f: { name: '', tel: '', area: 'Centurion', svc: 'Express wash', msg: '' }, err: '', sending: false, sent: false, failed: false, tries: 0 };
+}
+componentWillUnmount() { clearTimeout(this.ts); }
+renderVals() {
+const st = this.state;
+const P = this.props;
+const photos = P.photos !== false;
+const go = (p) => () => { this.setState({ page: p, menu: false }); if (typeof window !== 'undefined') window.scrollTo(0, 0); };
+const SV = [
+{ n: 'Express wash', t: '45 minutes', p: 'R 120', short: 'Outside wash, wheels and windows.', inc: ['Hand wash and dry, outside', 'Wheels and tyres', 'Windows inside and out'] },
+{ n: 'Full wash and vacuum', t: '1 hour 30 minutes', p: 'R 250', short: 'Everything in the express, plus a full vacuum and wipe-down.', inc: ['Everything in the Express wash', 'Vacuum seats, carpets and boot', 'Dashboard and doors wiped'] },
+{ n: 'Interior deep clean', t: '2 hours', p: 'R 480', short: 'Seats shampooed, stains lifted, smells gone.', inc: ['Seats and carpets shampooed', 'Stain treatment', 'Vents, seams and cup holders detailed'] },
+{ n: 'Polish and wax', t: '3 hours', p: 'R 650', short: 'A deep shine that keeps rain and dust off for weeks.', inc: ['Full wash and clay treatment', 'Machine polish', 'Hand wax for protection'] }
+];
+const AREAS = ['Centurion', 'Hatfield', 'Brooklyn', 'Menlyn', 'Waterkloof'];
+const pages = [['home', 'Home'], ['services', 'Services and prices'], ['about', 'About'], ['gallery', 'Gallery'], ['contact', 'Contact']];
+const telOk = /^(\+27|0)[\s-]?\d{2}[\s-]?\d{3}[\s-]?\d{4}$/.test(st.f.tel.trim());
+const set = (k) => (e) => this.setState({ f: Object.assign({}, st.f, { [k]: e.target.value }), err: k === 'tel' ? '' : st.err });
+return {
+bizName: 'Tsela Mobile Wash', logo: 'tsela', tel: '+27000000000', telShown: '[phone number]',
+nav: pages.slice(1).map((p) => ({ l: p[1], cur: st.page === p[0] ? 'page' : 'false', go: go(p[0]) })),
+navM: pages.map((p) => ({ l: p[1], cur: st.page === p[0] ? 'page' : 'false', go: go(p[0]) })),
+menu: st.menu, menuA: st.menu ? 'true' : 'false', toggleMenu: () => this.setState({ menu: !st.menu }),
+goHome: go('home'), goContact: go('contact'), goServices: go('services'),
+isHome: st.page === 'home', isServices: st.page === 'services', isAbout: st.page === 'about', isGallery: st.page === 'gallery', isContact: st.page === 'contact',
+photos: photos, noPhotos: !photos,
+heroTitle: 'A spotless car, washed in your driveway.', fromPrice: 'R 120',
+svcTop: SV, svcAll: SV,
+extras: [{ n: 'Engine bay clean', p: 'R 150' }, { n: 'Pet hair removal', p: 'R 90' }, { n: 'Headlight restore', p: 'R 200' }],
+steps: [{ n: '1', t: 'Book in a minute', d: 'Use the form or WhatsApp. Tell us where the car is and when.' }, { n: '2', t: 'We arrive ready', d: 'We bring water, power and everything else. You carry on with your day.' }, { n: '3', t: 'Pay when you’re happy', d: 'Check the car first, then pay by card, EFT or cash.' }],
+areas: AREAS, areaText: AREAS.join(', ') + '. [Add or remove areas.]',
+reviews: [{ q: 'They washed my car in the office parking while I was in meetings. It looked new.', w: 'Thandi, Menlyn' }, { q: 'On time, friendly, and the inside smells clean for the first time in years.', w: 'Pieter, Centurion' }, { q: 'Booked on WhatsApp in two minutes. Easiest errand of my week.', w: 'Kamo, Hatfield' }],
+faq: [{ q: 'Do you bring your own water and power?', a: 'Yes. Our van carries water and a quiet generator, so we only need space around the car.' }, { q: 'How do I pay?', a: 'Card, EFT or cash, after you’ve checked the car.' }, { q: 'What if it rains?', a: 'We’ll message you the day before to move your booking at no charge.' }, { q: 'Can you do a fleet or several cars?', a: 'Yes. Ask for a quote and we’ll plan a visit that suits your business.' }],
+gallery: ['Hatchback · Full wash and vacuum', 'Bakkie · Express wash', 'SUV · Interior deep clean', 'Sedan · Polish and wax', 'Family car · Full wash and vacuum', 'Hatchback · Interior deep clean'],
+f: st.f, onName: set('name'), onTel: set('tel'), onArea: set('area'), onSvc: set('svc'), onMsg: set('msg'),
+areaOpts: AREAS.concat(['Somewhere else']), svcOpts: SV.map((s) => s.n),
+telBad: st.err ? 'true' : 'false', telRole: st.err ? 'alert' : '', telC: st.err ? '#B42318' : '#4D5A50',
+telHint: st.err || 'So we can confirm your time. We don’t share it.',
+sending: st.sending, sendLabel: st.sending ? 'Sending…' : 'Send request',
+formOpen: !st.sent, sent: st.sent, failed: st.failed && !st.sending,
+firstName: (st.f.name.trim().split(' ')[0]) || 'there',
+send: (e) => { e.preventDefault(); if (!st.f.tel.trim()) { this.setState({ err: 'Please add your phone number so we can confirm a time.' }); return; } if (!telOk) { this.setState({ err: 'That number looks short. Use 10 digits, like 082 123 4567.' }); return; } this.setState({ sending: true, failed: false }); clearTimeout(this.ts); this.ts = setTimeout(() => { const fail = P.form === 'fails' && this.state.tries === 0; this.setState({ sending: false, failed: fail, sent: !fail, tries: this.state.tries + 1 }); }, 900); },
+resetForm: () => this.setState({ sent: false, f: { name: '', tel: '', area: 'Centurion', svc: 'Express wash', msg: '' } })
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+    if (window.__mounted && comp.componentDidUpdate) comp.componentDidUpdate();
+    if (!window.__mounted) { window.__mounted = true; if (comp.componentDidMount) comp.componentDidMount(); }
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

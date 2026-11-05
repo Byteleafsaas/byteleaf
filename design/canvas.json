@@ -20,6 +20,10 @@
   {
    "id": "whatsapp",
    "name": "Showcase \u00b7 WhatsApp booking"
+  },
+  {
+   "id": "launch",
+   "name": "Showcase \u00b7 Launch website"
   }
  ],
  "boards": {
@@ -392,6 +396,126 @@
    "page": "whatsapp",
    "expand": "fill",
    "is_interactive": true
+  },
+  "LwSiteHome.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 2780,
+   "title": "Sample site \u00b7 Home (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwSiteServices.dc.html": {
+   "x": 1520,
+   "y": 0,
+   "w": 1440,
+   "h": 2060,
+   "title": "Sample site \u00b7 Services and prices (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwSiteAbout.dc.html": {
+   "x": 3040,
+   "y": 0,
+   "w": 1440,
+   "h": 1220,
+   "title": "Sample site \u00b7 About (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwSiteGallery.dc.html": {
+   "x": 3040,
+   "y": 1400,
+   "w": 1440,
+   "h": 1260,
+   "title": "Sample site \u00b7 Gallery (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwSiteContact.dc.html": {
+   "x": 4560,
+   "y": 0,
+   "w": 1440,
+   "h": 1340,
+   "title": "Sample site \u00b7 Contact and booking (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwOverview.dc.html": {
+   "x": 0,
+   "y": 3300,
+   "w": 1440,
+   "h": 1000,
+   "title": "Admin \u00b7 Overview (reuse, P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwPages.dc.html": {
+   "x": 1520,
+   "y": 3300,
+   "w": 1440,
+   "h": 1760,
+   "title": "Admin \u00b7 Pages editor (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwServices.dc.html": {
+   "x": 3040,
+   "y": 3300,
+   "w": 1440,
+   "h": 1000,
+   "title": "Admin \u00b7 Services & prices (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwPhotos.dc.html": {
+   "x": 4560,
+   "y": 3300,
+   "w": 1440,
+   "h": 1300,
+   "title": "Admin \u00b7 Photos (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwSettings.dc.html": {
+   "x": 0,
+   "y": 5400,
+   "w": 1440,
+   "h": 1540,
+   "title": "Admin \u00b7 Site settings (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwThemes.dc.html": {
+   "x": 1520,
+   "y": 5400,
+   "w": 1440,
+   "h": 1460,
+   "title": "Admin re-skin \u00b7 tokens + 3 brands (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "LwDemo.dc.html": {
+   "x": 0,
+   "y": 7300,
+   "w": 1440,
+   "h": 2840,
+   "title": "byteleaf site \u00b7 Showcase page (P1)",
+   "page": "launch",
+   "expand": "fill",
+   "is_interactive": true
   }
  },
  "order": [
@@ -434,7 +558,19 @@
   "WaServices.dc.html",
   "WaHours.dc.html",
   "WaThemes.dc.html",
-  "WaDemo.dc.html"
+  "WaDemo.dc.html",
+  "LwSiteHome.dc.html",
+  "LwSiteServices.dc.html",
+  "LwSiteAbout.dc.html",
+  "LwSiteGallery.dc.html",
+  "LwSiteContact.dc.html",
+  "LwOverview.dc.html",
+  "LwPages.dc.html",
+  "LwServices.dc.html",
+  "LwPhotos.dc.html",
+  "LwSettings.dc.html",
+  "LwThemes.dc.html",
+  "LwDemo.dc.html"
  ],
  "notes": {
   "title": {
@@ -528,6 +664,30 @@
    "kind": "title1",
    "maxW": 6000,
    "page": "whatsapp"
+  },
+  "lwT1": {
+   "x": 0,
+   "y": -300,
+   "text": "A \u00b7 Sample website \u2014 Tsela Mobile Wash (its own identity)",
+   "kind": "title1",
+   "maxW": 6000,
+   "page": "launch"
+  },
+  "lwT2": {
+   "x": 0,
+   "y": 3000,
+   "text": "B \u00b7 Owner\u2019s admin \u2014 byteleaf shell in the business\u2019s colour",
+   "kind": "title1",
+   "maxW": 6000,
+   "page": "launch"
+  },
+  "lwT3": {
+   "x": 0,
+   "y": 7000,
+   "text": "C \u00b7 Showcase page on byteleaf",
+   "kind": "title1",
+   "maxW": 6000,
+   "page": "launch"
   }
  },
  "designSystems": []

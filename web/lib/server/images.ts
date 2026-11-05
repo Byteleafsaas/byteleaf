@@ -15,8 +15,8 @@ export class ImageError extends Error {}
  * browser's MIME type), EXIF rotation is applied then metadata (including GPS) is stripped, and anything larger
  * than 2400px on its long side is scaled down. `next/image` then serves responsive sizes from the stored original.
  */
-export async function processImage(input: Buffer, folder = 'projects'): Promise<ProcessedImage> {
-  if (input.length > MAX_IMAGE_BYTES) throw new ImageError('Images must be 5 MB or smaller.');
+export async function processImage(input: Buffer, folder = 'projects', maxBytes = MAX_IMAGE_BYTES): Promise<ProcessedImage> {
+  if (input.length > maxBytes) throw new ImageError(`Images must be ${Math.round(maxBytes / 1048576)} MB or smaller.`);
   let meta;
   try {
     meta = await sharp(input).metadata();

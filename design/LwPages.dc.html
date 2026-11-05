@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Website admin — Pages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=Inter:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:var(--acc);text-decoration:none}a:hover{color:var(--acc-h)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+.btn-primary{background:var(--acc);color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:var(--acc-h);color:#FFFFFF;box-shadow:0 10px 24px -10px var(--acc-ring)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn-danger{background:#FFFFFF;color:#B42318;border:1px solid #F1C9C5}
+.btn-danger:hover{background:#FEF3F2}
+.btn-ok{background:#0B7A55;color:#FFFFFF}
+.btn-ok:hover:not(:disabled){background:#086545;color:#FFFFFF}
+.btn-ok:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.search{font:inherit;font-size:15px;width:240px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:var(--acc);background:#FFFFFF;box-shadow:0 0 0 4px var(--acc-ring)}
+.search::placeholder{color:#6B7891}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:46px;padding:11px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px var(--acc-ring)}
+.field::placeholder{color:#6B7891}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:var(--acc);color:#FFFFFF}
+.snav.off{opacity:.55;cursor:default}.snav.off:hover{background:transparent;color:#B7C3D9}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.row{transition:background .15s}.row:hover{background:#F8FAFD}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.ibtn{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.ibtn:hover{border-color:#D5DEEB;background:#FFFFFF;color:var(--acc)}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+.ai{display:inline-flex;align-items:center;gap:5px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#F1ECFE;color:#5B21B6}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.scrim{animation:fadein .2s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.modal{animation:pop .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bar{from{background-position:0 0}to{background-position:40px 0}}
+.prog{background-image:linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.25) 50%,rgba(255,255,255,.25) 75%,transparent 75%);background-size:20px 20px;animation:bar 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 var(--acc-ring)}100%{box-shadow:0 0 0 8px transparent}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:#4B5872;animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:var(--acc);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot,.wscard{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.hide-sm{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.snav.on{box-shadow:inset 3px 0 0 #FFFFFF}
+.ws-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#B7C3D9}
+.ptab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;border:1px solid #D5DEEB;background:#FFFFFF;color:#33405A;white-space:nowrap}
+.ptab[aria-selected="true"]{background:#0B1220;border-color:#0B1220;color:#FFFFFF}
+.blk{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.blk.err{border-color:#F1C9C5;box-shadow:inset 3px 0 0 #B42318}
+.btype{font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#EEF2F8;color:#33405A}
+.cnt{font-family:'Geist Mono',ui-monospace,monospace;font-size:12px}
+.thumb{font:inherit;cursor:pointer;position:relative;width:76px;height:56px;border-radius:10px;border:2px solid transparent;padding:0;overflow:hidden;background:linear-gradient(135deg,#CFE0D4,#9FB5A6)}
+.thumb[aria-pressed="true"]{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-ring)}
+.dev{font:inherit;cursor:pointer;border:0;min-height:34px;padding:0 12px;border-radius:8px;font-size:13px;font-weight:500;background:transparent;color:#33405A}
+.dev[aria-pressed="true"]{background:#FFFFFF;color:#0B1220;box-shadow:0 1px 3px rgba(11,18,32,.12)}
+.sk{background:linear-gradient(90deg,#EEF2F8 0%,#F8FAFD 50%,#EEF2F8 100%);background-size:200% 100%;animation:skm 1.2s linear infinite;border-radius:12px}
+@keyframes skm{from{background-position:200% 0}to{background-position:-200% 0}}
+.pv{font-family:'Inter',system-ui,sans-serif;color:#10261B;background:#FAF6EC}
+.pv .d{font-family:'Bricolage Grotesque','Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-0.025em;line-height:1.05}
+.mtab{display:none}
+@media (max-width: 760px){.mtab{display:flex}.hide-edit{display:none!important}.hide-prev{display:none!important}}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB; {{brandVars}}">
+<aside class="side" style="flex: 0 0 264px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; box-sizing: border-box">
+<a href="{{homeHref}}" aria-label="{{brandName}} admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<sc-if value="{{isByteleaf}}" hint-placeholder-val="{{ true }}"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg></sc-if>
+<sc-if value="{{notByteleaf}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 9px; background: var(--acc); color: #FFFFFF; display: grid; place-items: center; font-size: 15px; letter-spacing: 0">{{brandMark}}</span></sc-if>
+<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0">{{brandName}}</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #B7C3D9; border: 1px solid #33415E; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<div class="wscard" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span class="mono" style="font-size: 10px; letter-spacing: 0.08em; color: #8A98B3">WEBSITE</span>
+<div style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border-radius: 10px; border: 1px solid #22345A; background: #07101F">
+<span aria-hidden="true" style="width: 26px; height: 26px; border-radius: 50%; background: {{bizDot}}; color: #FFFFFF; display: grid; place-items: center; flex: none; font-size: 12px; font-weight: 700">{{bizMark}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{bizName}}</span><span style="font-size: 11px; color: #8A98B3">{{bizSub}}</span></span>
+</div>
+<span class="ws-chip" role="status"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{numDot}}"></span>{{numText}}</span>
+</div>
+<nav aria-label="Website admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<a class="snav" href="LwOverview.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12l9-8 9 8M5 10v10h14V10"></path></svg><span style="flex: 1">Overview</span></a>
+<a class="snav on" href="LwPages.dc.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"></path></svg><span style="flex: 1">Pages</span></a>
+<a class="snav" href="LwServices.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg><span style="flex: 1">Services &amp; prices</span></a>
+<a class="snav" href="LwPhotos.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM8 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM21 17l-5-5-9 7"></path></svg><span style="flex: 1">Photos</span></a>
+<a class="snav" href="AdminMessages.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v12H5.2L4 17.2zM8 8h8M8 12h5"></path></svg><span style="flex: 1">Enquiries</span><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--acc); color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">2<span class="sr"> new</span></span></a>
+<a class="snav" href="AdminBookings.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18M7 3v4M17 3v4M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path></svg><span style="flex: 1">Bookings</span></a>
+<a class="snav" href="LwSettings.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg><span style="flex: 1">Site settings</span></a>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg><span style="flex: 1">Go-live checklist</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<sc-if value="{{isByteleaf}}" hint-placeholder-val="{{ true }}"><a class="snav" href="AdminDashboard.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>byteleaf admin</a></sc-if>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: var(--acc); display: grid; place-items: center; font-weight: 600; flex: none">{{userMark}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">{{userName}}</span><span style="font-size: 12px; color: #8A98B3">{{userRole}}</span></span>
+<a href="AdminLogin.dc.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; padding: 16px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 12px; color: #4B5872">{{bizName}} / Website</span><h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Pages</h1></div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span class="pill" role="status" style="{{stPill}}"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: currentColor"></span>{{stText}}</span>
+<button type="button" class="btn btn-primary" onClick="{{save}}" disabled="{{cantSave}}">{{saveLabel}}</button>
+</div>
+</header>
+
+<div class="pad" style="padding: 18px 32px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; flex: 1">
+<div role="tablist" aria-label="Page to edit" style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="5"><button type="button" role="tab" class="ptab" aria-selected="{{t.on}}" onClick="{{t.pick}}">{{t.l}}<sc-if value="{{t.dot}}" hint-placeholder-val="{{ false }}"><span aria-label="{{t.dotL}}" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.dotC}}"></span></sc-if></button></sc-for>
+</div>
+<div class="mtab" role="tablist" aria-label="Edit or preview" style="gap: 4px; padding: 4px; border-radius: 12px; background: #EEF2F8; align-self: flex-start">
+<button type="button" role="tab" class="dev" aria-selected="{{mEditA}}" aria-pressed="{{mEditA}}" onClick="{{toEdit}}">Edit</button><button type="button" role="tab" class="dev" aria-selected="{{mPrevA}}" aria-pressed="{{mPrevA}}" onClick="{{toPrev}}">Preview</button>
+</div>
+
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}">
+<div aria-busy="true" aria-label="Loading page" style="display: flex; flex-wrap: wrap; gap: 20px"><div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 12px"><span class="sk" style="height: 110px"></span><span class="sk" style="height: 150px"></span><span class="sk" style="height: 90px"></span><span class="sk" style="height: 120px"></span></div><span class="sk" style="flex: 1 1 380px; height: 520px; border-radius: 18px"></span></div>
+</sc-if>
+
+<sc-if value="{{ready}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<form class="{{editCls}}" onSubmit="{{save}}" aria-label="Edit {{pageName}}" style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<p class="hint" style="margin: 0; line-height: 1.5">{{pageHelp}}</p>
+<sc-for list="{{blocks}}" as="b" hint-placeholder-count="6">
+<section class="blk {{b.errCls}}" aria-labelledby="{{b.lid}}">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><span style="display: flex; align-items: center; gap: 8px"><span class="btype">{{b.typeL}}</span><span id="{{b.lid}}" style="font-weight: 600; font-size: 15px">{{b.label}}</span></span><sc-if value="{{b.hasCnt}}" hint-placeholder-val="{{ false }}"><span class="cnt" style="color: {{b.cntC}}">{{b.cnt}}</span></sc-if></div>
+
+<sc-if value="{{b.isHeading}}" hint-placeholder-val="{{ false }}"><input class="field" id="{{b.fid}}" aria-labelledby="{{b.lid}}" value="{{b.value}}" onInput="{{b.onVal}}" aria-invalid="{{b.bad}}" aria-describedby="{{b.hid}}" style="font-size: 17px; font-weight: 600"></sc-if>
+<sc-if value="{{b.isText}}" hint-placeholder-val="{{ false }}"><textarea class="field" id="{{b.fid}}" aria-labelledby="{{b.lid}}" rows="3" onInput="{{b.onVal}}" aria-invalid="{{b.bad}}" aria-describedby="{{b.hid}}" style="resize: vertical; line-height: 1.55">{{b.value}}</textarea></sc-if>
+<sc-if value="{{b.isButton}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 10px; flex-wrap: wrap"><input class="field" aria-label="Button label" value="{{b.value}}" onInput="{{b.onVal}}" aria-invalid="{{b.bad}}" aria-describedby="{{b.hid}}" style="flex: 1 1 180px"><select class="field" aria-label="Button goes to" onChange="{{b.onTarget}}" style="flex: 1 1 160px"><sc-for list="{{b.targets}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select></div>
+</sc-if>
+<sc-if value="{{b.isImage}}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="Choose a photo" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center">
+<sc-for list="{{b.photos}}" as="p" hint-placeholder-count="4"><button type="button" class="thumb" aria-pressed="{{p.on}}" aria-label="{{p.alt}}" onClick="{{p.pick}}" style="{{p.bg}}"><span class="mono" style="position: absolute; left: 4px; bottom: 3px; font-size: 9px; color: #FFFFFF; background: rgba(11,18,32,.6); padding: 1px 4px; border-radius: 4px">{{p.n}}</span></button></sc-for>
+<button type="button" class="thumb" aria-pressed="{{b.noneOn}}" onClick="{{b.pickNone}}" style="background: #FFFFFF; border: 2px dashed #A9B8CF; width: 104px; font-size: 11px; color: #33405A; line-height: 1.25">No photo, show prices</button>
+<a href="LwPhotos.dc.html" style="font-size: 13px; color: var(--acc-t); font-weight: 500; text-decoration: underline; text-underline-offset: 3px">Add photos</a>
+</div>
+</sc-if>
+<sc-if value="{{b.isList}}" hint-placeholder-val="{{ false }}">
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{b.items}}" as="it" hint-placeholder-count="4"><li style="display: flex; gap: 6px; align-items: center"><input class="field" aria-label="{{it.aria}}" value="{{it.v}}" onInput="{{it.on}}" style="min-height: 40px; padding: 8px 12px"><button type="button" class="ibtn" aria-label="Remove {{it.v}}" onClick="{{it.del}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></li></sc-for>
+</ul>
+<sc-if value="{{b.canAdd}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn btn-ghost btn-sm" onClick="{{b.add}}" style="align-self: flex-start">+ Add {{b.itemName}}</button></sc-if>
+</sc-if>
+<sc-if value="{{b.isSection}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px"><span class="hint" style="line-height: 1.5; flex: 1">{{b.desc}}</span><button type="button" class="sw" role="switch" aria-checked="{{b.onA}}" aria-labelledby="{{b.lid}}" onClick="{{b.toggle}}" style="background: {{b.swBg}}"><span class="knob" style="left: {{b.swL}}"></span></button></div>
+</sc-if>
+<sc-if value="{{b.isLink}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #F4F7FB"><span class="hint" style="line-height: 1.5">{{b.desc}}</span><a class="btn btn-ghost btn-sm" href="{{b.href}}">{{b.hrefL}}</a></div>
+</sc-if>
+<span id="{{b.hid}}" role="{{b.role}}" class="hint" style="color: {{b.helpC}}; line-height: 1.45">{{b.help}}</span>
+</section>
+</sc-for>
+</form>
+
+<aside class="{{prevCls}}" aria-label="Live preview" style="flex: 1 1 400px; min-width: 0; max-width: 100%; position: sticky; top: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="display: flex; flex-direction: column"><strong style="font-size: 15px">Live preview</strong><span class="hint" style="font-size: 12px">{{prevNote}}</span></span>
+<span role="group" aria-label="Preview size" style="display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: #EEF2F8"><button type="button" class="dev" aria-pressed="{{dDesk}}" onClick="{{toDesk}}">Desktop</button><button type="button" class="dev" aria-pressed="{{dPhone}}" onClick="{{toPhone}}">Phone</button></span>
+</div>
+<div style="border-radius: 16px; background: #DDE3EC; padding: {{framePad}}; display: flex; justify-content: center">
+<div class="pv" style="width: {{pvW}}; max-width: 100%; border-radius: {{pvR}}; overflow: hidden; box-shadow: 0 20px 40px -24px rgba(11,18,32,.5)">
+<div style="display: flex; align-items: center; gap: 6px; padding: 7px 10px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #E3E9F2"></span><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #E3E9F2"></span><span class="mono" style="flex: 1; margin-left: 6px; font-size: 10px; color: #4B5872; background: #F4F7FB; padding: 3px 8px; border-radius: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[yourdomain.co.za]{{pvPath}}</span></div>
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #E2D8C3"><span class="d" style="font-size: 17px">tsela<span style="color: #D99F00">.</span></span><span style="font-size: 9px; font-weight: 600; padding: 5px 9px; border-radius: 7px; background: #F5B700">Book a wash</span></div>
+<div style="padding: 16px 14px 18px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{pv}}" as="v" hint-placeholder-count="6">
+<sc-if value="{{v.h}}" hint-placeholder-val="{{ false }}"><span class="d" style="font-size: {{v.fs}}; overflow-wrap: anywhere; {{v.errSt}}">{{v.t}}</span></sc-if>
+<sc-if value="{{v.p}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; line-height: 1.5; color: #4D5A50; overflow-wrap: anywhere">{{v.t}}</span></sc-if>
+<sc-if value="{{v.b}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 10px; font-weight: 600; padding: 7px 12px; border-radius: 8px; background: #F5B700; max-width: 100%; overflow-wrap: anywhere">{{v.t}}</span></sc-if>
+<sc-if value="{{v.img}}" hint-placeholder-val="{{ false }}"><div style="aspect-ratio: 16 / 9; border-radius: 10px; {{v.bg}}; display: flex; align-items: flex-end"><span style="margin: 6px; font-size: 8px; font-weight: 600; padding: 2px 6px; border-radius: 99px; background: rgba(16,38,27,.8); color: #FFFFFF">{{v.t}}</span></div></sc-if>
+<sc-if value="{{v.prices}}" hint-placeholder-val="{{ false }}"><div style="border-radius: 10px; background: #1E5B3F; color: #FAF6EC; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; font-size: 10px"><span style="display: flex; justify-content: space-between"><span>Express wash</span><strong>R 120</strong></span><span style="display: flex; justify-content: space-between"><span>Full wash and vacuum</span><strong>R 250</strong></span><span style="display: flex; justify-content: space-between"><span>Interior deep clean</span><strong>R 480</strong></span></div></sc-if>
+<sc-if value="{{v.chips}}" hint-placeholder-val="{{ false }}"><span style="display: flex; flex-direction: column; gap: 5px"><span class="d" style="font-size: 12px">{{v.t}}</span><span style="display: flex; flex-wrap: wrap; gap: 4px"><sc-for list="{{v.items}}" as="c" hint-placeholder-count="4"><span style="font-size: 9px; font-weight: 600; padding: 3px 7px; border-radius: 99px; background: #EFE6D2">{{c}}</span></sc-for></span></span></sc-if>
+<sc-if value="{{v.sec}}" hint-placeholder-val="{{ false }}"><div style="border-radius: 10px; border: 1px solid #E2D8C3; background: #FFFFFF; padding: 9px 11px; display: flex; flex-direction: column; gap: 5px"><span class="d" style="font-size: 12px">{{v.t}}</span><span style="height: 5px; width: 80%; border-radius: 4px; background: #EFE6D2"></span><span style="height: 5px; width: 55%; border-radius: 4px; background: #EFE6D2"></span></div></sc-if>
+</sc-for>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{pubShow}}" hint-placeholder-val="{{ false }}">
+<div class="pubbar slide" role="region" aria-label="Unpublished changes" style="position: sticky; bottom: 0; z-index: 30; margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 32px; background: #0B1220; color: #FFFFFF; box-shadow: 0 -16px 40px -24px rgba(11,18,32,.6)">
+<span style="display: flex; align-items: center; gap: 10px; flex: 1 1 240px; min-width: 0"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; background: #F79009; flex: none"></span><span style="font-size: 15px; line-height: 1.4"><strong>{{pubCount}}</strong><span class="hide-sm" style="color: #B7C3D9"> · saved, but your live site doesn’t show them yet</span></span></span>
+<sc-if value="{{pubFailed}}" hint-placeholder-val="{{ false }}"><span role="alert" style="flex-basis: 100%; order: 3; font-size: 14px; color: #FECDCA"><strong>Couldn’t publish.</strong> Nothing changed on your live site and your edits are safe. Check your connection and try again.</span></sc-if>
+<span style="display: flex; gap: 8px; flex-wrap: wrap">
+<a class="btn btn-sm" href="LwSiteHome.dc.html" style="background: transparent; color: #FFFFFF; border: 1px solid #33415E">Preview</a>
+<button type="button" class="btn btn-sm" onClick="{{askDiscard}}" style="background: transparent; color: #FFFFFF; border: 1px solid #33415E">Discard</button>
+<button type="button" class="btn btn-sm" onClick="{{askPublish}}" disabled="{{publishing}}" style="background: #FFFFFF; color: #0B1220">{{publishLabel}}</button>
+</span>
+</div>
+</sc-if>
+<sc-if value="{{pubModal}}" hint-placeholder-val="{{ false }}">
+<div class="scrim" style="position: fixed; inset: 0; z-index: 60; background: rgba(11,18,32,.45); display: grid; place-items: center; padding: 16px">
+<div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="pb-h" aria-describedby="pb-d" style="width: 100%; max-width: 460px; box-sizing: border-box; background: #FFFFFF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="pb-h" style="margin: 0; font-size: 20px; letter-spacing: -0.02em">{{pubModalTitle}}</h2>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px"><sc-for list="{{pubList}}" as="c" hint-placeholder-count="3"><li style="display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; background: #F4F7FB; font-size: 14px; line-height: 1.45"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #F79009; margin-top: 7px; flex: none"></span>{{c}}</li></sc-for></ul>
+<p id="pb-d" style="margin: 0; font-size: 15px; line-height: 1.55; color: #33405A">{{pubModalText}}</p>
+<span style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-ghost" onClick="{{closePub}}">{{pubNoL}}</button><button type="button" class="btn" onClick="{{pubYes}}" style="{{pubYesSt}}">{{pubYesL}}</button></span>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{pubToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 18px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 20px 40px -20px rgba(11,18,32,.6); max-width: calc(100% - 32px); box-sizing: border-box"><span aria-hidden="true" style="width: 20px; height: 20px; border-radius: 50%; background: #12B76A; display: grid; place-items: center; flex: none"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span><span>{{pubToastText}}</span><sc-if value="{{pubUndo}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{undoPublish}}" style="font: inherit; cursor: pointer; border: 0; background: transparent; color: #9CC3FF; font-weight: 600; padding: 6px">Undo</button></sc-if></div>
+</sc-if>
+
+</main>
+
+<sc-if value="{{leave}}" hint-placeholder-val="{{ false }}">
+<div class="scrim" style="position: fixed; inset: 0; z-index: 60; background: rgba(11,18,32,.45); display: grid; place-items: center; padding: 16px">
+<div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="lv-h" aria-describedby="lv-d" style="width: 100%; max-width: 440px; box-sizing: border-box; background: #FFFFFF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="lv-h" style="margin: 0; font-size: 20px; letter-spacing: -0.02em">Save your changes to {{pageName}}?</h2>
+<p id="lv-d" style="margin: 0; font-size: 15px; line-height: 1.55; color: #33405A">You edited this page but didn’t save. Saving keeps your edits as a draft; nothing goes live until you publish.</p>
+<span style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-ghost" onClick="{{stay}}">Stay here</button><button type="button" class="btn btn-danger" onClick="{{leaveDiscard}}">Don’t save</button><button type="button" class="btn btn-primary" onClick="{{leaveSave}}" disabled="{{cantSave}}">Save draft</button></span>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"brand":{"editor":"enum","options":["tsela","byteleaf","spark"],"default":"tsela"},"publish":{"editor":"enum","options":["works","fails"],"default":"works"},"demo":{"editor":"enum","options":["normal","loading"],"default":"normal"},"$preview":{"width":1440,"height":1760}}'>
+class Component extends DCLogic {
+brand() {
+const B = {
+byteleaf: { acc: '#166FE5', h: '#0F5FCC', t: '#0F5FCC', soft: '#EEF4FE', ring: 'rgba(22,111,229,.2)', name: 'byteleaf', mark: 'b', biz: 'Tsela Mobile Wash', bizMark: 't', bizSub: 'Demo client · Pretoria', bizDot: '#1D6B47', user: 'Gerald', userRole: 'byteleaf admin' },
+tsela: { acc: '#1D6B47', h: '#175A3B', t: '#175A3B', soft: '#E8F3EC', ring: 'rgba(29,107,71,.2)', name: 'Tsela', mark: 't', biz: 'Tsela Mobile Wash', bizMark: 't', bizSub: 'Mobile car wash · Pretoria', bizDot: '#1D6B47', user: '[Owner name]', userRole: 'Owner' },
+spark: { acc: '#C2410C', h: '#A3360A', t: '#A3360A', soft: '#FDF0E8', ring: 'rgba(194,65,12,.2)', name: 'Bright Spark', mark: 'B', biz: 'Bright Spark Electrical', bizMark: 'B', bizSub: 'Electrician · Durban', bizDot: '#C2410C', user: '[Owner name]', userRole: 'Owner' }
+};
+const k = B[this.props.brand] ? this.props.brand : 'tsela';
+const b = B[k];
+const n = (this.state && this.state.pend) ? this.state.pend.length : 0;
+return {
+brandVars: '--acc: ' + b.acc + '; --acc-h: ' + b.h + '; --acc-t: ' + b.t + '; --acc-soft: ' + b.soft + '; --acc-ring: ' + b.ring + ';',
+brandKey: k, isByteleaf: k === 'byteleaf', notByteleaf: k !== 'byteleaf', brandName: b.name, brandMark: b.mark,
+homeHref: 'LwOverview.dc.html', bizName: b.biz, bizMark: b.bizMark, bizSub: b.bizSub, bizDot: b.bizDot,
+userName: b.user, userMark: b.user[0] === '[' ? 'O' : b.user[0], userRole: b.userRole,
+numBad: n > 0, numDot: n > 0 ? '#F79009' : '#12B76A', numText: n > 0 ? n + (n === 1 ? ' change' : ' changes') + ' not published' : 'Site is live · all changes published'
+};
+}
+pubVals() {
+const st = this.state;
+const n = st.pend.length;
+const ph = st.pubPhase || '';
+const disc = ph === 'discard';
+return {
+pubShow: n > 0, pubCount: n + (n === 1 ? ' change' : ' changes') + ' not published',
+pubFailed: ph === 'failed', publishing: ph === 'publishing', publishLabel: ph === 'publishing' ? 'Publishing…' : ph === 'failed' ? 'Try again' : 'Publish',
+askPublish: () => this.setState({ pubPhase: 'confirm' }), askDiscard: () => this.setState({ pubPhase: 'discard' }),
+pubModal: ph === 'confirm' || disc,
+pubModalTitle: disc ? 'Discard ' + n + (n === 1 ? ' change?' : ' changes?') : 'Publish ' + n + (n === 1 ? ' change?' : ' changes?'),
+pubList: st.pend.map((c) => c.label),
+pubModalText: disc ? 'These edits are removed. Your live site stays exactly as it is now.' : 'Your live site updates straight away. You can undo for 10 seconds afterwards.',
+pubNoL: disc ? 'Keep editing' : 'Not yet', pubYesL: disc ? 'Discard changes' : 'Publish now',
+pubYesSt: disc ? 'background: #B42318; color: #FFFFFF;' : 'background: var(--acc); color: #FFFFFF;',
+closePub: () => this.setState({ pubPhase: '' }),
+pubYes: () => {
+if (disc) { const snap = st.pend; this.setState({ pubPhase: '', pend: [], pubToast: 'Changes discarded. Your live site is unchanged.', undoPend: null }); if (this.onDiscard) this.onDiscard(snap); this.pubFlash(); return; }
+this.setState({ pubPhase: 'publishing' });
+clearTimeout(this.tp);
+this.tp = setTimeout(() => {
+if (this.props.publish === 'fails' && !this.failedOnce) { this.failedOnce = true; this.setState({ pubPhase: 'failed' }); return; }
+const snap = this.state.pend;
+this.setState({ pubPhase: '', pend: [], undoPend: snap, pubToast: 'Published. Your site is up to date.' });
+if (this.onPublish) this.onPublish(snap);
+this.pubFlash(10000);
+}, 900);
+},
+pubToast: !!st.pubToast, pubToastText: st.pubToast || '', pubUndo: !!st.undoPend,
+undoPublish: () => { const snap = st.undoPend; this.setState({ pend: snap, undoPend: null, pubToast: 'Undone. The live site is back to how it was.' }); if (this.onUndo) this.onUndo(snap); this.pubFlash(); }
+};
+}
+pubFlash(ms) { clearTimeout(this.tf); this.tf = setTimeout(() => this.setState({ pubToast: '', undoPend: null }), ms || 4000); }
+
+constructor(props) {
+super(props);
+const PH = [{ id: 'p1', n: '1', alt: 'Silver hatchback, freshly washed, in a driveway' }, { id: 'p2', n: '2', alt: 'Interior after a deep clean' }, { id: 'p3', n: '3', alt: 'Van with water tank and kit' }, { id: 'p4', n: '4', alt: 'Bakkie being dried by hand' }];
+this.PH = PH;
+this.live = {
+home: [
+{ id: 'h1', type: 'heading', label: 'Headline', value: 'A spotless car, washed in your driveway.', max: 60, help: 'The first thing people read. One promise, in plain words.' },
+{ id: 'h2', type: 'text', label: 'Intro', value: 'We come to your home or office, bring our own water and power, and leave your car cleaner than the day you bought it.', max: 220, help: 'Two sentences at most.' },
+{ id: 'h3', type: 'button', label: 'Main button', value: 'Book a wash', target: 'contact', max: 24, help: 'Say what happens: “Book a wash”, not “Click here”.' },
+{ id: 'h4', type: 'image', label: 'Main photo', value: 'p1', help: 'Landscape photos look best. With no photo, the site shows your prices here instead.' },
+{ id: 'h5', type: 'section', label: 'How it works', on: true, desc: 'Three steps: book, we arrive, pay when happy.' },
+{ id: 'h6', type: 'link', label: 'Washes and prices', desc: 'Comes from Services & prices, so it’s always up to date.', href: 'LwServices.dc.html', hrefL: 'Edit prices' },
+{ id: 'h7', type: 'list', label: 'Areas served', items: ['Centurion', 'Hatfield', 'Brooklyn', 'Menlyn', 'Waterkloof'], maxItems: 10, itemMax: 28, itemName: 'area', help: 'Also used on the Contact page and in the booking form.' },
+{ id: 'h8', type: 'section', label: 'Customer reviews', on: true, desc: 'Shows three reviews. Each one is labelled “Sample review” until you add real ones.' },
+{ id: 'h9', type: 'section', label: 'Questions', on: true, desc: 'Four common questions with short answers.' }
+],
+services: [{ id: 's1', type: 'heading', label: 'Page heading', value: 'Pick a wash. We bring the rest.', max: 60, help: '' }, { id: 's2', type: 'text', label: 'Intro', value: 'Prices are per car and include travel within our areas. Bakkies and 7-seaters add R 40.', max: 220, help: '' }, { id: 's3', type: 'link', label: 'Washes, prices and add-ons', desc: 'Edited in Services & prices.', href: 'LwServices.dc.html', hrefL: 'Edit prices' }],
+about: [{ id: 'a1', type: 'heading', label: 'Page heading', value: 'Started by one person who hated queuing at the car wash.', max: 60, help: '' }, { id: 'a2', type: 'text', label: 'Your story', value: '[Owner name] started Tsela Mobile Wash after [a plain reason]. [Two sentences about doing it carefully and on time.]', max: 400, help: 'Write it like you’d tell a neighbour. People trust a real person.' }, { id: 'a3', type: 'image', label: 'Your photo', value: '', help: 'A friendly photo of you helps more than any logo. Until then, your name is shown in large type.' }],
+gallery: [{ id: 'g1', type: 'heading', label: 'Page heading', value: 'Before and after', max: 60, help: '' }, { id: 'g2', type: 'text', label: 'Intro', value: 'Real cars from around Pretoria. Tap a photo to see it bigger.', max: 220, help: '' }, { id: 'g3', type: 'link', label: 'Gallery photos', desc: '6 photo pairs from Photos.', href: 'LwPhotos.dc.html', hrefL: 'Manage photos' }],
+contact: [{ id: 'c1', type: 'heading', label: 'Page heading', value: 'Tell us where the car is.', max: 60, help: '' }, { id: 'c2', type: 'text', label: 'Intro', value: 'Send the form and we’ll confirm a time. Quicker on WhatsApp.', max: 220, help: '' }, { id: 'c3', type: 'text', label: 'After someone sends the form', value: 'We’ll message you within [reply time] to confirm a time.', max: 160, help: 'Tell people what happens next and when.' }, { id: 'c4', type: 'link', label: 'Phone, WhatsApp, hours and areas', desc: 'From Site settings, so they match everywhere.', href: 'LwSettings.dc.html', hrefL: 'Edit details' }]
+};
+this.state = { page: 'home', draft: JSON.parse(JSON.stringify(this.live)), saved: JSON.parse(JSON.stringify(this.live)), saving: false, leaveTo: '', dev: 'desk', mview: 'edit', pend: [], pubPhase: '', pubToast: '', undoPend: null };
+}
+componentWillUnmount() { clearTimeout(this.ts); clearTimeout(this.tp); clearTimeout(this.tf); }
+onPublish() { this.live = JSON.parse(JSON.stringify(this.state.saved)); }
+onDiscard() { this.setState({ draft: JSON.parse(JSON.stringify(this.live)), saved: JSON.parse(JSON.stringify(this.live)) }); }
+renderVals() {
+const st = this.state;
+const br = this.brand();
+const pg = st.page;
+const NAMES = { home: 'Home', services: 'Services and prices', about: 'About', gallery: 'Gallery', contact: 'Contact' };
+const dirtyP = (p) => JSON.stringify(st.draft[p]) !== JSON.stringify(st.saved[p]);
+const unpubP = (p) => JSON.stringify(st.saved[p]) !== JSON.stringify(this.live[p]);
+const dirty = dirtyP(pg);
+const blocks = st.draft[pg];
+const over = (b) => (b.max && (b.value || '').length > b.max) || (b.type === 'list' && b.items.some((i) => i.length > b.itemMax)) || ((b.type === 'heading' || b.type === 'button') && !(b.value || '').trim());
+const anyBad = blocks.some(over);
+const upd = (id, patch) => { const d = JSON.parse(JSON.stringify(st.draft)); d[pg] = d[pg].map((b) => (b.id === id ? Object.assign(b, typeof patch === 'function' ? patch(b) : patch) : b)); this.setState({ draft: d }); };
+const doSave = (then) => {
+this.setState({ saving: true }); clearTimeout(this.ts);
+this.ts = setTimeout(() => {
+const s = this.state; const sv = JSON.parse(JSON.stringify(s.saved)); sv[s.page] = JSON.parse(JSON.stringify(s.draft[s.page]));
+const label = NAMES[s.page] + ' page: ' + s.draft[s.page].filter((b, i) => JSON.stringify(b) !== JSON.stringify(s.saved[s.page][i])).map((b) => b.label.toLowerCase()).join(', ') + ' edited';
+const pend = s.pend.filter((c) => c.id !== 'page-' + s.page).concat([{ id: 'page-' + s.page, label: label }]);
+this.setState(Object.assign({ saving: false, saved: sv, pend: pend }, then || {}));
+}, 700);
+};
+const stTxt = dirty ? ['Unsaved changes', 'background: #FFF4E0; color: #8A5200;'] : unpubP(pg) ? ['Saved · not published', 'background: #EEF4FE; color: #0B3A80;'] : ['Live', 'background: #E6F6EF; color: #0B6B4B;'];
+const PHBG = { p1: 'background: linear-gradient(135deg,#CFE0D4,#9FB5A6);', p2: 'background: linear-gradient(135deg,#E6DCC6,#BFAE8B);', p3: 'background: linear-gradient(135deg,#C9D6E6,#93A7C2);', p4: 'background: linear-gradient(135deg,#D9D2E6,#A99BC2);' };
+const mobile = typeof window !== 'undefined' && window.innerWidth <= 760;
+const pv = [];
+blocks.forEach((b) => {
+const bad = over(b);
+if (b.type === 'heading') pv.push({ h: true, t: b.value || 'Add a heading', fs: st.dev === 'phone' ? '24px' : '30px', errSt: bad && b.value ? 'outline: 2px dashed #B42318; outline-offset: 3px;' : '' });
+else if (b.type === 'text') { if (b.label.indexOf('After someone') < 0) pv.push({ p: true, t: b.value }); }
+else if (b.type === 'button') pv.push({ b: true, t: b.value || 'Button' });
+else if (b.type === 'image') { const p = this.PH.find((x) => x.id === b.value); if (p) pv.push({ img: true, bg: PHBG[p.id].replace(';', ''), t: p.alt }); else if (pg === 'home') pv.push({ prices: true }); else pv.push({ sec: true, t: '[Owner name] in large type' }); }
+else if (b.type === 'list') pv.push({ chips: true, t: b.label, items: b.items.filter(Boolean) });
+else if (b.type === 'section') { if (b.on) pv.push({ sec: true, t: b.label }); }
+else if (b.type === 'link') pv.push({ sec: true, t: b.label });
+});
+const pvFill = pv.map((v) => Object.assign({ h: false, p: false, b: false, img: false, prices: false, chips: false, sec: false, t: '', fs: '', errSt: '', bg: '', items: [] }, v));
+const goPage = (p) => { if (p === pg) return; if (dirty) this.setState({ leaveTo: p }); else this.setState({ page: p }); };
+return Object.assign(br, this.pubVals(), {
+loading: this.props.demo === 'loading', ready: this.props.demo !== 'loading',
+stText: stTxt[0], stPill: stTxt[1],
+cantSave: !dirty || anyBad || st.saving, saveLabel: st.saving ? 'Saving…' : 'Save draft',
+save: (e) => { if (e && e.preventDefault) e.preventDefault(); if (!dirty || anyBad || st.saving) return; doSave(); },
+tabs: Object.keys(NAMES).map((p) => { const d = dirtyP(p), u = unpubP(p); return { l: NAMES[p], on: pg === p ? 'true' : 'false', pick: () => goPage(p), dot: d || u, dotC: d ? '#F79009' : 'var(--acc)', dotL: d ? 'unsaved changes' : 'not published' }; }),
+pageName: NAMES[pg],
+pageHelp: pg === 'home' ? 'Edit the words and pictures in each block. The layout and colours stay as designed, so nothing can break.' : 'Each block has a fixed place on the page. Change what it says; the design stays the same.',
+mEditA: st.mview === 'edit' ? 'true' : 'false', mPrevA: st.mview === 'prev' ? 'true' : 'false', toEdit: () => this.setState({ mview: 'edit' }), toPrev: () => this.setState({ mview: 'prev', dev: 'phone' }),
+editCls: st.mview === 'prev' ? 'hide-edit' : '', prevCls: st.mview === 'edit' ? 'hide-prev' : '',
+blocks: blocks.map((b) => {
+const len = (b.value || '').length;
+const bad = over(b);
+const empty = (b.type === 'heading' || b.type === 'button') && !(b.value || '').trim();
+const TL = { heading: 'HEADING', text: 'PARAGRAPH', button: 'BUTTON', image: 'IMAGE', list: 'LIST', section: 'SECTION', link: 'FROM ANOTHER SCREEN' };
+let help = b.help || '', helpC = '#4B5872';
+if (empty) { help = 'This can’t be empty. ' + (b.type === 'heading' ? 'Add a short heading.' : 'Add a short label.'); helpC = '#B42318'; }
+else if (b.max && len > b.max) { help = 'Too long by ' + (len - b.max) + ' characters. Long ' + (b.type === 'heading' ? 'headings wrap onto many lines on phones' : 'text is hard to read on a phone') + '. Keep it under ' + b.max + '.'; helpC = '#B42318'; }
+else if (b.type === 'list' && b.items.some((i) => i.length > b.itemMax)) { help = 'Each ' + b.itemName + ' can be up to ' + b.itemMax + ' characters.'; helpC = '#B42318'; }
+const cntC = b.max ? (len > b.max ? '#B42318' : len > b.max * 0.85 ? '#8A5200' : '#4B5872') : '#4B5872';
+return {
+lid: 'bl-' + b.id, fid: 'f-' + b.id, hid: 'h-' + b.id, typeL: TL[b.type], label: b.label, value: b.value || '',
+hasCnt: !!b.max || b.type === 'list', cnt: b.type === 'list' ? b.items.length + ' / ' + b.maxItems : len + ' / ' + b.max, cntC: cntC,
+bad: bad ? 'true' : 'false', errCls: bad ? 'err' : '', help: help, helpC: helpC, role: bad ? 'alert' : '',
+isHeading: b.type === 'heading', isText: b.type === 'text', isButton: b.type === 'button', isImage: b.type === 'image', isList: b.type === 'list', isSection: b.type === 'section', isLink: b.type === 'link',
+onVal: (e) => upd(b.id, { value: e.target.value }), onTarget: (e) => upd(b.id, { target: e.target.value }),
+targets: [['contact', 'Goes to the Contact page'], ['whatsapp', 'Opens WhatsApp'], ['call', 'Calls your number']].map((o) => ({ v: o[0], l: o[1], s: b.target === o[0] })),
+photos: this.PH.map((p) => ({ n: p.n, alt: 'Use photo ' + p.n + ': ' + p.alt, on: b.value === p.id ? 'true' : 'false', bg: PHBG[p.id], pick: () => upd(b.id, { value: p.id }) })),
+noneOn: b.type === 'image' && !b.value ? 'true' : 'false', pickNone: () => upd(b.id, { value: '' }),
+items: (b.items || []).map((v, i) => ({ v: v, aria: b.itemName + ' ' + (i + 1), on: (e) => upd(b.id, (x) => { const it = x.items.slice(); it[i] = e.target.value; return { items: it }; }), del: () => upd(b.id, (x) => ({ items: x.items.filter((_, j) => j !== i) })) })),
+canAdd: b.type === 'list' && b.items.length < b.maxItems, itemName: b.itemName || '', add: () => upd(b.id, (x) => ({ items: x.items.concat(['']) })),
+desc: b.desc || '', onA: b.on ? 'true' : 'false', swBg: b.on ? 'var(--acc)' : '#C9D3E3', swL: b.on ? '21px' : '3px', toggle: () => upd(b.id, { on: !b.on }),
+href: b.href || '', hrefL: b.hrefL || ''
+};
+}),
+prevNote: dirty ? 'Showing your unsaved edits' : unpubP(pg) ? 'Showing your saved draft' : 'Same as your live site',
+dDesk: st.dev === 'desk' ? 'true' : 'false', dPhone: st.dev === 'phone' ? 'true' : 'false', toDesk: () => this.setState({ dev: 'desk' }), toPhone: () => this.setState({ dev: 'phone' }),
+pvW: st.dev === 'phone' ? '300px' : '100%', pvR: st.dev === 'phone' ? '24px' : '10px', framePad: st.dev === 'phone' ? '18px 10px' : '14px',
+pvPath: pg === 'home' ? '' : '/' + pg, pv: pvFill,
+leave: !!st.leaveTo, stay: () => this.setState({ leaveTo: '' }),
+leaveDiscard: () => { const d = JSON.parse(JSON.stringify(st.draft)); d[pg] = JSON.parse(JSON.stringify(st.saved[pg])); this.setState({ draft: d, page: st.leaveTo, leaveTo: '' }); },
+leaveSave: () => { const to = st.leaveTo; this.setState({ leaveTo: '' }); doSave({ page: to }); }
+});
+}
+}
+</script>
+</body>
+</html>

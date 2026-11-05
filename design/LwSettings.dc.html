@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Website admin — Site settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:var(--acc);text-decoration:none}a:hover{color:var(--acc-h)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+.btn-primary{background:var(--acc);color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:var(--acc-h);color:#FFFFFF;box-shadow:0 10px 24px -10px var(--acc-ring)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn-danger{background:#FFFFFF;color:#B42318;border:1px solid #F1C9C5}
+.btn-danger:hover{background:#FEF3F2}
+.btn-ok{background:#0B7A55;color:#FFFFFF}
+.btn-ok:hover:not(:disabled){background:#086545;color:#FFFFFF}
+.btn-ok:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.search{font:inherit;font-size:15px;width:240px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:var(--acc);background:#FFFFFF;box-shadow:0 0 0 4px var(--acc-ring)}
+.search::placeholder{color:#6B7891}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:46px;padding:11px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px var(--acc-ring)}
+.field::placeholder{color:#6B7891}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:var(--acc);color:#FFFFFF}
+.snav.off{opacity:.55;cursor:default}.snav.off:hover{background:transparent;color:#B7C3D9}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.row{transition:background .15s}.row:hover{background:#F8FAFD}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.ibtn{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.ibtn:hover{border-color:#D5DEEB;background:#FFFFFF;color:var(--acc)}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+.ai{display:inline-flex;align-items:center;gap:5px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#F1ECFE;color:#5B21B6}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.scrim{animation:fadein .2s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.modal{animation:pop .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bar{from{background-position:0 0}to{background-position:40px 0}}
+.prog{background-image:linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.25) 50%,rgba(255,255,255,.25) 75%,transparent 75%);background-size:20px 20px;animation:bar 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 var(--acc-ring)}100%{box-shadow:0 0 0 8px transparent}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:#4B5872;animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:var(--acc);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot,.wscard{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.hide-sm{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.snav.on{box-shadow:inset 3px 0 0 #FFFFFF}
+.ws-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#B7C3D9}
+.sec{padding:22px;display:flex;flex-direction:column;gap:18px}
+.sec + .sec{border-top:1px solid #EEF2F8}
+.sec h2{margin:0;font-size:17px;font-weight:600}
+.f{display:flex;flex-direction:column;gap:6px}
+.where{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:#4B5872}
+.where span.w{padding:2px 8px;border-radius:999px;background:#F4F7FB;border:1px solid #E3E9F2;color:#33405A}
+.chk{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;min-height:36px}
+.chk input{width:18px;height:18px;accent-color:var(--acc);margin:0}
+.achip{display:inline-flex;align-items:center;gap:2px;min-height:34px;padding:0 4px 0 12px;border-radius:999px;background:#F4F7FB;border:1px solid #E3E9F2;font-size:14px}
+.achip button{font:inherit;cursor:pointer;border:0;background:transparent;color:#4B5872;width:28px;height:28px;border-radius:50%;display:grid;place-items:center}
+.hrow{display:grid;grid-template-columns:140px 64px minmax(0,1fr);gap:12px;align-items:center}
+.tsel{font:inherit;font-size:14px;min-height:40px;padding:0 28px 0 10px;border:1px solid #D5DEEB;border-radius:10px;background:#FFFFFF;color:#0B1220}
+@media (max-width: 600px){.hrow{grid-template-columns:1fr auto}.hrow .times{grid-column:1 / -1}}
+</style>
+</helmet>
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB; {{brandVars}}">
+<aside class="side" style="flex: 0 0 264px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; box-sizing: border-box">
+<a href="{{homeHref}}" aria-label="{{brandName}} admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<sc-if value="{{isByteleaf}}" hint-placeholder-val="{{ true }}"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg></sc-if>
+<sc-if value="{{notByteleaf}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 9px; background: var(--acc); color: #FFFFFF; display: grid; place-items: center; font-size: 15px; letter-spacing: 0">{{brandMark}}</span></sc-if>
+<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0">{{brandName}}</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #B7C3D9; border: 1px solid #33415E; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<div class="wscard" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span class="mono" style="font-size: 10px; letter-spacing: 0.08em; color: #8A98B3">WEBSITE</span>
+<div style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border-radius: 10px; border: 1px solid #22345A; background: #07101F">
+<span aria-hidden="true" style="width: 26px; height: 26px; border-radius: 50%; background: {{bizDot}}; color: #FFFFFF; display: grid; place-items: center; flex: none; font-size: 12px; font-weight: 700">{{bizMark}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{bizName}}</span><span style="font-size: 11px; color: #8A98B3">{{bizSub}}</span></span>
+</div>
+<span class="ws-chip" role="status"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{numDot}}"></span>{{numText}}</span>
+</div>
+<nav aria-label="Website admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<a class="snav" href="LwOverview.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12l9-8 9 8M5 10v10h14V10"></path></svg><span style="flex: 1">Overview</span></a>
+<a class="snav" href="LwPages.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"></path></svg><span style="flex: 1">Pages</span></a>
+<a class="snav" href="LwServices.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg><span style="flex: 1">Services &amp; prices</span></a>
+<a class="snav" href="LwPhotos.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM8 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM21 17l-5-5-9 7"></path></svg><span style="flex: 1">Photos</span></a>
+<a class="snav" href="AdminMessages.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v12H5.2L4 17.2zM8 8h8M8 12h5"></path></svg><span style="flex: 1">Enquiries</span><span class="mono" style="min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--acc); color: #FFFFFF; font-size: 11px; display: grid; place-items: center; box-sizing: border-box">2<span class="sr"> new</span></span></a>
+<a class="snav" href="AdminBookings.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18M7 3v4M17 3v4M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path></svg><span style="flex: 1">Bookings</span></a>
+<a class="snav on" href="LwSettings.dc.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg><span style="flex: 1">Site settings</span></a>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg><span style="flex: 1">Go-live checklist</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<sc-if value="{{isByteleaf}}" hint-placeholder-val="{{ true }}"><a class="snav" href="AdminDashboard.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>byteleaf admin</a></sc-if>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: var(--acc); display: grid; place-items: center; font-weight: 600; flex: none">{{userMark}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">{{userName}}</span><span style="font-size: 12px; color: #8A98B3">{{userRole}}</span></span>
+<a href="AdminLogin.dc.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 12px; color: #4B5872">{{bizName}} / Website</span><h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Site settings</h1></div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<sc-if value="{{dirty}}" hint-placeholder-val="{{ false }}"><span role="status" style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #8A5200"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #B45309"></span>Not saved</span></sc-if>
+<button type="button" class="btn btn-primary" onClick="{{save}}" disabled="{{cantSave}}">{{saveLabel}}</button>
+</div>
+</header>
+<div class="pad" style="padding: 24px 32px 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; flex: 1">
+<sc-if value="{{errSum}}" hint-placeholder-val="{{ false }}"><div role="alert" style="flex: 1 1 100%; padding: 12px 16px; border-radius: 12px; background: #FEF3F2; color: #8A1C12; font-size: 14px; line-height: 1.5"><strong>{{errCount}}</strong> Fix the highlighted fields, then save again.</div></sc-if>
+<form class="panel" onSubmit="{{save}}" novalidate style="flex: 999 1 520px; min-width: 0">
+<section class="sec" aria-labelledby="s1">
+<h2 id="s1">Your business</h2>
+<div class="f"><label class="lbl" for="bn">Business name</label><input id="bn" class="field" value="{{d.name}}" onInput="{{onName}}" aria-invalid="{{bad.name}}" aria-describedby="bn-h bn-w"><span id="bn-h" class="hint" role="{{role.name}}" style="color: {{col.name}}">{{hint.name}}</span><span id="bn-w" class="where">Appears on: <span class="w">Logo in the header</span><span class="w">Footer</span><span class="w">Browser tab</span><span class="w">About page</span><span class="w">Enquiry emails</span></span></div>
+<div class="f"><label class="lbl" for="bt">Short description</label><input id="bt" class="field" value="{{d.tag}}" onInput="{{onTag}}" aria-describedby="bt-w"><span id="bt-w" class="where">Appears on: <span class="w">Under the logo</span><span class="w">Google results</span><span class="w">Link previews in WhatsApp</span></span></div>
+</section>
+<section class="sec" aria-labelledby="s2">
+<h2 id="s2">How customers reach you</h2>
+<div style="display: flex; gap: 16px; flex-wrap: wrap">
+<div class="f" style="flex: 1 1 220px"><label class="lbl" for="ph">Phone number</label><input id="ph" class="field" type="tel" value="{{d.phone}}" onInput="{{onPhone}}" aria-invalid="{{bad.phone}}" aria-describedby="ph-h"><span id="ph-h" class="hint" role="{{role.phone}}" style="color: {{col.phone}}">{{hint.phone}}</span></div>
+<div class="f" style="flex: 1 1 220px"><label class="lbl" for="wa">WhatsApp number</label><input id="wa" class="field" type="tel" value="{{waShown}}" onInput="{{onWa}}" disabled="{{d.same}}" aria-invalid="{{bad.wa}}" aria-describedby="wa-h"><span id="wa-h" class="hint" role="{{role.wa}}" style="color: {{col.wa}}">{{hint.wa}}</span></div>
+</div>
+<label class="chk"><input type="checkbox" checked="{{d.same}}" onChange="{{togSame}}"> WhatsApp is on the same number</label>
+<span class="where">Phone appears on: <span class="w">Call button on phones</span><span class="w">Header</span><span class="w">Contact page</span><span class="w">Footer</span> · WhatsApp on: <span class="w">Every WhatsApp button</span></span>
+<div class="f"><label class="lbl" for="em">Email for enquiries</label><input id="em" class="field" type="email" value="{{d.email}}" onInput="{{onEmail}}" aria-invalid="{{bad.email}}" aria-describedby="em-h"><span id="em-h" class="hint" role="{{role.email}}" style="color: {{col.email}}">{{hint.email}}</span></div>
+</section>
+<section class="sec" aria-labelledby="s3">
+<h2 id="s3">Where you work</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{areas}}" as="a" hint-placeholder-count="5"><span class="achip">{{a.l}}<button type="button" aria-label="Remove {{a.l}}" onClick="{{a.del}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span></sc-for></div>
+<div style="display: flex; gap: 8px; max-width: 420px"><label for="na" class="sr">Add an area</label><input id="na" class="field" value="{{newArea}}" onInput="{{onNewArea}}" onKeyDown="{{areaKey}}" placeholder="Add a suburb or town" style="flex: 1; min-width: 0"><button type="button" class="btn btn-ghost btn-sm" onClick="{{addArea}}" style="min-height: 46px">Add</button></div>
+<span class="where">Appears on: <span class="w">Home · Where we wash</span><span class="w">Contact page</span><span class="w">Booking form list</span></span>
+</section>
+<section class="sec" aria-labelledby="s4">
+<h2 id="s4">Opening hours</h2>
+<sc-for list="{{hours}}" as="h" hint-placeholder-count="3">
+<div class="hrow"><span style="font-weight: 500">{{h.l}}</span><button type="button" class="sw" role="switch" aria-checked="{{h.on}}" aria-label="Open on {{h.l}}" onClick="{{h.tog}}" style="background: {{h.swBg}}"><span class="knob" style="left: {{h.swL}}"></span></button><span class="times" style="display: flex; gap: 8px; align-items: center"><sc-if value="{{h.isOn}}" hint-placeholder-val="{{ true }}"><select class="tsel" aria-label="{{h.l}} opens" onChange="{{h.onA}}"><sc-for list="{{h.aO}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select><span aria-hidden="true">to</span><select class="tsel" aria-label="{{h.l}} closes" onChange="{{h.onB}}"><sc-for list="{{h.bO}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select></sc-if><sc-if value="{{h.isOff}}" hint-placeholder-val="{{ false }}"><span class="hint">Closed</span></sc-if></span></div>
+</sc-for>
+<span class="where">Appears on: <span class="w">Home</span><span class="w">Contact page</span><span class="w">Footer</span><span class="w">Google</span></span>
+</section>
+<section class="sec" aria-labelledby="s5">
+<h2 id="s5">Social links <span class="hint" style="font-weight: 400">· optional</span></h2>
+<div style="display: flex; gap: 16px; flex-wrap: wrap">
+<div class="f" style="flex: 1 1 220px"><label class="lbl" for="ig">Instagram</label><input id="ig" class="field" value="{{d.ig}}" onInput="{{onIg}}" placeholder="instagram.com/yourname" aria-invalid="{{bad.ig}}" aria-describedby="ig-h"><span id="ig-h" class="hint" role="{{role.ig}}" style="color: {{col.ig}}">{{hint.ig}}</span></div>
+<div class="f" style="flex: 1 1 220px"><label class="lbl" for="fb">Facebook</label><input id="fb" class="field" value="{{d.fb}}" onInput="{{onFb}}" placeholder="facebook.com/yourpage"><span class="hint">Leave empty to hide the icon.</span></div>
+</div>
+</section>
+</form>
+<aside style="flex: 1 1 320px; min-width: 0; max-width: 100%; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px">
+<section class="panel" aria-labelledby="pv-h" style="overflow: hidden">
+<div style="padding: 14px 16px; border-bottom: 1px solid #EEF2F8"><h2 id="pv-h" style="margin: 0; font-size: 15px; font-weight: 600">How your details look</h2></div>
+<div style="background: #FAF6EC; padding: 16px; display: flex; flex-direction: column; gap: 12px; font-family: 'Inter', system-ui, sans-serif; color: #10261B">
+<span style="display: flex; justify-content: space-between; align-items: center; gap: 10px"><span style="display: flex; flex-direction: column"><span style="font-family: 'Bricolage Grotesque', 'Inter', sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -0.03em; line-height: 1">{{logo}}<span style="color: #D99F00">.</span></span><span style="font-size: 8px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase">{{tagShort}}</span></span><span style="font-size: 10px; font-weight: 600; padding: 6px 10px; border-radius: 8px; background: #F5B700">Book a wash</span></span>
+<span style="display: flex; gap: 6px"><span style="flex: 1; text-align: center; font-size: 11px; font-weight: 600; padding: 8px; border-radius: 8px; box-shadow: inset 0 0 0 1.5px #10261B">Call {{phoneShown}}</span><span style="flex: 1; text-align: center; font-size: 11px; font-weight: 600; padding: 8px; border-radius: 8px; background: #F5B700">WhatsApp us</span></span>
+<span style="font-size: 12px; line-height: 1.5; color: #4D5A50">{{hoursLine}}<br>{{areasLine}}</span>
+</div>
+</section>
+<section class="panel" aria-labelledby="dm-h" style="padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h2 id="dm-h" style="margin: 0; font-size: 15px; font-weight: 600">Your web address</h2>
+<span style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono" style="font-size: 14px; color: #0B1220">[yourdomain.co.za]</span><span class="pill" style="background: #E6F6EF; color: #0B6B4B">CONNECTED · SECURE</span></span>
+<span class="hint" style="line-height: 1.5">byteleaf looks after your domain and renews it each year. To change it, ask us and we’ll move it without any downtime.</span>
+<a class="btn btn-ghost btn-sm" href="Contact.dc.html" style="align-self: flex-start">Ask byteleaf</a>
+</section>
+</aside>
+</div>
+<sc-if value="{{pubShow}}" hint-placeholder-val="{{ false }}">
+<div class="pubbar slide" role="region" aria-label="Unpublished changes" style="position: sticky; bottom: 0; z-index: 30; margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 32px; background: #0B1220; color: #FFFFFF; box-shadow: 0 -16px 40px -24px rgba(11,18,32,.6)">
+<span style="display: flex; align-items: center; gap: 10px; flex: 1 1 240px; min-width: 0"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; background: #F79009; flex: none"></span><span style="font-size: 15px; line-height: 1.4"><strong>{{pubCount}}</strong><span class="hide-sm" style="color: #B7C3D9"> · saved, but your live site doesn’t show them yet</span></span></span>
+<sc-if value="{{pubFailed}}" hint-placeholder-val="{{ false }}"><span role="alert" style="flex-basis: 100%; order: 3; font-size: 14px; color: #FECDCA"><strong>Couldn’t publish.</strong> Nothing changed on your live site and your edits are safe. Check your connection and try again.</span></sc-if>
+<span style="display: flex; gap: 8px; flex-wrap: wrap">
+<a class="btn btn-sm" href="LwSiteHome.dc.html" style="background: transparent; color: #FFFFFF; border: 1px solid #33415E">Preview</a>
+<button type="button" class="btn btn-sm" onClick="{{askDiscard}}" style="background: transparent; color: #FFFFFF; border: 1px solid #33415E">Discard</button>
+<button type="button" class="btn btn-sm" onClick="{{askPublish}}" disabled="{{publishing}}" style="background: #FFFFFF; color: #0B1220">{{publishLabel}}</button>
+</span>
+</div>
+</sc-if>
+<sc-if value="{{pubModal}}" hint-placeholder-val="{{ false }}">
+<div class="scrim" style="position: fixed; inset: 0; z-index: 60; background: rgba(11,18,32,.45); display: grid; place-items: center; padding: 16px">
+<div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="pb-h" aria-describedby="pb-d" style="width: 100%; max-width: 460px; box-sizing: border-box; background: #FFFFFF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="pb-h" style="margin: 0; font-size: 20px; letter-spacing: -0.02em">{{pubModalTitle}}</h2>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px"><sc-for list="{{pubList}}" as="c" hint-placeholder-count="3"><li style="display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; background: #F4F7FB; font-size: 14px; line-height: 1.45"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #F79009; margin-top: 7px; flex: none"></span>{{c}}</li></sc-for></ul>
+<p id="pb-d" style="margin: 0; font-size: 15px; line-height: 1.55; color: #33405A">{{pubModalText}}</p>
+<span style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-ghost" onClick="{{closePub}}">{{pubNoL}}</button><button type="button" class="btn" onClick="{{pubYes}}" style="{{pubYesSt}}">{{pubYesL}}</button></span>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{pubToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 18px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; box-shadow: 0 20px 40px -20px rgba(11,18,32,.6); max-width: calc(100% - 32px); box-sizing: border-box"><span aria-hidden="true" style="width: 20px; height: 20px; border-radius: 50%; background: #12B76A; display: grid; place-items: center; flex: none"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg></span><span>{{pubToastText}}</span><sc-if value="{{pubUndo}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{undoPublish}}" style="font: inherit; cursor: pointer; border: 0; background: transparent; color: #9CC3FF; font-weight: 600; padding: 6px">Undo</button></sc-if></div>
+</sc-if>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"brand":{"editor":"enum","options":["tsela","byteleaf","spark"],"default":"tsela"},"publish":{"editor":"enum","options":["works","fails"],"default":"works"},"$preview":{"width":1440,"height":1540}}'>
+class Component extends DCLogic {
+brand() {
+const B = {
+byteleaf: { acc: '#166FE5', h: '#0F5FCC', t: '#0F5FCC', soft: '#EEF4FE', ring: 'rgba(22,111,229,.2)', name: 'byteleaf', mark: 'b', biz: 'Tsela Mobile Wash', bizMark: 't', bizSub: 'Demo client · Pretoria', bizDot: '#1D6B47', user: 'Gerald', userRole: 'byteleaf admin' },
+tsela: { acc: '#1D6B47', h: '#175A3B', t: '#175A3B', soft: '#E8F3EC', ring: 'rgba(29,107,71,.2)', name: 'Tsela', mark: 't', biz: 'Tsela Mobile Wash', bizMark: 't', bizSub: 'Mobile car wash · Pretoria', bizDot: '#1D6B47', user: '[Owner name]', userRole: 'Owner' },
+spark: { acc: '#C2410C', h: '#A3360A', t: '#A3360A', soft: '#FDF0E8', ring: 'rgba(194,65,12,.2)', name: 'Bright Spark', mark: 'B', biz: 'Bright Spark Electrical', bizMark: 'B', bizSub: 'Electrician · Durban', bizDot: '#C2410C', user: '[Owner name]', userRole: 'Owner' }
+};
+const k = B[this.props.brand] ? this.props.brand : 'tsela';
+const b = B[k];
+const n = (this.state && this.state.pend) ? this.state.pend.length : 0;
+return {
+brandVars: '--acc: ' + b.acc + '; --acc-h: ' + b.h + '; --acc-t: ' + b.t + '; --acc-soft: ' + b.soft + '; --acc-ring: ' + b.ring + ';',
+brandKey: k, isByteleaf: k === 'byteleaf', notByteleaf: k !== 'byteleaf', brandName: b.name, brandMark: b.mark,
+homeHref: 'LwOverview.dc.html', bizName: b.biz, bizMark: b.bizMark, bizSub: b.bizSub, bizDot: b.bizDot,
+userName: b.user, userMark: b.user[0] === '[' ? 'O' : b.user[0], userRole: b.userRole,
+numBad: n > 0, numDot: n > 0 ? '#F79009' : '#12B76A', numText: n > 0 ? n + (n === 1 ? ' change' : ' changes') + ' not published' : 'Site is live · all changes published'
+};
+}
+pubVals() {
+const st = this.state;
+const n = st.pend.length;
+const ph = st.pubPhase || '';
+const disc = ph === 'discard';
+return {
+pubShow: n > 0, pubCount: n + (n === 1 ? ' change' : ' changes') + ' not published',
+pubFailed: ph === 'failed', publishing: ph === 'publishing', publishLabel: ph === 'publishing' ? 'Publishing…' : ph === 'failed' ? 'Try again' : 'Publish',
+askPublish: () => this.setState({ pubPhase: 'confirm' }), askDiscard: () => this.setState({ pubPhase: 'discard' }),
+pubModal: ph === 'confirm' || disc,
+pubModalTitle: disc ? 'Discard ' + n + (n === 1 ? ' change?' : ' changes?') : 'Publish ' + n + (n === 1 ? ' change?' : ' changes?'),
+pubList: st.pend.map((c) => c.label),
+pubModalText: disc ? 'These edits are removed. Your live site stays exactly as it is now.' : 'Your live site updates straight away. You can undo for 10 seconds afterwards.',
+pubNoL: disc ? 'Keep editing' : 'Not yet', pubYesL: disc ? 'Discard changes' : 'Publish now',
+pubYesSt: disc ? 'background: #B42318; color: #FFFFFF;' : 'background: var(--acc); color: #FFFFFF;',
+closePub: () => this.setState({ pubPhase: '' }),
+pubYes: () => {
+if (disc) { const snap = st.pend; this.setState({ pubPhase: '', pend: [], pubToast: 'Changes discarded. Your live site is unchanged.', undoPend: null }); if (this.onDiscard) this.onDiscard(snap); this.pubFlash(); return; }
+this.setState({ pubPhase: 'publishing' });
+clearTimeout(this.tp);
+this.tp = setTimeout(() => {
+if (this.props.publish === 'fails' && !this.failedOnce) { this.failedOnce = true; this.setState({ pubPhase: 'failed' }); return; }
+const snap = this.state.pend;
+this.setState({ pubPhase: '', pend: [], undoPend: snap, pubToast: 'Published. Your site is up to date.' });
+if (this.onPublish) this.onPublish(snap);
+this.pubFlash(10000);
+}, 900);
+},
+pubToast: !!st.pubToast, pubToastText: st.pubToast || '', pubUndo: !!st.undoPend,
+undoPublish: () => { const snap = st.undoPend; this.setState({ pend: snap, undoPend: null, pubToast: 'Undone. The live site is back to how it was.' }); if (this.onUndo) this.onUndo(snap); this.pubFlash(); }
+};
+}
+pubFlash(ms) { clearTimeout(this.tf); this.tf = setTimeout(() => this.setState({ pubToast: '', undoPend: null }), ms || 4000); }
+
+constructor(props) {
+super(props);
+this.base = { name: 'Tsela Mobile Wash', tag: 'Mobile car wash · Pretoria', phone: '[phone number]', wa: '', same: true, email: '[email address]', areas: ['Centurion', 'Hatfield', 'Brooklyn', 'Menlyn', 'Waterkloof'], hours: [{ l: 'Monday to Friday', on: true, a: 420, b: 1020 }, { l: 'Saturday', on: true, a: 420, b: 1020 }, { l: 'Sunday', on: false, a: 480, b: 780 }], ig: '', fb: '' };
+this.live = JSON.parse(JSON.stringify(this.base));
+this.state = { d: JSON.parse(JSON.stringify(this.base)), saved: JSON.stringify(this.base), err: {}, saving: false, newArea: '', pend: [], pubPhase: '', pubToast: '', undoPend: null };
+}
+componentWillUnmount() { clearTimeout(this.ts); clearTimeout(this.tp); clearTimeout(this.tf); }
+onDiscard() { this.setState({ d: JSON.parse(JSON.stringify(this.live)), saved: JSON.stringify(this.live), err: {} }); }
+onPublish() { this.live = JSON.parse(this.state.saved); }
+renderVals() {
+const st = this.state;
+const br = this.brand();
+const d = st.d;
+const set = (patch) => this.setState({ d: Object.assign({}, d, patch) });
+const t = (m) => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+const opts = (sel) => { const o = []; for (let m = 300; m <= 1320; m += 30) o.push({ v: String(m), l: t(m), s: m === sel }); return o; };
+const PH = /^(\[.*\]|(\+27|0)[\s-]?\d{2}[\s-]?\d{3}[\s-]?\d{4})$/;
+const validate = (x) => { const e = {}; if (!x.name.trim()) e.name = 'Your business needs a name.'; else if (x.name.length > 40) e.name = 'Keep it under 40 characters so it fits in the header on phones.'; if (!PH.test(x.phone.trim())) e.phone = 'Use a South African number, like 082 123 4567.'; if (!x.same && !PH.test(x.wa.trim())) e.wa = 'Use a South African number, like 082 123 4567.'; if (!/^(\[.*\]|[^@\s]+@[^@\s]+\.[^@\s]+)$/.test(x.email.trim())) e.email = 'That email address doesn’t look complete.'; if (x.ig && !/instagram\.com\//i.test(x.ig)) e.ig = 'Paste your full Instagram link, starting with instagram.com/.'; return e; };
+const err = st.err;
+const dirty = JSON.stringify(d) !== st.saved;
+const H = (k, ok) => ({ k: k, ok: ok });
+const hintFor = { name: 'Shown as your logo, in large type.', phone: 'Customers tap it to call you.', wa: d.same ? 'Same as your phone number.' : 'Every WhatsApp button opens a chat with this number.', email: 'Where new enquiries are sent.', ig: 'Shows an icon in the footer.' };
+const fields = ['name', 'phone', 'wa', 'email', 'ig'];
+const pick = (fn) => fields.reduce((o, k) => { o[k] = fn(k); return o; }, {});
+const logoWord = (d.name.trim().split(/\s+/)[0] || 'name').toLowerCase();
+const fmtH = (h) => (h.on ? h.l + ' ' + t(h.a) + '–' + t(h.b) : h.l + ' closed');
+return Object.assign(br, this.pubVals(), {
+d: d, waShown: d.same ? d.phone : d.wa,
+bad: pick((k) => (err[k] ? 'true' : 'false')), role: pick((k) => (err[k] ? 'alert' : '')), col: pick((k) => (err[k] ? '#B42318' : '#4B5872')), hint: pick((k) => err[k] || hintFor[k]),
+errSum: Object.keys(err).length > 0, errCount: Object.keys(err).length === 1 ? '1 field needs fixing.' : Object.keys(err).length + ' fields need fixing.',
+onName: (e) => set({ name: e.target.value }), onTag: (e) => set({ tag: e.target.value }), onPhone: (e) => set({ phone: e.target.value }), onWa: (e) => set({ wa: e.target.value }), onEmail: (e) => set({ email: e.target.value }), onIg: (e) => set({ ig: e.target.value }), onFb: (e) => set({ fb: e.target.value }),
+togSame: () => set({ same: !d.same }),
+areas: d.areas.map((a, i) => ({ l: a, del: () => set({ areas: d.areas.filter((_, j) => j !== i) }) })),
+areaKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); const a = st.newArea.trim(); if (!a || d.areas.indexOf(a) > -1) return; this.setState({ d: Object.assign({}, d, { areas: d.areas.concat([a]) }), newArea: '' }); } },
+newArea: st.newArea, onNewArea: (e) => this.setState({ newArea: e.target.value }),
+addArea: () => { const a = st.newArea.trim(); if (!a || d.areas.indexOf(a) > -1) return; this.setState({ d: Object.assign({}, d, { areas: d.areas.concat([a]) }), newArea: '' }); },
+hours: d.hours.map((h, i) => ({ l: h.l, on: h.on ? 'true' : 'false', isOn: h.on, isOff: !h.on, swBg: h.on ? 'var(--acc)' : '#C9D3E3', swL: h.on ? '21px' : '3px', tog: () => { const hs = d.hours.map((x, j) => (j === i ? Object.assign({}, x, { on: !x.on }) : x)); set({ hours: hs }); }, aO: opts(h.a), bO: opts(h.b), onA: (e) => { const hs = JSON.parse(JSON.stringify(d.hours)); hs[i].a = +e.target.value; set({ hours: hs }); }, onB: (e) => { const hs = JSON.parse(JSON.stringify(d.hours)); hs[i].b = +e.target.value; set({ hours: hs }); } })),
+dirty: dirty, cantSave: !dirty || st.saving, saveLabel: st.saving ? 'Saving…' : 'Save',
+save: (e) => { if (e && e.preventDefault) e.preventDefault(); const er = validate(d); if (Object.keys(er).length) { this.setState({ err: er }); return; } this.setState({ saving: true, err: {} }); clearTimeout(this.ts); this.ts = setTimeout(() => { const s = this.state; const old = JSON.parse(s.saved); const ch = []; if (old.name !== s.d.name) ch.push('business name'); if (old.phone !== s.d.phone || old.wa !== s.d.wa || old.same !== s.d.same) ch.push('phone or WhatsApp'); if (old.email !== s.d.email) ch.push('email'); if (JSON.stringify(old.areas) !== JSON.stringify(s.d.areas)) ch.push('areas'); if (JSON.stringify(old.hours) !== JSON.stringify(s.d.hours)) ch.push('hours'); if (old.tag !== s.d.tag || old.ig !== s.d.ig || old.fb !== s.d.fb) ch.push('other details'); this.setState({ saving: false, saved: JSON.stringify(s.d), pend: s.pend.filter((c) => c.id !== 'settings').concat([{ id: 'settings', label: 'Site settings: ' + ch.join(', ') + ' updated everywhere they appear' }]) }); }, 700); },
+logo: logoWord, tagShort: d.tag.split('·')[0].trim() || 'Mobile car wash', phoneShown: d.same || !d.wa ? d.phone : d.phone,
+hoursLine: d.hours.map(fmtH).join(' · '), areasLine: 'Areas: ' + (d.areas.join(', ') || 'none yet')
+});
+}
+}
+</script>
+</body>
+</html>

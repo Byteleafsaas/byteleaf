@@ -556,4 +556,26 @@ const waChatSchema = new Schema(
 waChatSchema.index({ business: 1, clientId: 1 }, { unique: true });
 export const WaChat = model('WaChat', waChatSchema);
 
+/* ---------- Launch website (showcase project 3) ---------- */
+// The sample business's whole site as one document: what is live, the owner's saved draft, and the version before the last
+// publish. One document means publishing is a single atomic write. `rev` stops two edits at once overwriting each other.
+const siteDocSchema = new Schema({ slug: { type: String, required: true, unique: true }, state: { type: Schema.Types.Mixed, required: true }, rev: { type: Number, default: 0 } }, { timestamps: true });
+export const SiteDoc = model('SiteDoc', siteDocSchema);
+
+// A booking request sent from the sample site's form.
+const siteEnquirySchema = new Schema(
+  {
+    site: { type: String, required: true, index: true },
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    area: { type: String, default: '' },
+    wash: { type: String, default: '' },
+    message: { type: String, default: '' },
+    status: { type: String, enum: ['new', 'read', 'archived'], default: 'new' },
+  },
+  { timestamps: true },
+);
+siteEnquirySchema.index({ site: 1, createdAt: -1 });
+export const SiteEnquiry = model('SiteEnquiry', siteEnquirySchema);
+
 export type AdminUserDoc = InferSchemaType<typeof adminUserSchema>;

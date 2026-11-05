@@ -1,0 +1,46 @@
+/* Tsela Mobile Wash, the sample site for showcase project 3.
+   Its own identity: none of byteleaf's blue or the other demos' colours.
+   Contrast figures are WCAG ratios, checked during design. */
+
+:root {
+  /* Colour */
+  --ts-ink:   #10261B; /* text, footer, demo strip. 14.8:1 against cream */
+  --ts-pine:  #1E5B3F; /* links, dark buttons, "Where we wash" band. 7.4:1 on cream, 8.0:1 on white */
+  --ts-sun:   #F5B700; /* main buttons and CTA band, always with ink text (8.9:1) */
+  --ts-sun-h: #FFC61A; /* hover for sun buttons */
+  --ts-pine-h:#174A33; /* hover for pine buttons */
+  --ts-cream: #FAF6EC; /* page background */
+  --ts-sand:  #EFE6D2; /* soft fills, review tags, add-ons card */
+  --ts-line:  #E2D8C3; /* borders */
+  --ts-muted: #4D5A50; /* secondary text. 6.7:1 on cream, 5.9:1 on sand */
+  --ts-mist:  #B7C9BD; /* secondary text on ink. 9.2:1 */
+  --ts-dot:   #D99F00; /* logo full stop on cream (decorative). Use --ts-sun on dark */
+  --ts-error: #B42318;
+
+  /* Type: two families, loaded with font-display: swap */
+  --ts-font-display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif; /* weights 600 and 800 */
+  --ts-font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; /* weights 400, 500, 600 */
+  --ts-display-tracking: -0.025em;
+  --ts-display-leading: 1.05;
+
+  /* Type scale (desktop, then phone at max-width 860px, then 400px) */
+  --ts-h1: 66px;      /* inner pages use 54 to 58. Phone 44, smallest 38 */
+  --ts-h2: 40px;      /* section titles */
+  --ts-h3: 22px;      /* card titles, 24 to 30 on the Services page */
+  --ts-price: 30px;   /* display face, 40 on the Services page */
+  --ts-lead: 19px;
+  --ts-body: 17px;    /* never below 15 for body text */
+  --ts-small: 15px;
+  --ts-eyebrow: 12px; /* uppercase, 0.08em tracking, 600 weight, pine */
+
+  /* Space, radius and controls */
+  --ts-max: 1160px;            /* content width */
+  --ts-gutter: 24px;           /* 16px at 400px and below */
+  --ts-section: 56px;          /* vertical padding, 64 for content sections */
+  --ts-radius-card: 20px;
+  --ts-radius-hero: 24px;
+  --ts-radius-btn: 14px;
+  --ts-radius-input: 12px;
+  --ts-tap: 52px;              /* button and input height. Header buttons 44 to 46 */
+  --ts-focus: 0 0 0 3px var(--ts-ink), 0 0 0 6px var(--ts-sun); /* outline is ink, ring is sun */
+}
