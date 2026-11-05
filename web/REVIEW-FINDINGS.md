@@ -2,6 +2,23 @@
 
 Baseline before any change: `tsc --noEmit` clean, `vitest run` 17 files / 209 tests passing. Nothing was run against a database, Meta or DeepSeek, so every item below comes from reading the code, except the SSRF one, which was reproduced with Node's URL parser.
 
+## Status update (second pass)
+
+The Medium and Low items below were worked through after the first review. Fixed, each with a test or a database check in `npm run wa-simulate`:
+
+- **Client IP for rate limits** now comes from `cf-connecting-ip`, then `x-real-ip`, then the *last* `x-forwarded-for` entry, never the first (which a visitor can set).
+- **`rateLimit` is atomic**: one pipeline update starts the window and counts, so a burst at the moment a window ends can't each reset the count. Checked with 30 simultaneous calls (exactly the limit gets through, before and after a window ends).
+- **Staff secret** no longer falls back to a hard-coded string in production: staff sign-in is off until `TOTP_ENCRYPTION_KEY` is set. The sign-in email no longer says the link "works once" (it is valid for 15 minutes), and each mailbox has its own limit as well as each address.
+- **Double tap on Confirm**: each chat is handled one message at a time (`lockUntil`), so the second tap sees the first one's result and is told the button has expired, not that the time was taken. A stale button of any kind now gets the same answer instead of "I didn't understand". Checked with two simultaneous taps (one booking).
+- **A lost webhook message**: if handling fails, the message is forgotten and the route answers 500, so Meta sends it again.
+- **Per-client cap**: at most three future bookings per client (`maxUpcoming`, enforced in the conversation and again where the booking is made).
+- **WhatsApp chats are redacted and expire**: phone numbers, ID numbers and emails are removed before a message is saved, and messages older than 90 days are removed.
+- **Over-refusal in the chatbot**: the built-in refused topics are phrases ("tax advice", "investment advice", "stock market") rather than bare stems, so "is solar a good investment", "do you keep batteries in stock" and "is there a tax rebate" are answered.
+- **`privacyUrl`** must be empty or an http(s) address; the feedback reason is redacted like the question.
+- **Move any time**: left as designed. The design's late-cancellation message (C12) offers "Change time" inside the window on purpose.
+
+Still open: the DNS-rebinding window in `fetchHtml` (needs the connection pinned to the checked address, which Node's built-in `fetch` can't do without a dependency; admin-only input), the demo staff sign-in link that is handed back for the made-up business (by design for the demo, remove before a real client), the upload size and concurrency caps, the delete-source race, the `chat-day` cap error, and the `redact()` limits (obfuscated addresses, names, street addresses).
+
 ## Fixed in this PR (2 review commits + 3 follow-up commits, each with a test)
 
 1. **SSRF bypass in `lib/assistant/net.ts`.** `new URL('http://[::ffff:127.0.0.1]/').hostname` is `[::ffff:7f00:1]`. `isPrivateIp` only recognised the dotted form, so this (and `[::ffff:169.254.169.254]`, `[::127.0.0.1]`, NAT64 and 6to4 forms) passed the check and `fetchHtml` would fetch loopback and cloud-metadata addresses. Now the embedded IPv4 address is extracted and judged.

@@ -407,6 +407,8 @@ const waBusinessSchema = new Schema(
     payNote: { type: String, default: 'paid at the salon' },
     // The hour of the evening before that the reminder goes out (SAST).
     reminderHour: { type: Number, default: 18, min: 0, max: 23 },
+    // The most future bookings one client can hold at once, so one number can't fill the diary.
+    maxUpcoming: { type: Number, default: 3, min: 1, max: 20 },
     active: { type: Boolean, default: true },
   },
   { timestamps: true },
@@ -542,7 +544,12 @@ const waChatSchema = new Schema(
     state: { type: Schema.Types.Mixed, default: { step: 'menu' } },
     needsHuman: { type: Boolean, default: false },
     lastInboundAt: { type: Date, default: null },
-    messages: [{ dir: { type: String, enum: ['in', 'out'] }, body: String, kind: String, at: { type: Date, default: Date.now }, _id: false }],
+    // Who has the chat while the assistant is paused: the owner's name.
+    takenBy: { type: String, default: '' },
+    // `from` says who wrote it: the client, the assistant, or a person at the business (`by` is their name).
+    messages: [{ dir: { type: String, enum: ['in', 'out'] }, from: { type: String, enum: ['client', 'assistant', 'staff'] }, by: String, body: String, kind: String, at: { type: Date, default: Date.now }, _id: false }],
+    // Held while a message for this chat is being handled, so a double tap on Confirm is handled one at a time.
+    lockUntil: { type: Date, default: null },
   },
   { timestamps: true },
 );

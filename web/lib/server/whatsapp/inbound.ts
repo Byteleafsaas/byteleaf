@@ -1,5 +1,6 @@
 import 'server-only';
 import { Types } from 'mongoose';
+import { redact } from '@/lib/assistant/redact';
 import { START, step, type Appt, type Ctx, type State } from '@/lib/whatsapp/flow';
 import { closedWeekdays, describeHours, fromMin, isOpenAt, toMin } from '@/lib/whatsapp/slots';
 import { validateOut, type Input, type Out } from '@/lib/whatsapp/types';
@@ -32,10 +33,12 @@ const label = (d: Data, id: unknown, name: string) => (d.hidden.has(String(id)) 
 function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: string; isNew: boolean; optedOut: boolean; nameConfirmed: boolean; last?: { serviceId: string; serviceName: string; staffName?: string } }, now: Date, source: Source): Ctx {
   const svc = (id: string) => d.services.find((s) => String(s.id) === id);
   // Every booking shown to the client goes through here, so a clinic service is never named in a message.
+  // The same cap is enforced here as well, in case two taps race past the check in the conversation.
+  const underLimit = async () => (await WaAppointment.countDocuments({ business: d.biz.slug, clientId: client.id, status: 'booked', startsAt: { $gt: now } })) < d.biz.maxUpcoming;
   const lab = (a: Appt): Appt => ({ ...a, serviceName: label(d, a.serviceId, a.serviceName) });
   return {
     business: {
-      name: d.biz.name, cancelWindowHours: d.biz.cancelWindowHours, replyTime: d.biz.replyTime, payNote: d.biz.payNote, address: d.biz.address, privacyUrl: d.biz.privacyUrl, lateFee: d.biz.lateFee,
+      name: d.biz.name, cancelWindowHours: d.biz.cancelWindowHours, replyTime: d.biz.replyTime, payNote: d.biz.payNote, maxUpcoming: d.biz.maxUpcoming, address: d.biz.address, privacyUrl: d.biz.privacyUrl, lateFee: d.biz.lateFee,
       hoursText: describeHours(d.biz.hours), openNow: isOpenAt(now, d.biz.hours, d.biz.daysOff), closedWeekdays: closedWeekdays(d.biz.hours),
     },
     client: { name: client.name || undefined, nameConfirmed: client.nameConfirmed, isNew: client.isNew, optedOut: client.optedOut, last: client.last },
@@ -51,11 +54,11 @@ function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: str
       const a = await WaAppointment.findOne({ _id: id, business: d.biz.slug, clientId: client.id, status: 'booked' }).lean();
       return a ? lab(toAppt(a)) : null;
     },
-    hold: async ({ serviceId, date, time }) => { const s = svc(serviceId); return s ? holdSlot(d, s, client, date, time, now) : false; },
+    hold: async ({ serviceId, date, time }) => { const s = svc(serviceId); return s && (await underLimit()) ? holdSlot(d, s, client, date, time, now) : false; },
     release: () => releaseHolds(client.id),
     book: async ({ serviceId, date, time }) => {
       const s = svc(serviceId);
-      if (!s) return { ok: false, reason: 'invalid' };
+      if (!s || !(await underLimit())) return { ok: false, reason: 'invalid' };
       const r = await bookSlot(d, s, client, date, time, now, source);
       return r === 'taken' ? { ok: false, reason: 'taken' } : { ok: true, appt: lab(fromBooked(r)) };
     },
@@ -74,6 +77,21 @@ function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: str
       return r ? { ok: true, late: r.late } : { ok: false };
     },
   };
+}
+
+/** How long a chat's messages are kept. Customers type names and sometimes numbers, so this is not forever (POPIA). */
+export const CHAT_RETENTION_DAYS = 90;
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Takes the chat for the length of one message, waiting briefly if another message is being handled. */
+async function lockChat(chatId: unknown): Promise<void> {
+  for (let i = 0; i < 40; i++) {
+    const got = await WaChat.updateOne({ _id: chatId, $or: [{ lockUntil: null }, { lockUntil: { $lt: new Date() } }] }, { $set: { lockUntil: new Date(Date.now() + 15000) } });
+    if (got.modifiedCount) return;
+    await sleep(150);
+  }
+  // Someone has held it for six seconds: the lock expires by itself, so carry on rather than leave the customer waiting.
 }
 
 export type InboundResult = { messages: Out[]; clientId: string; unknownBusiness?: boolean };
@@ -100,7 +118,11 @@ export async function handleInbound(o: { slug: string; phone: string; name?: str
     await WaClient.updateOne({ _id: client._id }, { $set: { name: client.name } });
   }
   const lastBooking = await WaAppointment.findOne({ business: o.slug, clientId: client._id, status: { $in: ['booked', 'completed'] } }).sort({ startsAt: -1 }).lean();
-  const chat = await WaChat.findOneAndUpdate({ business: o.slug, clientId: client._id }, { $setOnInsert: { business: o.slug, clientId: client._id, state: START } }, { upsert: true, returnDocument: 'after' });
+  const first = await WaChat.findOneAndUpdate({ business: o.slug, clientId: client._id }, { $setOnInsert: { business: o.slug, clientId: client._id, state: START } }, { upsert: true, returnDocument: 'after' });
+  await lockChat(first._id);
+  try {
+  // Read the chat again now that it is ours, so the step we act on is the latest one.
+  const chat = (await WaChat.findById(first._id))!;
 
   const inbound = o.input.type === 'text' ? o.input.text.slice(0, 1000) : o.input.type === 'media' ? `[${o.input.kind}]` : o.input.title ?? o.input.id;
   const ctx = makeCtx(d, { id: client._id as Types.ObjectId, name: client.name, phone, isNew: !client.greeted, optedOut: client.optedOut, nameConfirmed: client.nameConfirmed, last: lastBooking ? { serviceId: String(lastBooking.serviceId), serviceName: lastBooking.serviceName ?? '', staffName: lastBooking.staffName ?? undefined } : undefined }, now, o.source);
@@ -132,13 +154,18 @@ export async function handleInbound(o: { slug: string; phone: string; name?: str
   if (messages.length) clientSet.greeted = true;
   if (Object.keys(clientSet).length) await WaClient.updateOne({ _id: client._id }, { $set: clientSet });
 
-  const log = [{ dir: 'in', body: inbound, kind: o.input.type, at: now }, ...messages.map((m) => ({ dir: 'out', body: m.body, kind: m.type, at: now }))];
+  // Contact details a customer types (phone numbers, ID numbers, emails) are removed before the chat is saved.
+  const log = [{ dir: 'in', from: 'client', body: redact(inbound), kind: o.input.type, at: now }, ...messages.map((m) => ({ dir: 'out', from: 'assistant', body: m.body, kind: m.type, at: now }))];
+  await WaChat.updateOne({ _id: chat._id }, { $pull: { messages: { at: { $lt: new Date(now.getTime() - CHAT_RETENTION_DAYS * 86400000) } } } });
   await WaChat.updateOne(
     { _id: chat._id },
     {
-      $set: { state: result.state, lastInboundAt: now, needsHuman: result.effects.includes('handover') ? true : result.state.step === 'handover' ? chat.needsHuman : false },
+      $set: { state: result.state, lastInboundAt: now, needsHuman: result.effects.includes('handover') ? true : result.state.step === 'handover' ? chat.needsHuman : false, ...(result.effects.includes('handover') ? { takenBy: '' } : {}) },
       $push: { messages: { $each: log, $slice: -200 } },
     },
   );
   return { messages, clientId: String(client._id) };
+  } finally {
+    await WaChat.updateOne({ _id: first._id }, { $set: { lockUntil: null } }).catch(() => {});
+  }
 }

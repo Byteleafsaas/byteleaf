@@ -17,7 +17,10 @@ import { hashToken, newToken } from './password';
 /* ---------- request info ---------- */
 export async function clientInfo() {
   const h = await headers();
-  const ip = h.get('x-forwarded-for')?.split(',')[0]?.trim() || h.get('x-real-ip') || 'unknown';
+  // A visitor can write anything in x-forwarded-for, but every proxy adds the address it saw to the END of it. So trust the
+  // header Cloudflare sets itself, then the one our own proxy sets, then the last entry, never the first.
+  const xff = h.get('x-forwarded-for')?.split(',').map((x) => x.trim()).filter(Boolean);
+  const ip = h.get('cf-connecting-ip')?.trim() || h.get('x-real-ip')?.trim() || xff?.[xff.length - 1] || 'unknown';
   return { ip, userAgent: h.get('user-agent') ?? '' };
 }
 

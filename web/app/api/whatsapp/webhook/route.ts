@@ -39,6 +39,7 @@ export async function POST(req: Request) {
   }
 
   await connectDB();
+  let failed = false;
   for (const m of parseWebhook(body)) {
     try {
       // Meta repeats a webhook when it doesn't hear back in time. Handle each message once.
@@ -52,7 +53,10 @@ export async function POST(req: Request) {
       if (replies.length) await sendOut(m.phoneNumberId, m.from, replies);
     } catch (e) {
       console.error('[whatsapp] could not handle a message:', (e as Error).message);
+      // Forget we saw it and answer with an error, so Meta sends it again instead of the customer being left without a reply.
+      failed = true;
+      await WaSeen.deleteOne({ messageId: m.messageId }).catch(() => {});
     }
   }
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: !failed }, { status: failed ? 500 : 200 });
 }

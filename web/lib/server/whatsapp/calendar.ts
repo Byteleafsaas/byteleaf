@@ -7,7 +7,7 @@ import { connectDB } from '../db';
 import { WaAppointment, WaBusiness, WaHold, WaService, WaSlotLock, WaStaff } from '../models';
 
 type Id = Types.ObjectId;
-export type Biz = { slug: string; name: string; hours: WeekHours; daysOff: { from: string; to: string }[]; minNoticeMin: number; bufferMin: number; stepMin: number; windowDays: number; cancelWindowHours: number; replyTime: string; payNote: string; address: string; privacyUrl: string; lateFee: string; brand: string; clinic: boolean };
+export type Biz = { slug: string; name: string; hours: WeekHours; daysOff: { from: string; to: string }[]; minNoticeMin: number; bufferMin: number; stepMin: number; windowDays: number; cancelWindowHours: number; maxUpcoming: number; replyTime: string; payNote: string; address: string; privacyUrl: string; lateFee: string; brand: string; clinic: boolean };
 export type Service = { id: Id; name: string; minutes: number; priceCents: number; bufferMin: number | null; staff: Id[]; hideName: boolean };
 export type Staff = { id: Id; name: string; hours: WeekHours; daysOff: { from: string; to: string }[] };
 /** `hidden` lists every active service whose name is kept out of client messages, offered on WhatsApp or not. */
@@ -26,7 +26,7 @@ export async function loadData(slug: string, opts: { all?: boolean } = {}): Prom
     WaStaff.find({ business: slug, active: true }).sort({ order: 1 }).lean(),
   ]);
   return {
-    biz: { slug, name: b.name, hours: asHours(b.hours), daysOff: [...(b.daysOff ?? []), ...closedHolidays(todaySast(), b.holidayOpen ?? [])], minNoticeMin: b.minNoticeMin, bufferMin: b.bufferMin, stepMin: b.stepMin, windowDays: b.windowDays, cancelWindowHours: b.cancelWindowHours, replyTime: b.replyTime ?? '[time]', payNote: b.payNote, address: b.address ?? '[Salon address]', privacyUrl: b.privacyUrl ?? '[privacy link]', lateFee: b.lateFee ?? 'R [amount]', brand: b.brand ?? 'byteleaf', clinic: Boolean(b.clinic) },
+    biz: { slug, name: b.name, hours: asHours(b.hours), daysOff: [...(b.daysOff ?? []), ...closedHolidays(todaySast(), b.holidayOpen ?? [])], minNoticeMin: b.minNoticeMin, bufferMin: b.bufferMin, stepMin: b.stepMin, windowDays: b.windowDays, cancelWindowHours: b.cancelWindowHours, maxUpcoming: b.maxUpcoming ?? 3, replyTime: b.replyTime ?? '[time]', payNote: b.payNote, address: b.address ?? '[Salon address]', privacyUrl: b.privacyUrl ?? '[privacy link]', lateFee: b.lateFee ?? 'R [amount]', brand: b.brand ?? 'byteleaf', clinic: Boolean(b.clinic) },
     hidden: new Set(services.filter((s) => s.hideName).map((s) => String(s._id))),
     services: services.filter((s) => opts.all || s.onWhatsApp !== false).map((s) => ({ id: s._id as Id, name: s.name, minutes: s.minutes, priceCents: s.priceCents, bufferMin: s.bufferMin ?? null, staff: (s.staff ?? []) as Id[], hideName: Boolean(s.hideName) })),
     staff: staff.map((s) => ({ id: s._id as Id, name: s.name, hours: asHours(s.hours), daysOff: s.daysOff ?? [] })),

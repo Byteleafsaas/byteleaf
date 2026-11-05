@@ -25,12 +25,14 @@ export async function requestStaffLinkAction(raw: string): Promise<Result<{ demo
   if (!emailAllowed(WS, parsed.data)) return { ok: false, error: `Only @${STAFF_DOMAIN[WS]} addresses can sign in. Check the address, or ask the owner to add you.` };
   const { ip } = await clientInfo();
   if (!(await rateLimit(`staff-link:${ip}`, 6, 60 * 60000))) return { ok: false, error: 'Too many sign-in requests. Please try again later.' };
+  // One mailbox can't be flooded from many addresses either.
+  if (!(await rateLimit(`staff-link-email:${parsed.data}`, 3, 60 * 60000))) return { ok: false, error: 'Too many sign-in requests for that address. Please try again later.' };
 
   const link = `${env.APP_URL}/projects/knowledge-chatbot/staff/verify?t=${linkToken(WS, parsed.data)}`;
   await sendEmail({
     to: parsed.data, subject: 'Your sign-in link for the Khumalo staff assistant',
-    html: `<p>Use this link to sign in. It works once and expires in 15 minutes.</p><p><a href="${link}">Sign in to the staff assistant</a></p><p>If you didn't ask for this, ignore this email.</p>`,
-    text: `Use this link to sign in. It works once and expires in 15 minutes.\n\n${link}\n\nIf you didn't ask for this, ignore this email.`,
+    html: `<p>Use this link to sign in. It expires in 15 minutes.</p><p><a href="${link}">Sign in to the staff assistant</a></p><p>If you didn't ask for this, ignore this email.</p>`,
+    text: `Use this link to sign in. It expires in 15 minutes.\n\n${link}\n\nIf you didn't ask for this, ignore this email.`,
   }).catch(() => false);
   return { ok: true, demoLink: link.replace(env.APP_URL, '') };
 }

@@ -112,6 +112,7 @@ const hoursSchema = z.object({
     offs: z.array(z.object({ a: date, b: date, n: z.string().trim().max(120) })).max(50),
   })).max(50),
   holidayOpen: z.array(date).max(100),
+  reminderHour: z.number().int().min(0).max(23),
 });
 
 /** Saves the salon's hours, each person's week and time off, and which public holidays are open. Bookings already made never move. */
@@ -125,7 +126,7 @@ export async function saveHoursAction(input: z.input<typeof hoursSchema>): Promi
   for (const s of d.staff) for (const o of s.offs) if (o.b < o.a) return { ok: false, error: 'The last day off can’t be before the first.' };
   await connectDB();
   const valid = new Set((await WaStaff.find({ business: BOOKING_SLUG, active: true }, { _id: 1 }).lean()).map((s) => String(s._id)));
-  await WaBusiness.updateOne({ slug: BOOKING_SLUG }, { $set: { hours: hoursFromWeek(d.salon), holidayOpen: d.holidayOpen } });
+  await WaBusiness.updateOne({ slug: BOOKING_SLUG }, { $set: { hours: hoursFromWeek(d.salon), holidayOpen: d.holidayOpen, reminderHour: d.reminderHour } });
   await Promise.all(d.staff.filter((s) => valid.has(s.id)).map((s) => WaStaff.updateOne({ _id: s.id, business: BOOKING_SLUG }, { $set: { hours: s.same ? {} : hoursFromWeek(s.week), daysOff: s.offs.map((o) => ({ from: o.a, to: o.b, note: o.n })) } })));
   refresh();
   return { ok: true };

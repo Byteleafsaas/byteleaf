@@ -19,6 +19,8 @@ export type Ctx = {
   business: {
     name: string;
     cancelWindowHours: number;
+    /** The most future bookings one customer can hold. */
+    maxUpcoming: number;
     /** How quickly a person usually answers, for example "2 hours". */
     replyTime: string;
     payNote: string;
@@ -110,6 +112,13 @@ const consentPrompt = (ctx: Ctx): Out => ({ type: 'buttons', body: T.greetNew(ct
 
 /** B15: we didn't understand. Three safe ways forward. */
 const lostMenu = (body: string): Out => ({ type: 'buttons', body, buttons: [{ id: 'menu:book', title: T.btnBook }, { id: 'menu:mine', title: T.btnMine }, personBtn] });
+
+/** When a customer already holds as many future bookings as allowed, say so and point to My bookings instead of offering more. */
+async function limitPrompt(ctx: Ctx): Promise<Out[] | null> {
+  const mine = await ctx.upcoming();
+  if (mine.length < ctx.business.maxUpcoming) return null;
+  return [{ type: 'buttons', body: T.tooMany(mine.length), buttons: [{ id: 'menu:mine', title: T.btnMine }, personBtn] }];
+}
 
 async function servicePrompt(ctx: Ctx, lead?: string): Promise<Out[]> {
   const svcs = await ctx.services();
@@ -375,6 +384,8 @@ export async function step(state: State, input: Input, ctx: Ctx): Promise<Result
   if (ctx.client.isNew && state.step === 'menu' && !id) return out({ step: 'consent', first: input.type === 'text' ? input.text : undefined }, [consentPrompt(ctx)]);
   if (id === 'consent:yes' || id === 'consent:no') {
     const effect: Effect = id === 'consent:yes' ? 'consent:yes' : 'consent:no';
+    const stop = await limitPrompt(ctx);
+    if (stop) return out(START, stop, [effect]);
     const short = await shortlist(ctx, state.first);
     return out({ step: 'service' }, short ? [short] : await servicePrompt(ctx), [effect]);
   }
@@ -386,9 +397,16 @@ export async function step(state: State, input: Input, ctx: Ctx): Promise<Result
   }
   if (id === 'wait') return out({ step: 'handover' }, [text(T.waitReply)], ['handover']);
 
+  // "No, thanks" after a person hands the chat back.
+  if (id === 'menu:no') return out(START, [text(T.noThanks)]);
+
   // Menu and starting over.
   if (wantsMenu(t) && state.step !== 'confirm') return out(START, menu(ctx, true));
   if (id === 'menu:mine' || (wantsMine(t) && state.step !== 'confirm')) return done(await minePrompt(ctx));
+  if (id === 'menu:same' || id === 'menu:book' || id === 'svc:other' || wantsBook(t)) {
+    const stop = await limitPrompt(ctx);
+    if (stop) return out(START, stop);
+  }
   if (id === 'menu:same') {
     const last = ctx.client.last;
     const known = last && (await ctx.services()).some((s) => s.id === last.serviceId);
@@ -503,6 +521,8 @@ export async function step(state: State, input: Input, ctx: Ctx): Promise<Result
       // Menu, or anything we don't understand: try to read it as a booking request, else offer the three safe options.
       const understood = state.step === 'menu' ? await understand(ctx, state, input) : null;
       if (understood) return understood;
+      // A button from a conversation that has moved on (a double tap, or an old message): say so rather than "I didn't understand".
+      if (id) return out(START, [text(T.expired), ...menu(ctx)]);
       return out(START, [lostMenu(T.notUnderstoodMenu)]);
     }
   }

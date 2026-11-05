@@ -29,7 +29,8 @@ export const settingsSchema = z.object({
     sendTo: z.string().trim().max(200),
     replyTime: z.enum(REPLY_TIMES),
   }),
-  privacyUrl: z.string().trim().max(300),
+  // Shown as a link in the public widget, so only web addresses are allowed (never javascript: or data:).
+  privacyUrl: z.string().trim().max(300).refine((u) => u === '' || /^https?:\/\//i.test(u), 'Use a web address that starts with https://'),
   retentionDays: z.union([z.literal(7), z.literal(30), z.literal(90)]),
 });
 export type AssistantSettings = z.infer<typeof settingsSchema>;
@@ -57,12 +58,15 @@ export function topicStem(topic: string): string {
   return last.replace(/(is|es|s)$/, '').slice(0, 24);
 }
 
-const BASE_REFUSED = ['tax', 'lawyer', 'legal', 'sue', 'medical', 'doctor', 'diagnos', 'invest', 'stock', 'shares', 'crypto', 'bitcoin', 'politic', 'election'];
+// Whole phrases, not bare stems, so ordinary questions are not refused: "is solar a good investment", "do you keep batteries in stock"
+// and "is there a tax rebate" can be answered from what the business knows. Each entry is part of a regular expression.
+const BASE_REFUSED = ['tax (advice|return|deduction)', 'lawyer', 'legal advice', 'sue (you|me|them|the)', 'medical advice', 'doctor', 'diagnos', 'investment advice', 'invest in (shares|stocks|crypto|bitcoin)', 'stock (market|tips)', 'shares', 'crypto', 'bitcoin', 'politic', 'election'];
 
 /** A pattern that catches questions on the topics an owner wants handed over, on top of the built-in ones. */
 export function refusedPattern(topics: string[]): RegExp {
-  const stems = new Set([...BASE_REFUSED, ...topics.map(topicStem).filter((s) => s.length >= 3)]);
-  return new RegExp(`\\b(${[...stems].map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\w*`, 'i');
+  const own = new Set(topics.map(topicStem).filter((s) => s.length >= 3));
+  const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`\\b(${[...BASE_REFUSED, ...[...own].map(escape)].join('|')})\\w*`, 'i');
 }
 
 export const RETENTION_LABEL = (d: number) => `${d} days`;

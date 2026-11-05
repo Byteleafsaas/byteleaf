@@ -5,7 +5,9 @@
 import mongoose from 'mongoose';
 import { connectDB } from '@/lib/server/db';
 import { handleInbound } from '@/lib/server/whatsapp/inbound';
-import { WaAppointment, WaChat, WaClient, WaHold, WaSlotLock } from '@/lib/server/models';
+import { RateLimit, WaAppointment, WaBusiness, WaChat, WaClient, WaHold, WaSlotLock } from '@/lib/server/models';
+import { rateLimit } from '@/lib/server/ratelimit';
+import { handBack, loadInbox, reply, takeOver } from '@/lib/server/whatsapp/inbox';
 import { Types } from 'mongoose';
 import type { Out } from '@/lib/whatsapp/types';
 import { bookSlot, holdSlot, loadData, timesFor } from '@/lib/server/whatsapp/calendar';
@@ -209,6 +211,71 @@ async function main() {
   await WaAppointment.deleteMany({ clientPhone: /^hold-test/ });
   await WaHold.deleteMany({ clientId: { $in: ids } });
 
+  }
+
+  {
+    console.log('\n10. The owner\'s inbox');
+    const p = phone(400);
+    const sent: { to: string; body: string }[] = [];
+    const fake = async (_id: string, to: string, ms: Out[]) => { for (const m of ms) sent.push({ to, body: m.body }); return true; };
+    await say(p, 'hi');
+    await tap(p, 'consent:yes');
+    await tap(p, 'menu:person');
+    const chat = await WaChat.findOne({ business: SLUG, clientId: (await WaClient.findOne({ business: SLUG, phone: p }))!._id });
+    const cid = String(chat!._id);
+    check(chat!.needsHuman === true, 'asking for a person flags the chat for the owner');
+    // The inbox needs a number on the business to send: give the demo business a pretend one for this check only.
+    await WaBusiness.updateOne({ slug: SLUG }, { $set: { phoneNumberId: 'sim-number' } });
+    const now = new Date();
+    check(!(await reply(cid, 'Lerato', 'Too early', now, fake)).ok, 'the owner cannot type before taking over');
+    const took = await takeOver(cid, 'Lerato Mokoena', now, fake);
+    check(took.ok && Boolean(sent.at(-1)?.body.includes('chatting with *Lerato*')), 'taking over tells the client who they are talking to');
+    check((await WaChat.findById(cid))!.needsHuman === false, 'taking over clears the flag');
+    const quiet = await say(p, 'are you there?');
+    check(quiet.messages.length === 0, 'the assistant stays silent while the owner has the chat');
+    const r1 = await reply(cid, 'Lerato Mokoena', 'Hi, yes I can do Saturday. Call me on 0821234567.', now, fake);
+    check(r1.ok && Boolean(sent.at(-1)?.body.startsWith('Hi, yes')), 'the owner\'s reply is sent');
+    const msgs = (await WaChat.findById(cid))!.messages;
+    check(msgs.some((m: { from?: string | null; body?: string | null }) => m.from === 'staff' && !m.body?.includes('0821234567')), 'the stored copy has the phone number removed');
+    check(!(await reply(cid, 'Lerato', 'Late', new Date(now.getTime() + 25 * 3600000), fake)).ok, 'a reply after the 24-hour window is refused');
+    const back = await handBack(cid, 'Lerato Mokoena', now, fake);
+    check(back.ok && Boolean(sent.at(-1)?.body.includes('handed you back')), 'handing back tells the client and shows a menu');
+    const after = await tap(p, 'menu:no');
+    check(text(after.messages).includes('No problem'), '"No, thanks" after a hand-back is answered');
+    check((await loadInbox(cid)).open?.messages.some((m) => m.who === 'You (Lerato Mokoena)') === true, 'the inbox labels the owner\'s messages "You (name)"');
+    const said = await say(p, 'my id is 9001015009087 and email a@b.co');
+    const stored = (await WaChat.findById(cid))!.messages.filter((m: { from?: string | null }) => m.from === 'client').map((m: { body?: string | null }) => m.body).join('|');
+    check(!stored.includes('9001015009087') && !stored.includes('a@b.co'), 'ID numbers and emails typed by a client are not stored');
+    void said;
+    await WaBusiness.updateOne({ slug: SLUG }, { $unset: { phoneNumberId: 1 } });
+  }
+
+  {
+    console.log('\n11. A double tap on Confirm');
+    const p = phone(410);
+    await newCustomer(p);
+    let x: { messages: Out[] } = await tap(p, `svc:${id('Gel nails')}`);
+    const dd = rows(x.messages).find((y) => y.startsWith('day:'))!;
+    x = await timesAfterDay(p, await tap(p, dd));
+    await tap(p, rows(x.messages).find((y) => y.startsWith('time:'))!);
+    await say(p, 'Double');
+    const [a1, a2] = await Promise.all([tap(p, 'ok'), tap(p, 'ok')]);
+    const booked = [a1, a2].filter((m) => text(m.messages).includes("You're booked")).length;
+    check(booked === 1, `exactly one booking comes of two taps at once (got ${booked})`);
+    const other = [a1, a2].find((m) => !text(m.messages).includes("You're booked"));
+    check(!text(other?.messages ?? []).includes('booked by someone else') && !text(other?.messages ?? []).includes('just taken'), 'the second tap is not told the time was taken, since it was their own');
+    check((await WaAppointment.countDocuments({ business: SLUG, clientPhone: p, status: 'booked' })) === 1, 'the diary has one booking');
+  }
+
+  {
+    console.log('\n12. Rate limits under a burst');
+    const key = `sim-rl-${Date.now()}`;
+    const first = await Promise.all(Array.from({ length: 30 }, () => rateLimit(key, 5, 60000)));
+    check(first.filter(Boolean).length === 5, `thirty requests at once, limit five: exactly five get through (got ${first.filter(Boolean).length})`);
+    await RateLimit.updateOne({ key }, { $set: { resetAt: new Date(Date.now() - 1000) } });
+    const second = await Promise.all(Array.from({ length: 30 }, () => rateLimit(key, 5, 60000)));
+    check(second.filter(Boolean).length === 5, `when the window ends and a burst arrives together, still exactly five get through (got ${second.filter(Boolean).length})`);
+    await RateLimit.deleteMany({ key });
   }
 
   // Clean up everything this run created.

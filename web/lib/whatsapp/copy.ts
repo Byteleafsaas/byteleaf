@@ -169,6 +169,8 @@ export const T = {
   tookOver: (owner: string) => `You're now chatting with *${owner}* from the salon.`,
   handedBack: (owner: string) => `${owner} has handed you back to the booking assistant. Anything else I can help with?`,
   btnNoThanks: 'No, thanks',
+  noThanks: 'No problem. Message us any time.',
+  tooMany: (n: number) => `You already have ${n} upcoming bookings, which is the most we can hold at once. Change or cancel one first, or ask a person.`,
   stop: (booking?: string) => `Done. We won't send you any more reminders or messages.${booking ? ` Your booking on ${booking} is still in place.` : ''}\n\nTo get messages again, reply START.`,
   start: "Welcome back. We'll send your confirmations and reminders here again.",
   // C01 and C02 reminders

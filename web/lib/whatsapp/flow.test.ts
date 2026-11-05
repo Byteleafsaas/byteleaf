@@ -12,7 +12,7 @@ const SERVICES = [
 ];
 
 /** A pretend salon: fixed open times per day, and a list of bookings that removes times as they are taken. */
-function world(opts: { times?: Record<string, string[]>; isNew?: boolean; optedOut?: boolean; open?: boolean; named?: boolean; last?: boolean } = {}) {
+function world(opts: { times?: Record<string, string[]>; isNew?: boolean; optedOut?: boolean; open?: boolean; named?: boolean; last?: boolean; max?: number } = {}) {
   const times: Record<string, string[]> = opts.times ?? { '2026-11-07': ['08:00', '11:00', '13:00'], '2026-11-10': ['09:00', '10:00'], '2026-11-11': ['09:00'] };
   const appts: Appt[] = [];
   let seq = 0;
@@ -23,7 +23,7 @@ function world(opts: { times?: Record<string, string[]>; isNew?: boolean; optedO
   const open = (date: string) => (times[date] ?? []).filter((t) => !appts.some((a) => a.date === date && a.time === t));
   const ctx: Ctx = {
     business: {
-      name: "Lerato's Braids & Beauty", cancelWindowHours: 24, replyTime: '[time]', payNote: 'paid at the salon', address: '[Salon address], Randburg', privacyUrl: '[privacy link]', lateFee: 'R [amount]',
+      name: "Lerato's Braids & Beauty", cancelWindowHours: 24, maxUpcoming: opts.max ?? 3, replyTime: '[time]', payNote: 'paid at the salon', address: '[Salon address], Randburg', privacyUrl: '[privacy link]', lateFee: 'R [amount]',
       hoursText: 'Tuesday to Friday 08:00–18:00 and Saturday 08:00–16:00', openNow: opts.open ?? true, closedWeekdays: [0, 1],
     },
     client: { name: 'Lindiwe', nameConfirmed: opts.named ?? true, isNew: opts.isNew ?? false, optedOut: opts.optedOut ?? false, last: opts.last ? { serviceId: 'kn', serviceName: 'Knotless braids', staffName: 'Lerato' } : undefined },
@@ -200,6 +200,21 @@ describe('the booking conversation', () => {
     expect(bodies(a.log[0].messages)).not.toContain('Knotless');
     const list = a.log[0].messages[0];
     expect(list.type === 'list' && list.rows[0].title).toBe('Appointment');
+  });
+
+  it('stops a customer who already holds the most bookings allowed, and points them to My bookings or a person', async () => {
+    const w = world({ max: 1 });
+    await chat(w.ctx, ['book', 'gel nails', 'saturday', '8am', 'yes']);
+    expect(w.appts).toHaveLength(1);
+    for (const start of [{ id: 'menu:book' }, 'book', { id: 'menu:same' }]) {
+      const { last } = await chat(w.ctx, [start]);
+      expect(bodies(last.messages)).toContain('You already have 1 upcoming bookings');
+      const m = last.messages[0];
+      expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(['My bookings', 'Ask a person']);
+    }
+    // Changing or cancelling the booking they have is still fine.
+    const mine = await chat(w.ctx, [{ id: 'menu:mine' }]);
+    expect(mine.last.messages[0].type).toBe('list');
   });
 
   it('asks morning, afternoon or evening when there are too many times for one list', async () => {

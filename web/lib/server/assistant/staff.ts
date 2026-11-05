@@ -14,7 +14,12 @@ const SESSION_HOURS = 8;
 
 export type Staff = { email: string; name: string; workspace: WorkspaceId };
 
-const secret = () => env.TOTP_ENCRYPTION_KEY || 'dev-only-staff-secret';
+const secret = () => {
+  if (env.TOTP_ENCRYPTION_KEY) return env.TOTP_ENCRYPTION_KEY;
+  // With no key anyone could forge a staff cookie or sign-in link, so production refuses to run without one.
+  if (isProd) throw new Error('TOTP_ENCRYPTION_KEY is not set, so staff sign-in is switched off.');
+  return 'dev-only-staff-secret';
+};
 const sign = (body: string) => createHmac('sha256', secret()).update(body).digest('base64url');
 
 function pack(payload: Record<string, unknown>): string {

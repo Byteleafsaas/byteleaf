@@ -1,14 +1,15 @@
 import 'server-only';
 import { Types } from 'mongoose';
-import { T } from '@/lib/whatsapp/copy';
-import { windowOpen } from '@/lib/whatsapp/cloud';
+import { T, fmtMid } from '@/lib/whatsapp/copy';
+import { templatePayload, windowOpen } from '@/lib/whatsapp/cloud';
 import { hasNumber } from '@/lib/whatsapp/calendar-model';
 import { toMin } from '@/lib/whatsapp/slots';
 import { sastToUtc } from '../time';
 import { connectDB } from '../db';
 import { WaAppointment, WaBusiness, WaClient, WaSlotLock } from '../models';
 import { bufferFor, grainsOf, isDuplicate, key, loadBusy, staffRanges, type Data, type Service } from './calendar';
-import { sendOut } from './send';
+import { env } from '../env';
+import { sendOut, sendRaw } from './send';
 
 type Id = Types.ObjectId;
 export type ManualFail = { ok: false; error: string; code: 'taken' | 'gone' | 'invalid' };
@@ -117,13 +118,20 @@ export async function restoreBooking(d: Data, apptId: string): Promise<ManualOk 
 
 /**
  * Tells a client about a change by WhatsApp. Free-form messages are only allowed inside the 24-hour window after their last
- * message, so otherwise nothing is sent and the owner is told. Returns what happened, for the toast.
+ * message. Outside it, a booking the owner added or moved can still be told by the approved "booking made by the salon"
+ * template (`WHATSAPP_SALON_TEMPLATE`); anything else isn't sent, and the owner is told. Returns what happened, for the toast.
  */
-export async function notifyClient(slug: string, clientId: string, text: string, now: Date): Promise<'sent' | 'no-number' | 'window-closed' | 'not-connected' | 'failed'> {
+export async function notifyClient(slug: string, clientId: string, text: string, now: Date, tpl?: { id: string }): Promise<'sent' | 'no-number' | 'window-closed' | 'not-connected' | 'failed'> {
   const [biz, client] = await Promise.all([WaBusiness.findOne({ slug }, { phoneNumberId: 1 }).lean(), WaClient.findById(clientId).lean()]);
   if (!client || !hasNumber(client.phone) || client.optedOut) return 'no-number';
   if (!biz?.phoneNumberId) return 'not-connected';
-  if (!windowOpen(client.lastInboundAt, now)) return 'window-closed';
+  if (!windowOpen(client.lastInboundAt, now)) {
+    if (!tpl || !env.WHATSAPP_SALON_TEMPLATE || !Types.ObjectId.isValid(tpl.id)) return 'window-closed';
+    const a = await WaAppointment.findOne({ _id: tpl.id, clientId: client._id, status: 'booked' }).lean();
+    if (!a) return 'failed';
+    const first = (client.name || '').split(' ')[0] || 'there';
+    return (await sendRaw(biz.phoneNumberId, templatePayload(client.phone, env.WHATSAPP_SALON_TEMPLATE, env.WHATSAPP_TEMPLATE_LANG, [first, a.serviceName ?? '', fmtMid(a.date), a.time], [`remind:ok:${tpl.id}`, `remind:move:${tpl.id}`]))) ? 'sent' : 'failed';
+  }
   return (await sendOut(biz.phoneNumberId, client.phone, [{ type: 'text', body: text }])) ? 'sent' : 'failed';
 }
 

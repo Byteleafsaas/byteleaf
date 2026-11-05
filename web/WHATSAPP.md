@@ -16,7 +16,8 @@ The design is in `HANDOFF-WHATSAPP.md`. Every client message is in `whatsapp/mes
 | Booking, holding, moving, cancelling | `lib/server/whatsapp/calendar.ts`, `manual.ts` |
 | One message in, replies out | `lib/server/whatsapp/inbound.ts` |
 | Reminders | `lib/whatsapp/reminders.ts`, `lib/server/whatsapp/reminders.ts` |
-| Owner admin | `components/booking-admin/*`, `app/admin/(app)/bookings/*` |
+| Owner admin (Calendar, Inbox, Services, Staff & hours) | `components/booking-admin/*`, `app/admin/(app)/bookings/*` |
+| Owner inbox: take over, reply, hand back | `lib/server/whatsapp/inbox.ts`, `lib/whatsapp/inbox-model.ts` |
 | Demo page | `app/(site)/projects/whatsapp-booking/*`, `lib/whatsapp/story.ts` |
 
 ## The guarantees
@@ -26,6 +27,10 @@ The design is in `HANDOFF-WHATSAPP.md`. Every client message is in `whatsapp/mes
 **A held slot.** When a client reaches the confirmation, the slot is held for 5 minutes (`WaHold`, with the same locks carrying an expiry). Other clients are not offered it, and it can't be booked from under them. When they tap Confirm, the hold's own rows become the booking, so nobody can slip in between. If the hold ran out and the time is still free, Confirm simply books it; if not, they are told and shown the times still open. The hold is given back when they change the time or cancel.
 
 **The owner can overlap by hand, only on purpose.** In the calendar, a busy time shows the double-booking warning, and Save stays off until "Book it anyway, I've checked with …" is ticked.
+
+**One message at a time per chat.** A double tap on Confirm is handled in order: the first books, the second is told the button has expired.
+
+**At most three future bookings per client** (`maxUpcoming`), so one number can't fill the diary.
 
 **A model answer never books.** Typed text is read by DeepSeek, repeated back as "Just to check, I understood:", and only a tap moves on.
 
@@ -43,6 +48,7 @@ Messages we send first, outside the 24-hour window, must be approved templates i
 | Env variable | Template name (suggested) | Body (four values) |
 |---|---|---|
 | `WHATSAPP_REMINDER_TEMPLATE` | `appointment_reminder` | `Hi {{1}}, this is a reminder of your {{2}} appointment at <Business name> tomorrow, {{3}}, at {{4}}.` then a blank line and `Can you still make it?` |
+| `WHATSAPP_SALON_TEMPLATE` | `booking_confirmed_by_salon` | `Hi {{1}}, <Business name> has booked your {{2}} for {{3}} at {{4}}. Reply here if you need to change it.` (quick-reply buttons: Confirm, Change time; used when the owner moves a booking and the client's window has closed, and from the inbox) |
 | `WHATSAPP_REMINDER_TEMPLATE_CLINIC` | `appointment_reminder_clinic` | `Hi {{1}}, a reminder of your appointment with {{2}} tomorrow, {{3}}, at {{4}}. Reply to confirm or change.` |
 
 Values: `{{1}}` first name, `{{2}}` service (or the practitioner for the clinic one), `{{3}}` the day, for example "Saturday 7 Nov", `{{4}}` the time. Type the business name into the body when you submit it, because the code sends four values only. Submit the template in the language you set in `WHATSAPP_TEMPLATE_LANG` (default `en`).
@@ -78,9 +84,15 @@ When a reminder is due outside the window and the template variable is empty, no
 
 If WhatsApp refuses the token (expired or revoked), the calendar shows "Your WhatsApp number needs attention" until a send works again.
 
+## The inbox
+
+When a client asks for a person, the assistant goes quiet and the chat is flagged in **Inbox** (with a count in the sidebar). The owner opens it and taps **Take over**; the client is told who they are talking to. They can then reply as themselves (free-form messages only inside WhatsApp's 24-hour window, shown as a chip: "REPLY WINDOW · 23 H LEFT", or "Window closed · you can send a template"), and **Hand back to assistant** when done. Every message is labelled Assistant, You (name) or the client. Phone numbers, ID numbers and emails clients type are removed before a chat is saved, and chats older than 90 days are deleted. The page looks for new messages every 15 seconds.
+
+When the window has closed the only thing that can be sent is a template. Right now that is the booking details of the client's next booking, through `WHATSAPP_SALON_TEMPLATE`.
+
 ## Reminders
 
-Each booking gets one reminder, the evening before at the business's reminder hour (18:00 SAST by default; `reminderHour` on the business). A booking made after that hour gets none, because the client has only just heard from us. No reply leaves the booking **Unconfirmed**, and the calendar shows it. A client who said "No reminders" or replied STOP is skipped. Inside the 24-hour window it sends a normal message with buttons; outside it, the template.
+Each booking gets one reminder, the evening before at the business's reminder hour (18:00 SAST by default; change it in the booking admin under Staff & hours > Salon hours). A booking made after that hour gets none, because the client has only just heard from us. No reply leaves the booking **Unconfirmed**, and the calendar shows it. A client who said "No reminders" or replied STOP is skipped. Inside the 24-hour window it sends a normal message with buttons; outside it, the template.
 
 A failed reminder is recorded on the booking; "Try again" in the booking panel queues it for the next run.
 
@@ -90,6 +102,6 @@ The webhook parsing, signature check and message payloads are tested against the
 
 ## Still open
 
-- **No template for owner-made changes** outside the window (a "booking made by the salon" template, design message C04).
-- **Per-client limits**: nothing stops one phone number holding many future bookings; see `REVIEW-FINDINGS.md`.
-- **Messages and Booking rules screens** (the greyed items in the sidebar) and the Inbox and Clients screens are a later release.
+- **A cancel by the owner outside the window** can't be told by template (there is none for it); the owner is told nothing was sent.
+- **Clients and Messages screens, and the Booking rules screen** (the greyed items in the sidebar) are a later release. The cap (`maxUpcoming`) and reminder hour have no screen for the cap yet.
+- Open security items are listed in `REVIEW-FINDINGS.md`.

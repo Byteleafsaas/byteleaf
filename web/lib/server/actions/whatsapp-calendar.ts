@@ -63,7 +63,7 @@ export async function moveBookingAction(input: { id: string; date: string; time:
   const r = await moveBooking(d, { apptId: p.data.id, date: p.data.date, time: p.data.time, staffId: p.data.staffId, force: p.data.force, by: admin.name, now: new Date() });
   if (!r.ok) return { ok: false, error: r.error };
   refresh();
-  const told = p.data.notify && before ? await notifyClient(BOOKING_SLUG, String(before.clientId), T.movedBySalon(d.biz.name, before.serviceName ?? '', p.data.date, p.data.time), new Date()) : '';
+  const told = p.data.notify && before ? await notifyClient(BOOKING_SLUG, String(before.clientId), T.movedBySalon(d.biz.name, before.serviceName ?? '', p.data.date, p.data.time), new Date(), { id: p.data.id }) : '';
   return { ok: true, told };
 }
 

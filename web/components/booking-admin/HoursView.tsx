@@ -10,10 +10,10 @@ import { DAY_NAMES, previewSlots, timeText, weekProblem, type Week } from '@/lib
 import s from './booking.module.css';
 
 type Staff = HoursData['staff'][number];
-type Model = { salon: Week; staff: Staff[]; open: string[] };
+type Model = { salon: Week; staff: Staff[]; open: string[]; reminderHour: number };
 
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));
-const fromData = (d: HoursData): Model => ({ salon: clone(d.salon), staff: clone(d.staff), open: d.holidays.filter((h) => h.open).map((h) => h.date) });
+const fromData = (d: HoursData): Model => ({ salon: clone(d.salon), staff: clone(d.staff), open: d.holidays.filter((h) => h.open).map((h) => h.date), reminderHour: d.reminderHour });
 const opts = (from: number, to: number, sel: number) => { const o: { v: number; l: string }[] = []; for (let m = from; m <= to; m += 30) o.push({ v: m, l: timeText(m) }); if (!o.some((x) => x.v === sel)) o.push({ v: sel, l: timeText(sel) }); return o.sort((a, b) => a.v - b.v); };
 const fmtDate = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short' });
 const fmtHol = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short' });
@@ -61,7 +61,7 @@ export default function HoursView({ data, initialTab = 'salon' }: { data: HoursD
 
   const save = async () => {
     setSaving(true);
-    const r = await saveHoursAction({ salon: m.salon, staff: m.staff.map((p) => ({ id: p.id, same: p.same, week: p.week, offs: p.offs.map((o) => ({ a: o.a, b: o.b, n: o.n })) })), holidayOpen: m.open });
+    const r = await saveHoursAction({ salon: m.salon, staff: m.staff.map((p) => ({ id: p.id, same: p.same, week: p.week, offs: p.offs.map((o) => ({ a: o.a, b: o.b, n: o.n })) })), holidayOpen: m.open, reminderHour: m.reminderHour });
     setSaving(false);
     if (!r.ok) { setError(r.error); return; }
     base.current = JSON.stringify(m);
@@ -198,6 +198,15 @@ export default function HoursView({ data, initialTab = 'salon' }: { data: HoursD
                   ))}
                   {!staff.offs.length && <li className={s.liRow} style={{ fontSize: 14, color: '#4B5872' }}>No time off planned.</li>}
                 </ul>
+              </section>
+            )}
+
+            {!staff && (
+              <section className={s.panel} aria-labelledby="rm-h" style={{ overflow: 'hidden' }}>
+                <div className={s.sectionHead}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><h2 id="rm-h" className={s.h2}>Reminders</h2><span className={s.hint}>Each booking gets one reminder on WhatsApp, the evening before. A booking made after this time gets none.</span></div>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}><label htmlFor="rh" style={{ fontSize: 14 }}>Send at</label><select id="rh" className={s.tsel} value={m.reminderHour} onChange={(e) => edit((n) => { n.reminderHour = +e.target.value; })}>{Array.from({ length: 24 }, (_, h) => <option key={h} value={h}>{`${String(h).padStart(2, '0')}:00`}</option>)}</select></span>
+                </div>
               </section>
             )}
 

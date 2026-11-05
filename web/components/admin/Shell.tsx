@@ -37,7 +37,7 @@ const ASSISTANT_NAV = [
 // The WhatsApp booking assistant's workspace (HANDOFF-WHATSAPP §1). The greyed items arrive in a later release.
 const BOOKING_NAV: { key: string; label: string; href?: string; icon: string }[] = [
   { key: 'calendar', label: 'Calendar', href: '/admin/bookings/calendar', icon: 'M3 9h18M7 3v4M17 3v4M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z' },
-  { key: 'inbox', label: 'Inbox', icon: 'M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z' },
+  { key: 'inbox', label: 'Inbox', href: '/admin/bookings/inbox', icon: 'M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z' },
   { key: 'clients', label: 'Clients', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8' },
   { key: 'services', label: 'Services', href: '/admin/bookings/services', icon: 'M4 6h16M4 12h16M4 18h10' },
   { key: 'hours', label: 'Staff & hours', href: '/admin/bookings/hours', icon: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2' },
@@ -51,7 +51,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
   const { bookings, messages, user } = useAdmin();
   const counts = useAssistantCounts();
   const inAssistant = pathname.startsWith('/admin/assistant');
-  const inBooking = /^\/admin\/bookings\/(calendar|services|hours)/.test(pathname);
+  const inBooking = /^\/admin\/bookings\/(calendar|inbox|services|hours)/.test(pathname);
   const biz = useBookingInfo();
   const byteleafBrand = biz.brand === 'byteleaf';
 
@@ -95,6 +95,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
             <Link key={n.key} href={n.href} className={s.snav} aria-current={pathname.startsWith(n.href) ? 'page' : undefined}>
               <PathIcon d={n.icon} size={20} />
               <span className={s.snavLabel}>{n.label}</span>
+              {n.key === 'inbox' && biz.waiting > 0 && <span className={s.badge}>{biz.waiting}<span className={s.sr}> waiting</span></span>}
             </Link>
           ) : (
             <span key={n.key} className={`${s.snav} ${s.snavOff}`} aria-disabled="true">

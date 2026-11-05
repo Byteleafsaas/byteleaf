@@ -66,7 +66,7 @@ export async function assistantFeedbackAction(input: z.input<typeof feedbackSche
     // Show the rating on the saved chat, and flag it for the owner when it was not helpful.
     await Conversation.updateOne(
       { workspace: d.workspace, cid: c, 'messages.mid': mid },
-      { $set: { 'messages.$.rating': d.helpful ? 'up' : 'down', 'messages.$.reason': d.reason, ...(d.helpful ? {} : { 'flags.notHelpful': true }) } },
+      { $set: { 'messages.$.rating': d.helpful ? 'up' : 'down', 'messages.$.reason': redact(d.reason), ...(d.helpful ? {} : { 'flags.notHelpful': true }) } },
     );
   }
   return { ok: true };

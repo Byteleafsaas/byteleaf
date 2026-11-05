@@ -6,16 +6,16 @@ import { toMin, type WeekHours } from '@/lib/whatsapp/slots';
 import { addDays, isoWeekday, todaySast } from '../time';
 import { connectDB } from '../db';
 import { env } from '../env';
-import { WaAppointment, WaBusiness, WaService, WaStaff } from '../models';
+import { WaAppointment, WaBusiness, WaChat, WaService, WaStaff } from '../models';
 
 /** The business the booking admin shows. One demo salon for now, as the knowledge assistant shows one demo client. */
 export const BOOKING_SLUG = 'lerato';
 
-export type BookingInfo = { slug: string; name: string; sub: string; mark: string; brand: string; numberOk: boolean; numberText: string; staffCount: number };
+export type BookingInfo = { slug: string; name: string; sub: string; mark: string; brand: string; numberOk: boolean; numberText: string; staffCount: number; waiting: number };
 
 export async function loadBookingInfo(): Promise<BookingInfo> {
   await connectDB();
-  const [b, staff] = await Promise.all([WaBusiness.findOne({ slug: BOOKING_SLUG }).lean(), WaStaff.countDocuments({ business: BOOKING_SLUG, active: true })]);
+  const [b, staff, waiting] = await Promise.all([WaBusiness.findOne({ slug: BOOKING_SLUG }).lean(), WaStaff.countDocuments({ business: BOOKING_SLUG, active: true }), WaChat.countDocuments({ business: BOOKING_SLUG, needsHuman: true })]);
   const connected = Boolean(b?.phoneNumberId);
   return {
     slug: BOOKING_SLUG,
@@ -27,6 +27,7 @@ export async function loadBookingInfo(): Promise<BookingInfo> {
     numberOk: connected ? Boolean(env.WHATSAPP_TOKEN) && !b?.numberProblemAt : true,
     numberText: connected ? 'WhatsApp connected' : 'WhatsApp +27 [number] · connected',
     staffCount: staff,
+    waiting,
   };
 }
 
@@ -88,6 +89,8 @@ export type TimeOff = { a: string; b: string; n: string; /** Bookings already on
 export type StaffHours = { id: string; name: string; initial: string; same: boolean; week: Week; offs: TimeOff[] };
 export type HoursData = {
   today: string;
+  /** The hour of the evening before that reminders go out. */
+  reminderHour: number;
   salon: Week;
   staff: StaffHours[];
   holidays: { date: string; name: string; open: boolean }[];
@@ -120,6 +123,7 @@ export async function loadHours(): Promise<HoursData> {
   const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   return {
     today,
+    reminderHour: typeof biz?.reminderHour === 'number' ? biz.reminderHour : 18,
     salon: weekFromHours(biz?.hours as WeekHours | undefined),
     staff: staff.map((s) => ({
       id: String(s._id),
