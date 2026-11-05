@@ -56,7 +56,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
         </div>
       </section>
 
-      <section className={s.body}>
+      <section className={`${s.body} ${others.length === 0 ? s.bodyLast : ""}`}>
         <div className={s.bodyIn}>
           <div className={s.story}>
             {parts.length ? parts.map((x) => <section key={x.k}><h2>{x.k}</h2><p>{x.v}</p></section>) : <p>The full write-up for this project is coming soon.</p>}
