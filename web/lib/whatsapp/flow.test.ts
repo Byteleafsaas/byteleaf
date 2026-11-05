@@ -12,7 +12,7 @@ const SERVICES = [
 ];
 
 /** A pretend salon: fixed open times per day, and a list of bookings that removes times as they are taken. */
-function world(opts: { times?: Record<string, string[]>; isNew?: boolean; optedOut?: boolean } = {}) {
+function world(opts: { times?: Record<string, string[]>; isNew?: boolean; optedOut?: boolean; open?: boolean; named?: boolean; last?: boolean } = {}) {
   const times: Record<string, string[]> = opts.times ?? { '2026-11-07': ['08:00', '11:00', '13:00'], '2026-11-10': ['09:00', '10:00'], '2026-11-11': ['09:00'] };
   const appts: Appt[] = [];
   let seq = 0;
@@ -22,8 +22,11 @@ function world(opts: { times?: Record<string, string[]>; isNew?: boolean; optedO
   };
   const open = (date: string) => (times[date] ?? []).filter((t) => !appts.some((a) => a.date === date && a.time === t));
   const ctx: Ctx = {
-    business: { name: "Lerato's Braids & Beauty", cancelWindowHours: 24, replyNote: 'We usually reply within [X hours].', payNote: 'paid at the salon' },
-    client: { name: 'Lindiwe', isNew: opts.isNew ?? false, optedOut: opts.optedOut ?? false },
+    business: {
+      name: "Lerato's Braids & Beauty", cancelWindowHours: 24, replyTime: '[time]', payNote: 'paid at the salon', address: '[Salon address], Randburg', privacyUrl: '[privacy link]', lateFee: 'R [amount]',
+      hoursText: 'Tuesday to Friday 08:00–18:00 and Saturday 08:00–16:00', openNow: opts.open ?? true, closedWeekdays: [0, 1],
+    },
+    client: { name: 'Lindiwe', nameConfirmed: opts.named ?? true, isNew: opts.isNew ?? false, optedOut: opts.optedOut ?? false, last: opts.last ? { serviceId: 'kn', serviceName: 'Knotless braids', staffName: 'Lerato' } : undefined },
     now: NOW,
     services: async () => SERVICES,
     days: async (_s, excl) => Object.keys(times).filter((d) => open(d).length || appts.some((a) => a.id === excl && a.date === d)).sort().map((d) => ({ date: d, count: open(d).length })),
@@ -49,11 +52,11 @@ function world(opts: { times?: Record<string, string[]>; isNew?: boolean; optedO
 }
 
 /** Runs inputs one after another, keeping the state, and checks every message would be accepted by WhatsApp. */
-async function chat(ctx: Ctx, inputs: (string | { id: string })[], from: State = START) {
+async function chat(ctx: Ctx, inputs: (string | { id: string } | { media: string })[], from: State = START) {
   let state = from;
   const log: { state: State; messages: Out[]; effects: string[] }[] = [];
   for (const raw of inputs) {
-    const input: Input = typeof raw === 'string' ? { type: 'text', text: raw } : { type: 'reply', id: raw.id };
+    const input: Input = typeof raw === 'string' ? { type: 'text', text: raw } : 'media' in raw ? { type: 'media', kind: raw.media } : { type: 'reply', id: raw.id };
     const r = await step(state, input, ctx);
     for (const m of r.messages) expect(validateOut(m), JSON.stringify(m)).toEqual([]);
     state = r.state;
@@ -64,21 +67,44 @@ async function chat(ctx: Ctx, inputs: (string | { id: string })[], from: State =
 const bodies = (o: Out[]) => o.map((m) => m.body).join('\n');
 
 describe('the booking conversation', () => {
-  it('greets a new customer with the consent line and three buttons', async () => {
+  it('asks a new customer for consent before anything else (B01)', async () => {
     const w = world({ isNew: true });
     const { last } = await chat(w.ctx, ['hi']);
     const m = last.messages[0];
     expect(m.type).toBe('buttons');
+    expect(m.body).toContain('May we send your confirmations and reminders');
     expect(m.body).toContain('Reply STOP');
-    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(['Book appointment', 'My bookings', 'Talk to a person']);
+    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(['Yes, please', 'No reminders', 'Ask a person']);
+    expect(last.state.step).toBe('consent');
   });
 
-  it('takes a new customer who says "book" straight to the services, with the consent line first', async () => {
+  it('records the answer and shows the services (B03), or a shortlist when the first message named one (B02)', async () => {
     const w = world({ isNew: true });
-    const { last } = await chat(w.ctx, ['book']);
-    expect(last.messages[0].body).toContain('Reply STOP');
-    expect(last.messages[1].type).toBe('list');
-    expect(last.state.step).toBe('service');
+    const a = await chat(w.ctx, ['hi', { id: 'consent:yes' }]);
+    expect(a.last.effects).toEqual(['consent:yes']);
+    expect(a.last.messages[0].type).toBe('list');
+    expect(a.last.state.step).toBe('service');
+    const b = await chat(w.ctx, ['Hi, I would like to book knotless', { id: 'consent:no' }]);
+    expect(b.last.effects).toEqual(['consent:no']);
+    const m = b.last.messages[0];
+    expect(m.body).toBe('Great. Which service would you like?');
+    expect(m.type === 'buttons' && m.buttons.map((x) => x.title)).toEqual(['Knotless braids', 'Other services']);
+  });
+
+  it('still lets a new customer who ignores the question ask for a person', async () => {
+    const w = world({ isNew: true });
+    const { last } = await chat(w.ctx, ['hi', { id: 'menu:person' }]);
+    expect(last.effects).toEqual(['handover']);
+  });
+
+  it('welcomes a returning customer and offers the last booking again (B09)', async () => {
+    const w = world({ last: true });
+    const { last } = await chat(w.ctx, ['hi']);
+    expect(last.messages[0].body).toBe('Welcome back, Lindiwe! Would you like to book *Knotless braids* with Lerato again?');
+    const m = last.messages[0];
+    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(['Book the same', 'Something else', 'My bookings']);
+    const same = await chat(w.ctx, [{ id: 'menu:same' }], last.state);
+    expect(same.state).toMatchObject({ step: 'day', serviceId: 'kn' });
   });
 
   it('books an appointment by tapping through every step', async () => {
@@ -86,9 +112,11 @@ describe('the booking conversation', () => {
     const { log } = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:kn' }, { id: 'day:2026-11-07' }, { id: 'time:08:00' }, { id: 'ok' }]);
     expect(log[0].messages[0].type).toBe('list');
     expect(bodies(log[2].messages)).toContain('Saturday 7 November');
+    expect(bodies(log[3].messages)).toContain('Please confirm your booking');
     expect(bodies(log[3].messages)).toContain('08:00 to 12:00');
-    expect(bodies(log[3].messages)).toContain('R 650');
-    expect(bodies(log[4].messages)).toContain("You're booked, Lindiwe");
+    expect(bodies(log[3].messages)).toContain('R 650, paid at the salon');
+    expect(bodies(log[4].messages)).toContain("You're booked, Lindiwe!");
+    expect(bodies(log[4].messages)).toContain('[Salon address], Randburg');
     expect(w.appts).toHaveLength(1);
     expect(w.appts[0]).toMatchObject({ serviceId: 'kn', date: '2026-11-07', time: '08:00' });
   });
@@ -105,7 +133,7 @@ describe('the booking conversation', () => {
     const first = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:sp' }, { id: 'day:2026-11-07' }, { id: 'time:08:00' }]);
     w.appts.push({ id: 'x', serviceId: 'gn', serviceName: 'Gel nails', date: '2026-11-07', time: '08:00', endTime: '09:00', priceCents: 1, startsAt: new Date('2026-11-07T08:00:00+02:00') });
     const { last } = await chat(w.ctx, [{ id: 'ok' }], first.state);
-    expect(bodies(last.messages)).toContain('just taken');
+    expect(bodies(last.messages)).toContain('*08:00 on Saturday 7 Nov* was booked by someone else a moment ago');
     const list = last.messages.find((m) => m.type === 'list');
     expect(list && list.type === 'list' && list.rows.map((r) => r.id)).not.toContain('time:08:00');
     expect(w.appts).toHaveLength(1); // only the other person's booking
@@ -131,7 +159,8 @@ describe('the booking conversation', () => {
     expect(first.type === 'list' && first.rows.at(-1)?.id).toBe('day:more');
     const b = await chat(w.ctx, [{ id: 'day:more' }], a.state);
     const second = b.last.messages[0];
-    expect(second.type === 'list' && second.rows[0].id).toBe('day:2026-11-19');
+    expect(second.type === 'list' && second.rows[0].id).toBe('day:2026-11-17'); // a week of days per list
+    expect(first.type === 'list' && first.rows.at(-1)?.title).toBe('Later dates');
   });
 
   it('lets the customer change the time of an existing booking', async () => {
@@ -139,7 +168,8 @@ describe('the booking conversation', () => {
     await chat(w.ctx, ['book', 'silk press', 'saturday', '11:00', 'yes']);
     const id = w.appts[0].id;
     const r = await chat(w.ctx, [{ id: 'menu:mine' }, { id: `appt:${id}` }, { id: 'move' }, { id: 'day:2026-11-10' }, { id: 'time:09:00' }, { id: 'ok' }]);
-    expect(bodies(r.last.messages)).toContain('Tuesday 10 November at 09:00');
+    expect(bodies(r.last.messages)).toContain('Tuesday 10 November, 09:00 to 10:30');
+    expect(bodies(r.log[4].messages)).toContain('Was: Sat 7 Nov, 11:00');
     expect(w.appts).toHaveLength(1);
     expect(w.appts[0]).toMatchObject({ date: '2026-11-10', time: '09:00' });
   });
@@ -149,9 +179,11 @@ describe('the booking conversation', () => {
     await chat(w.ctx, ['book', 'gel nails', 'saturday', '8am', 'yes']); // tomorrow: inside 24 hours
     const id = w.appts[0].id;
     const ask = await chat(w.ctx, [{ id: 'menu:mine' }, { id: `appt:${id}` }, { id: 'cancelbk' }]);
-    expect(bodies(ask.last.messages)).toContain('24-hour cancellation window');
+    expect(bodies(ask.last.messages)).toContain('late-cancellation fee of R [amount]');
+    const ask0 = ask.last.messages[0];
+    expect(ask0.type === 'buttons' && ask0.buttons.map((b) => b.title)).toEqual(['Cancel anyway', 'Change time', 'Keep it']);
     const done = await chat(w.ctx, [{ id: 'yes' }], ask.state);
-    expect(bodies(done.last.messages)).toContain('cancelled');
+    expect(bodies(done.last.messages)).toContain('is cancelled');
     expect(w.appts).toHaveLength(0);
   });
 
@@ -168,12 +200,13 @@ describe('the booking conversation', () => {
     const w = world();
     await chat(w.ctx, ['book', 'silk press', 'tue', '9', 'yes']);
     const id = w.appts[0].id;
-    const ok = await chat(w.ctx, [{ id: 'remind:ok' }]);
-    expect(bodies(ok.last.messages)).toContain('see you then');
+    const ok = await chat(w.ctx, [{ id: `remind:ok:${id}` }]);
+    expect(bodies(ok.last.messages)).toContain('See you on Tue 10 Nov at 09:00!');
+    expect(ok.last.effects).toEqual([`confirm:${id}`]);
     const move = await chat(w.ctx, [{ id: `remind:move:${id}` }, { id: 'day:2026-11-11' }, { id: 'time:09:00' }, { id: 'ok' }]);
-    expect(bodies(move.last.messages)).toContain('Wednesday 11 November at 09:00');
+    expect(bodies(move.last.messages)).toContain('Wednesday 11 November, 09:00 to 10:30');
     const cancel = await chat(w.ctx, [{ id: `remind:cancel:${id}` }, { id: 'yes' }]);
-    expect(bodies(cancel.last.messages)).toContain('cancelled');
+    expect(bodies(cancel.last.messages)).toContain('is cancelled');
     expect(w.appts).toHaveLength(0);
     const gone = await chat(w.ctx, [{ id: 'remind:cancel:nope' }]);
     expect(bodies(gone.last.messages)).toContain("couldn't find that booking");
@@ -211,11 +244,66 @@ describe('the booking conversation', () => {
     expect(last.state.step).toBe('service');
   });
 
-  it('shows the menu when it does not understand', async () => {
+  it('offers book, my bookings or a person when it does not understand (B15)', async () => {
     const w = world();
     const { last } = await chat(w.ctx, ['asdf qwerty']);
-    expect(bodies(last.messages)).toContain("didn't catch that");
-    expect(last.messages.at(-1)?.type).toBe('buttons');
+    expect(bodies(last.messages)).toContain("didn't quite understand that");
+    const m = last.messages.at(-1)!;
+    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(['Book', 'My bookings', 'Ask a person']);
+  });
+
+  it('points a voice note, photo or sticker back to the buttons (B16)', async () => {
+    const w = world();
+    const { last } = await chat(w.ctx, [{ media: 'audio' }]);
+    expect(bodies(last.messages)).toContain("can't listen to voice notes");
+    expect(last.state.step).toBe('menu');
+  });
+
+  it('says the salon is closed, once, and still lets the customer book (B17)', async () => {
+    const w = world({ open: false });
+    const a = await chat(w.ctx, ['hi are you open tomorrow?']);
+    expect(bodies(a.last.messages)).toContain('The salon is closed right now. We\'re open Tuesday to Friday 08:00–18:00 and Saturday 08:00–16:00.');
+    const m = a.last.messages[0];
+    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(['Book now', 'Wait for reply']);
+    const b = await chat(w.ctx, [{ id: 'menu:book' }], a.state);
+    expect(b.last.messages[0].type).toBe('list');
+    const waits = await chat(w.ctx, [{ id: 'wait' }], a.state);
+    expect(waits.last.effects).toEqual(['handover']);
+  });
+
+  it('asks a new customer for their name, saves it, and books under it (B06)', async () => {
+    const w = world({ named: false });
+    const a = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:gn' }, { id: 'day:2026-11-07' }, { id: 'time:08:00' }]);
+    expect(bodies(a.last.messages)).toBe('Thanks! What name should we put the booking under?');
+    expect(a.state.step).toBe('name');
+    const b = await chat(w.ctx, ['Lindiwe M'], a.state);
+    expect(b.last.effects).toEqual(['name:Lindiwe M']);
+    expect(b.state.step).toBe('confirm');
+    const c = await chat(w.ctx, [{ id: 'ok' }], b.state);
+    expect(bodies(c.last.messages)).toContain("You're booked, Lindiwe M!");
+  });
+
+  it('explains a closed day instead of just asking again (B12) and a date that has passed (B13)', async () => {
+    const w = world();
+    const closed = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:gn' }, 'monday']);
+    expect(bodies(closed.last.messages)).toBe("We're closed on Mondays. The closest open day is *Saturday 7 November*.");
+    const m = closed.last.messages[0];
+    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(['Sat 7 Nov', 'See open days', 'Ask a person']);
+    const past = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:gn' }, 'the 3rd']);
+    expect(bodies(past.last.messages)).toBe('3 November has already passed. Did you mean a date coming up?');
+    expect(past.state.step).toBe('day');
+  });
+
+  it('tells a customer who tapped Keep my booking that nothing changed (C06)', async () => {
+    const w = world();
+    await chat(w.ctx, ['book', 'silk press', 'saturday', '11:00', 'yes']);
+    const id = w.appts[0].id;
+    const a = await chat(w.ctx, [{ id: `remind:move:${id}` }]);
+    const list = a.last.messages[0];
+    expect(list.type === 'list' && list.rows.at(-1)).toMatchObject({ id: 'keep', title: 'Keep my booking', description: 'Sat 7 Nov, 11:00' });
+    const b = await chat(w.ctx, [{ id: 'keep' }], a.state);
+    expect(bodies(b.last.messages)).toContain('stays as it is');
+    expect(w.appts[0].time).toBe('11:00');
   });
 
   it('offers a person when nothing is free', async () => {
@@ -223,7 +311,7 @@ describe('the booking conversation', () => {
     const { last } = await chat(w.ctx, [{ id: 'menu:book' }, { id: 'svc:kn' }]);
     expect(bodies(last.messages)).toContain('Nothing is free');
     const m = last.messages.at(-1)!;
-    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toContain('Talk to a person');
+    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toContain('Ask a person');
   });
 
   it('says there is nothing to manage when there are no bookings', async () => {
@@ -251,8 +339,8 @@ describe('typed requests read by the interpreter', () => {
     expect(w.calls).toEqual(['braids on saturday morning']);
     expect(a.state.step).toBe('understood');
     const m = a.last.messages[0];
-    expect(m.body).toBe('I understood: Knotless braids, Saturday 7 November, morning. Is that right?');
-    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(["Yes, that's right", 'No, let me pick']);
+    expect(m.body).toBe('Just to check, I understood:\n\n*Knotless braids*\nSaturday 7 Nov, in the morning\n\nThe first open morning time is 08:00.');
+    expect(m.type === 'buttons' && m.buttons.map((b) => b.title)).toEqual(['Book 08:00', 'Other times', 'Not right']);
     expect(w.appts).toHaveLength(0);
 
     const b = await chat(w.ctx, [{ id: 'u:yes' }], a.state);
@@ -278,14 +366,22 @@ describe('typed requests read by the interpreter', () => {
     expect(w.appts).toHaveLength(0);
     w.times['2026-11-07'] = ['08:00', '13:00']; // someone else got it
     const c = await chat(w.ctx, [{ id: 'ok' }], b.state);
-    expect(bodies(c.last.messages)).toContain('just taken');
+    expect(bodies(c.last.messages)).toContain('*11:00 on Saturday 7 Nov* was booked by someone else');
+    expect(w.appts).toHaveLength(0);
+  });
+
+  it('books the first open time in one tap from "Book 08:00", still asking for confirmation first', async () => {
+    const w = withModel({ serviceId: 'kn', date: '2026-11-07', window: 'morning' });
+    const a = await chat(w.ctx, ['braids on saturday morning']);
+    const b = await chat(w.ctx, [{ id: 'u:book:08:00' }], a.state);
+    expect(b.state).toMatchObject({ step: 'confirm', time: '08:00' });
     expect(w.appts).toHaveLength(0);
   });
 
   it('asks for the service when only a day was understood, then continues to that day', async () => {
     const w = withModel({ date: '2026-11-07', window: 'afternoon' });
     const a = await chat(w.ctx, ['saturday afternoon please']);
-    expect(a.last.messages[0].body).toBe('I understood: Saturday 7 November, afternoon. Is that right?');
+    expect(a.last.messages[0].body).toBe('Just to check, I understood:\n\nSaturday 7 Nov, in the afternoon');
     const b = await chat(w.ctx, [{ id: 'u:yes' }], a.state);
     expect(b.state.step).toBe('service');
     const c = await chat(w.ctx, [{ id: 'svc:sp' }], b.state);
@@ -338,7 +434,7 @@ describe('typed requests read by the interpreter', () => {
   it('refuses to offer a service that does not exist', async () => {
     const w = withModel({ serviceId: 'ghost' });
     const { last } = await chat(w.ctx, ['something odd']);
-    expect(bodies(last.messages)).toContain("didn't catch that");
+    expect(bodies(last.messages)).toContain("didn't quite understand that");
   });
 
   it('works inside the day and time steps too', async () => {
@@ -351,7 +447,7 @@ describe('typed requests read by the interpreter', () => {
   it.each([['returns nothing', null], ['throws', 'throws' as const]])('falls back to the keyword parser when the interpreter %s', async (_n, found) => {
     const w = withModel(found);
     const a = await chat(w.ctx, ['asdf qwerty']);
-    expect(bodies(a.last.messages)).toContain("didn't catch that");
+    expect(bodies(a.last.messages)).toContain("didn't quite understand that");
     // Keywords alone still drive the whole booking.
     const b = await chat(w.ctx, [{ id: 'menu:book' }, 'knotless', 'sat', '11am', 'yes']);
     expect(b.state.step).toBe('menu');
@@ -368,7 +464,7 @@ describe('typed requests read by the interpreter', () => {
     const w = withModel({ serviceId: 'kn' }, { isNew: true });
     const { last } = await chat(w.ctx, ['braids on saturday']);
     expect(w.calls).toEqual([]);
-    expect(bodies(last.messages)).toContain('By chatting with me you agree');
+    expect(bodies(last.messages)).toContain('May we send your confirmations and reminders');
   });
 
   it('never calls it while a person has the chat or after STOP', async () => {

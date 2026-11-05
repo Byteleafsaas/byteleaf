@@ -62,3 +62,33 @@ export function windowDates(now: Date, days: number): string[] {
   const first = todaySast(now);
   return Array.from({ length: days }, (_, i) => addDays(first, i));
 }
+
+const ISO_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const spans = (r: Range[]) => r.map((x) => `${x.start}–${x.end}`).join(', ');
+
+/** 'Tuesday to Friday 08:00–18:00 and Saturday 08:00–16:00': what a customer is told when the salon is closed. */
+export function describeHours(week: WeekHours): string {
+  const runs: { from: number; to: number; text: string }[] = [];
+  for (let d = 1; d <= 7; d++) {
+    const r = week[d] ?? [];
+    if (!r.length) continue;
+    const text = spans(r);
+    const last = runs[runs.length - 1];
+    if (last && last.to === d - 1 && last.text === text) last.to = d;
+    else runs.push({ from: d, to: d, text });
+  }
+  const parts = runs.map((r) => `${r.from === r.to ? ISO_DAYS[r.from - 1] : `${ISO_DAYS[r.from - 1]} ${r.to === r.from + 1 ? 'and' : 'to'} ${ISO_DAYS[r.to - 1]}`} ${r.text}`);
+  return parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}` : parts[0] ?? 'by appointment';
+}
+
+/** True when `now` falls inside the opening hours. */
+export function isOpenAt(now: Date, week: WeekHours, daysOff: { from: string; to: string }[] = []): boolean {
+  const sast = new Date(now.getTime() + 2 * 3600000);
+  const mins = sast.getUTCHours() * 60 + sast.getUTCMinutes();
+  return rangesOn(todaySast(now), week, daysOff).some((r) => mins >= toMin(r.start) && mins < toMin(r.end));
+}
+
+/** JavaScript weekdays (0 = Sunday ... 6 = Saturday) on which the business never opens. */
+export function closedWeekdays(week: WeekHours): number[] {
+  return [0, 1, 2, 3, 4, 5, 6].filter((w) => !(week[w === 0 ? 7 : w] ?? []).length);
+}

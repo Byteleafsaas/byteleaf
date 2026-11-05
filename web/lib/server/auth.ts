@@ -22,18 +22,7 @@ export async function clientInfo() {
 }
 
 /* ---------- rate limiting (fixed window) ---------- */
-export async function rateLimit(key: string, max = 5, windowMs = 15 * 60000): Promise<boolean> {
-  await connectDB();
-  const now = new Date();
-  const doc = await RateLimit.findOneAndUpdate(
-    { key, resetAt: { $gt: now } },
-    { $inc: { count: 1 } },
-    { new: true },
-  );
-  if (doc) return doc.count <= max;
-  await RateLimit.findOneAndUpdate({ key }, { $set: { count: 1, resetAt: new Date(now.getTime() + windowMs) } }, { upsert: true });
-  return true;
-}
+export { rateLimit } from './ratelimit';
 
 /* ---------- sessions ---------- */
 export async function createSession(userId: string, persistent: boolean) {

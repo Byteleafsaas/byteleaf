@@ -1,13 +1,13 @@
 import 'server-only';
 import { Types } from 'mongoose';
 import { START, step, type Appt, type Ctx, type State } from '@/lib/whatsapp/flow';
-import { fromMin, toMin } from '@/lib/whatsapp/slots';
+import { closedWeekdays, describeHours, fromMin, isOpenAt, toMin } from '@/lib/whatsapp/slots';
 import { validateOut, type Input, type Out } from '@/lib/whatsapp/types';
 import { todaySast } from '../time';
 import { connectDB } from '../db';
 import { WaAppointment, WaChat, WaClient } from '../models';
 import { makeInterpreter } from './understand';
-import { bookSlot, cancelSlot, daysFor, loadData, moveSlot, timesFor, type Booked, type Data } from './calendar';
+import { bookSlot, cancelSlot, daysFor, loadData, moveSlot, staffAtFor, timesFor, type Booked, type Data } from './calendar';
 
 export type Source = 'whatsapp' | 'simulator';
 
@@ -19,23 +19,27 @@ export function normPhone(p: string): string {
 
 const endOf = (startsAt: Date, endsAt: Date, time: string) => fromMin(toMin(time) + Math.round((endsAt.getTime() - startsAt.getTime()) / 60000));
 
-const toAppt = (a: { _id: unknown; serviceId: unknown; serviceName?: string | null; date: string; time: string; startsAt: Date; endsAt: Date; priceCents?: number | null }): Appt => ({
-  id: String(a._id), serviceId: String(a.serviceId), serviceName: a.serviceName ?? '', date: a.date, time: a.time, endTime: endOf(a.startsAt, a.endsAt, a.time), priceCents: a.priceCents ?? 0, startsAt: a.startsAt,
+const toAppt = (a: { _id: unknown; serviceId: unknown; serviceName?: string | null; staffName?: string | null; date: string; time: string; startsAt: Date; endsAt: Date; priceCents?: number | null }): Appt => ({
+  id: String(a._id), serviceId: String(a.serviceId), serviceName: a.serviceName ?? '', staffName: a.staffName ?? undefined, date: a.date, time: a.time, endTime: endOf(a.startsAt, a.endsAt, a.time), priceCents: a.priceCents ?? 0, startsAt: a.startsAt,
 });
 
-const fromBooked = (b: Booked): Appt => ({ id: String(b.id), serviceId: String(b.serviceId), serviceName: b.serviceName, date: b.date, time: b.time, endTime: endOf(b.startsAt, b.endsAt, b.time), priceCents: b.priceCents, startsAt: b.startsAt });
+const fromBooked = (b: Booked): Appt => ({ id: String(b.id), serviceId: String(b.serviceId), serviceName: b.serviceName, staffName: b.staffName, date: b.date, time: b.time, endTime: endOf(b.startsAt, b.endsAt, b.time), priceCents: b.priceCents, startsAt: b.startsAt });
 
 /** Wires the conversation to the real calendar for one customer. */
-function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: string; isNew: boolean; optedOut: boolean }, now: Date, source: Source): Ctx {
+function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: string; isNew: boolean; optedOut: boolean; nameConfirmed: boolean; last?: { serviceId: string; serviceName: string; staffName?: string } }, now: Date, source: Source): Ctx {
   const svc = (id: string) => d.services.find((s) => String(s.id) === id);
   return {
-    business: { name: d.biz.name, cancelWindowHours: d.biz.cancelWindowHours, replyNote: d.biz.replyNote, payNote: d.biz.payNote },
-    client: { name: client.name || undefined, isNew: client.isNew, optedOut: client.optedOut },
+    business: {
+      name: d.biz.name, cancelWindowHours: d.biz.cancelWindowHours, replyTime: d.biz.replyTime, payNote: d.biz.payNote, address: d.biz.address, privacyUrl: d.biz.privacyUrl, lateFee: d.biz.lateFee,
+      hoursText: describeHours(d.biz.hours), openNow: isOpenAt(now, d.biz.hours, d.biz.daysOff), closedWeekdays: closedWeekdays(d.biz.hours),
+    },
+    client: { name: client.name || undefined, nameConfirmed: client.nameConfirmed, isNew: client.isNew, optedOut: client.optedOut, last: client.last },
     now,
     interpret: makeInterpreter(d, todaySast(now), client.phone),
     services: async () => d.services.map((s) => ({ id: String(s.id), name: s.name, minutes: s.minutes, priceCents: s.priceCents })),
     days: async (serviceId, excl) => { const s = svc(serviceId); return s ? daysFor(d, s, now, excl) : []; },
     times: async (serviceId, date, excl) => { const s = svc(serviceId); return s ? timesFor(d, s, date, now, excl) : []; },
+    staffAt: async (serviceId, date, excl) => { const s = svc(serviceId); return s ? staffAtFor(d, s, date, now, excl) : {}; },
     upcoming: async () => (await WaAppointment.find({ business: d.biz.slug, clientId: client.id, status: 'booked', startsAt: { $gt: now } }).sort({ startsAt: 1 }).limit(10).lean()).map(toAppt),
     appointment: async (id) => {
       if (!Types.ObjectId.isValid(id)) return null;
@@ -52,7 +56,9 @@ function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: str
       const own = await WaAppointment.exists({ _id: apptId, clientId: client.id });
       if (!own) return { ok: false, reason: 'invalid' };
       const r = await moveSlot(d, apptId, date, time, now);
-      return r === 'taken' || r === 'gone' ? { ok: false, reason: r === 'taken' ? 'taken' : 'invalid' } : { ok: true, appt: fromBooked(r) };
+      if (r === 'taken' || r === 'gone') return { ok: false, reason: r === 'taken' ? 'taken' : 'invalid' };
+      await WaAppointment.updateOne({ _id: apptId }, { $set: { movedByClient: true, confirmedAt: null } });
+      return { ok: true, appt: fromBooked(r) };
     },
     cancel: async (apptId) => {
       const own = await WaAppointment.exists({ _id: apptId, clientId: client.id });
@@ -78,13 +84,19 @@ export async function handleInbound(o: { slug: string; phone: string; name?: str
   const phone = normPhone(o.phone);
   const client = await WaClient.findOneAndUpdate(
     { business: o.slug, phone },
-    { $setOnInsert: { business: o.slug, phone }, $set: { lastInboundAt: now, ...(o.name ? { name: o.name.slice(0, 80) } : {}) } },
+    { $setOnInsert: { business: o.slug, phone }, $set: { lastInboundAt: now } },
     { upsert: true, returnDocument: 'after' },
   );
+  // The WhatsApp profile name is only a first guess. Once they have typed their own name for us, it is never overwritten.
+  if (o.name && !client.nameConfirmed && client.name !== o.name.slice(0, 80)) {
+    client.name = o.name.slice(0, 80);
+    await WaClient.updateOne({ _id: client._id }, { $set: { name: client.name } });
+  }
+  const lastBooking = await WaAppointment.findOne({ business: o.slug, clientId: client._id, status: { $in: ['booked', 'completed'] } }).sort({ startsAt: -1 }).lean();
   const chat = await WaChat.findOneAndUpdate({ business: o.slug, clientId: client._id }, { $setOnInsert: { business: o.slug, clientId: client._id, state: START } }, { upsert: true, returnDocument: 'after' });
 
-  const inbound = o.input.type === 'text' ? o.input.text.slice(0, 1000) : o.input.title ?? o.input.id;
-  const ctx = makeCtx(d, { id: client._id as Types.ObjectId, name: client.name, phone, isNew: !client.greeted, optedOut: client.optedOut }, now, o.source);
+  const inbound = o.input.type === 'text' ? o.input.text.slice(0, 1000) : o.input.type === 'media' ? `[${o.input.kind}]` : o.input.title ?? o.input.id;
+  const ctx = makeCtx(d, { id: client._id as Types.ObjectId, name: client.name, phone, isNew: !client.greeted, optedOut: client.optedOut, nameConfirmed: client.nameConfirmed, last: lastBooking ? { serviceId: String(lastBooking.serviceId), serviceName: lastBooking.serviceName ?? '', staffName: lastBooking.staffName ?? undefined } : undefined }, now, o.source);
 
   let result;
   try {
@@ -105,6 +117,11 @@ export async function handleInbound(o: { slug: string; phone: string; name?: str
   const clientSet: Record<string, unknown> = {};
   if (result.effects.includes('optout')) Object.assign(clientSet, { optedOut: true, optedOutAt: now });
   if (result.effects.includes('optin')) Object.assign(clientSet, { optedOut: false, optedOutAt: null });
+  for (const e of result.effects) {
+    if (e === 'consent:yes' || e === 'consent:no') Object.assign(clientSet, { consent: e === 'consent:yes' ? 'yes' : 'no', consentAt: now });
+    else if (e.startsWith('name:')) Object.assign(clientSet, { name: e.slice(5), nameConfirmed: true });
+    else if (e.startsWith('confirm:') && Types.ObjectId.isValid(e.slice(8))) await WaAppointment.updateOne({ _id: e.slice(8), clientId: client._id }, { $set: { confirmedAt: now } });
+  }
   if (messages.length) clientSet.greeted = true;
   if (Object.keys(clientSet).length) await WaClient.updateOne({ _id: client._id }, { $set: clientSet });
 

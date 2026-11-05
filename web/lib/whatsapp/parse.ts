@@ -49,6 +49,31 @@ export function parseDay(text: string, offered: string[], now: Date): string | n
   return null;
 }
 
+export type When = { weekday: number } | { date: string };
+
+/**
+ * Reads a day the customer typed even when it isn't one we offer, so we can say why ('we're closed on Mondays', 'that date has passed').
+ * A weekday name gives { weekday }; '3rd' or '3 nov' gives that date in the current year (which may already be behind us).
+ */
+export function parseWhen(text: string, now: Date): When | null {
+  const t = norm(text).replace(/^(the|on|this|next)\s+/, '');
+  if (!t) return null;
+  const wd = WEEKDAY_NAMES.findIndex((n) => t === n || (t.length >= 3 && n.startsWith(t)));
+  if (wd !== -1) return { weekday: wd };
+  const today = todaySast(now);
+  const year = today.slice(0, 4);
+  const iso = (m: number, d: number) => (m >= 0 && m < 12 && d >= 1 && d <= 31 ? `${year}-${pad(m + 1)}-${pad(d)}` : null);
+  const dm = t.match(/^(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]{3,9})$/);
+  if (dm) {
+    const mi = MONTH_NAMES.findIndex((m) => dm[2].startsWith(m));
+    const d = mi === -1 ? null : iso(mi, +dm[1]);
+    return d ? { date: d } : null;
+  }
+  const only = t.match(/^(\d{1,2})(?:st|nd|rd|th)$/);
+  if (only) { const d = iso(+today.slice(5, 7) - 1, +only[1]); return d ? { date: d } : null; }
+  return null;
+}
+
 export const isStop = (t: string) => /^(stop|unsubscribe|opt out|optout|end)$/.test(t);
 export const isStart = (t: string) => /^(start|resume|unstop|subscribe)$/.test(t);
 export const wantsMenu = (t: string) => /^(menu|hi|hello|hey|hie|howzit|start over|restart|home|help|back)$/.test(t);

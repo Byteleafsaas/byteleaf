@@ -6,8 +6,8 @@ import { connectDB } from '../db';
 import { WaAppointment, WaBusiness, WaService, WaSlotLock, WaStaff } from '../models';
 
 type Id = Types.ObjectId;
-export type Biz = { slug: string; name: string; hours: WeekHours; daysOff: { from: string; to: string }[]; minNoticeMin: number; bufferMin: number; stepMin: number; windowDays: number; cancelWindowHours: number; replyNote: string; payNote: string };
-export type Service = { id: Id; name: string; minutes: number; priceCents: number; bufferMin: number | null; staff: Id[] };
+export type Biz = { slug: string; name: string; hours: WeekHours; daysOff: { from: string; to: string }[]; minNoticeMin: number; bufferMin: number; stepMin: number; windowDays: number; cancelWindowHours: number; replyTime: string; payNote: string; address: string; privacyUrl: string; lateFee: string; brand: string; clinic: boolean };
+export type Service = { id: Id; name: string; minutes: number; priceCents: number; bufferMin: number | null; staff: Id[]; hideName: boolean };
 export type Staff = { id: Id; name: string; hours: WeekHours; daysOff: { from: string; to: string }[] };
 export type Data = { biz: Biz; services: Service[]; staff: Staff[] };
 
@@ -19,12 +19,12 @@ export async function loadData(slug: string): Promise<Data | null> {
   const b = await WaBusiness.findOne({ slug, active: true }).lean();
   if (!b) return null;
   const [services, staff] = await Promise.all([
-    WaService.find({ business: slug, active: true }).sort({ order: 1 }).lean(),
+    WaService.find({ business: slug, active: true, onWhatsApp: { $ne: false } }).sort({ order: 1 }).lean(),
     WaStaff.find({ business: slug, active: true }).sort({ order: 1 }).lean(),
   ]);
   return {
-    biz: { slug, name: b.name, hours: asHours(b.hours), daysOff: b.daysOff ?? [], minNoticeMin: b.minNoticeMin, bufferMin: b.bufferMin, stepMin: b.stepMin, windowDays: b.windowDays, cancelWindowHours: b.cancelWindowHours, replyNote: b.replyNote, payNote: b.payNote },
-    services: services.map((s) => ({ id: s._id as Id, name: s.name, minutes: s.minutes, priceCents: s.priceCents, bufferMin: s.bufferMin ?? null, staff: (s.staff ?? []) as Id[] })),
+    biz: { slug, name: b.name, hours: asHours(b.hours), daysOff: b.daysOff ?? [], minNoticeMin: b.minNoticeMin, bufferMin: b.bufferMin, stepMin: b.stepMin, windowDays: b.windowDays, cancelWindowHours: b.cancelWindowHours, replyTime: b.replyTime ?? '[time]', payNote: b.payNote, address: b.address ?? '[Salon address]', privacyUrl: b.privacyUrl ?? '[privacy link]', lateFee: b.lateFee ?? 'R [amount]', brand: b.brand ?? 'byteleaf', clinic: Boolean(b.clinic) },
+    services: services.map((s) => ({ id: s._id as Id, name: s.name, minutes: s.minutes, priceCents: s.priceCents, bufferMin: s.bufferMin ?? null, staff: (s.staff ?? []) as Id[], hideName: Boolean(s.hideName) })),
     staff: staff.map((s) => ({ id: s._id as Id, name: s.name, hours: asHours(s.hours), daysOff: s.daysOff ?? [] })),
   };
 }
@@ -64,6 +64,16 @@ export function timesOn(d: Data, svc: Service, date: string, busy: Map<string, B
 export async function timesFor(d: Data, svc: Service, date: string, now: Date, exclude?: string): Promise<string[]> {
   const busy = await loadBusy(d.biz.slug, sastToUtc(date, '00:00'), new Date(sastToUtc(date, '00:00').getTime() + 86400000), exclude);
   return [...timesOn(d, svc, date, busy, now).keys()].sort();
+}
+
+/** For each start time that exactly one person could take, that person's name. Times where we choose between people are left out. */
+export async function staffAtFor(d: Data, svc: Service, date: string, now: Date, exclude?: string): Promise<Record<string, string>> {
+  const busy = await loadBusy(d.biz.slug, sastToUtc(date, '00:00'), new Date(sastToUtc(date, '00:00').getTime() + 86400000), exclude);
+  const out: Record<string, string> = {};
+  for (const [time, ids] of timesOn(d, svc, date, busy, now)) {
+    if (ids.length === 1) { const st = d.staff.find((s) => s.id.equals(ids[0])); if (st) out[time] = st.name; }
+  }
+  return out;
 }
 
 /** The next dates with space, soonest first (at most 14). */

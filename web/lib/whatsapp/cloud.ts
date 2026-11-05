@@ -44,6 +44,7 @@ export function parseWebhook(body: unknown): Inbound[] {
           const r = m.interactive?.button_reply ?? m.interactive?.list_reply;
           if (r?.id) input = { type: 'reply', id: r.id, title: r.title };
         } else if (m.type === 'button' && m.button?.payload) input = { type: 'reply', id: m.button.payload, title: m.button.text };
+        else if (m.type && MEDIA.has(m.type)) input = { type: 'media', kind: m.type };
         out.push({ phoneNumberId, from: m.from, name, messageId: m.id, input });
       }
     }
@@ -51,16 +52,18 @@ export function parseWebhook(body: unknown): Inbound[] {
   return out;
 }
 
+const MEDIA = new Set(['audio', 'image', 'sticker', 'video', 'document']);
+
 /** The request body for sending one of our messages to a customer. */
 export function toCloudPayload(m: Out, to: string): Record<string, unknown> {
   const base = { messaging_product: 'whatsapp', recipient_type: 'individual', to };
   if (m.type === 'text') return { ...base, type: 'text', text: { preview_url: false, body: m.body } };
   if (m.type === 'buttons') {
-    return { ...base, type: 'interactive', interactive: { type: 'button', body: { text: m.body }, action: { buttons: m.buttons.map((b) => ({ type: 'reply', reply: { id: b.id, title: b.title } })) } } };
+    return { ...base, type: 'interactive', interactive: { type: 'button', body: { text: m.body }, ...(m.footer ? { footer: { text: m.footer } } : {}), action: { buttons: m.buttons.map((b) => ({ type: 'reply', reply: { id: b.id, title: b.title } })) } } };
   }
   return {
     ...base, type: 'interactive',
-    interactive: { type: 'list', body: { text: m.body }, action: { button: m.button, sections: [{ title: 'Options', rows: m.rows.map((r) => ({ id: r.id, title: r.title, ...(r.description ? { description: r.description } : {}) })) }] } },
+    interactive: { type: 'list', body: { text: m.body }, ...(m.footer ? { footer: { text: m.footer } } : {}), action: { button: m.button, sections: [{ title: 'Options', rows: m.rows.map((r) => ({ id: r.id, title: r.title, ...(r.description ? { description: r.description } : {}) })) }] } },
   };
 }
 

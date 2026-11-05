@@ -20,6 +20,11 @@ const say = (p: string, text: string) => handleInbound({ slug: SLUG, phone: p, n
 const tap = (p: string, id: string) => handleInbound({ slug: SLUG, phone: p, name: 'Test', input: { type: 'reply', id }, source: 'simulator' });
 const rows = (m: Out[]) => m.flatMap((x) => (x.type === 'list' ? x.rows.map((r) => r.id) : x.type === 'buttons' ? x.buttons.map((b) => b.id) : []));
 const text = (m: Out[]) => m.map((x) => x.body).join('\n');
+/** A brand new customer: says hello, answers the consent question, and is left looking at the service list. */
+async function newCustomer(p: string) {
+  await say(p, 'hi');
+  return tap(p, 'consent:yes');
+}
 
 /** From a day's reply, gets to the list of times: answering morning, afternoon or evening first when it is asked. */
 async function timesAfterDay(p: string, r: { messages: Out[] }) {
@@ -35,8 +40,10 @@ async function main() {
   console.log('\n1. A new customer books silk press by tapping');
   const a = phone(1);
   let r: { messages: Out[]; clientId?: string } = await say(a, 'hi');
-  check(text(r.messages).includes('Reply STOP'), 'the first message includes the consent line');
-  r = await tap(a, 'menu:book');
+  check(text(r.messages).includes('May we send your confirmations') && text(r.messages).includes('Reply STOP'), 'the first message asks for consent');
+  r = await tap(a, 'consent:yes');
+  check(rows(r.messages).some((x) => x.startsWith('svc:')), 'the services are offered after consent');
+  check((await WaClient.findOne({ business: SLUG, phone: a }).lean())?.consent === 'yes', 'the answer is saved on the client');
   r = await tap(a, `svc:${id('Silk press')}`);
   const day = rows(r.messages).find((x) => x.startsWith('day:'))!;
   check(Boolean(day), `a day list is offered (first: ${day})`);
@@ -44,15 +51,18 @@ async function main() {
   const time = rows(r.messages).find((x) => x.startsWith('time:'));
   check(Boolean(time), `times are offered (first: ${time})`);
   r = await tap(a, time!);
-  check(text(r.messages).includes('Please confirm'), 'the confirm screen is shown');
+  check(text(r.messages).includes('What name'), 'a new customer is asked what name to book under');
+  r = await say(a, 'Test Client');
+  check(text(r.messages).includes('Please confirm your booking'), 'the confirm screen is shown');
+  check((await WaClient.findOne({ business: SLUG, phone: a }).lean())?.name === 'Test Client', 'the name they typed is saved, not their profile name');
   r = await tap(a, 'ok');
-  check(text(r.messages).includes("You're booked"), 'the booking is confirmed');
+  check(text(r.messages).includes("You're booked, Test Client!"), 'the booking is confirmed');
   const booked = await WaAppointment.findOne({ business: SLUG, clientPhone: a, status: 'booked' }).lean();
   check(Boolean(booked), 'the booking is in the calendar');
 
   console.log('\n2. The same slot cannot be booked again');
   const b = phone(2);
-  await say(b, 'book');
+  await newCustomer(b);
   await tap(b, `svc:${id('Silk press')}`);
   r = await timesAfterDay(b, await tap(b, day));
   const stillOffered = rows(r.messages).includes(time!);
@@ -64,18 +74,20 @@ async function main() {
   // Knotless braids can only be done by Lerato, so at most one of them can win a given time.
   const prepared: { p: string; day: string; time: string }[] = [];
   for (const p of racers) {
-    await say(p, 'book');
+    await newCustomer(p);
     let x: { messages: Out[] } = await tap(p, `svc:${id('Knotless braids')}`);
     const dd = rows(x.messages).find((y) => y.startsWith('day:'))!;
     x = await timesAfterDay(p, await tap(p, dd));
     const tt = rows(x.messages).find((y) => y.startsWith('time:'))!;
+    await tap(p, tt);
+    await say(p, 'Racer');
     prepared.push({ p, day: dd, time: tt });
   }
   const target = prepared[0];
-  for (const x of prepared) { await timesAfterDay(x.p, await tap(x.p, target.day)); await tap(x.p, target.time); }
+  // Nobody has booked yet, so all ten were shown the same first day and time and are now sitting on the confirm screen.
   const results = await Promise.all(prepared.map((x) => tap(x.p, 'ok')));
   const wins = results.filter((x) => text(x.messages).includes("You're booked")).length;
-  const sorry = results.filter((x) => text(x.messages).includes('just taken')).length;
+  const sorry = results.filter((x) => text(x.messages).includes('was booked by someone else')).length;
   check(wins === 1, `exactly one of ten booked the slot (got ${wins})`);
   check(sorry === 9, `the other nine were told it was taken (got ${sorry})`);
   const locks = await WaSlotLock.countDocuments({ apptId: { $in: (await WaAppointment.find({ business: SLUG, clientPhone: { $in: racers }, status: 'booked' }).lean()).map((x) => x._id) } });
@@ -92,7 +104,7 @@ async function main() {
   const time2 = rows(r.messages).find((x) => x.startsWith('time:'))!;
   r = await tap(a, time2);
   r = await tap(a, 'ok');
-  check(text(r.messages).includes('Done. Your Silk press is now'), 'the booking is moved');
+  check(text(r.messages).includes("Done! You're now booked for"), 'the booking is moved');
   const moved = await WaAppointment.find({ business: SLUG, clientPhone: a, status: 'booked' }).lean();
   check(moved.length === 1 && moved[0].date === day2.slice(4) && moved[0].time === time2.slice(5), 'the calendar shows the new time and only one booking');
   const heldNew = await WaSlotLock.countDocuments({ apptId: moved[0]._id });
@@ -103,7 +115,7 @@ async function main() {
   r = await tap(a, rows(r.messages).find((x) => x.startsWith('appt:'))!);
   r = await tap(a, 'cancelbk');
   r = await tap(a, 'yes');
-  check(text(r.messages).includes('cancelled'), 'the customer is told it is cancelled');
+  check(text(r.messages).includes('is cancelled'), 'the customer is told it is cancelled');
   check((await WaAppointment.countDocuments({ business: SLUG, clientPhone: a, status: 'booked' })) === 0, 'no booking is left');
   check((await WaSlotLock.countDocuments({ apptId: moved[0]._id })) === 0, 'its locks are released');
 
@@ -121,7 +133,7 @@ async function main() {
   const e = phone(4);
   await say(e, 'hi');
   r = await tap(e, 'menu:person');
-  check(text(r.messages).includes('A person will reply'), 'the customer is told a person will reply');
+  check(text(r.messages).includes("I've asked the team to reply"), 'the customer is told a person will reply');
   r = await say(e, 'hello?');
   check(r.messages.length === 0, 'the assistant stays quiet while a person has the chat');
   check(Boolean((await WaChat.findOne({ business: SLUG, needsHuman: true }).lean())), 'the chat is flagged for the owner');

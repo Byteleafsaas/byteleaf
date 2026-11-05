@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('server-only', () => ({}));
 const rateLimit = vi.fn();
 const askBookingModel = vi.fn();
-vi.mock('../auth', () => ({ rateLimit: (...a: unknown[]) => rateLimit(...a) }));
+vi.mock('../ratelimit', () => ({ rateLimit: (...a: unknown[]) => rateLimit(...a) }));
 vi.mock('../assistant/llm', () => ({ llmEnabled: () => true, askBookingModel: (...a: unknown[]) => askBookingModel(...a) }));
 vi.mock('../env', () => ({ env: { ASSISTANT_DAILY_LIMIT: 100 } }));
 

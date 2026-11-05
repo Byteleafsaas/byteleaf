@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WhatsApp booking — Conversation map</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.nd{position:absolute;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:10px 12px;font-size:14px;line-height:1.3}
+.lbl{position:absolute;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:2px 6px;border-radius:6px;background:#FFFFFF;color:#33405A;border:1px solid #E3E9F2;white-space:nowrap}
+.pill{display:inline-flex;align-items:center;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;padding:2px 6px;border-radius:999px;white-space:nowrap}
+.qa{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.qa h3{margin:0;font-size:15px;font-weight:600;line-height:1.4}
+.qa p{margin:0;font-size:14px;line-height:1.55;color:#33405A}
+</style>
+</helmet>
+<div class="bl" style="background: #FFFFFF; min-height: 100vh; padding: 48px 48px 56px; box-sizing: border-box">
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; margin-bottom: 28px">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 900px">
+<span class="mono" style="font-size: 12px; letter-spacing: 0.08em; color: #0F5FCC">CONVERSATION MAP · THE SPEC FOR EVERY MESSAGE</span>
+<h1 style="margin: 0; font-size: 40px; letter-spacing: -0.04em; font-weight: 600; line-height: 1.1">Every path a client can take</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #33405A">Message IDs (B01, C06…) match the message library. Two words work at every step and are checked before anything else: <strong>PERSON</strong> pauses the assistant and flags the chat; <strong>STOP</strong> opts out. Free-form replies only go out inside the 24-hour window; everything we send first is a template.</p>
+</div>
+<div role="list" aria-label="Legend" style="display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; max-width: 520px">
+<span role="listitem" style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px"><span style="width: 26px; height: 16px; border-radius: 5px; background: #0B1220"></span>Client action</span>
+<span role="listitem" style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px"><span style="width: 26px; height: 16px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #A9B8CF"></span>Message we send</span>
+<span role="listitem" style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px"><span style="width: 26px; height: 16px; border-radius: 5px; background: #FFF8E6; border: 1.5px solid #D4A72C"></span>Check / decision</span>
+<span role="listitem" style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px"><span style="width: 26px; height: 16px; border-radius: 5px; background: #F4F7FB; border: 1.5px dashed #6B7891"></span>Happens in the admin</span>
+<span role="listitem" style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px"><span style="width: 26px; height: 16px; border-radius: 5px; background: #FFFFFF; border: 1.5px solid #B45309"></span>Template (sent first)</span>
+</div>
+</header>
+
+<div role="img" aria-label="{{alt}}" style="position: relative; width: {{W}}px; height: {{H}}px">
+<sc-for list="{{bands}}" as="b" hint-placeholder-count="6">
+<div style="position: absolute; left: 0; right: 0; top: {{b.y}}px; height: {{b.h}}px; border-radius: 18px; background: {{b.bg}}"></div>
+<div style="position: absolute; left: 20px; top: {{b.ty}}px; width: 140px; display: flex; flex-direction: column; gap: 4px"><span class="mono" style="font-size: 11px; letter-spacing: 0.08em; color: #4B5872">{{b.k}}</span><span style="font-size: 17px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25">{{b.t}}</span><span style="font-size: 12px; color: #4B5872; line-height: 1.4">{{b.s}}</span></div>
+</sc-for>
+<svg width="{{W}}" height="{{H}}" viewBox="0 0 {{W}} {{H}}" aria-hidden="true" style="position: absolute; inset: 0; overflow: visible">
+<path d="{{paths}}" fill="none" stroke="#6B7891" stroke-width="1.6" stroke-linejoin="round"></path>
+<path d="{{dashed}}" fill="none" stroke="#6B7891" stroke-width="1.6" stroke-dasharray="5 4" stroke-linejoin="round"></path>
+<path d="{{heads}}" fill="#6B7891"></path>
+</svg>
+<sc-for list="{{nodes}}" as="n" hint-placeholder-count="20">
+<div class="nd" style="left: {{n.x}}px; top: {{n.y}}px; width: {{n.w}}px; height: {{n.h}}px; {{n.st}}">
+<sc-if value="{{n.hasId}}" hint-placeholder-val="{{ true }}"><span style="display: flex; gap: 6px; align-items: center"><span class="mono" style="font-size: 11px; font-weight: 500">{{n.id}}</span><span class="pill" style="{{n.ps}}">{{n.type}}</span></span></sc-if>
+<span style="font-weight: {{n.fw}}">{{n.t}}</span>
+</div>
+</sc-for>
+<sc-for list="{{labels}}" as="l" hint-placeholder-count="10"><span class="lbl" style="left: {{l.x}}px; top: {{l.y}}px">{{l.t}}</span></sc-for>
+</div>
+
+<section aria-labelledby="qa-h" style="margin-top: 40px; display: flex; flex-direction: column; gap: 16px">
+<h2 id="qa-h" style="margin: 0; font-size: 24px; letter-spacing: -0.03em">Answers to the brief’s open questions</h2>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{qas}}" as="q" hint-placeholder-count="6"><div class="qa"><span class="mono" style="font-size: 11px; color: #4B5872">{{q.n}}</span><h3>{{q.q}}</h3><p>{{q.a}}</p></div></sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2660,"height":2100}}'>
+class Component extends DCLogic {
+renderVals() {
+const X = (c) => 180 + c * 300;
+const W = 210, H = 78;
+const N = {};
+const add = (k, c, y, kind, t, id, type, w) => { N[k] = { k: k, x: X(c), y: y + 40, w: w || W, h: H, kind: kind, t: t, id: id || '', type: type || '' }; };
+// band 1 · entry
+add('s0', 0, 60, 'act', 'Client sends any message');
+add('kw', 1, 60, 'dec', 'PERSON or STOP? Checked first · goes to Flow 3');
+add('hr', 2, 60, 'dec', 'Outside opening hours?');
+add('b17', 3, 0, 'msg', 'Closed now · book or wait', 'B17', 'BUTTONS');
+add('md', 3, 120, 'dec', 'Voice note, photo or sticker?');
+add('b16', 4, 120, 'msg', 'Steer back to buttons', 'B16', 'BUTTONS');
+add('who', 4, 0, 'dec', 'Known number?');
+add('b01', 5, 0, 'msg', 'Hello + consent to remind', 'B01', 'BUTTONS');
+add('b09', 5, 120, 'msg', 'Welcome back, re-book?', 'B09', 'BUTTONS');
+add('ai', 6, 0, 'dec', 'Typed a request? (AI)');
+add('b14', 7, 0, 'msg', 'Repeat back, tap to confirm', 'B14', 'BUTTONS');
+add('b15', 7, 120, 'msg', "Didn't understand · menu", 'B15', 'BUTTONS');
+// band 2 · book
+add('b03', 0, 330, 'msg', 'Choose a service (B02 if named)', 'B03', 'LIST');
+add('b04', 1, 330, 'msg', 'Choose a day', 'B04', 'LIST');
+add('b05', 2, 330, 'msg', 'Choose a time', 'B05', 'LIST');
+add('nw', 3, 330, 'dec', 'New client?');
+add('b06', 4, 330, 'msg', 'Ask for a name (typed)', 'B06', 'TEXT');
+add('b07', 5, 330, 'msg', 'Confirm the booking · slot held 5 min', 'B07', 'BUTTONS');
+add('b08', 6, 330, 'msg', 'Booked · full details', 'B08', 'TEXT');
+add('cal1', 7, 330, 'sys', 'Calendar: new booking (from WhatsApp)');
+add('b12', 1, 460, 'msg', 'Closed day / past date', 'B12–13', 'BUTTONS');
+add('b11', 0, 460, 'msg', 'Nothing free this week', 'B11', 'LIST');
+add('b10', 4, 460, 'msg', 'Slot taken while choosing', 'B10', 'LIST');
+// band 3 · reminder
+add('t0', 0, 640, 'sys', 'Day before, 18:00 · reminder job');
+add('c01', 1, 640, 'tpl', 'Reminder with Confirm / Change / Cancel', 'C01', 'TEMPLATE');
+add('c02', 2, 640, 'msg', 'Thanks, see you tomorrow', 'C02', 'TEXT');
+add('cal2', 3, 640, 'sys', 'Calendar: marked Confirmed');
+add('nr', 4, 640, 'sys', 'No reply: stays Unconfirmed');
+add('c04', 6, 640, 'tpl', 'Salon booked or moved it by hand', 'C04', 'TEMPLATE');
+add('cal0', 5, 640, 'sys', 'Owner adds or moves a booking');
+// band 4 · change
+add('ch', 0, 820, 'act', 'Taps “Change time” or asks to move');
+add('c06', 1, 820, 'msg', 'Pick a new day', 'C06', 'LIST');
+add('c07', 2, 820, 'msg', 'Pick a new time', 'C07', 'LIST');
+add('c08', 3, 820, 'msg', 'Confirm: was / now', 'C08', 'BUTTONS');
+add('c09', 4, 820, 'msg', 'Changed · new details', 'C09', 'TEXT');
+add('cal3', 5, 820, 'sys', 'Calendar: block moves, “Moved by client”');
+// band 5 · cancel
+add('cx', 0, 1000, 'act', 'Taps “Cancel” or says can’t make it');
+add('c10', 1, 1000, 'msg', 'Are you sure?', 'C10', 'BUTTONS');
+add('lt', 2, 1000, 'dec', 'Less than 24 h before?');
+add('c12', 3, 940, 'msg', 'Late fee R [amount] · still cancel?', 'C12', 'BUTTONS');
+add('c11', 4, 1000, 'msg', 'Cancelled', 'C11', 'TEXT');
+add('cal4', 5, 1000, 'sys', 'Calendar: slot freed (late cancel noted)');
+// band 6 · person and stop
+add('pp', 0, 1190, 'act', 'PERSON, “Ask a person”, or asks for someone');
+add('c13', 1, 1190, 'msg', 'Team will reply here', 'C13', 'TEXT');
+add('ib', 2, 1190, 'sys', 'Inbox: chat flagged, bot paused');
+add('c14', 3, 1190, 'msg', 'Owner takes over, replies as themselves', 'C14', 'TEXT');
+add('c15', 4, 1190, 'msg', 'Handed back · menu', 'C15', 'BUTTONS');
+add('st', 5, 1190, 'act', 'Replies STOP');
+add('c16', 6, 1190, 'msg', 'Opted out · booking kept', 'C16', 'TEXT');
+add('c17', 7, 1190, 'msg', 'START · opted back in', 'C17', 'TEXT');
+const P = [], D = [], A = [], L = [];
+const R = (n) => [n.x + n.w, n.y + n.h / 2], Lf = (n) => [n.x, n.y + n.h / 2], T = (n) => [n.x + n.w / 2, n.y], B = (n) => [n.x + n.w / 2, n.y + n.h];
+const head = (x, y, dir) => { const s = 6; if (dir === 'r') A.push('M' + x + ' ' + y + 'l-' + s * 1.6 + ' -' + s + 'v' + s * 2 + 'z'); if (dir === 'l') A.push('M' + x + ' ' + y + 'l' + s * 1.6 + ' -' + s + 'v' + s * 2 + 'z'); if (dir === 'd') A.push('M' + x + ' ' + y + 'l-' + s + ' -' + s * 1.6 + 'h' + s * 2 + 'z'); if (dir === 'u') A.push('M' + x + ' ' + y + 'l-' + s + ' ' + s * 1.6 + 'h' + s * 2 + 'z'); };
+const e = (a, b, mode, label, dashed) => {
+const s = N[a], t = N[b]; let d, lx, ly;
+const out = dashed ? D : P;
+if (mode === 'h') { const p = R(s), q = Lf(t); const mx = Math.round((p[0] + q[0]) / 2); d = 'M' + p[0] + ' ' + p[1] + 'H' + mx + 'V' + q[1] + 'H' + q[0]; head(q[0], q[1], 'r'); lx = p[0] + 6; ly = p[1] - 22; if (q[1] !== p[1]) { lx = mx + 6; ly = Math.round((p[1] + q[1]) / 2) - 9; } }
+else if (mode === 'v') { const p = B(s), q = T(t); const my = Math.round((p[1] + q[1]) / 2); d = 'M' + p[0] + ' ' + p[1] + 'V' + my + 'H' + q[0] + 'V' + q[1]; head(q[0], q[1], 'd'); lx = p[0] + 6; ly = p[1] + 4; }
+else if (mode === 'u') { const p = T(s), q = B(t); const my = Math.round((p[1] + q[1]) / 2); d = 'M' + p[0] + ' ' + p[1] + 'V' + my + 'H' + q[0] + 'V' + q[1]; head(q[0], q[1], 'u'); lx = p[0] + 6; ly = p[1] - 22; }
+else if (mode === 'lu') { const p = Lf(s), q = B(t); d = 'M' + p[0] + ' ' + p[1] + 'H' + q[0] + 'V' + q[1]; head(q[0], q[1], 'u'); lx = q[0] + 6; ly = p[1] - 22; }
+else if (mode === 'ru') { const p = R(s), q = B(t); d = 'M' + p[0] + ' ' + p[1] + 'H' + q[0] + 'V' + q[1]; head(q[0], q[1], 'u'); lx = p[0] + 6; ly = p[1] - 22; }
+else if (mode === 'dr') { const p = B(s), q = R(t); d = 'M' + p[0] + ' ' + p[1] + 'V' + q[1] + 'H' + q[0]; head(q[0], q[1], 'l'); lx = p[0] + 6; ly = p[1] + 6; }
+else if (mode === 'dl') { const p = B(s), q = Lf(t); d = 'M' + p[0] + ' ' + p[1] + 'V' + q[1] + 'H' + q[0]; head(q[0], q[1], 'r'); lx = p[0] + 6; ly = p[1] + 6; }
+out.push(d);
+if (label) L.push({ t: label, x: lx, y: ly });
+};
+e('s0', 'kw', 'h'); e('kw', 'hr', 'h', 'no');
+e('hr', 'b17', 'h', 'yes'); e('hr', 'md', 'h', 'no');
+e('md', 'b16', 'h', 'yes'); e('md', 'who', 'u', 'no'); e('b17', 'who', 'h', 'Book now');
+e('who', 'b01', 'h', 'new'); e('who', 'b09', 'h', 'returning');
+e('b01', 'ai', 'h'); e('ai', 'b14', 'h', 'yes, clear'); e('ai', 'b15', 'h', 'unclear');
+e('b14', 'b07', 'v', 'Book 08:00', true);
+e('b09', 'b03', 'v', 'Something else', true);
+e('ai', 'b03', 'v', 'no, just tapped');
+e('b03', 'b04', 'h'); e('b04', 'b05', 'h'); e('b05', 'nw', 'h'); e('nw', 'b06', 'h', 'yes'); e('b06', 'b07', 'h'); e('b07', 'b08', 'h', 'Confirm'); e('b08', 'cal1', 'h');
+e('b04', 'b12', 'v', 'closed / past', true); e('b03', 'b11', 'v', 'nothing free in 7 days', true);
+e('b07', 'b10', 'dr', 'taken', true); e('b10', 'b05', 'u', 'pick again', true);
+e('t0', 'c01', 'h'); e('c01', 'c02', 'h', 'Confirm'); e('c02', 'cal2', 'h'); e('cal2', 'nr', 'h', 'if no reply');
+e('cal0', 'c04', 'h', '24 h passed');
+e('c01', 'c06', 'v', 'Change time');
+e('ch', 'c06', 'h'); e('c06', 'c07', 'h'); e('c07', 'c08', 'h'); e('c08', 'c09', 'h', 'Confirm'); e('c09', 'cal3', 'h');
+e('cx', 'c10', 'h'); e('c10', 'lt', 'h', 'Yes, cancel'); e('lt', 'c12', 'h', 'yes'); e('lt', 'c11', 'h', 'no'); e('c12', 'c11', 'h'); e('c11', 'cal4', 'h');
+e('pp', 'c13', 'h'); e('c13', 'ib', 'h'); e('ib', 'c14', 'h', 'Take over'); e('c14', 'c15', 'h', 'Hand back');
+e('st', 'c16', 'h'); e('c16', 'c17', 'h', 'START');
+const KS = {
+act: 'background: #0B1220; color: #FFFFFF; border-radius: 14px;',
+msg: 'background: #FFFFFF; border: 1.5px solid #A9B8CF; border-radius: 12px;',
+tpl: 'background: #FFFFFF; border: 1.5px solid #B45309; border-radius: 12px;',
+dec: 'background: #FFF8E6; border: 1.5px solid #D4A72C; border-radius: 26px; text-align: center; align-items: center;',
+sys: 'background: #F4F7FB; border: 1.5px dashed #6B7891; border-radius: 12px; color: #33405A;'
+};
+const PS = { TEXT: 'background: #EEF2F8; color: #33405A;', BUTTONS: 'background: #EEF4FE; color: #0B3A80;', LIST: 'background: #E6F6EF; color: #0B4D36;', TEMPLATE: 'background: #FFF4E0; color: #6B3F00;' };
+const top = 0;
+const nodes = Object.keys(N).map((k) => { const n = N[k]; return { x: n.x, y: n.y, w: n.w, h: n.h, st: KS[n.kind], t: n.t, id: n.id, type: n.type, hasId: !!n.id, ps: PS[n.type] || '', fw: n.kind === 'msg' || n.kind === 'tpl' ? '600' : '500' }; });
+// shift paths/labels down by 40 to leave room for band titles
+const fix = (arr) => arr.join(' ');
+return {
+W: 2560, H: 1370,
+alt: 'Conversation map with six lanes: entry and routing, booking, reminders, changing, cancelling, and person or opt-out. Each step lists the message ID from the library.',
+bands: [
+{ k: 'ENTRY', t: 'First message and routing', s: 'Keywords, hours, media, new or known', y: 0, h: 300, ty: 16, bg: '#F8FAFD' },
+{ k: 'FLOW 1', t: 'Book', s: 'Service → day → time → confirm', y: 310, h: 290, ty: 326, bg: '#F2F6FC' },
+{ k: 'REMINDERS', t: 'Day before', s: 'Templates, sent first', y: 610, h: 170, ty: 626, bg: '#FFF9EE' },
+{ k: 'FLOW 2', t: 'Change', s: 'From a reminder or any time', y: 790, h: 170, ty: 806, bg: '#F8FAFD' },
+{ k: 'CANCEL', t: 'Cancel', s: 'With the late window', y: 970, h: 200, ty: 986, bg: '#F2F6FC' },
+{ k: 'FLOW 3', t: 'A person, and opt-out', s: 'Any step, any time', y: 1180, h: 180, ty: 1196, bg: '#F8FAFD' }
+],
+nodes: nodes, paths: fix(P), dashed: fix(D), heads: fix(A),
+labels: L,
+qas: [
+{ n: 'QUESTION 1', q: 'Choosing a day: list of days, or Tomorrow / Saturday / Pick another day?', a: 'A list of the next open days (B04). It never offers a closed or full day, shows how many times are open, and is one tap. Three buttons hide the useful days behind “Pick another day”.' },
+{ n: 'QUESTION 2', q: 'WhatsApp bookings vs ones typed in by the owner?', a: 'A small chat icon on WhatsApp bookings only; hand-entered ones have no mark. The panel says the source in words (“Booked on WhatsApp · Mon 19:42” or “Added by Lerato”). No extra colours.' },
+{ n: 'QUESTION 3', q: 'In the inbox, who is talking, and is the bot paused?', a: 'Every message carries a label: Assistant, the staff member’s name, or the client. When someone takes over, a full-width strip says “You’re replying · assistant paused” with Hand back. (Inbox is P2; the rule is set here.)' },
+{ n: 'QUESTION 4', q: 'Warning that a chat has passed the 24-hour window?', a: 'A neutral clock chip, not a red error: “Reply window: 3 h left”, then “Window closed · you can send a template”. The reply box swaps to a template picker.' },
+{ n: 'QUESTION 5', q: 'Demo page: live simulator or guided story? QR code?', a: 'A guided story you drive by tapping the same buttons a client would, with Next for people who just watch. The calendar fills as you go. A “Try it on your phone” card has a QR code for [demo number].' },
+{ n: 'QUESTION 6', q: 'How much AI reasoning should the client see?', a: 'None. It shows only what it understood, in the same summary format as the confirm message (B14), and waits for a tap. If anything is unclear it asks one question or falls back to buttons.' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

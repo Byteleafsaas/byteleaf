@@ -6,21 +6,22 @@ export type Button = { id: string; title: string };
 export type Row = { id: string; title: string; description?: string };
 
 export type OutText = { type: 'text'; body: string };
-export type OutButtons = { type: 'buttons'; body: string; buttons: Button[] };
-export type OutList = { type: 'list'; body: string; button: string; rows: Row[] };
+export type OutButtons = { type: 'buttons'; body: string; footer?: string; buttons: Button[] };
+export type OutList = { type: 'list'; body: string; footer?: string; button: string; rows: Row[] };
 export type Out = OutText | OutButtons | OutList;
 
 /** What the customer did: typed something, or tapped a button or list row. */
-export type Input = { type: 'text'; text: string } | { type: 'reply'; id: string; title?: string };
+export type Input = { type: 'text'; text: string } | { type: 'reply'; id: string; title?: string } | { type: 'media'; kind: string };
 
 // WhatsApp's limits for interactive messages. Anything over them is rejected by WhatsApp, so we check before sending.
-export const LIMITS = { body: 1024, buttons: 3, buttonTitle: 20, listRows: 10, rowTitle: 24, rowDescription: 72, listButton: 20 } as const;
+export const LIMITS = { body: 1024, buttons: 3, buttonTitle: 20, listRows: 10, rowTitle: 24, rowDescription: 72, listButton: 20, footer: 60 } as const;
 
 /** Problems that would make WhatsApp reject a message. Empty when it is fine. */
 export function validateOut(m: Out): string[] {
   const p: string[] = [];
   if (!m.body.trim()) p.push('The message has no text.');
   if (m.body.length > LIMITS.body) p.push(`The text is ${m.body.length} characters; the limit is ${LIMITS.body}.`);
+  if ((m.type === 'buttons' || m.type === 'list') && (m.footer?.length ?? 0) > LIMITS.footer) p.push(`The footer is over ${LIMITS.footer} characters.`);
   if (m.type === 'buttons') {
     if (m.buttons.length < 1 || m.buttons.length > LIMITS.buttons) p.push(`A message needs 1 to ${LIMITS.buttons} buttons, not ${m.buttons.length}.`);
     for (const b of m.buttons) if (b.title.length > LIMITS.buttonTitle) p.push(`Button "${b.title}" is ${b.title.length} characters; the limit is ${LIMITS.buttonTitle}.`);

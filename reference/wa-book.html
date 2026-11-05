@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WhatsApp booking — Booking conversation</title>
+<!-- REFERENCE BUILD generated from design/WaBook.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.grid{columns:3 400px;column-gap:24px}
+.card{break-inside:avoid;margin:0 0 24px;background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.chat{background:#ECEFF3;padding:16px;display:flex;flex-direction:column;gap:8px}
+.bub{max-width:300px;padding:9px 12px 6px;font-size:15px;line-height:1.42;color:#0B1220;box-shadow:0 1px 1px rgba(11,18,32,.08)}
+.bub.biz{align-self:flex-start;background:#FFFFFF;border-radius:4px 14px 14px 14px}
+.bub.me{align-self:flex-end;background:#DCE6F4;border-radius:14px 4px 14px 14px}
+.bub.staff{align-self:flex-start;background:#FFFFFF;border-radius:4px 14px 14px 14px;border-left:3px solid #8B2F7E}
+.tm{display:block;text-align:right;font-size:11px;color:#6B7891;margin-top:2px}
+.btns{align-self:flex-start;width:300px;max-width:100%;display:flex;flex-direction:column;gap:3px;margin-top:-5px}
+.rb{display:flex;align-items:center;justify-content:center;gap:6px;min-height:38px;background:#FFFFFF;border-radius:10px;font-size:15px;font-weight:500;color:#1F5FAD;box-shadow:0 1px 1px rgba(11,18,32,.08)}
+.sheet{margin:0 16px 16px;border:1px solid #E3E9F2;border-radius:16px;overflow:hidden;background:#FFFFFF}
+.sr0{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid #EEF2F8}
+.radio{width:18px;height:18px;border-radius:50%;border:2px solid #A9B8CF;flex:none;box-sizing:border-box}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.spec{margin:0;padding:12px 16px 4px;display:flex;flex-direction:column}
+.spec div{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-top:1px solid #EEF2F8;font-size:13px}
+.spec div:first-child{border-top:0}
+.spec dt{flex:1;min-width:0;color:#33405A}
+.spec dd{margin:0;font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;white-space:nowrap}
+.var{background:#FFF4D6;border-bottom:2px dotted #B45309;border-radius:3px;padding:0 2px}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="padding: 48px; box-sizing: border-box; min-height: 100vh; background: #F4F7FB">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px 48px; margin-bottom: 32px">
+<div style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 10px">
+<span class="mono" style="font-size: 12px; letter-spacing: 0.08em; color: #0F5FCC">MESSAGE LIBRARY · FLOW 1</span>
+<h1 style="margin: 0; font-size: 40px; letter-spacing: -0.04em; font-weight: 600; line-height: 1.1">Booking conversation</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #33405A; max-width: 720px">Every message the client receives, as it reads on their phone. The chat is drawn in a neutral style: WhatsApp draws its own bubbles and buttons. Character counts are checked live against the limits, plus 30% headroom for isiZulu, Afrikaans and Sesotho.</p>
+</div>
+<div style="flex: 0 1 420px; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E9F2; font-size: 13px; line-height: 1.5">
+<span style="font-weight: 600; font-size: 14px">Limits used (WhatsApp Business Platform, checked Nov 2026)</span>
+<span><span class="pill" style="background: #EEF2F8; color: #33405A">TEXT</span> body 1024 · aim for under ~60 words</span>
+<span><span class="pill" style="background: #EEF4FE; color: #0B3A80">BUTTONS</span> max 3 · title 20</span>
+<span><span class="pill" style="background: #E6F6EF; color: #0B4D36">LIST</span> 1 button 20 · max 10 rows · title 24 · description 72</span>
+<span><span class="pill" style="background: #FFF4E0; color: #6B3F00">TEMPLATE</span> pre-approved · used outside the 24-hour window</span>
+<span>Header and footer: 60 each. <strong>OK</strong> = fits with +30% · <strong style="color: #8A5200">TIGHT</strong> = fits now, may not translate · <strong style="color: #B42318">OVER</strong> = too long</span>
+</div>
+</header>
+
+<sc-for list="{{sections}}" as="sec" hint-placeholder-count="2">
+<section style="margin-bottom: 24px">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin: 8px 0 16px">
+<h2 style="margin: 0; font-size: 24px; letter-spacing: -0.03em; font-weight: 600">{{sec.title}}</h2>
+<span style="font-size: 15px; color: #4B5872">{{sec.sub}}</span>
+</div>
+<div class="grid">
+<sc-for list="{{sec.cards}}" as="c" hint-placeholder-count="3">
+<article class="card" aria-labelledby="{{c.hid}}">
+<div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid #EEF2F8">
+<span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span class="mono" style="font-size: 12px; font-weight: 500">{{c.id}}</span><span class="pill" style="{{c.typeStyle}}">{{c.typeLabel}}</span><sc-if value="{{c.isTpl}}" hint-placeholder-val="{{ false }}"><span class="pill" style="{{c.tplStyle}}">{{c.tplStatus}}</span></sc-if></span>
+<h3 id="{{c.hid}}" style="margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em">{{c.name}}</h3>
+<span style="font-size: 13px; color: #4B5872; line-height: 1.45">{{c.when}}</span>
+</div>
+<div class="chat" aria-label="Preview">
+<sc-for list="{{c.before}}" as="b" hint-placeholder-count="1"><div class="bub me">{{b.t}}<span class="tm">{{b.time}}</span></div></sc-for>
+<div class="bub biz">
+<sc-if value="{{c.hasHeader}}" hint-placeholder-val="{{ false }}"><strong style="display: block; margin-bottom: 4px">{{c.header}}</strong></sc-if>
+<sc-for list="{{c.lines}}" as="l" hint-placeholder-count="3"><span style="display: block; min-height: 0.7em">{{l.pre}}<sc-for list="{{l.segs}}" as="s" hint-placeholder-count="2"><span style="{{s.st}}">{{s.t}}</span></sc-for></span></sc-for>
+<sc-if value="{{c.hasFooter}}" hint-placeholder-val="{{ false }}"><span style="display: block; margin-top: 6px; font-size: 13px; color: #6B7891">{{c.footer}}</span></sc-if>
+<span class="tm">{{c.time}}</span>
+</div>
+<sc-if value="{{c.hasBtns}}" hint-placeholder-val="{{ false }}">
+<div class="btns"><sc-for list="{{c.btns}}" as="b" hint-placeholder-count="3"><span class="rb">{{b}}</span></sc-for></div>
+</sc-if>
+<sc-if value="{{c.isList}}" hint-placeholder-val="{{ false }}">
+<div class="btns"><span class="rb"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg>{{c.listBtn}}</span></div>
+</sc-if>
+<sc-for list="{{c.after}}" as="a" hint-placeholder-count="1"><div class="bub staff"><span style="display: block; font-size: 12px; font-weight: 600; color: #7A2470; margin-bottom: 2px">{{a.who}}</span>{{a.t}}<span class="tm">{{a.time}}</span></div></sc-for>
+</div>
+<sc-if value="{{c.isList}}" hint-placeholder-val="{{ false }}">
+<div style="background: #ECEFF3; padding: 0 0 2px"><span class="mono" style="display: block; padding: 0 16px 8px; font-size: 11px; color: #4B5872">WHEN “{{c.listBtnUp}}” IS TAPPED</span>
+<div class="sheet" role="list">
+<div style="padding: 12px 14px; font-weight: 600; font-size: 15px; text-align: center">{{c.listBtn}}</div>
+<sc-for list="{{c.rows}}" as="r" hint-placeholder-count="4"><div class="sr0" role="listitem"><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px">{{r.t}}</span><sc-if value="{{r.hasD}}" hint-placeholder-val="{{ true }}"><span style="font-size: 13px; color: #4B5872">{{r.d}}</span></sc-if></span><span class="radio" aria-hidden="true"></span></div></sc-for>
+</div></div>
+</sc-if>
+<sc-if value="{{c.isTpl}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 14px 16px 0; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="font-weight: 600">Template <span class="mono" style="font-weight: 400">{{c.tplName}}</span></span><span style="color: #4B5872">{{c.tplCat}}</span></span>
+<pre class="mono" style="margin: 0; white-space: pre-wrap; font-size: 12px; line-height: 1.55; padding: 10px 12px; border-radius: 10px; background: #F4F7FB; color: #33405A">{{c.tplRaw}}</pre>
+<span style="font-size: 12px; color: #4B5872; line-height: 1.5">Sample values: {{c.tplVars}}</span>
+</div>
+</sc-if>
+<dl class="spec" aria-label="Character counts">
+<sc-for list="{{c.spec}}" as="s" hint-placeholder-count="4"><div><dt>{{s.k}}</dt><dd>{{s.v}}</dd><dd style="min-width: 44px; text-align: right; font-weight: 600; color: {{s.c}}">{{s.st}}</dd></div></sc-for>
+</dl>
+<sc-if value="{{c.hasNote}}" hint-placeholder-val="{{ true }}"><p style="margin: 0; padding: 10px 16px 16px; font-size: 13px; line-height: 1.55; color: #33405A">{{c.note}}</p></sc-if>
+</article>
+</sc-for>
+</div>
+</section>
+</sc-for>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+data() {
+const PERSON = 'Reply PERSON to talk to us';
+const DAYS = [['Sat 7 Nov', 'Three times open'], ['Tue 10 Nov', 'Five times open'], ['Wed 11 Nov', 'Four times open'], ['Thu 12 Nov', 'Two times open'], ['Fri 13 Nov', 'Five times open'], ['Sat 14 Nov', 'One time open'], ['Later dates', 'Show the week after']];
+const book = [
+{ title: 'Booking a new appointment', sub: 'Flow 1 · first message to confirmation · the brief’s sample conversation, written out in full', cards: [
+{ id: 'B01', name: 'First message from someone new', when: 'Someone who has never messaged the salon sends anything. Asks for consent before we send reminders (POPIA).', type: 'buttons', before: [['Hi, I\'d like to book braids', '09:12']], body: "Hi! I'm the automated booking assistant for *Lerato's Braids & Beauty*. I can book, change or cancel appointments.\n\nMay we send your confirmations and reminders here on WhatsApp? Reply STOP at any time to stop. Privacy notice: [privacy link]", buttons: ['Yes, please', 'No reminders', 'Ask a person'], note: '“No reminders” still lets them book: we only send replies inside the 24-hour window and no templates. Their answer is stored on the client profile with the date.' },
+{ id: 'B02', name: 'Shortlist when the first message names a service', when: 'Their first message mentions a service (“braids”). We offer the closest matches as buttons.', type: 'buttons', body: 'Great. Which service would you like?', buttons: ['Knotless braids', "Kids' braids", 'Other services'], note: 'If nothing was named, we send B03 instead.' },
+{ id: 'B03', name: 'Choose a service', when: 'No service named yet, or they tapped “Other services”.', type: 'list', body: 'Which service would you like?', listBtn: 'See services', rows: [['Knotless braids', '4 hours · R 650'], ["Kids' braids", '2 hours · R 350'], ['Silk press', '1 hour 30 min · R 380'], ['Gel nails', '1 hour · R 280'], ['Ask a person', 'For anything not on this list']], footer: 'Prices are paid at the salon' },
+{ id: 'B04', name: 'Choose a day', when: 'A service is chosen. Lists only days with open times, soonest first, and skips days we’re closed.', type: 'list', body: '*Knotless braids* take about 4 hours and cost R 650.\n\nWhich day suits you?', listBtn: 'See days', rows: DAYS, footer: PERSON, note: 'Open question 1: a list of the next open days beats “Tomorrow / Saturday / Pick another day”. It never offers a full or closed day, and the row says how many times are open.' },
+{ id: 'B05', name: 'Choose a time', when: 'A day is chosen. Shows start and end, and who it’s with when there’s a choice.', type: 'list', body: 'These times are open on *Saturday 7 November*. Tap one to choose.', listBtn: 'See times', rows: [['08:00', 'Until 12:00 · with Lerato'], ['09:30', 'Until 13:30 · with Thandeka'], ['12:00', 'Until 16:00 · with Lerato'], ['Another day', 'Back to the list of days']], footer: PERSON },
+{ id: 'B06', name: 'Ask for a name (new clients only)', when: 'New client, and their WhatsApp profile name may not be their real name. The one place we ask them to type.', type: 'text', body: 'Thanks! What name should we put the booking under?', after: [], note: 'Skipped for returning clients. The reply is saved as the client’s name, not their WhatsApp profile name.' },
+{ id: 'B07', name: 'Confirm the booking', when: 'Service, day and time chosen. The slot is held for 5 minutes while they decide.', type: 'buttons', before: [['Lindiwe', '09:14']], body: 'Please confirm your booking:\n\n*Knotless braids* with Lerato\nSaturday 7 Nov, 08:00 to 12:00\nR 650, paid at the salon', buttons: ['Confirm', 'Change time', 'Cancel'], footer: PERSON },
+{ id: 'B08', name: 'Booked', when: 'They tapped Confirm. The booking appears in the calendar straight away.', type: 'text', before: [['Confirm', '09:15']], body: "You're booked, Lindiwe!\n\n*Knotless braids* with Lerato\nSaturday 7 Nov, 08:00 to 12:00\n[Salon address], Randburg\n\nWe'll remind you the day before. To change or cancel, just message us here.", note: 'Always repeats service, staff, day, start and end, and place. Never “see you soon” without the details.' }
+]},
+{ title: 'Other situations while booking', sub: 'States the brief asks for · each one ends in a tap, never a dead end', cards: [
+{ id: 'B09', name: 'Returning client', when: 'A known number messages again. Greets by name and offers the last booking again.', type: 'buttons', before: [['Hi', '10:02']], body: 'Welcome back, Lindiwe! Would you like to book *Knotless braids* with Lerato again?', buttons: ['Book the same', 'Something else', 'My bookings'] },
+{ id: 'B10', name: 'Slot taken while choosing', when: 'Someone else booked the time between list and confirm (or the 5-minute hold ran out).', type: 'list', before: [['08:00', '09:14']], body: 'Sorry, *08:00 on Saturday 7 Nov* was booked by someone else a moment ago. These times are still open:', listBtn: 'See times', rows: [['09:30', 'Until 13:30 · with Thandeka'], ['12:00', 'Until 16:00 · with Lerato'], ['Another day', 'Back to the list of days']], footer: PERSON },
+{ id: 'B11', name: 'Nothing free this week', when: 'No openings in the next 7 days for this service.', type: 'list', body: 'Knotless braids are fully booked this week. The next open times are:', listBtn: 'See times', rows: [['Tue 10 Nov, 08:00', 'Until 12:00 · with Lerato'], ['Tue 10 Nov, 10:30', 'Until 14:30 · with Thandeka'], ['Wed 11 Nov, 08:00', 'Until 12:00 · with Lerato'], ['Later dates', 'Show the week after'], ['Ask a person', 'We sometimes have cancellations']] },
+{ id: 'B12', name: 'A day we’re closed', when: 'They type a day the salon is closed (Sunday, Monday, a public holiday or the owner’s time off).', type: 'buttons', before: [['Can I come on Monday?', '11:20']], body: "We're closed on Mondays. The closest open day is *Tuesday 10 November*.", buttons: ['Tue 10 Nov', 'See open days', 'Ask a person'] },
+{ id: 'B13', name: 'A date in the past', when: 'They type a date that has already passed.', type: 'buttons', before: [['the 3rd?', '11:24']], body: '3 November has already passed. Did you mean a date coming up?', buttons: ['See open days', 'Ask a person'] },
+{ id: 'B14', name: 'Typed request understood (AI)', when: 'The AI is confident about service and day. It repeats what it understood and waits for a tap. It never books from a guess.', type: 'buttons', before: [['can i get braids sat morning', '12:01']], body: 'Just to check, I understood:\n\n*Knotless braids*\nSaturday 7 Nov, in the morning\n\nThe first open morning time is 08:00.', buttons: ['Book 08:00', 'Other times', 'Not right'], note: 'Open question 6: show only what it understood, as the same short summary we use to confirm, with no explanation of how. “Not right” falls back to the service list.' },
+{ id: 'B15', name: 'Typed request not understood (AI)', when: 'The AI is unsure, or the message isn’t about bookings.', type: 'buttons', before: [['can u do the thing from last time but shorter', '12:05']], body: "Sorry, I didn't quite understand that. What would you like to do?", buttons: ['Book', 'My bookings', 'Ask a person'] },
+{ id: 'B16', name: 'Voice note, photo or sticker', when: 'Anything that isn’t text or a tap. The owner still sees the media in the inbox.', type: 'buttons', before: [['[Voice message · 0:14]', '13:40']], body: "Thanks! I can't listen to voice notes or open photos and stickers. Please tap an option below or type a short message.", buttons: ['Book', 'My bookings', 'Ask a person'] },
+{ id: 'B17', name: 'Message outside opening hours', when: 'A message arrives when the salon is closed. Booking still works; a person replies later.', type: 'buttons', before: [['Hi are you open tomorrow?', '21:40']], body: "Hi! The salon is closed right now. We're open Tuesday to Friday 08:00–18:00 and Saturday 08:00–16:00.\n\nI can book you in now, or someone will reply when we open.", buttons: ['Book now', 'Wait for reply'], time: '21:40' }
+]}
+];
+const change = [
+{ title: 'Reminders and other templates', sub: 'We send these first, so they must be approved templates · statuses are examples for the Messages screen', cards: [
+{ id: 'C01', name: 'Reminder, the day before', when: 'Sent at 18:00 the day before (setting). Outside the 24-hour window, so it’s a template with quick-reply buttons.', type: 'template', tplName: 'appointment_reminder', tplCat: 'Utility', tplStatus: 'APPROVED', raw: "Hi {{1}}, this is a reminder of your {{2}} appointment at Lerato's Braids & Beauty tomorrow, {{3}}, at {{4}}.\n\nCan you still make it?", vars: ['Lindiwe', 'Knotless braids', 'Saturday 7 Nov', '08:00'], buttons: ['Confirm', 'Change time', 'Cancel'], footer: 'Reply STOP to opt out', time: '18:00' },
+{ id: 'C02', name: 'Reminder confirmed', when: 'They tapped Confirm on C01. The booking shows “Confirmed” in the calendar.', type: 'text', before: [['Confirm', '18:22']], body: 'Thanks, Lindiwe. See you tomorrow at 08:00!' },
+{ id: 'C03', name: 'Reminder for a clinic (neutral wording)', when: 'Clinic variant. Names the practitioner, never the reason for the visit.', type: 'template', tplName: 'appointment_reminder_clinic', tplCat: 'Utility', tplStatus: 'PENDING', raw: 'Hi {{1}}, a reminder of your appointment with {{2}} tomorrow, {{3}}, at {{4}}. Reply to confirm or change.', vars: ['Thabo', 'Dr [name]', 'Tuesday 10 Nov', '14:30'], buttons: ['Confirm', 'Change time', 'Cancel'], footer: 'Reply STOP to opt out', time: '18:00', note: 'No diagnosis, treatment or service name, ever. The admin shows clinic services as “Appointment” in all client messages.' },
+{ id: 'C04', name: 'Booking made by the salon', when: 'The owner adds or moves a booking by hand and the client’s 24-hour window is closed.', type: 'template', tplName: 'booking_confirmed_by_salon', tplCat: 'Utility', tplStatus: 'APPROVED', raw: "Hi {{1}}, Lerato's Braids & Beauty has booked your {{2}} for {{3}} at {{4}}. Reply here if you need to change it.", vars: ['Ayanda', 'Silk press', 'Friday 6 Nov', '14:00'], buttons: ['Confirm', 'Change time'], time: '10:05' },
+{ id: 'C05', name: 'Rejected template (example)', when: 'What the Messages screen shows when WhatsApp rejects a template. This draft started with a variable, which isn’t allowed.', type: 'template', tplName: 'booking_moved_v1', tplCat: 'Utility', tplStatus: 'REJECTED', raw: '{{1}}, your booking has moved to {{2}} at {{3}}.', vars: ['Lindiwe', 'Tuesday 10 Nov', '10:30'], time: '—', note: 'Fixed in booking_moved_v2: “Hi {{1}}, your booking at Lerato’s Braids & Beauty has moved to {{2}} at {{3}}.” (pending)' }
+]},
+{ title: 'Changing a booking', sub: 'Flow 2 · from the reminder to the new confirmation · the owner sees the move instantly', cards: [
+{ id: 'C06', name: 'Pick a new day', when: 'They tapped “Change time”, or wrote “can I change my booking”.', type: 'list', before: [['Change time', '18:24']], body: 'No problem. Which day would you like instead?', listBtn: 'See days', rows: [['Tue 10 Nov', 'Five times open'], ['Wed 11 Nov', 'Four times open'], ['Thu 12 Nov', 'Two times open'], ['Fri 13 Nov', 'Five times open'], ['Keep my booking', 'Sat 7 Nov, 08:00']], footer: PERSON },
+{ id: 'C07', name: 'Pick a new time', when: 'A day is chosen.', type: 'list', body: 'These times are open on *Tuesday 10 November*:', listBtn: 'See times', rows: [['08:00', 'Until 12:00 · with Lerato'], ['10:30', 'Until 14:30 · with Lerato'], ['13:00', 'Until 17:00 · with Thandeka'], ['Another day', 'Back to the list of days']], footer: PERSON },
+{ id: 'C08', name: 'Confirm the change', when: 'Shows old and new side by side. The old time is only released after they confirm.', type: 'buttons', before: [['10:30', '18:25']], body: 'Please confirm the change:\n\nWas: Sat 7 Nov, 08:00\nNow: *Tue 10 Nov, 10:30 to 14:30*\n\nKnotless braids with Lerato', buttons: ['Confirm change', 'Keep old time', 'Another time'] },
+{ id: 'C09', name: 'Changed', when: 'They confirmed. The calendar moves the block and marks it “Moved by client”.', type: 'text', before: [['Confirm change', '18:25']], body: "Done! You're now booked for *Tuesday 10 November, 10:30 to 14:30*.\n\nKnotless braids with Lerato. We'll remind you the day before." }
+]},
+{ title: 'Cancelling', sub: 'Including the late-cancellation window (24 hours, a booking rule)', cards: [
+{ id: 'C10', name: 'Confirm the cancellation', when: 'They tapped Cancel, or wrote that they can’t make it.', type: 'buttons', before: [['Cancel', '09:02']], body: 'Cancel your *Knotless braids* on Saturday 7 Nov at 08:00?', buttons: ['Yes, cancel', 'Keep it', 'Change time'] },
+{ id: 'C11', name: 'Cancelled', when: 'They confirmed. The time is freed and offered to others.', type: 'text', before: [['Yes, cancel', '09:03']], body: 'Your booking for Saturday 7 Nov at 08:00 is cancelled. Message us any time to book again.' },
+{ id: 'C12', name: 'Cancelling inside the late window', when: 'Less than 24 hours before the start. States the fee once, plainly, and still offers to move instead.', type: 'buttons', before: [['Cancel', '19:10']], body: 'Your appointment is in less than 24 hours. Our policy has a late-cancellation fee of R [amount] for this.\n\nDo you still want to cancel?', buttons: ['Cancel anyway', 'Change time', 'Keep it'], footer: PERSON, note: 'We never take payment in the chat. The fee is noted on the client profile for the owner to handle.' }
+]},
+{ title: 'A person, and opting out', sub: 'Flow 3 · the client can always reach someone, and stop messages at any time', cards: [
+{ id: 'C13', name: 'Client asks for a person', when: 'They tap “Ask a person”, type PERSON, or ask for someone. The bot pauses and the inbox flags the chat.', type: 'text', before: [['can I speak to someone please', '10:41']], body: "Sure. I've asked the team to reply here. During opening hours someone usually answers within [time].\n\nYou can keep typing in the meantime." },
+{ id: 'C14', name: 'A person takes over', when: 'The owner taps “Take over” in the inbox. One line from the bot, then the owner writes as themselves.', type: 'text', body: "You're now chatting with *Lerato* from the salon.", after: [['Lerato · salon', 'Hi Lindiwe, Lerato here. Yes, I can do a shorter style on Saturday. It takes about 3 hours.', '10:44']] },
+{ id: 'C15', name: 'Handed back to the assistant', when: 'The owner taps “Hand back”. The bot picks up with a menu.', type: 'buttons', body: "Lerato has handed you back to the booking assistant. Anything else I can help with?", buttons: ['Book', 'My bookings', 'No, thanks'] },
+{ id: 'C16', name: 'Client replies STOP', when: 'Any message that is just STOP (also STOPP, UNSUBSCRIBE). Stored on the profile with the date.', type: 'text', before: [['STOP', '20:15']], body: "Done. We won't send you any more reminders or messages. Your booking on Saturday 7 Nov at 08:00 is still in place.\n\nTo get messages again, reply START.", note: 'After STOP we never send templates. If they message us first, the assistant still answers inside the 24-hour window.' },
+{ id: 'C17', name: 'Client replies START', when: 'They opt back in.', type: 'text', before: [['START', '08:30']], body: "Welcome back. We'll send your confirmations and reminders here again." }
+]}
+];
+return 'book' === 'book' ? book : change;
+}
+renderVals() {
+const TYPES = { text: ['TEXT', 'background: #EEF2F8; color: #33405A;'], buttons: ['BUTTONS', 'background: #EEF4FE; color: #0B3A80;'], list: ['LIST', 'background: #E6F6EF; color: #0B4D36;'], template: ['TEMPLATE', 'background: #FFF4E0; color: #6B3F00;'] };
+const TS = { APPROVED: 'background: #E6F6EF; color: #0B6B4B;', PENDING: 'background: #FFF4E0; color: #8A5200;', REJECTED: 'background: #FEF3F2; color: #912018;' };
+const chk = (k, s, max) => { const n = s.length; const st = n > max ? 'OVER' : n * 1.3 > max ? 'TIGHT' : 'OK'; return { k: k, v: n + ' / ' + max, st: st, c: st === 'OVER' ? '#B42318' : st === 'TIGHT' ? '#8A5200' : '#0B6B4B' }; };
+const segs = (line) => line.split('*').map((t, i) => ({ t: t, st: i % 2 ? 'font-weight: 600;' : '' })).filter((s) => s.t);
+const fill = (raw, vars) => raw.replace(/\{\{(\d)\}\}/g, (m, d) => vars[+d - 1]);
+let n = 0;
+return {
+sections: this.data().map((sec) => ({ title: sec.title, sub: sec.sub, cards: sec.cards.map((c) => {
+const body = c.type === 'template' ? fill(c.raw, c.vars) : c.body;
+const spec = [];
+spec.push(chk(c.type === 'template' ? 'Template body (as submitted)' : 'Body', c.type === 'template' ? c.raw : c.body, 1024));
+const words = body.replace(/\*/g, '').split(/\s+/).filter(Boolean).length;
+spec.push({ k: 'Words', v: words + ' / ~60', st: words > 60 ? 'LONG' : 'OK', c: words > 60 ? '#8A5200' : '#0B6B4B' });
+if (c.footer) spec.push(chk('Footer', c.footer, 60));
+(c.buttons || []).forEach((b, i) => spec.push(chk('Button ' + (i + 1) + ' “' + b + '”', b, 20)));
+if (c.type === 'list') { spec.push(chk('List button “' + c.listBtn + '”', c.listBtn, 20)); spec.push({ k: 'Rows', v: c.rows.length + ' / 10', st: c.rows.length > 10 ? 'OVER' : 'OK', c: c.rows.length > 10 ? '#B42318' : '#0B6B4B' }); c.rows.forEach((r) => { spec.push(chk('Row “' + r[0] + '”', r[0], 24)); if (r[1]) spec.push(chk('   description', r[1], 72)); }); }
+const time = c.time || (c.before && c.before.length ? c.before[c.before.length - 1][1] : '09:12');
+n++;
+const lines = body.split('\n').map((l) => {
+if (c.type !== 'template') return { pre: '', segs: segs(l) };
+return { pre: '', segs: segs(l) };
+});
+return {
+id: c.id, hid: 'm-' + c.id, name: c.name, when: c.when, typeLabel: TYPES[c.type][0], typeStyle: TYPES[c.type][1],
+isTpl: c.type === 'template', tplStatus: c.tplStatus || '', tplStyle: TS[c.tplStatus] || '', tplName: c.tplName || '', tplCat: c.tplCat ? c.tplCat + ' category' : '', tplRaw: c.raw || '', tplVars: c.vars ? c.vars.map((v, i) => '{{' + (i + 1) + '}} = ' + v).join(' · ') : '',
+before: (c.before || []).map((b) => ({ t: b[0], time: b[1] })),
+after: (c.after || []).map((a) => ({ who: a[0], t: a[1], time: a[2] })),
+hasHeader: !!c.header, header: c.header || '',
+lines: lines, hasFooter: !!c.footer, footer: c.footer || '', time: time,
+hasBtns: !!(c.buttons && c.buttons.length), btns: c.buttons || [],
+isList: c.type === 'list', listBtn: c.listBtn || '', listBtnUp: (c.listBtn || '').toUpperCase(), rows: (c.rows || []).map((r) => ({ t: r[0], d: r[1] || '', hasD: !!r[1] })),
+spec: spec, hasNote: !!c.note, note: c.note || ''
+};
+}) }))
+};
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+    if (window.__mounted && comp.componentDidUpdate) comp.componentDidUpdate();
+    if (!window.__mounted) { window.__mounted = true; if (comp.componentDidMount) comp.componentDidMount(); }
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # byteleaf website: developer handoff
 
-> **Three parts.** This file covers the public website. The admin area (sign-in, bookings, messages, projects, settings, **quotes & invoices + PDF**) is specified in **`HANDOFF-ADMIN.md`**. Showcase project 1, the **business knowledge chatbot** (demo page, embeddable widget, staff assistant and its admin), is specified in **`HANDOFF-CHATBOT.md`**. Read this file first; its rules apply to all three.
+> **Four parts.** This file covers the public website. The admin area (sign-in, bookings, messages, projects, settings, **quotes & invoices + PDF**) is specified in **`HANDOFF-ADMIN.md`**. Showcase project 1, the **business knowledge chatbot**, is in **`HANDOFF-CHATBOT.md`**. Showcase project 2, the **WhatsApp booking assistant** (conversation, owner calendar, services, hours, re-skin and demo page), is in **`HANDOFF-WHATSAPP.md`**. Read this file first; its rules apply to all four.
 
 **Build target:** Next.js (App Router) + TypeScript + **vanilla CSS**
 **Fidelity:** 100% match to the approved design at desktop, tablet and mobile
@@ -26,10 +26,13 @@ byteleaf/
 ├── HANDOFF.md                 ← this file
 ├── HANDOFF-ADMIN.md           ← part 2: admin, quotes & invoices, PDF
 ├── HANDOFF-CHATBOT.md         ← part 3: showcase project 1, knowledge chatbot
+├── HANDOFF-WHATSAPP.md        ← part 4: showcase project 2, WhatsApp booking assistant
+├── whatsapp/messages.json     ← every WhatsApp message as data (part 4)
 ├── reference/                 ← SOURCE OF TRUTH: runnable static build of the design
 │   ├── home.html  services.html  process.html  projects.html  about.html  contact.html  book.html
 │   ├── admin-*.html             admin screens (see HANDOFF-ADMIN.md)
 │   ├── chatbot-*.html           chatbot screens (see HANDOFF-CHATBOT.md)
+│   ├── wa-*.html                WhatsApp booking screens (see HANDOFF-WHATSAPP.md)
 │   └── billing-document-pdf.html  A4 quote/invoice template
 ├── screenshots/               ← full-page captures (nothing cut off)
 │   ├── <page>-desktop.png     1440px wide, 1x
@@ -40,7 +43,9 @@ byteleaf/
 │   ├── admin-*.png, state-admin-*.png, pdf-*.png   admin & PDF captures
 │   ├── _audit-admin.json      overflow audit (admin)
 │   ├── chatbot-*.png, state-{widget,demo,sources,add-source,review,test,staff,unanswered,settings}-*.png   chatbot captures
-│   └── _audit-chatbot.json    overflow audit (chatbot)
+│   ├── _audit-chatbot.json    overflow audit (chatbot)
+│   ├── wa-*.png, state-wa-*.png   WhatsApp booking captures
+│   └── _audit-whatsapp.json   overflow audit (WhatsApp booking)
 ├── assets/
 │   ├── globals.starter.css    design tokens, buttons, header, cards, keyframes (ready to use)
 │   ├── logo-mark.svg          32×32 app-icon logo (blue tile + leaf)

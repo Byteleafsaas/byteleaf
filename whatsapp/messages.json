@@ -1,0 +1,661 @@
+{
+  "source": "Message library · WhatsApp booking assistant · Lerato's Braids & Beauty (demo)",
+  "limits": {
+    "body": 1024,
+    "buttons": 3,
+    "buttonTitle": 20,
+    "listButton": 20,
+    "listRows": 10,
+    "rowTitle": 24,
+    "rowDescription": 72,
+    "header": 60,
+    "footer": 60,
+    "translationHeadroom": 0.3
+  },
+  "note": "Text between *asterisks* is WhatsApp bold. [Square brackets] are placeholders to keep. Templates use {{n}} variables; sample values are given.",
+  "messages": [
+    {
+      "id": "B01",
+      "flow": "Booking a new appointment",
+      "name": "First message from someone new",
+      "trigger": "Someone who has never messaged the salon sends anything. Asks for consent before we send reminders (POPIA).",
+      "type": "buttons",
+      "body": "Hi! I'm the automated booking assistant for *Lerato's Braids & Beauty*. I can book, change or cancel appointments.\n\nMay we send your confirmations and reminders here on WhatsApp? Reply STOP at any time to stop. Privacy notice: [privacy link]",
+      "buttons": [
+        "Yes, please",
+        "No reminders",
+        "Ask a person"
+      ],
+      "clientSaidBefore": [
+        "Hi, I'd like to book braids"
+      ],
+      "note": "“No reminders” still lets them book: we only send replies inside the 24-hour window and no templates. Their answer is stored on the client profile with the date."
+    },
+    {
+      "id": "B02",
+      "flow": "Booking a new appointment",
+      "name": "Shortlist when the first message names a service",
+      "trigger": "Their first message mentions a service (“braids”). We offer the closest matches as buttons.",
+      "type": "buttons",
+      "body": "Great. Which service would you like?",
+      "buttons": [
+        "Knotless braids",
+        "Kids' braids",
+        "Other services"
+      ],
+      "note": "If nothing was named, we send B03 instead."
+    },
+    {
+      "id": "B03",
+      "flow": "Booking a new appointment",
+      "name": "Choose a service",
+      "trigger": "No service named yet, or they tapped “Other services”.",
+      "type": "list",
+      "body": "Which service would you like?",
+      "footer": "Prices are paid at the salon",
+      "listButton": "See services",
+      "rows": [
+        {
+          "title": "Knotless braids",
+          "description": "4 hours · R 650"
+        },
+        {
+          "title": "Kids' braids",
+          "description": "2 hours · R 350"
+        },
+        {
+          "title": "Silk press",
+          "description": "1 hour 30 min · R 380"
+        },
+        {
+          "title": "Gel nails",
+          "description": "1 hour · R 280"
+        },
+        {
+          "title": "Ask a person",
+          "description": "For anything not on this list"
+        }
+      ]
+    },
+    {
+      "id": "B04",
+      "flow": "Booking a new appointment",
+      "name": "Choose a day",
+      "trigger": "A service is chosen. Lists only days with open times, soonest first, and skips days we’re closed.",
+      "type": "list",
+      "body": "*Knotless braids* take about 4 hours and cost R 650.\n\nWhich day suits you?",
+      "footer": "Reply PERSON to talk to us",
+      "listButton": "See days",
+      "rows": [
+        {
+          "title": "Sat 7 Nov",
+          "description": "Three times open"
+        },
+        {
+          "title": "Tue 10 Nov",
+          "description": "Five times open"
+        },
+        {
+          "title": "Wed 11 Nov",
+          "description": "Four times open"
+        },
+        {
+          "title": "Thu 12 Nov",
+          "description": "Two times open"
+        },
+        {
+          "title": "Fri 13 Nov",
+          "description": "Five times open"
+        },
+        {
+          "title": "Sat 14 Nov",
+          "description": "One time open"
+        },
+        {
+          "title": "Later dates",
+          "description": "Show the week after"
+        }
+      ],
+      "note": "Open question 1: a list of the next open days beats “Tomorrow / Saturday / Pick another day”. It never offers a full or closed day, and the row says how many times are open."
+    },
+    {
+      "id": "B05",
+      "flow": "Booking a new appointment",
+      "name": "Choose a time",
+      "trigger": "A day is chosen. Shows start and end, and who it’s with when there’s a choice.",
+      "type": "list",
+      "body": "These times are open on *Saturday 7 November*. Tap one to choose.",
+      "footer": "Reply PERSON to talk to us",
+      "listButton": "See times",
+      "rows": [
+        {
+          "title": "08:00",
+          "description": "Until 12:00 · with Lerato"
+        },
+        {
+          "title": "09:30",
+          "description": "Until 13:30 · with Thandeka"
+        },
+        {
+          "title": "12:00",
+          "description": "Until 16:00 · with Lerato"
+        },
+        {
+          "title": "Another day",
+          "description": "Back to the list of days"
+        }
+      ]
+    },
+    {
+      "id": "B06",
+      "flow": "Booking a new appointment",
+      "name": "Ask for a name (new clients only)",
+      "trigger": "New client, and their WhatsApp profile name may not be their real name. The one place we ask them to type.",
+      "type": "text",
+      "body": "Thanks! What name should we put the booking under?",
+      "note": "Skipped for returning clients. The reply is saved as the client’s name, not their WhatsApp profile name."
+    },
+    {
+      "id": "B07",
+      "flow": "Booking a new appointment",
+      "name": "Confirm the booking",
+      "trigger": "Service, day and time chosen. The slot is held for 5 minutes while they decide.",
+      "type": "buttons",
+      "body": "Please confirm your booking:\n\n*Knotless braids* with Lerato\nSaturday 7 Nov, 08:00 to 12:00\nR 650, paid at the salon",
+      "footer": "Reply PERSON to talk to us",
+      "buttons": [
+        "Confirm",
+        "Change time",
+        "Cancel"
+      ],
+      "clientSaidBefore": [
+        "Lindiwe"
+      ]
+    },
+    {
+      "id": "B08",
+      "flow": "Booking a new appointment",
+      "name": "Booked",
+      "trigger": "They tapped Confirm. The booking appears in the calendar straight away.",
+      "type": "text",
+      "body": "You're booked, Lindiwe!\n\n*Knotless braids* with Lerato\nSaturday 7 Nov, 08:00 to 12:00\n[Salon address], Randburg\n\nWe'll remind you the day before. To change or cancel, just message us here.",
+      "clientSaidBefore": [
+        "Confirm"
+      ],
+      "note": "Always repeats service, staff, day, start and end, and place. Never “see you soon” without the details."
+    },
+    {
+      "id": "B09",
+      "flow": "Other situations while booking",
+      "name": "Returning client",
+      "trigger": "A known number messages again. Greets by name and offers the last booking again.",
+      "type": "buttons",
+      "body": "Welcome back, Lindiwe! Would you like to book *Knotless braids* with Lerato again?",
+      "buttons": [
+        "Book the same",
+        "Something else",
+        "My bookings"
+      ],
+      "clientSaidBefore": [
+        "Hi"
+      ]
+    },
+    {
+      "id": "B10",
+      "flow": "Other situations while booking",
+      "name": "Slot taken while choosing",
+      "trigger": "Someone else booked the time between list and confirm (or the 5-minute hold ran out).",
+      "type": "list",
+      "body": "Sorry, *08:00 on Saturday 7 Nov* was booked by someone else a moment ago. These times are still open:",
+      "footer": "Reply PERSON to talk to us",
+      "listButton": "See times",
+      "rows": [
+        {
+          "title": "09:30",
+          "description": "Until 13:30 · with Thandeka"
+        },
+        {
+          "title": "12:00",
+          "description": "Until 16:00 · with Lerato"
+        },
+        {
+          "title": "Another day",
+          "description": "Back to the list of days"
+        }
+      ],
+      "clientSaidBefore": [
+        "08:00"
+      ]
+    },
+    {
+      "id": "B11",
+      "flow": "Other situations while booking",
+      "name": "Nothing free this week",
+      "trigger": "No openings in the next 7 days for this service.",
+      "type": "list",
+      "body": "Knotless braids are fully booked this week. The next open times are:",
+      "listButton": "See times",
+      "rows": [
+        {
+          "title": "Tue 10 Nov, 08:00",
+          "description": "Until 12:00 · with Lerato"
+        },
+        {
+          "title": "Tue 10 Nov, 10:30",
+          "description": "Until 14:30 · with Thandeka"
+        },
+        {
+          "title": "Wed 11 Nov, 08:00",
+          "description": "Until 12:00 · with Lerato"
+        },
+        {
+          "title": "Later dates",
+          "description": "Show the week after"
+        },
+        {
+          "title": "Ask a person",
+          "description": "We sometimes have cancellations"
+        }
+      ]
+    },
+    {
+      "id": "B12",
+      "flow": "Other situations while booking",
+      "name": "A day we’re closed",
+      "trigger": "They type a day the salon is closed (Sunday, Monday, a public holiday or the owner’s time off).",
+      "type": "buttons",
+      "body": "We're closed on Mondays. The closest open day is *Tuesday 10 November*.",
+      "buttons": [
+        "Tue 10 Nov",
+        "See open days",
+        "Ask a person"
+      ],
+      "clientSaidBefore": [
+        "Can I come on Monday?"
+      ]
+    },
+    {
+      "id": "B13",
+      "flow": "Other situations while booking",
+      "name": "A date in the past",
+      "trigger": "They type a date that has already passed.",
+      "type": "buttons",
+      "body": "3 November has already passed. Did you mean a date coming up?",
+      "buttons": [
+        "See open days",
+        "Ask a person"
+      ],
+      "clientSaidBefore": [
+        "the 3rd?"
+      ]
+    },
+    {
+      "id": "B14",
+      "flow": "Other situations while booking",
+      "name": "Typed request understood (AI)",
+      "trigger": "The AI is confident about service and day. It repeats what it understood and waits for a tap. It never books from a guess.",
+      "type": "buttons",
+      "body": "Just to check, I understood:\n\n*Knotless braids*\nSaturday 7 Nov, in the morning\n\nThe first open morning time is 08:00.",
+      "buttons": [
+        "Book 08:00",
+        "Other times",
+        "Not right"
+      ],
+      "clientSaidBefore": [
+        "can i get braids sat morning"
+      ],
+      "note": "Open question 6: show only what it understood, as the same short summary we use to confirm, with no explanation of how. “Not right” falls back to the service list."
+    },
+    {
+      "id": "B15",
+      "flow": "Other situations while booking",
+      "name": "Typed request not understood (AI)",
+      "trigger": "The AI is unsure, or the message isn’t about bookings.",
+      "type": "buttons",
+      "body": "Sorry, I didn't quite understand that. What would you like to do?",
+      "buttons": [
+        "Book",
+        "My bookings",
+        "Ask a person"
+      ],
+      "clientSaidBefore": [
+        "can u do the thing from last time but shorter"
+      ]
+    },
+    {
+      "id": "B16",
+      "flow": "Other situations while booking",
+      "name": "Voice note, photo or sticker",
+      "trigger": "Anything that isn’t text or a tap. The owner still sees the media in the inbox.",
+      "type": "buttons",
+      "body": "Thanks! I can't listen to voice notes or open photos and stickers. Please tap an option below or type a short message.",
+      "buttons": [
+        "Book",
+        "My bookings",
+        "Ask a person"
+      ],
+      "clientSaidBefore": [
+        "[Voice message · 0:14]"
+      ]
+    },
+    {
+      "id": "B17",
+      "flow": "Other situations while booking",
+      "name": "Message outside opening hours",
+      "trigger": "A message arrives when the salon is closed. Booking still works; a person replies later.",
+      "type": "buttons",
+      "body": "Hi! The salon is closed right now. We're open Tuesday to Friday 08:00–18:00 and Saturday 08:00–16:00.\n\nI can book you in now, or someone will reply when we open.",
+      "buttons": [
+        "Book now",
+        "Wait for reply"
+      ],
+      "clientSaidBefore": [
+        "Hi are you open tomorrow?"
+      ]
+    },
+    {
+      "id": "C01",
+      "flow": "Reminders and other templates",
+      "name": "Reminder, the day before",
+      "trigger": "Sent at 18:00 the day before (setting). Outside the 24-hour window, so it’s a template with quick-reply buttons.",
+      "type": "template",
+      "template": {
+        "name": "appointment_reminder",
+        "category": "Utility",
+        "exampleStatus": "APPROVED",
+        "body": "Hi {{1}}, this is a reminder of your {{2}} appointment at Lerato's Braids & Beauty tomorrow, {{3}}, at {{4}}.\n\nCan you still make it?",
+        "sampleValues": [
+          "Lindiwe",
+          "Knotless braids",
+          "Saturday 7 Nov",
+          "08:00"
+        ],
+        "preview": "Hi Lindiwe, this is a reminder of your Knotless braids appointment at Lerato's Braids & Beauty tomorrow, Saturday 7 Nov, at 08:00.\n\nCan you still make it?"
+      },
+      "footer": "Reply STOP to opt out",
+      "buttons": [
+        "Confirm",
+        "Change time",
+        "Cancel"
+      ]
+    },
+    {
+      "id": "C02",
+      "flow": "Reminders and other templates",
+      "name": "Reminder confirmed",
+      "trigger": "They tapped Confirm on C01. The booking shows “Confirmed” in the calendar.",
+      "type": "text",
+      "body": "Thanks, Lindiwe. See you tomorrow at 08:00!",
+      "clientSaidBefore": [
+        "Confirm"
+      ]
+    },
+    {
+      "id": "C03",
+      "flow": "Reminders and other templates",
+      "name": "Reminder for a clinic (neutral wording)",
+      "trigger": "Clinic variant. Names the practitioner, never the reason for the visit.",
+      "type": "template",
+      "template": {
+        "name": "appointment_reminder_clinic",
+        "category": "Utility",
+        "exampleStatus": "PENDING",
+        "body": "Hi {{1}}, a reminder of your appointment with {{2}} tomorrow, {{3}}, at {{4}}. Reply to confirm or change.",
+        "sampleValues": [
+          "Thabo",
+          "Dr [name]",
+          "Tuesday 10 Nov",
+          "14:30"
+        ],
+        "preview": "Hi Thabo, a reminder of your appointment with Dr [name] tomorrow, Tuesday 10 Nov, at 14:30. Reply to confirm or change."
+      },
+      "footer": "Reply STOP to opt out",
+      "buttons": [
+        "Confirm",
+        "Change time",
+        "Cancel"
+      ],
+      "note": "No diagnosis, treatment or service name, ever. The admin shows clinic services as “Appointment” in all client messages."
+    },
+    {
+      "id": "C04",
+      "flow": "Reminders and other templates",
+      "name": "Booking made by the salon",
+      "trigger": "The owner adds or moves a booking by hand and the client’s 24-hour window is closed.",
+      "type": "template",
+      "template": {
+        "name": "booking_confirmed_by_salon",
+        "category": "Utility",
+        "exampleStatus": "APPROVED",
+        "body": "Hi {{1}}, Lerato's Braids & Beauty has booked your {{2}} for {{3}} at {{4}}. Reply here if you need to change it.",
+        "sampleValues": [
+          "Ayanda",
+          "Silk press",
+          "Friday 6 Nov",
+          "14:00"
+        ],
+        "preview": "Hi Ayanda, Lerato's Braids & Beauty has booked your Silk press for Friday 6 Nov at 14:00. Reply here if you need to change it."
+      },
+      "buttons": [
+        "Confirm",
+        "Change time"
+      ]
+    },
+    {
+      "id": "C05",
+      "flow": "Reminders and other templates",
+      "name": "Rejected template (example)",
+      "trigger": "What the Messages screen shows when WhatsApp rejects a template. This draft started with a variable, which isn’t allowed.",
+      "type": "template",
+      "template": {
+        "name": "booking_moved_v1",
+        "category": "Utility",
+        "exampleStatus": "REJECTED",
+        "body": "{{1}}, your booking has moved to {{2}} at {{3}}.",
+        "sampleValues": [
+          "Lindiwe",
+          "Tuesday 10 Nov",
+          "10:30"
+        ],
+        "preview": "Lindiwe, your booking has moved to Tuesday 10 Nov at 10:30."
+      },
+      "note": "Fixed in booking_moved_v2: “Hi {{1}}, your booking at Lerato’s Braids & Beauty has moved to {{2}} at {{3}}.” (pending)"
+    },
+    {
+      "id": "C06",
+      "flow": "Changing a booking",
+      "name": "Pick a new day",
+      "trigger": "They tapped “Change time”, or wrote “can I change my booking”.",
+      "type": "list",
+      "body": "No problem. Which day would you like instead?",
+      "footer": "Reply PERSON to talk to us",
+      "listButton": "See days",
+      "rows": [
+        {
+          "title": "Tue 10 Nov",
+          "description": "Five times open"
+        },
+        {
+          "title": "Wed 11 Nov",
+          "description": "Four times open"
+        },
+        {
+          "title": "Thu 12 Nov",
+          "description": "Two times open"
+        },
+        {
+          "title": "Fri 13 Nov",
+          "description": "Five times open"
+        },
+        {
+          "title": "Keep my booking",
+          "description": "Sat 7 Nov, 08:00"
+        }
+      ],
+      "clientSaidBefore": [
+        "Change time"
+      ]
+    },
+    {
+      "id": "C07",
+      "flow": "Changing a booking",
+      "name": "Pick a new time",
+      "trigger": "A day is chosen.",
+      "type": "list",
+      "body": "These times are open on *Tuesday 10 November*:",
+      "footer": "Reply PERSON to talk to us",
+      "listButton": "See times",
+      "rows": [
+        {
+          "title": "08:00",
+          "description": "Until 12:00 · with Lerato"
+        },
+        {
+          "title": "10:30",
+          "description": "Until 14:30 · with Lerato"
+        },
+        {
+          "title": "13:00",
+          "description": "Until 17:00 · with Thandeka"
+        },
+        {
+          "title": "Another day",
+          "description": "Back to the list of days"
+        }
+      ]
+    },
+    {
+      "id": "C08",
+      "flow": "Changing a booking",
+      "name": "Confirm the change",
+      "trigger": "Shows old and new side by side. The old time is only released after they confirm.",
+      "type": "buttons",
+      "body": "Please confirm the change:\n\nWas: Sat 7 Nov, 08:00\nNow: *Tue 10 Nov, 10:30 to 14:30*\n\nKnotless braids with Lerato",
+      "buttons": [
+        "Confirm change",
+        "Keep old time",
+        "Another time"
+      ],
+      "clientSaidBefore": [
+        "10:30"
+      ]
+    },
+    {
+      "id": "C09",
+      "flow": "Changing a booking",
+      "name": "Changed",
+      "trigger": "They confirmed. The calendar moves the block and marks it “Moved by client”.",
+      "type": "text",
+      "body": "Done! You're now booked for *Tuesday 10 November, 10:30 to 14:30*.\n\nKnotless braids with Lerato. We'll remind you the day before.",
+      "clientSaidBefore": [
+        "Confirm change"
+      ]
+    },
+    {
+      "id": "C10",
+      "flow": "Cancelling",
+      "name": "Confirm the cancellation",
+      "trigger": "They tapped Cancel, or wrote that they can’t make it.",
+      "type": "buttons",
+      "body": "Cancel your *Knotless braids* on Saturday 7 Nov at 08:00?",
+      "buttons": [
+        "Yes, cancel",
+        "Keep it",
+        "Change time"
+      ],
+      "clientSaidBefore": [
+        "Cancel"
+      ]
+    },
+    {
+      "id": "C11",
+      "flow": "Cancelling",
+      "name": "Cancelled",
+      "trigger": "They confirmed. The time is freed and offered to others.",
+      "type": "text",
+      "body": "Your booking for Saturday 7 Nov at 08:00 is cancelled. Message us any time to book again.",
+      "clientSaidBefore": [
+        "Yes, cancel"
+      ]
+    },
+    {
+      "id": "C12",
+      "flow": "Cancelling",
+      "name": "Cancelling inside the late window",
+      "trigger": "Less than 24 hours before the start. States the fee once, plainly, and still offers to move instead.",
+      "type": "buttons",
+      "body": "Your appointment is in less than 24 hours. Our policy has a late-cancellation fee of R [amount] for this.\n\nDo you still want to cancel?",
+      "footer": "Reply PERSON to talk to us",
+      "buttons": [
+        "Cancel anyway",
+        "Change time",
+        "Keep it"
+      ],
+      "clientSaidBefore": [
+        "Cancel"
+      ],
+      "note": "We never take payment in the chat. The fee is noted on the client profile for the owner to handle."
+    },
+    {
+      "id": "C13",
+      "flow": "A person, and opting out",
+      "name": "Client asks for a person",
+      "trigger": "They tap “Ask a person”, type PERSON, or ask for someone. The bot pauses and the inbox flags the chat.",
+      "type": "text",
+      "body": "Sure. I've asked the team to reply here. During opening hours someone usually answers within [time].\n\nYou can keep typing in the meantime.",
+      "clientSaidBefore": [
+        "can I speak to someone please"
+      ]
+    },
+    {
+      "id": "C14",
+      "flow": "A person, and opting out",
+      "name": "A person takes over",
+      "trigger": "The owner taps “Take over” in the inbox. One line from the bot, then the owner writes as themselves.",
+      "type": "text",
+      "body": "You're now chatting with *Lerato* from the salon.",
+      "staffAfter": [
+        {
+          "from": "Lerato · salon",
+          "text": "Hi Lindiwe, Lerato here. Yes, I can do a shorter style on Saturday. It takes about 3 hours."
+        }
+      ]
+    },
+    {
+      "id": "C15",
+      "flow": "A person, and opting out",
+      "name": "Handed back to the assistant",
+      "trigger": "The owner taps “Hand back”. The bot picks up with a menu.",
+      "type": "buttons",
+      "body": "Lerato has handed you back to the booking assistant. Anything else I can help with?",
+      "buttons": [
+        "Book",
+        "My bookings",
+        "No, thanks"
+      ]
+    },
+    {
+      "id": "C16",
+      "flow": "A person, and opting out",
+      "name": "Client replies STOP",
+      "trigger": "Any message that is just STOP (also STOPP, UNSUBSCRIBE). Stored on the profile with the date.",
+      "type": "text",
+      "body": "Done. We won't send you any more reminders or messages. Your booking on Saturday 7 Nov at 08:00 is still in place.\n\nTo get messages again, reply START.",
+      "clientSaidBefore": [
+        "STOP"
+      ],
+      "note": "After STOP we never send templates. If they message us first, the assistant still answers inside the 24-hour window."
+    },
+    {
+      "id": "C17",
+      "flow": "A person, and opting out",
+      "name": "Client replies START",
+      "trigger": "They opt back in.",
+      "type": "text",
+      "body": "Welcome back. We'll send your confirmations and reminders here again.",
+      "clientSaidBefore": [
+        "START"
+      ]
+    }
+  ]
+}

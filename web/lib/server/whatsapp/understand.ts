@@ -1,6 +1,6 @@
 import 'server-only';
 import { bookingPrompt, readInterpretation, type Interpreter } from '@/lib/whatsapp/understand';
-import { rateLimit } from '../auth';
+import { rateLimit } from '../ratelimit';
 import { env } from '../env';
 import { askBookingModel, llmEnabled } from '../assistant/llm';
 import type { Data } from './calendar';

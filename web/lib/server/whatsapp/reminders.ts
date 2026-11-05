@@ -1,11 +1,12 @@
 import 'server-only';
-import { T, fmtDay } from '@/lib/whatsapp/copy';
+import { T, fmtMid, relDay } from '@/lib/whatsapp/copy';
 import { templatePayload, windowOpen } from '@/lib/whatsapp/cloud';
 import { isDue, kindOf } from '@/lib/whatsapp/reminders';
 import type { Out } from '@/lib/whatsapp/types';
 import { connectDB } from '../db';
 import { env } from '../env';
 import { WaAppointment, WaBusiness, WaClient } from '../models';
+import { todaySast } from '../time';
 import { releaseOrphanLocks } from './calendar';
 import { sendOut, sendRaw } from './send';
 
@@ -31,7 +32,7 @@ export async function runReminders(now = new Date()): Promise<ReminderRun> {
         if (!isDue({ startsAt: a.startsAt, createdAt: a.createdAt ?? a.startsAt, now, hours: h, sent })) continue;
         out.checked++;
         const client = await WaClient.findById(a.clientId).lean();
-        if (!client || client.optedOut) { out.skipped++; continue; }
+        if (!client || client.optedOut || client.consent === 'no') { out.skipped++; continue; }
         const id = String(a._id);
         // Claim this reminder before sending, so two overlapping scheduler runs can't both send it.
         const kind = kindOf(h);
@@ -40,10 +41,10 @@ export async function runReminders(now = new Date()): Promise<ReminderRun> {
         const first = (client.name || '').split(' ')[0];
         let ok = false;
         if (windowOpen(client.lastInboundAt, now)) {
-          const m: Out = { type: 'buttons', body: T.reminder(a.serviceName ?? '', a.date, a.time), buttons: [{ id: 'remind:ok', title: T.btnSeeYou }, { id: `remind:move:${id}`, title: T.btnMove }, { id: `remind:cancel:${id}`, title: T.btnCancelBooking }] };
+          const m: Out = { type: 'buttons', body: T.reminder(first || 'there', a.serviceName ?? '', b.name, relDay(a.date, todaySast(now)), a.date, a.time), footer: 'Reply STOP to opt out', buttons: [{ id: `remind:ok:${id}`, title: T.confirmBtn }, { id: `remind:move:${id}`, title: T.changeTime }, { id: `remind:cancel:${id}`, title: T.cancelBtn }] };
           ok = await sendOut(b.phoneNumberId!, client.phone, [m]);
         } else if (env.WHATSAPP_REMINDER_TEMPLATE) {
-          ok = await sendRaw(b.phoneNumberId!, templatePayload(client.phone, env.WHATSAPP_REMINDER_TEMPLATE, env.WHATSAPP_TEMPLATE_LANG, [first || 'there', a.serviceName ?? '', fmtDay(a.date), a.time], ['remind:ok', `remind:move:${id}`, `remind:cancel:${id}`]));
+          ok = await sendRaw(b.phoneNumberId!, templatePayload(client.phone, env.WHATSAPP_REMINDER_TEMPLATE, env.WHATSAPP_TEMPLATE_LANG, [first || 'there', a.serviceName ?? '', fmtMid(a.date), a.time], [`remind:ok:${id}`, `remind:move:${id}`, `remind:cancel:${id}`]));
         } else {
           console.warn('[whatsapp] a reminder is due outside the 24-hour window but WHATSAPP_REMINDER_TEMPLATE is not set.');
         }

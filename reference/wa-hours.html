@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking assistant — Staff and hours</title>
+<!-- REFERENCE BUILD generated from design/WaHours.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:var(--acc);text-decoration:none}a:hover{color:var(--acc-h)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+.btn-primary{background:var(--acc);color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:var(--acc-h);color:#FFFFFF;box-shadow:0 10px 24px -10px var(--acc-ring)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn-danger{background:#FFFFFF;color:#B42318;border:1px solid #F1C9C5}
+.btn-danger:hover{background:#FEF3F2}
+.btn-ok{background:#0B7A55;color:#FFFFFF}
+.btn-ok:hover:not(:disabled){background:#086545;color:#FFFFFF}
+.btn-ok:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.search{font:inherit;font-size:15px;width:240px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:var(--acc);background:#FFFFFF;box-shadow:0 0 0 4px var(--acc-ring)}
+.search::placeholder{color:#6B7891}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:46px;padding:11px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px var(--acc-ring)}
+.field::placeholder{color:#6B7891}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:var(--acc);color:#FFFFFF}
+.snav.off{opacity:.55;cursor:default}.snav.off:hover{background:transparent;color:#B7C3D9}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.row{transition:background .15s}.row:hover{background:#F8FAFD}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.ibtn{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.ibtn:hover{border-color:#D5DEEB;background:#FFFFFF;color:var(--acc)}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+.ai{display:inline-flex;align-items:center;gap:5px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#F1ECFE;color:#5B21B6}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.scrim{animation:fadein .2s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.modal{animation:pop .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bar{from{background-position:0 0}to{background-position:40px 0}}
+.prog{background-image:linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.25) 50%,rgba(255,255,255,.25) 75%,transparent 75%);background-size:20px 20px;animation:bar 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 var(--acc-ring)}100%{box-shadow:0 0 0 8px transparent}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:#4B5872;animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:var(--acc);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot,.wscard{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.hide-sm{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.snav.on{box-shadow:inset 3px 0 0 #FFFFFF}
+.ws-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#B7C3D9}
+.htab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;border:1px solid #D5DEEB;background:#FFFFFF;color:#33405A;white-space:nowrap;transition:all .2s}
+.htab[aria-selected="true"]{background:#0B1220;border-color:#0B1220;color:#FFFFFF}
+.drow{display:grid;grid-template-columns:110px 64px minmax(0,1fr);gap:12px;align-items:center;padding:12px 18px;border-top:1px solid #EEF2F8}
+.tsel{font:inherit;font-size:14px;min-height:40px;padding:0 28px 0 10px;border:1px solid #D5DEEB;border-radius:10px;background:#FFFFFF;color:#0B1220}
+.tsel[aria-invalid="true"]{border-color:#B42318;box-shadow:0 0 0 3px rgba(180,35,24,.12)}
+.lnk{font:inherit;cursor:pointer;border:0;background:transparent;padding:4px 0;color:var(--acc-t);font-size:13px;font-weight:500;text-decoration:underline;text-underline-offset:3px}
+.slotc{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 10px;border-radius:9px;font-size:13px;font-weight:500;font-family:'Geist Mono',ui-monospace,monospace}
+.dchip{font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0;min-width:52px;padding:6px 8px;border-radius:10px;border:1px solid #D5DEEB;background:#FFFFFF;color:#0B1220;font-size:12px}
+.dchip[aria-pressed="true"]{background:#0B1220;border-color:#0B1220;color:#FFFFFF}
+.dchip:disabled{opacity:.45;cursor:not-allowed}
+@media (max-width: 600px){.drow{grid-template-columns:1fr auto;}.drow .times{grid-column:1 / -1}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB; {{brandVars}}">
+<aside class="side" style="flex: 0 0 264px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; box-sizing: border-box">
+<a href="{{homeHref}}" aria-label="{{brandName}} admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<sc-if value="{{isByteleaf}}" hint-placeholder-val="{{ true }}"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg></sc-if>
+<sc-if value="{{notByteleaf}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 9px; background: var(--acc); color: #FFFFFF; display: grid; place-items: center; font-size: 15px; letter-spacing: 0">{{brandMark}}</span></sc-if>
+<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0">{{brandName}}</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #B7C3D9; border: 1px solid #33415E; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<div class="wscard" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span class="mono" style="font-size: 10px; letter-spacing: 0.08em; color: #8A98B3">BOOKING ASSISTANT</span>
+<div style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border-radius: 10px; border: 1px solid #22345A; background: #07101F">
+<span aria-hidden="true" style="width: 26px; height: 26px; border-radius: 50%; background: {{bizDot}}; color: #FFFFFF; display: grid; place-items: center; flex: none; font-size: 12px; font-weight: 700">{{bizMark}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{bizName}}</span><span style="font-size: 11px; color: #8A98B3">{{bizSub}}</span></span>
+</div>
+<span class="ws-chip" role="status"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{numDot}}"></span>{{numText}}</span>
+</div>
+<nav aria-label="Booking admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<a class="snav" href="wa-calendar.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18M7 3v4M17 3v4M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path></svg><span style="flex: 1">Calendar</span></a>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path></svg><span style="flex: 1">Inbox</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"></path></svg><span style="flex: 1">Clients</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+<a class="snav" href="wa-services.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg><span style="flex: 1">Services</span></a>
+<a class="snav on" href="wa-hours.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2"></path></svg><span style="flex: 1">Staff &amp; hours</span></a>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v12H5.2L4 17.2zM8 8h8M8 12h5"></path></svg><span style="flex: 1">Messages</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg><span style="flex: 1">Booking rules</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<sc-if value="{{isByteleaf}}" hint-placeholder-val="{{ true }}"><a class="snav" href="admin-dashboard.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>byteleaf admin</a></sc-if>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: var(--acc); display: grid; place-items: center; font-weight: 600; flex: none">{{userMark}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">{{userName}}</span><span style="font-size: 12px; color: #8A98B3">{{userRole}}</span></span>
+<a href="admin-login.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 12px; color: #4B5872">{{bizName}} / Booking</span><h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Staff &amp; hours</h1></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<sc-if value="{{dirty}}" hint-placeholder-val="{{ false }}"><span role="status" style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #8A5200"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #B45309"></span>Unsaved changes</span><button type="button" class="btn btn-ghost btn-sm" onClick="{{discard}}">Discard</button></sc-if>
+<button type="button" class="btn btn-primary" onClick="{{save}}" disabled="{{cantSave}}">{{saveLabel}}</button>
+</div>
+</header>
+
+<div class="pad" style="padding: 20px 32px 48px; box-sizing: border-box; width: 100%; max-width: 1400px; display: flex; flex-direction: column; gap: 18px">
+<div role="tablist" aria-label="Whose hours" style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4"><button type="button" role="tab" class="htab" aria-selected="{{t.on}}" onClick="{{t.pick}}"><sc-if value="{{t.hasIni}}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="width: 22px; height: 22px; border-radius: 50%; background: var(--acc-soft); color: var(--acc-t); display: grid; place-items: center; font-size: 11px; font-weight: 700">{{t.ini}}</span></sc-if>{{t.l}}</button></sc-for>
+</div>
+
+<sc-if value="{{saved}}" hint-placeholder-val="{{ false }}"><div role="status" class="slide" style="padding: 12px 16px; border-radius: 12px; background: #E6F6EF; color: #0B4D36; font-size: 14px"><strong>Saved.</strong> WhatsApp offers the new times from now on. Existing bookings didn’t move.</div></sc-if>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+<section class="panel" aria-labelledby="wk-h" style="overflow: hidden">
+<div style="padding: 16px 18px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 2px"><h2 id="wk-h" style="margin: 0; font-size: 17px; font-weight: 600">{{weekTitle}}</h2><span class="hint">{{weekSub}}</span></div>
+<sc-if value="{{isStaff}}" hint-placeholder-val="{{ false }}"><span style="display: flex; align-items: center; gap: 10px; font-size: 14px"><span id="same-l">Same as salon hours</span><button type="button" class="sw" role="switch" aria-checked="{{sameOn}}" aria-labelledby="same-l" onClick="{{togSame}}" style="background: {{sameBg}}"><span class="knob" style="left: {{sameL}}"></span></button></span></sc-if>
+</div>
+<sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+<div class="drow" style="{{d.bg}}">
+<span style="font-weight: 600; font-size: 15px">{{d.name}}</span>
+<button type="button" class="sw" role="switch" aria-checked="{{d.open}}" aria-label="{{d.name}} open" onClick="{{d.tog}}" disabled="{{d.locked}}" style="background: {{d.swBg}}; {{d.lockSt}}"><span class="knob" style="left: {{d.swL}}"></span></button>
+<div class="times" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; min-width: 0">
+<sc-if value="{{d.isOpen}}" hint-placeholder-val="{{ true }}">
+<span style="display: flex; align-items: center; gap: 6px"><select class="tsel" aria-label="{{d.name}} opens" onChange="{{d.onA}}" disabled="{{d.locked}}"><sc-for list="{{d.aOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select><span aria-hidden="true" style="color: #4B5872">to</span><select class="tsel" aria-label="{{d.name}} closes" aria-invalid="{{d.bad}}" onChange="{{d.onB}}" disabled="{{d.locked}}"><sc-for list="{{d.bOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select></span>
+<sc-if value="{{d.hasBreak}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; padding: 4px 4px 4px 10px; border-radius: 999px; background: #F4F7FB; color: #33405A">Break {{d.brk}}<button type="button" class="ibtn" aria-label="Remove break on {{d.name}}" onClick="{{d.delBrk}}" disabled="{{d.locked}}" style="width: 28px; height: 28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span></sc-if>
+<sc-if value="{{d.canAddBrk}}" hint-placeholder-val="{{ false }}"><button type="button" class="lnk" onClick="{{d.addBrk}}">+ Add a break</button></sc-if>
+<sc-if value="{{d.bad}}" hint-placeholder-val="{{ false }}"><span role="alert" style="flex-basis: 100%; font-size: 13px; color: #B42318">Closing time must be after opening time.</span></sc-if>
+</sc-if>
+<sc-if value="{{d.isClosed}}" hint-placeholder-val="{{ false }}"><span style="font-size: 14px; color: #4B5872">{{d.closedText}}</span></sc-if>
+</div>
+</div>
+</sc-for>
+</section>
+
+<sc-if value="{{isStaff}}" hint-placeholder-val="{{ false }}">
+<section class="panel" aria-labelledby="to-h" style="overflow: hidden">
+<div style="padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap"><div style="display: flex; flex-direction: column; gap: 2px"><h2 id="to-h" style="margin: 0; font-size: 17px; font-weight: 600">Time off</h2><span class="hint">Clients aren’t offered times on these days.</span></div><button type="button" class="btn btn-ghost btn-sm" onClick="{{openOff}}" aria-expanded="{{offOpenA}}">Add time off</button></div>
+<sc-if value="{{offOpen}}" hint-placeholder-val="{{ false }}">
+<form class="slide" onSubmit="{{addOff}}" style="margin: 0 18px 16px; padding: 14px; border-radius: 12px; border: 1px solid #E3E9F2; background: #F8FAFD; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end">
+<span style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 140px"><label class="lbl" for="o1">From</label><input id="o1" class="field" type="date" value="{{off.a}}" onInput="{{onOffA}}" min="2026-11-05"></span>
+<span style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 140px"><label class="lbl" for="o2">To</label><input id="o2" class="field" type="date" value="{{off.b}}" onInput="{{onOffB}}" aria-invalid="{{offBad}}" aria-describedby="o2-h" min="2026-11-05"></span>
+<span style="display: flex; flex-direction: column; gap: 6px; flex: 2 1 200px"><label class="lbl" for="o3">Note <span class="hint" style="font-weight: 400">· only you see this</span></label><input id="o3" class="field" value="{{off.n}}" onInput="{{onOffN}}" placeholder="e.g. Leave"></span>
+<button type="submit" class="btn btn-primary">Add</button>
+<span id="o2-h" role="{{offRole}}" style="flex-basis: 100%; font-size: 13px; color: #B42318">{{offErr}}</span>
+</form>
+</sc-if>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{offs}}" as="o" hint-placeholder-count="2"><li style="display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-top: 1px solid #EEF2F8"><span aria-hidden="true" class="hatch" style="width: 32px; height: 32px; border-radius: 8px; background-image: repeating-linear-gradient(135deg,#E3E9F2 0 5px,#F8FAFD 5px 10px)"></span><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 14px">{{o.range}}</span><span class="hint">{{o.note}}</span></span><sc-if value="{{o.hasClash}}" hint-placeholder-val="{{ false }}"><span class="pill" style="background: #FFF4E0; color: #8A5200">{{o.clash}}</span></sc-if><button type="button" class="ibtn" aria-label="Remove time off {{o.range}}" onClick="{{o.del}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></li></sc-for>
+<sc-if value="{{noOffs}}" hint-placeholder-val="{{ false }}"><li style="padding: 14px 18px; border-top: 1px solid #EEF2F8; font-size: 14px; color: #4B5872">No time off planned.</li></sc-if>
+</ul>
+</section>
+</sc-if>
+
+<sc-if value="{{isBiz}}" hint-placeholder-val="{{ true }}">
+<section class="panel" aria-labelledby="ph-h" style="overflow: hidden">
+<div style="padding: 16px 18px; display: flex; flex-direction: column; gap: 2px"><h2 id="ph-h" style="margin: 0; font-size: 17px; font-weight: 600">Public holidays</h2><span class="hint">South African public holidays coming up. Closed unless you open.</span></div>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{hols}}" as="h" hint-placeholder-count="4"><li style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 18px; border-top: 1px solid #EEF2F8"><span class="mono" style="flex: 0 0 96px; font-size: 13px">{{h.date}}</span><span style="flex: 1 1 180px; font-size: 14px; font-weight: 500">{{h.name}}</span><span style="font-size: 13px; color: #4B5872">{{h.state}}</span><button type="button" class="sw" role="switch" aria-checked="{{h.open}}" aria-label="Open on {{h.name}}" onClick="{{h.tog}}" style="background: {{h.swBg}}"><span class="knob" style="left: {{h.swL}}"></span></button></li></sc-for>
+</ul>
+</section>
+</sc-if>
+</div>
+
+<aside class="panel" aria-labelledby="pv-h" style="flex: 1 1 340px; min-width: 0; max-width: 100%; display: flex; flex-direction: column; overflow: hidden; position: sticky; top: 16px">
+<div style="padding: 16px 18px; border-bottom: 1px solid #EEF2F8; display: flex; flex-direction: column; gap: 4px">
+<span class="mono" style="font-size: 11px; color: #4B5872">LIVE PREVIEW · UPDATES AS YOU EDIT</span>
+<h2 id="pv-h" style="margin: 0; font-size: 17px; font-weight: 600">Times clients will be offered</h2>
+</div>
+<div style="padding: 16px 18px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label class="lbl" for="pvs">Service</label><select id="pvs" class="field" onChange="{{onPvSvc}}"><sc-for list="{{pvOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select></div>
+<div role="group" aria-label="Day" style="display: flex; gap: 6px; flex-wrap: wrap"><sc-for list="{{pvDays}}" as="d" hint-placeholder-count="6"><button type="button" class="dchip" aria-pressed="{{d.p}}" onClick="{{d.pick}}"><span>{{d.dow}}</span><strong style="font-size: 15px">{{d.n}}</strong></button></sc-for></div>
+<span style="font-size: 14px; color: #33405A"><strong style="color: #0B1220">{{pvCount}}</strong> {{pvWho}}</span>
+<div style="display: flex; flex-wrap: wrap; gap: 6px" aria-live="polite">
+<sc-for list="{{pvSlots}}" as="s" hint-placeholder-count="8"><span class="slotc" style="{{s.st}}">{{s.t}}<span class="sr">{{s.sr}}</span></span></sc-for>
+</div>
+<sc-if value="{{pvNone}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 12px 14px; border-radius: 10px; background: #F4F7FB; font-size: 14px; line-height: 1.5; color: #33405A">{{pvNoneText}}</p></sc-if>
+<span class="hint" style="line-height: 1.5">Starts every 30 minutes. A start is offered only if the whole service and clean-up fit before closing or a break. Crossed-out times are already booked. WhatsApp shows up to 9 at a time.</span>
+</div>
+</aside>
+</div>
+</div>
+</main>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+brand() {
+const B = {
+byteleaf: { acc: '#166FE5', h: '#0F5FCC', t: '#0F5FCC', soft: '#EEF4FE', ring: 'rgba(22,111,229,.2)', name: 'byteleaf', mark: 'b', biz: "Lerato's Braids & Beauty", bizMark: 'L', bizSub: 'Demo client · Randburg', bizDot: '#8B2F7E', user: 'Gerald', userRole: 'byteleaf admin' },
+plum: { acc: '#8B2F7E', h: '#74256A', t: '#7A2470', soft: '#F7ECF5', ring: 'rgba(139,47,126,.2)', name: "Lerato's", mark: 'L', biz: "Lerato's Braids & Beauty", bizMark: 'L', bizSub: 'Randburg · 3 staff', bizDot: '#8B2F7E', user: 'Lerato', userRole: 'Owner' },
+teal: { acc: '#0E7A6D', h: '#0B6458', t: '#0B6458', soft: '#E7F4F2', ring: 'rgba(14,122,109,.22)', name: 'Mvelo Physio', mark: 'M', biz: 'Mvelo Physio', bizMark: 'M', bizSub: 'Rosebank · 2 practitioners', bizDot: '#0E7A6D', user: 'Dr [name]', userRole: 'Owner' }
+};
+const k = B[this.props.brand] ? this.props.brand : 'byteleaf';
+const b = B[k];
+const num = this.props.number === 'attention';
+return {
+brandVars: '--acc: ' + b.acc + '; --acc-h: ' + b.h + '; --acc-t: ' + b.t + '; --acc-soft: ' + b.soft + '; --acc-ring: ' + b.ring + ';',
+brandKey: k, isByteleaf: k === 'byteleaf', notByteleaf: k !== 'byteleaf', brandName: b.name, brandMark: b.mark,
+homeHref: 'WaCalendar.dc.html', bizName: b.biz, bizMark: b.bizMark, bizSub: b.bizSub, bizDot: b.bizDot,
+userName: b.user, userMark: b.user[0], userRole: b.userRole,
+numBad: num, numDot: num ? '#F79009' : '#12B76A', numText: num ? 'WhatsApp number needs attention' : 'WhatsApp +27 [number] · connected'
+};
+}
+constructor(props) {
+super(props);
+const W = (a, b, br) => ({ open: true, a: a, b: b, br: br || null });
+const C = () => ({ open: false, a: 480, b: 1080, br: null });
+this.base = {
+biz: [C(), W(480, 1080), W(480, 1080), W(480, 1080), W(480, 1080), W(480, 960), C()],
+L: { same: true, wk: null, offs: [] },
+T: { same: false, wk: [C(), W(540, 1020, [810, 840]), W(540, 1020, [810, 840]), W(540, 1020, [810, 840]), W(540, 1020, [810, 840]), W(480, 960), C()], offs: [{ a: '2026-12-21', b: '2026-12-24', n: 'Family visit' }] },
+N: { same: true, wk: null, offs: [{ a: '2026-11-06', b: '2026-11-06', n: 'Leave', clash: '1 booking moved to Lerato' }] },
+hols: [{ d: 'Wed 16 Dec', n: 'Day of Reconciliation', open: false }, { d: 'Fri 25 Dec', n: 'Christmas Day', open: false }, { d: 'Sat 26 Dec', n: 'Day of Goodwill', open: true }, { d: 'Fri 1 Jan', n: 'New Year’s Day', open: false }]
+};
+this.state = { tab: 'biz', data: JSON.parse(JSON.stringify(this.base)), saved: false, saving: false, offOpen: false, off: { a: '', b: '', n: '' }, offErr: '', pvLen: 90, pvDay: 1 };
+}
+componentWillUnmount() { clearTimeout(this.ts); }
+renderVals() {
+const st = this.state;
+const br = this.brand();
+const D = st.data;
+const NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const t = (m) => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+const isStaff = st.tab !== 'biz';
+const sp = isStaff ? D[st.tab] : null;
+const weekOf = (k) => (k === 'biz' ? D.biz : (D[k].same ? D.biz : D[k].wk));
+const wk = weekOf(st.tab);
+const locked = isStaff && sp.same;
+const upd = (fn) => { const nd = JSON.parse(JSON.stringify(D)); fn(nd); this.setState({ data: nd, saved: false }); };
+const target = (nd) => (st.tab === 'biz' ? nd.biz : nd[st.tab].wk);
+const opts = (from, to, sel) => { const o = []; for (let m = from; m <= to; m += 30) o.push({ v: String(m), l: t(m), s: m === sel }); return o; };
+const dirty = JSON.stringify(D) !== JSON.stringify(this.base);
+const anyBad = ['biz', 'L', 'T', 'N'].some((k) => weekOf(k).some((d) => d.open && d.b <= d.a));
+// preview
+const pvDays = [{ dow: 'Tue', n: 10, i: 1 }, { dow: 'Wed', n: 11, i: 2 }, { dow: 'Thu', n: 12, i: 3 }, { dow: 'Fri', n: 13, i: 4 }, { dow: 'Sat', n: 14, i: 5 }, { dow: 'Sun', n: 15, i: 6 }, { dow: 'Mon', n: 16, i: 0 }];
+const BOOKED = { L: { 1: [[480, 735]] , 5: [[480, 735]] }, T: { 1: [[840, 960]] }, N: { 1: [[540, 610], [840, 910]] } };
+const who = isStaff ? [st.tab] : ['L', 'T', 'N'];
+const SVC_STAFF = { 240: ['L', 'T'], 120: ['L', 'T'], 90: ['L', 'N'], 60: ['L', 'N'] };
+const slotMap = {};
+const day = st.pvDay;
+who.filter((k) => SVC_STAFF[st.pvLen].indexOf(k) > -1).forEach((k) => {
+const d = weekOf(k)[day];
+if (!d.open || d.b <= d.a) return;
+const bk = (BOOKED[k][day] || []);
+for (let m = d.a; m + st.pvLen <= d.b; m += 30) {
+if (d.br && m < d.br[1] && m + st.pvLen > d.br[0]) continue;
+const taken = bk.some((b) => m < b[1] && m + st.pvLen > b[0]);
+if (!slotMap[m]) slotMap[m] = { free: false, taken: false };
+if (taken) slotMap[m].taken = true; else slotMap[m].free = true;
+}
+});
+const keys = Object.keys(slotMap).map(Number).sort((a, b) => a - b);
+const free = keys.filter((m) => slotMap[m].free);
+const bizDay = D.biz[day];
+const NM = { L: 'Lerato', T: 'Thandeka', N: 'Naledi' };
+const canDo = isStaff && SVC_STAFF[st.pvLen].indexOf(st.tab) < 0;
+return Object.assign(br, {
+tabs: [['biz', 'Salon hours', ''], ['L', 'Lerato', 'L'], ['T', 'Thandeka', 'T'], ['N', 'Naledi', 'N']].map((x) => ({ l: x[1], ini: x[2], hasIni: !!x[2], on: st.tab === x[0] ? 'true' : 'false', pick: () => this.setState({ tab: x[0], offOpen: false, offErr: '', pvLen: x[0] === 'T' ? 240 : x[0] === 'N' ? 60 : st.pvLen }) })),
+dirty: dirty, cantSave: !dirty || anyBad || st.saving, saveLabel: st.saving ? 'Saving…' : 'Save changes',
+save: () => { this.setState({ saving: true }); clearTimeout(this.ts); this.ts = setTimeout(() => { this.base = JSON.parse(JSON.stringify(this.state.data)); this.setState({ saving: false, saved: true }); }, 700); },
+discard: () => this.setState({ data: JSON.parse(JSON.stringify(this.base)), saved: false }),
+saved: st.saved,
+isStaff: isStaff, isBiz: !isStaff,
+weekTitle: isStaff ? NM[st.tab] + '’s working week' : 'Salon opening hours',
+weekSub: isStaff ? (sp.same ? 'Works whenever the salon is open.' : 'Must fall inside salon hours.') : 'Nobody can be booked outside these hours.',
+sameOn: isStaff && sp.same ? 'true' : 'false', sameBg: isStaff && sp.same ? 'var(--acc)' : '#C9D3E3', sameL: isStaff && sp.same ? '21px' : '3px',
+togSame: () => upd((nd) => { const s = nd[st.tab]; s.same = !s.same; if (!s.same && !s.wk) s.wk = JSON.parse(JSON.stringify(nd.biz)); }),
+days: wk.map((d, i) => {
+const bizClosed = isStaff && !D.biz[i].open;
+const bad = d.open && d.b <= d.a;
+return {
+name: NAMES[i], open: d.open ? 'true' : 'false', isOpen: d.open && !bizClosed, isClosed: !d.open || bizClosed,
+closedText: bizClosed ? 'Salon closed' : isStaff ? 'Not working' : 'Closed',
+swBg: d.open && !bizClosed ? 'var(--acc)' : '#C9D3E3', swL: d.open && !bizClosed ? '21px' : '3px',
+locked: locked || bizClosed, lockSt: locked || bizClosed ? 'opacity: .5; cursor: not-allowed;' : '', bg: bad ? 'background: #FEF8F7;' : '',
+tog: () => upd((nd) => { const x = target(nd)[i]; x.open = !x.open; }),
+aOpts: opts(360, 1200, d.a), bOpts: opts(390, 1260, d.b), bad: bad,
+onA: (e) => upd((nd) => { target(nd)[i].a = +e.target.value; }), onB: (e) => upd((nd) => { target(nd)[i].b = +e.target.value; }),
+hasBreak: !!d.br, brk: d.br ? t(d.br[0]) + '–' + t(d.br[1]) : '', canAddBrk: !d.br && !locked && !bizClosed,
+delBrk: () => upd((nd) => { target(nd)[i].br = null; }), addBrk: () => upd((nd) => { const x = target(nd)[i]; const mid = Math.round((x.a + x.b) / 120) * 60; x.br = [mid, mid + 30]; })
+};
+}),
+openOff: () => this.setState({ offOpen: !st.offOpen, off: { a: '', b: '', n: '' }, offErr: '' }), offOpen: st.offOpen, offOpenA: st.offOpen ? 'true' : 'false',
+off: st.off, onOffA: (e) => this.setState({ off: Object.assign({}, st.off, { a: e.target.value }), offErr: '' }), onOffB: (e) => this.setState({ off: Object.assign({}, st.off, { b: e.target.value }), offErr: '' }), onOffN: (e) => this.setState({ off: Object.assign({}, st.off, { n: e.target.value }) }),
+offBad: st.offErr ? 'true' : 'false', offRole: st.offErr ? 'alert' : '', offErr: st.offErr,
+addOff: (e) => { e.preventDefault(); const o = st.off; if (!o.a) { this.setState({ offErr: 'Choose the first day off.' }); return; } const b = o.b || o.a; if (b < o.a) { this.setState({ offErr: 'The last day can’t be before the first.' }); return; } upd((nd) => { nd[st.tab].offs.push({ a: o.a, b: b, n: o.n }); }); this.setState({ offOpen: false }); },
+offs: isStaff ? sp.offs.map((o, i) => { const f = (s) => { const d = new Date(s + 'T00:00:00'); return d.toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short' }); }; return { range: o.a === o.b ? f(o.a) : f(o.a) + ' – ' + f(o.b), note: o.n || 'No note', hasClash: !!o.clash, clash: o.clash || '', del: () => upd((nd) => { nd[st.tab].offs.splice(i, 1); }) }; }) : [],
+noOffs: isStaff && !sp.offs.length,
+hols: D.hols.map((h, i) => ({ date: h.d, name: h.n, state: h.open ? 'Open, normal hours' : 'Closed', open: h.open ? 'true' : 'false', swBg: h.open ? 'var(--acc)' : '#C9D3E3', swL: h.open ? '21px' : '3px', tog: () => upd((nd) => { nd.hols[i].open = !nd.hols[i].open; }) })),
+pvOpts: [[240, 'Knotless braids · 4 h'], [120, "Kids' braids · 2 h"], [90, 'Silk press · 1 h 30'], [60, 'Gel nails · 1 h']].map((o) => ({ v: String(o[0]), l: o[1], s: st.pvLen === o[0] })),
+onPvSvc: (e) => this.setState({ pvLen: +e.target.value }),
+pvDays: pvDays.map((d) => ({ dow: d.dow, n: String(d.n), p: st.pvDay === d.i ? 'true' : 'false', pick: () => this.setState({ pvDay: d.i }) })),
+pvCount: String(free.length), pvWho: (free.length === 1 ? 'start time' : 'start times') + (isStaff ? ' with ' + NM[st.tab] : ' with anyone who does this service'),
+pvSlots: keys.map((m) => ({ t: t(m), st: slotMap[m].free ? 'background: var(--acc-soft); color: var(--acc-t);' : 'background: #F4F7FB; color: #6B7891; text-decoration: line-through;', sr: slotMap[m].free ? ', open' : ', booked' })),
+pvNone: !free.length,
+pvNoneText: canDo ? NM[st.tab] + ' doesn’t do this service. Change it in Services.' : !bizDay.open ? 'The salon is closed that day, so WhatsApp skips it in the list of days.' : 'Nothing fits that day. WhatsApp skips it and offers the next day with space.'
+});
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+    if (window.__mounted && comp.componentDidUpdate) comp.componentDidUpdate();
+    if (!window.__mounted) { window.__mounted = true; if (comp.componentDidMount) comp.componentDidMount(); }
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

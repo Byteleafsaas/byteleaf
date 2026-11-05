@@ -376,7 +376,7 @@ export const Conversation = model('Conversation', conversationSchema);
 
 /* ---------- WhatsApp booking assistant ---------- */
 // A business that takes bookings over WhatsApp. Hours are { weekday (1 Monday to 7 Sunday): [{ start, end }] } in SAST.
-const daysOffSchema = new Schema({ from: String, to: String }, { _id: false });
+const daysOffSchema = new Schema({ from: String, to: String, note: String }, { _id: false });
 const waBusinessSchema = new Schema(
   {
     slug: { type: String, required: true, unique: true },
@@ -391,6 +391,14 @@ const waBusinessSchema = new Schema(
     windowDays: { type: Number, default: 30 },
     cancelWindowHours: { type: Number, default: 24 },
     replyNote: { type: String, default: 'We usually reply within [X hours].' },
+    // What the assistant says about itself. Square brackets stay until the owner fills them in.
+    replyTime: { type: String, default: '[time]' },
+    address: { type: String, default: '[Salon address]' },
+    privacyUrl: { type: String, default: '[privacy link]' },
+    lateFee: { type: String, default: 'R [amount]' },
+    // Whose colours the booking admin wears: byteleaf, plum or teal. Only the accent and the name change.
+    brand: { type: String, default: 'byteleaf' },
+    clinic: { type: Boolean, default: false },
     payNote: { type: String, default: 'paid at the salon' },
     reminderHours: { type: [Number], default: [24, 2] },
     active: { type: Boolean, default: true },
@@ -410,6 +418,12 @@ const waServiceSchema = new Schema(
     staff: [{ type: Schema.Types.ObjectId }],
     active: { type: Boolean, default: true },
     order: { type: Number, default: 0 },
+    // Shown in the WhatsApp list under the name (72 characters). Empty means length and price.
+    waLine: { type: String, default: '' },
+    // Offered in the WhatsApp list. At most nine services can be on at once.
+    onWhatsApp: { type: Boolean, default: true },
+    // Clinics: every client message says the appointment, never the service.
+    hideName: { type: Boolean, default: false },
   },
   { timestamps: true },
 );
@@ -435,6 +449,10 @@ const waClientSchema = new Schema(
     phone: { type: String, required: true },
     name: { type: String, default: '' },
     greeted: { type: Boolean, default: false },
+    consent: { type: String, enum: ['unknown', 'yes', 'no'], default: 'unknown' },
+    consentAt: { type: Date, default: null },
+    // True once they have typed the name for us, rather than it coming from their WhatsApp profile.
+    nameConfirmed: { type: Boolean, default: false },
     optedOut: { type: Boolean, default: false },
     optedOutAt: { type: Date, default: null },
     lastInboundAt: { type: Date, default: null },
@@ -466,6 +484,12 @@ const waAppointmentSchema = new Schema(
     source: { type: String, enum: ['whatsapp', 'simulator', 'manual'], default: 'whatsapp' },
     cancelledAt: { type: Date, default: null },
     cancelledLate: { type: Boolean, default: false },
+    // Set when the client confirms from a reminder. A booking nobody has confirmed shows as Unconfirmed.
+    confirmedAt: { type: Date, default: null },
+    movedByClient: { type: Boolean, default: false },
+    noShowAt: { type: Date, default: null },
+    // Who made it: the owner's name for a hand-entered booking.
+    createdBy: { type: String, default: '' },
     reminders: [{ kind: String, at: Date, _id: false }],
   },
   { timestamps: true },

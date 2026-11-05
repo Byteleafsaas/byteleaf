@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>byteleaf — WhatsApp booking assistant demo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+a{color:#166FE5;text-decoration:none}a:hover{color:#0B4FB3}
+:focus-visible{outline:3px solid #166FE5;outline-offset:2px}
+.navlink{color:#33405A;font-size:15px;font-weight:500;padding:10px 14px;border-radius:999px;transition:background .2s,color .2s}
+.navlink:hover{background:#EEF4FE;color:#0B1220}
+.navlink.on{background:#EEF4FE;color:#166FE5}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;font-weight:600;font-size:16px;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s,color .25s}
+.btn-primary{background:#166FE5;color:#FFFFFF}
+.btn-primary:hover{background:#0F5FCC;color:#FFFFFF;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(22,111,229,.7)}
+.btn-ghost{color:#0B1220;border:1px solid #D5DEEB;background:#FFFFFF}
+.btn-ghost:hover{border-color:#166FE5;color:#166FE5}
+.btn-light{background:#FFFFFF;color:#0B1220}
+.btn-light:hover{color:#0B1220;transform:translateY(-2px);box-shadow:0 12px 28px -10px rgba(0,0,0,.5)}
+.btn-sm{min-height:40px;padding:0 16px;font-size:14px}
+.arr{transition:transform .25s}.btn:hover .arr{transform:translateX(4px)}
+.flink{color:#B7C3D9}.flink:hover{color:#FFFFFF}
+.ftab{font:inherit;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:48px;padding:0 16px;border-radius:14px;border:1px solid #E3E9F2;background:#FFFFFF;color:#33405A;font-size:15px;font-weight:500;text-align:left;transition:all .2s}
+.ftab[aria-selected="true"]{border-color:#0B1220;background:#0B1220;color:#FFFFFF}
+.ftab .n{font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#EEF2F8;color:#33405A}
+.ftab[aria-selected="true"] .n{background:#FFFFFF;color:#0B1220}
+.phone{width:min(360px,100%);height:720px;box-sizing:border-box;border-radius:44px;background:#0B1220;padding:10px;box-shadow:0 40px 80px -40px rgba(11,18,32,.55)}
+.scr{position:relative;width:100%;height:100%;border-radius:34px;overflow:hidden;background:#ECEFF3;display:flex;flex-direction:column}
+.bub{max-width:82%;padding:8px 11px 5px;font-size:14px;line-height:1.42;color:#0B1220;box-shadow:0 1px 1px rgba(11,18,32,.08);animation:msgIn .25s ease-out both}
+.bub.biz{align-self:flex-start;background:#FFFFFF;border-radius:4px 14px 14px 14px}
+.bub.me{align-self:flex-end;background:#DCE6F4;border-radius:14px 4px 14px 14px}
+.bub.staff{align-self:flex-start;background:#FFFFFF;border-radius:4px 14px 14px 14px;border-left:3px solid #8B2F7E}
+.tm{display:block;text-align:right;font-size:10px;color:#6B7891;margin-top:1px}
+.rbs{align-self:flex-start;width:82%;display:flex;flex-direction:column;gap:3px;margin-top:-4px;animation:msgIn .25s ease-out both}
+.rb{font:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;min-height:36px;border:0;background:#FFFFFF;border-radius:10px;font-size:14px;font-weight:500;color:#1F5FAD;box-shadow:0 1px 1px rgba(11,18,32,.08);transition:box-shadow .2s,background .2s}
+.rb:hover{background:#F6F9FD}
+.rb.go{box-shadow:0 0 0 2px #166FE5,0 0 0 6px rgba(22,111,229,.18);animation:hint 1.6s ease-in-out infinite}
+.rb:disabled{cursor:default;color:#6B7891;box-shadow:none;background:#F7F8FA}
+@keyframes hint{0%,100%{box-shadow:0 0 0 2px #166FE5,0 0 0 6px rgba(22,111,229,.18)}50%{box-shadow:0 0 0 2px #166FE5,0 0 0 10px rgba(22,111,229,.06)}}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#FFFFFF;border-radius:20px 20px 0 0;box-shadow:0 -20px 40px -20px rgba(11,18,32,.4);animation:up .3s cubic-bezier(.2,.8,.2,1) both;max-height:75%;display:flex;flex-direction:column}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.srow{font:inherit;cursor:pointer;width:100%;display:flex;align-items:center;gap:12px;padding:10px 16px;border:0;border-top:1px solid #EEF2F8;background:#FFFFFF;text-align:left;color:#0B1220}
+.srow.go{background:#EEF4FE}
+.radio{width:18px;height:18px;border-radius:50%;border:2px solid #A9B8CF;flex:none;box-sizing:border-box}
+.srow.go .radio{border:5px solid #166FE5}
+.dot{width:7px;height:7px;border-radius:50%;background:#6B7891;animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.blk{position:absolute;left:3px;right:3px;box-sizing:border-box;border-radius:8px;padding:5px 7px;font-size:11px;line-height:1.3;overflow:hidden;display:flex;flex-direction:column;gap:1px}
+.blk.new{animation:pop .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+.obtn{font:inherit;cursor:pointer;min-height:40px;padding:0 16px;border-radius:999px;border:0;background:#166FE5;color:#FFFFFF;font-size:14px;font-weight:600}
+.obtn.go{box-shadow:0 0 0 3px #FFFFFF,0 0 0 5px #166FE5;animation:hint2 1.6s ease-in-out infinite}
+@keyframes hint2{0%,100%{box-shadow:0 0 0 3px #FFFFFF,0 0 0 5px #166FE5}50%{box-shadow:0 0 0 3px #FFFFFF,0 0 0 9px rgba(22,111,229,.3)}}
+.ntf{animation:msgIn .35s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.rise{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}
+.mnav{display:none}
+.menu-btn{list-style:none;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid #D5DEEB;display:grid;place-items:center;color:#0B1220;background:#FFFFFF}
+.menu-btn::-webkit-details-marker{display:none}
+.mnav[open] .menu-btn{border-color:#166FE5;color:#166FE5}
+.mnav .i-close{display:none}.mnav[open] .i-close{display:block}.mnav[open] .i-open{display:none}
+.mpanel{position:absolute;left:0;right:0;top:100%;background:#FFFFFF;border-bottom:1px solid #E8EDF5;box-shadow:0 24px 40px -24px rgba(11,18,32,.25);padding:12px 20px 20px;display:flex;flex-direction:column;gap:4px}
+.mlink{display:flex;align-items:center;min-height:52px;padding:0 12px;border-radius:12px;font-size:18px;font-weight:500;color:#0B1220;border-bottom:1px solid #F1F4F9}
+@media (max-width: 760px){.dnav,.dcta{display:none!important}.mnav{display:block}}
+@media (max-width: 640px){.hero{padding-top:40px!important}.phone{height:640px}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div class="bl" style="background: #FFFFFF">
+<header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid #E8EDF5">
+<nav aria-label="Main" style="max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Main.dc.html" aria-label="byteleaf home" style="display: flex; align-items: center; gap: 10px; color: #0B1220; font-weight: 700; font-size: 22px; letter-spacing: -0.04em">
+<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg>
+<span>byte<span style="color: #1877F2">leaf</span></span>
+</a>
+<div class="dnav" style="display: flex; flex-wrap: wrap; align-items: center; gap: 2px">
+<a class="navlink" href="Services.dc.html">Services</a>
+<a class="navlink" href="Process.dc.html">Process</a>
+<a class="navlink on" href="Projects.dc.html" aria-current="page">Projects</a>
+<a class="navlink" href="About.dc.html">About</a>
+<a class="navlink" href="Contact.dc.html">Contact</a>
+</div>
+<a class="btn btn-primary dcta" href="Book.dc.html" style="min-height: 44px; padding: 0 20px; font-size: 15px">Book a call<svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<details class="mnav">
+<summary class="menu-btn" aria-label="Menu"><svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></summary>
+<div class="mpanel">
+<a class="mlink" href="Services.dc.html">Services</a>
+<a class="mlink" href="Process.dc.html">Process</a>
+<a class="mlink" href="Projects.dc.html">Projects</a>
+<a class="mlink" href="About.dc.html">About</a>
+<a class="mlink" href="Contact.dc.html">Contact</a>
+<a class="btn btn-primary" href="Book.dc.html" style="justify-content: center; margin-top: 12px">Book a call</a>
+</div>
+</details>
+</nav>
+</header>
+
+
+<section class="hero" style="padding: 56px 24px 32px; background: #FBFCFE; border-bottom: 1px solid #EEF2F8">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px">
+<nav aria-label="Breadcrumb" class="mono" style="font-size: 12px; color: #4B5872"><a href="Projects.dc.html" style="color: #0F5FCC">Projects</a> / WhatsApp booking assistant</nav>
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 820px">
+<span class="rise mono" style="font-size: 13px; color: #0F5FCC; letter-spacing: 0.08em">SHOWCASE PROJECT 2 OF 4 · AUTOMATION</span>
+<h1 class="rise d1" style="margin: 0; font-size: clamp(36px, 4.6vw, 60px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance">Clients book in the chat. <span style="color: #1877F2">You see it in the calendar.</span></h1>
+<p class="rise d2" style="margin: 0; font-size: 18px; line-height: 1.6; color: #4B5872">A short guided chat on the WhatsApp number your clients already use. Tap through it below, and watch the owner’s side change as you go.</p>
+</div>
+<div role="note" class="rise d3" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: #FFF4E0; color: #6B3F00; font-size: 14px; line-height: 1.5">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>
+<span><strong>This is a demo with sample data.</strong> Lerato’s Braids &amp; Beauty is a made-up salon. Nothing here sends a real message or books a real appointment. The phone is our own drawing of a chat app, not WhatsApp itself.</span>
+</div>
+</div>
+</section>
+
+<section style="padding: 32px 24px 80px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div role="tablist" aria-label="Choose a story" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{flows}}" as="f" hint-placeholder-count="3"><button type="button" role="tab" class="ftab" aria-selected="{{f.on}}" onClick="{{f.pick}}"><span class="n" aria-hidden="true">{{f.n}}</span>{{f.l}}</button></sc-for>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span class="mono" role="status" style="font-size: 13px; color: #4B5872">{{stepLabel}}</span>
+<button type="button" class="btn btn-ghost btn-sm" onClick="{{restart}}">Restart</button>
+<button type="button" class="btn btn-primary btn-sm" onClick="{{next}}" disabled="{{noNext}}" style="{{nextSt}}">{{nextLabel}}</button>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; justify-content: center">
+
+<div style="flex: 0 1 360px; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 100%">
+<div class="phone" role="region" aria-label="Client’s phone (demo)">
+<div class="scr">
+<div style="display: flex; justify-content: space-between; padding: 12px 22px 4px; font-size: 12px; font-weight: 600; color: #0B1220" aria-hidden="true"><span>{{clock}}</span><span class="mono" style="font-size: 10px">5G ▪▪▪</span></div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 8px 14px 10px; background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #8B2F7E; color: #FFFFFF; display: grid; place-items: center; font-weight: 700; font-size: 15px">L</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Lerato’s Braids &amp; Beauty</span><span style="font-size: 11px; color: #4B5872">{{phoneSub}}</span></span>
+</div>
+<div data-wa-log role="log" aria-live="polite" aria-label="Chat" style="flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px">
+<span class="mono" style="align-self: center; font-size: 10px; padding: 3px 8px; border-radius: 6px; background: #FFFFFF; color: #4B5872">{{dayLabel}}</span>
+<sc-for list="{{msgs}}" as="m" hint-placeholder-count="4">
+<sc-if value="{{m.isMe}}" hint-placeholder-val="{{ false }}"><div class="bub me">{{m.text}}<span class="tm">{{m.time}}</span></div></sc-if>
+<sc-if value="{{m.isBot}}" hint-placeholder-val="{{ true }}">
+<div class="bub {{m.cls}}">
+<sc-if value="{{m.isStaff}}" hint-placeholder-val="{{ false }}"><span style="display: block; font-size: 11px; font-weight: 600; color: #7A2470; margin-bottom: 2px">Lerato · salon</span></sc-if>
+<sc-if value="{{m.isTpl}}" hint-placeholder-val="{{ false }}"><span class="mono" style="display: block; font-size: 9px; letter-spacing: .06em; color: #6B7891; margin-bottom: 3px">REMINDER</span></sc-if>
+<sc-for list="{{m.lines}}" as="l" hint-placeholder-count="2"><span style="display: block; min-height: 0.7em"><sc-for list="{{l}}" as="s" hint-placeholder-count="1"><span style="{{s.st}}">{{s.t}}</span></sc-for></span></sc-for>
+<sc-if value="{{m.hasFoot}}" hint-placeholder-val="{{ false }}"><span style="display: block; margin-top: 5px; font-size: 12px; color: #6B7891">{{m.foot}}</span></sc-if>
+<span class="tm">{{m.time}}</span>
+</div>
+<sc-if value="{{m.hasBtns}}" hint-placeholder-val="{{ false }}"><div class="rbs"><sc-for list="{{m.btns}}" as="b" hint-placeholder-count="3"><button type="button" class="rb {{b.cls}}" onClick="{{b.tap}}" disabled="{{b.off}}">{{b.l}}</button></sc-for></div></sc-if>
+<sc-if value="{{m.hasList}}" hint-placeholder-val="{{ false }}"><div class="rbs"><button type="button" class="rb {{m.listCls}}" onClick="{{m.openList}}" disabled="{{m.listOff}}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg>{{m.listBtn}}</button></div></sc-if>
+</sc-if>
+</sc-for>
+<sc-if value="{{typing}}" hint-placeholder-val="{{ false }}"><div role="status" aria-label="Typing" style="align-self: flex-start; display: flex; gap: 5px; padding: 12px 14px; border-radius: 4px 14px 14px 14px; background: #FFFFFF"><span class="dot"></span><span class="dot b"></span><span class="dot c"></span></div></sc-if>
+</div>
+<div style="display: flex; align-items: center; gap: 8px; padding: 8px 10px 14px; background: #ECEFF3">
+<span style="flex: 1; min-height: 38px; border-radius: 999px; background: #FFFFFF; display: flex; align-items: center; padding: 0 14px; font-size: 13px; color: #6B7891">Tap the options above</span>
+<span aria-hidden="true" style="width: 38px; height: 38px; border-radius: 50%; background: #C9D3E3; color: #FFFFFF; display: grid; place-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+</div>
+<sc-if value="{{sheet}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; background: rgba(11,18,32,.35); animation: msgIn .2s ease-out both" onClick="{{closeSheet}}"></div>
+<div class="sheet" role="dialog" aria-modal="true" aria-label="{{sheetTitle}}">
+<div style="display: flex; align-items: center; padding: 12px 8px 10px 16px"><span style="flex: 1; font-weight: 600; font-size: 15px; text-align: center; padding-left: 32px">{{sheetTitle}}</span><button type="button" onClick="{{closeSheet}}" aria-label="Close list" style="font: inherit; cursor: pointer; width: 32px; height: 32px; border: 0; border-radius: 50%; background: #F4F7FB; color: #33405A; display: grid; place-items: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></div>
+<div style="overflow-y: auto">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="5"><button type="button" class="srow {{r.cls}}" onClick="{{r.tap}}"><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 14px">{{r.t}}</span><span style="font-size: 12px; color: #4B5872">{{r.d}}</span></span><span class="radio" aria-hidden="true"></span></button></sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+<sc-if value="{{hint}}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 0; font-size: 13px; color: #4B5872; text-align: center; max-width: 320px">This demo follows one path. Tap the highlighted option.</p></sc-if>
+</div>
+
+<div style="flex: 1 1 520px; min-width: 0; max-width: 760px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="mono" style="font-size: 12px; letter-spacing: 0.08em; color: #4B5872">WHAT THE OWNER SEES</span><h2 style="margin: 0; font-size: 24px; letter-spacing: -0.03em; font-weight: 600">{{ownerTitle}}</h2><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #4B5872">{{ownerText}}</p></div>
+
+<sc-if value="{{ntf}}" hint-placeholder-val="{{ false }}"><div class="ntf" role="status" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; line-height: 1.45"><span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 8px; background: #8B2F7E; display: grid; place-items: center; font-weight: 700; flex: none">L</span><span style="flex: 1">{{ntfText}}</span><span class="mono" style="font-size: 11px; color: #B7C3D9">now</span></div></sc-if>
+
+<sc-if value="{{showCal}}" hint-placeholder-val="{{ true }}">
+<div style="border: 1px solid #E3E9F2; border-radius: 18px; overflow: hidden; background: #FFFFFF; box-shadow: 0 30px 60px -40px rgba(11,18,32,.35)">
+<div style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #EEF2F8"><span aria-hidden="true" style="width: 24px; height: 24px; border-radius: 7px; background: #8B2F7E; color: #FFFFFF; display: grid; place-items: center; font-size: 12px; font-weight: 700">L</span><strong style="font-size: 14px">Calendar</strong><span style="font-size: 13px; color: #4B5872">{{calTitle}}</span></div>
+<div style="display: flex; border-bottom: 1px solid #EEF2F8"><span style="flex: 0 0 44px"></span><sc-for list="{{calCols}}" as="c" hint-placeholder-count="3"><span style="flex: 1 1 0; min-width: 0; padding: 8px; border-left: 1px solid #EEF2F8; font-size: 12px; font-weight: 600">{{c.h}}</span></sc-for></div>
+<div style="display: flex">
+<div aria-hidden="true" style="flex: 0 0 44px; position: relative; height: 352px"><sc-for list="{{calHours}}" as="h" hint-placeholder-count="8"><span class="mono" style="position: absolute; right: 6px; top: {{h.y}}px; font-size: 10px; color: #4B5872">{{h.l}}</span></sc-for></div>
+<sc-for list="{{calCols}}" as="c" hint-placeholder-count="3">
+<div role="list" aria-label="{{c.h}}" style="flex: 1 1 0; min-width: 0; position: relative; height: 352px; border-left: 1px solid #EEF2F8; background-image: repeating-linear-gradient(to bottom, #EEF2F8 0 1px, transparent 1px 44px)">
+<sc-for list="{{c.blocks}}" as="b" hint-placeholder-count="2"><div role="listitem" class="blk {{b.cls}}" style="top: {{b.y}}px; height: {{b.h}}px; {{b.st}}"><span class="mono" style="font-size: 10px; color: #33405A">{{b.time}}</span><strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{b.name}}</strong><span style="color: #33405A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{b.svc}}</span><sc-if value="{{b.hasTag}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; max-width: 100%; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 5px; {{b.tagSt}}">{{b.tag}}</span></sc-if></div></sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{showInbox}}" hint-placeholder-val="{{ false }}">
+<div style="border: 1px solid #E3E9F2; border-radius: 18px; overflow: hidden; background: #FFFFFF; box-shadow: 0 30px 60px -40px rgba(11,18,32,.35); display: flex; flex-wrap: wrap">
+<div style="flex: 1 1 200px; min-width: 0; border-right: 1px solid #EEF2F8">
+<div style="padding: 12px 14px; border-bottom: 1px solid #EEF2F8; font-weight: 600; font-size: 14px">Inbox</div>
+<sc-for list="{{chats}}" as="c" hint-placeholder-count="3"><div style="padding: 12px 14px; border-bottom: 1px solid #EEF2F8; display: flex; flex-direction: column; gap: 4px; {{c.bg}}"><span style="display: flex; justify-content: space-between; gap: 8px"><strong style="font-size: 13px">{{c.n}}</strong><span class="mono" style="font-size: 10px; color: #4B5872">{{c.t}}</span></span><span style="font-size: 12px; color: #4B5872; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.p}}</span><sc-if value="{{c.flag}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 5px; background: #FEF3F2; color: #912018">ASKED FOR A PERSON</span></sc-if></div></sc-for>
+</div>
+<div style="flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column">
+<div style="padding: 12px 14px; border-bottom: 1px solid #EEF2F8; display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><strong style="font-size: 14px; flex: 1">Lindiwe Dube</strong><span class="mono" style="font-size: 10px; padding: 3px 7px; border-radius: 999px; background: #F4F7FB; color: #33405A">REPLY WINDOW · 23 H LEFT</span></div>
+<div role="status" style="padding: 10px 14px; font-size: 13px; font-weight: 500; {{stripSt}}">{{strip}}</div>
+<div style="flex: 1; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; background: #FBFCFE; min-height: 150px">
+<sc-for list="{{thread}}" as="m" hint-placeholder-count="3"><div style="align-self: {{m.al}}; max-width: 86%; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 10px; font-weight: 600; color: #4B5872; text-align: {{m.ta}}">{{m.who}}</span><span style="padding: 7px 10px; border-radius: 10px; font-size: 12px; line-height: 1.45; {{m.st}}">{{m.t}}</span></div></sc-for>
+</div>
+<div style="padding: 12px 14px; border-top: 1px solid #EEF2F8; display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<sc-if value="{{canTake}}" hint-placeholder-val="{{ false }}"><button type="button" class="obtn {{takeCls}}" onClick="{{take}}">Take over</button><span style="font-size: 12px; color: #4B5872">Pauses the assistant for this chat</span></sc-if>
+<sc-if value="{{canSend}}" hint-placeholder-val="{{ false }}"><span style="flex: 1 1 180px; min-height: 40px; box-sizing: border-box; border: 1px solid #D5DEEB; border-radius: 10px; padding: 8px 10px; font-size: 12px; line-height: 1.4; color: #0B1220">{{draft}}</span><button type="button" class="obtn {{sendCls}}" onClick="{{send}}">Send</button></sc-if>
+<sc-if value="{{canBack}}" hint-placeholder-val="{{ false }}"><button type="button" class="obtn {{backCls}}" onClick="{{handBack}}">Hand back to assistant</button></sc-if>
+<sc-if value="{{inboxDone}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #0B6B4B; font-weight: 500">Assistant is answering again.</span></sc-if>
+<sc-if value="{{inboxIdle}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #4B5872">The assistant is handling this chat.</span></sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{done}}" hint-placeholder-val="{{ false }}"><div class="ntf" role="status" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #E6F6EF; color: #0B4D36; font-size: 15px"><span style="flex: 1 1 240px"><strong>{{doneTitle}}</strong> {{doneText}}</span><sc-if value="{{hasNextFlow}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn btn-ghost btn-sm" onClick="{{goNextFlow}}">{{nextFlowLabel}}</button></sc-if></div></sc-if>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 24px 96px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 20px">
+<div style="flex: 1 1 380px; min-width: 0; display: flex; gap: 20px; align-items: center; padding: 24px; border-radius: 20px; border: 1px solid #E3E9F2; flex-wrap: wrap">
+<div role="img" aria-label="QR code placeholder for the demo number" style="width: 132px; height: 132px; flex: none; border-radius: 14px; border: 2px dashed #A9B8CF; display: grid; place-items: center; text-align: center; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #4B5872; background: #F8FAFD">[QR code]</div>
+<div style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 8px"><h2 style="margin: 0; font-size: 22px; letter-spacing: -0.02em">Try it on your own phone</h2><p style="margin: 0; font-size: 15px; line-height: 1.55; color: #4B5872">Scan the code or message <strong class="mono" style="color: #0B1220">[demo WhatsApp number]</strong>. It’s a sandbox: bookings are fake and the diary resets every night. Reply STOP to stop at any time.</p></div>
+</div>
+<div style="flex: 1 1 380px; min-width: 0; padding: 24px; border-radius: 20px; background: #F4F7FB; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 22px; letter-spacing: -0.02em">Built for how bookings really go</h2>
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.5; color: #33405A"><li>Never double-books: a time is held while the client confirms.</li><li>Reminders the day before, with confirm, change and cancel.</li><li>A person can step in at any moment, and hand back.</li><li>Asks consent first, and STOP always works (POPIA).</li></ul>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 24px 120px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.035em; font-weight: 600">How we set it up for you</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 20px">
+<sc-for list="{{how}}" as="h" hint-placeholder-count="3">
+<li style="border: 1px solid #E3E9F2; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span class="mono" style="width: 44px; height: 44px; border-radius: 12px; background: #EEF4FE; color: #0F5FCC; display: grid; place-items: center; font-size: 14px">{{h.n}}</span>
+<h3 style="margin: 0; font-size: 19px; font-weight: 600">{{h.t}}</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4B5872">{{h.d}}</p>
+</li>
+</sc-for>
+</ol>
+<div style="position: relative; border-radius: 28px; background: #1877F2; color: #FFFFFF; padding: clamp(32px, 5vw, 64px); overflow: hidden; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 600px"><h2 style="margin: 0; font-size: clamp(28px, 3.4vw, 44px); letter-spacing: -0.035em; font-weight: 600">Want bookings to run themselves?</h2><p style="margin: 0; font-size: 17px; line-height: 1.6">We’ll connect your number, load your services and hours, and test it with you before it goes live.</p></div>
+<a class="btn btn-light" href="Book.dc.html">Book a call<svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+</div>
+</section>
+<footer style="background: #07101F; color: #FFFFFF; padding: 72px 24px 40px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<span style="display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; letter-spacing: -0.04em"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>byteleaf</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #B7C3D9">Design, frontend, backend and AI integrations for established businesses.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">COMPANY</span>
+<a class="flink" href="Services.dc.html">Services</a><a class="flink" href="Process.dc.html">Process</a><a class="flink" href="Projects.dc.html">Projects</a><a class="flink" href="About.dc.html">About</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">GET IN TOUCH</span>
+<a class="flink" href="Contact.dc.html">Contact</a><a class="flink" href="Book.dc.html">Book a call</a><span style="color: #B7C3D9">[hello@yourdomain.co.za]</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px">
+<span class="mono" style="font-size: 12px; color: #8A98B3; letter-spacing: 0.08em">STUDIO</span>
+<span style="color: #B7C3D9; line-height: 1.6">Johannesburg<br>South Africa</span>
+</div>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 28px; border-top: 1px solid #1C2840; font-size: 12px; color: #8A98B3">
+<span>© 2026 byteleaf</span><span>Made in Jozi</span>
+</div>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2800}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { flow: 'book', step: 0, msgs: this.start('book'), typing: false, sheet: null, hint: false, owner: this.ownerStart('book') };
+this.t = [];
+}
+componentDidUpdate() { const el = typeof document !== 'undefined' && document.querySelector('[data-wa-log]'); if (el) el.scrollTop = el.scrollHeight; }
+componentWillUnmount() { this.t.forEach((x) => clearTimeout(x)); }
+days(rows) { return rows; }
+script(flow) {
+const P = 'Reply PERSON to talk to us';
+if (flow === 'book') return [
+{ bot: { text: "Hi! I'm the automated booking assistant for *Lerato's Braids & Beauty*. Which service would you like?", btns: ['Knotless braids', "Kids' braids", 'Other services'] }, expect: 'Knotless braids' },
+{ bot: { text: '*Knotless braids* take about 4 hours and cost R 650.\n\nWhich day suits you?', list: 'See days', rows: [['Sat 7 Nov', 'Three times open'], ['Tue 10 Nov', 'Five times open'], ['Wed 11 Nov', 'Four times open'], ['Thu 12 Nov', 'Two times open'], ['Later dates', 'Show the week after']], foot: P }, expect: 'Sat 7 Nov' },
+{ bot: { text: 'These times are open on *Saturday 7 November*. Tap one to choose.', list: 'See times', rows: [['08:00', 'Until 12:00 · with Lerato'], ['09:30', 'Until 13:30 · with Thandeka'], ['12:00', 'Until 16:00 · with Lerato'], ['Another day', 'Back to the list of days']], foot: P }, expect: '08:00', owner: { held: true } },
+{ bot: { text: 'Please confirm your booking:\n\n*Knotless braids* with Lerato\nSaturday 7 Nov, 08:00 to 12:00\nR 650, paid at the salon', btns: ['Confirm', 'Change time', 'Cancel'], foot: P }, expect: 'Confirm', owner: { held: false, booked: true, ntf: 'New booking on WhatsApp · Lindiwe Dube, Knotless braids, Sat 7 Nov 08:00' } },
+{ bot: { text: "You're booked, Lindiwe!\n\n*Knotless braids* with Lerato\nSaturday 7 Nov, 08:00 to 12:00\n[Salon address], Randburg\n\nWe'll remind you the day before. To change or cancel, just message us here." }, expect: null }
+];
+if (flow === 'move') return [
+{ bot: { tpl: true, text: "Hi Lindiwe, this is a reminder of your Knotless braids appointment at Lerato's Braids & Beauty tomorrow, Saturday 7 Nov, at 08:00.\n\nCan you still make it?", btns: ['Confirm', 'Change time', 'Cancel'], foot: 'Reply STOP to opt out' }, expect: 'Change time' },
+{ bot: { text: 'No problem. Which day would you like instead?', list: 'See days', rows: [['Tue 10 Nov', 'Five times open'], ['Wed 11 Nov', 'Four times open'], ['Thu 12 Nov', 'Two times open'], ['Keep my booking', 'Sat 7 Nov, 08:00']], foot: P }, expect: 'Tue 10 Nov' },
+{ bot: { text: 'These times are open on *Tuesday 10 November*:', list: 'See times', rows: [['08:00', 'Until 12:00 · with Lerato'], ['10:30', 'Until 14:30 · with Lerato'], ['13:00', 'Until 17:00 · with Thandeka'], ['Another day', 'Back to the list of days']], foot: P }, expect: '10:30' },
+{ bot: { text: 'Please confirm the change:\n\nWas: Sat 7 Nov, 08:00\nNow: *Tue 10 Nov, 10:30 to 14:30*\n\nKnotless braids with Lerato', btns: ['Confirm change', 'Keep old time', 'Another time'] }, expect: 'Confirm change', owner: { moved: true, ntf: 'Lindiwe moved her booking · Sat 7 Nov 08:00 → Tue 10 Nov 10:30' } },
+{ bot: { text: "Done! You're now booked for *Tuesday 10 November, 10:30 to 14:30*.\n\nKnotless braids with Lerato. We'll remind you the day before." }, expect: null }
+];
+return [
+{ bot: { text: "Sorry, I didn't quite understand that. What would you like to do?", btns: ['Book', 'My bookings', 'Ask a person'] }, expect: 'Ask a person', owner: { flag: true, ntf: 'Lindiwe asked for a person · the assistant has paused' } },
+{ bot: { text: "Sure. I've asked the team to reply here. During opening hours someone usually answers within [time].\n\nYou can keep typing in the meantime." }, expect: 'owner:take', owner: { taken: true } },
+{ bot: { text: "You're now chatting with *Lerato* from the salon." }, expect: 'owner:send', owner: { sent: true } },
+{ bot: { staff: true, text: 'Hi Lindiwe, Lerato here. Yes, I can do a shorter knotless style. It takes about 3 hours and costs R 550. Shall I put you in for Saturday at 08:00?' }, expect: 'owner:back', owner: { back: true } },
+{ bot: { text: 'Lerato has handed you back to the booking assistant. Anything else I can help with?', btns: ['Book', 'My bookings', 'No, thanks'] }, expect: null }
+];
+}
+start(flow) {
+const s = this.script(flow);
+const first = flow === 'book' ? [{ me: true, text: "Hi, I'd like to book braids", time: '09:12' }] : flow === 'person' ? [{ me: true, text: 'hi can I get shorter braids? not sure which one to pick', time: '10:39' }] : [];
+return first.concat([Object.assign({ time: flow === 'move' ? '18:00' : flow === 'person' ? '10:39' : '09:12' }, s[0].bot)]);
+}
+ownerStart(flow) { return { held: false, booked: false, moved: false, flag: false, taken: false, sent: false, back: false, ntf: '' }; }
+advance(label) {
+const st = this.state;
+const sc = this.script(st.flow);
+const cur = sc[st.step];
+if (!cur || !cur.expect) return;
+if (label !== cur.expect) { this.setState({ hint: true }); return; }
+const nx = sc[st.step + 1];
+const time = st.flow === 'move' ? '18:2' + (st.step + 1) : st.flow === 'person' ? '10:4' + (st.step + 1) : '09:1' + (st.step + 3);
+const isOwner = label.indexOf('owner:') === 0;
+const add = isOwner ? [] : [{ me: true, text: label, time: time }];
+this.setState({ msgs: st.msgs.concat(add), sheet: null, hint: false, typing: !!nx, step: st.step + 1 });
+const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const go = () => { const s2 = this.state; this.setState({ typing: false, msgs: s2.msgs.concat(nx ? [Object.assign({ time: time }, nx.bot)] : []), owner: Object.assign({}, s2.owner, cur.owner || {}) }); };
+if (reduce || isOwner) go(); else this.t.push(setTimeout(go, 700));
+}
+renderVals() {
+const st = this.state;
+const sc = this.script(st.flow);
+const cur = sc[st.step] || {};
+const expect = cur.expect || null;
+const last = st.msgs.length - 1;
+const segs = (line) => line.split('*').map((t, i) => ({ t: t, st: i % 2 ? 'font-weight: 600;' : '' })).filter((s) => s.t);
+const msgs = st.msgs.map((m, i) => {
+if (m.me) return { isMe: true, isBot: false, text: m.text, time: m.time, cls: '', isStaff: false, isTpl: false, lines: [], hasFoot: false, foot: '', hasBtns: false, btns: [], hasList: false, listBtn: '', listCls: '', listOff: false };
+const live = i === last && !st.typing;
+return {
+isMe: false, isBot: true, cls: m.staff ? 'staff' : 'biz', isStaff: !!m.staff, isTpl: !!m.tpl, time: m.time,
+lines: m.text.split('\n').map(segs), hasFoot: !!m.foot, foot: m.foot || '',
+hasBtns: !!m.btns, btns: (m.btns || []).map((b) => ({ l: b, cls: live && b === expect ? 'go' : '', off: !live, tap: () => this.advance(b) })),
+hasList: !!m.list, listBtn: m.list || '', listCls: live && m.rows && m.rows.some((r) => r[0] === expect) ? 'go' : '', listOff: !live, openList: () => this.setState({ sheet: { title: m.list, rows: m.rows } })
+};
+});
+const o = st.owner;
+const F = { book: ['1', 'Book an appointment'], move: ['2', 'Reschedule from a reminder'], person: ['3', 'Ask for a person'] };
+const order = ['book', 'move', 'person'];
+const fi = order.indexOf(st.flow);
+const total = sc.length - 1;
+const done = !expect && !st.typing;
+// calendar
+const Y = (h, m) => Math.round(((h - 8) * 60 + (m || 0)) * 44 / 60);
+const B = (h1, m1, h2, m2, name, svc, kind, extra) => Object.assign({ y: Y(h1, m1) + 2, h: Y(h2, m2) - Y(h1, m1) - 4, time: String(h1).padStart(2, '0') + ':' + String(m1 || 0).padStart(2, '0') + '–' + String(h2).padStart(2, '0') + ':' + String(m2 || 0).padStart(2, '0'), name: name, svc: svc, cls: '', hasTag: false, tag: '', tagSt: '', st: kind === 'un' ? 'background: #FFFFFF; border: 1.5px dashed #6B7891;' : 'background: #F7ECF5; box-shadow: inset 3px 0 0 #8B2F7E;' }, extra || {});
+let calCols = [], calTitle = '';
+if (st.flow === 'book') {
+calTitle = 'Saturday 7 November';
+const lerato = [B(12, 15, 16, 0, 'Tumi Radebe', 'Knotless (short)')];
+if (o.held) lerato.push(B(8, 0, 12, 0, 'Lindiwe Dube', 'Knotless braids', 'un', { cls: 'new', hasTag: true, tag: 'Held · confirming', tagSt: 'background: #FFF4E0; color: #8A5200;' }));
+if (o.booked) lerato.push(B(8, 0, 12, 0, 'Lindiwe Dube', 'Knotless braids', 'ok', { cls: 'new', hasTag: true, tag: 'New · WhatsApp', tagSt: 'background: #8B2F7E; color: #FFFFFF;' }));
+calCols = [{ h: 'Lerato', blocks: lerato }, { h: 'Thandeka', blocks: [B(8, 0, 12, 0, 'Nandi Shabalala', 'Knotless braids'), B(12, 15, 14, 15, 'Ofentse Moloi', "Kids' braids", 'un', { hasTag: true, tag: 'Unconfirmed', tagSt: 'background: #FFF4E0; color: #8A5200;' })] }, { h: 'Naledi', blocks: [B(9, 0, 10, 30, 'Khanyi Zwane', 'Silk press'), B(10, 30, 12, 0, 'Dineo Maseko', 'Silk press'), B(13, 0, 14, 0, 'Palesa Dlamini', 'Gel nails')] }];
+} else if (st.flow === 'move') {
+calTitle = 'Lerato · two days';
+const sat = [B(12, 15, 16, 0, 'Tumi Radebe', 'Knotless (short)')];
+const tue = [B(15, 0, 16, 0, 'Mpho Sithole', 'Gel nails')];
+if (!o.moved) sat.push(B(8, 0, 12, 0, 'Lindiwe Dube', 'Knotless braids', 'un', { hasTag: true, tag: 'Reminder sent', tagSt: 'background: #FFF4E0; color: #8A5200;' }));
+else { sat.push(B(8, 0, 12, 0, 'Moved to Tue 10:30', 'Time is free again', 'un', { st: 'background: repeating-linear-gradient(135deg,#EEF2F8 0 6px,#F8FAFD 6px 12px); color: #4B5872;' })); tue.push(B(10, 30, 14, 30, 'Lindiwe Dube', 'Knotless braids', 'ok', { cls: 'new', hasTag: true, tag: 'Moved by client', tagSt: 'background: #8B2F7E; color: #FFFFFF;' })); }
+calCols = [{ h: 'Sat 7 Nov', blocks: sat }, { h: 'Tue 10 Nov', blocks: tue }];
+}
+// inbox
+const ex = expect || '';
+const thread = [{ who: 'Lindiwe', t: 'hi can I get shorter braids? not sure which one to pick', al: 'flex-end', ta: 'right', st: 'background: #DCE6F4;' }, { who: 'Assistant', t: "Sorry, I didn't quite understand that…", al: 'flex-start', ta: 'left', st: 'background: #EEF2F8;' }];
+if (o.flag) thread.push({ who: 'Assistant', t: "Sure. I've asked the team to reply here…", al: 'flex-start', ta: 'left', st: 'background: #EEF2F8;' });
+if (o.sent) thread.push({ who: 'You (Lerato)', t: 'Hi Lindiwe, Lerato here. Yes, I can do a shorter knotless style…', al: 'flex-start', ta: 'left', st: 'background: #F7ECF5; border: 1px solid #E8C9E2;' });
+if (o.back) thread.push({ who: 'Assistant', t: 'Lerato has handed you back to the booking assistant…', al: 'flex-start', ta: 'left', st: 'background: #EEF2F8;' });
+const strip = o.back ? ['Assistant is answering', 'background: #E6F6EF; color: #0B4D36;'] : o.taken ? ['You’re replying · assistant paused', 'background: #F7ECF5; color: #5E1F55;'] : o.flag ? ['Lindiwe asked for a person · assistant paused', 'background: #FEF3F2; color: #912018;'] : ['Assistant is answering', 'background: #F4F7FB; color: #33405A;'];
+const OT = {
+book: ['A booking lands in the calendar', 'The time is held while she confirms, so nobody else can take it. Then it appears as a WhatsApp booking.'],
+move: ['The booking moves itself', 'She replies to the reminder and picks a new time. The old slot frees up for others straight away.'],
+person: ['Anyone can step in, and step out', 'When a client asks for a person, the chat is flagged and the assistant pauses. Take over, reply, then hand back.']
+};
+const DONE = { book: ['Booked in four taps.', 'No typing, no back-and-forth, and the diary is already up to date.'], move: ['Moved without a phone call.', 'Lerato didn’t have to do anything.'], person: ['Back to the assistant.', 'The client was never stuck with a bot.'] };
+return {
+flows: order.map((k) => ({ n: F[k][0], l: F[k][1], on: st.flow === k ? 'true' : 'false', pick: () => { this.t.forEach((x) => clearTimeout(x)); this.setState({ flow: k, step: 0, msgs: this.start(k), typing: false, sheet: null, hint: false, owner: this.ownerStart(k) }); } })),
+stepLabel: done ? 'Done · ' + total + ' of ' + total : 'Step ' + (st.step + 1) + ' of ' + total,
+restart: () => { this.t.forEach((x) => clearTimeout(x)); this.setState({ step: 0, msgs: this.start(st.flow), typing: false, sheet: null, hint: false, owner: this.ownerStart(st.flow) }); },
+next: () => { if (expect) this.advance(expect); },
+noNext: !expect || st.typing, nextLabel: expect && expect.indexOf('owner:') === 0 ? 'Next: owner’s turn' : 'Next step', nextSt: !expect || st.typing ? 'opacity: .5; cursor: default; transform: none; box-shadow: none;' : '',
+clock: st.flow === 'move' ? '18:00' : st.flow === 'person' ? '10:41' : '09:12', dayLabel: st.flow === 'move' ? 'FRIDAY' : 'TODAY',
+phoneSub: 'Booking assistant · automated',
+msgs: msgs, typing: st.typing,
+sheet: !!st.sheet, sheetTitle: st.sheet ? st.sheet.title : '',
+rows: st.sheet ? st.sheet.rows.map((r) => ({ t: r[0], d: r[1], cls: r[0] === expect ? 'go' : '', tap: () => this.advance(r[0]) })) : [],
+closeSheet: () => this.setState({ sheet: null }),
+hint: st.hint,
+ownerTitle: OT[st.flow][0], ownerText: OT[st.flow][1],
+ntf: !!o.ntf, ntfText: o.ntf,
+showCal: st.flow !== 'person', calTitle: calTitle, calCols: calCols,
+calHours: [8, 9, 10, 11, 12, 13, 14, 15].map((h) => ({ y: Y(h, 0) + 2, l: String(h).padStart(2, '0') + ':00' })),
+showInbox: st.flow === 'person',
+chats: [{ n: 'Lindiwe Dube', t: '10:41', p: o.sent ? 'You: Hi Lindiwe, Lerato here…' : 'hi can I get shorter braids?', flag: o.flag && !o.back, bg: 'background: #F7ECF5;' }, { n: 'Ayanda Nkosi', t: '09:55', p: 'Booked: Silk press, Fri 14:00', flag: false, bg: '' }, { n: 'Karabo Molefe', t: '08:12', p: 'Thanks, see you tomorrow!', flag: false, bg: '' }],
+strip: strip[0], stripSt: strip[1], thread: thread,
+canTake: ex === 'owner:take', takeCls: 'go', take: () => this.advance('owner:take'),
+canSend: ex === 'owner:send', sendCls: 'go', draft: 'Hi Lindiwe, Lerato here. Yes, I can do a shorter knotless style…', send: () => this.advance('owner:send'),
+canBack: ex === 'owner:back', backCls: 'go', handBack: () => this.advance('owner:back'),
+inboxDone: o.back, inboxIdle: !o.flag && st.flow === 'person' && ex !== 'owner:take' && !o.back && !st.typing && ex === 'Ask a person',
+done: done, doneTitle: DONE[st.flow][0], doneText: DONE[st.flow][1],
+hasNextFlow: fi < 2, nextFlowLabel: fi < 2 ? 'Next: ' + F[order[fi + 1]][1] : '',
+goNextFlow: () => { const k = order[fi + 1]; this.setState({ flow: k, step: 0, msgs: this.start(k), typing: false, sheet: null, hint: false, owner: this.ownerStart(k) }); },
+how: [{ n: '01', t: 'Connect your number', d: 'We register your WhatsApp Business number and get your message templates approved. Your clients keep the number they know.' }, { n: '02', t: 'Load your diary', d: 'Your services, prices, staff and hours go in once. The assistant only ever offers times that really exist.' }, { n: '03', t: 'Test it, then go live', d: 'You book, move and cancel from your own phone first. When it feels right, we switch it on.' }]
+};
+}
+}
+</script>
+</body>
+</html>

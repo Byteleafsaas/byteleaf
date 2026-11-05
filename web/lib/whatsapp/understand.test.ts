@@ -43,10 +43,10 @@ describe('the prompt', () => {
 
 describe('the wording', () => {
   it('says back what was understood', () => {
-    expect(T.understood(['Box braids', 'Saturday', 'morning'])).toBe('I understood: Box braids, Saturday, morning. Is that right?');
+    expect(T.understood(['*Box braids*', 'Saturday 7 Nov, in the morning'], undefined, 'The first open morning time is 08:00.')).toBe('Just to check, I understood:\n\n*Box braids*\nSaturday 7 Nov, in the morning\n\nThe first open morning time is 08:00.');
   });
   it('fits WhatsApp buttons', () => {
-    for (const title of [T.btnUnderstoodYes, T.btnUnderstoodNo]) expect(title.length).toBeLessThanOrEqual(LIMITS.buttonTitle);
-    expect(validateOut({ type: 'buttons', body: T.understood(['a'], T.staffNote('Thandi')), buttons: [{ id: 'a', title: T.btnUnderstoodYes }, { id: 'b', title: T.btnUnderstoodNo }] })).toEqual([]);
+    for (const title of [T.btnRight, T.btnNotRight]) expect(title.length).toBeLessThanOrEqual(LIMITS.buttonTitle);
+    expect(validateOut({ type: 'buttons', body: T.understood(['a'], T.staffNote('Thandi')), buttons: [{ id: 'a', title: T.btnRight }, { id: 'b', title: T.btnNotRight }] })).toEqual([]);
   });
 });

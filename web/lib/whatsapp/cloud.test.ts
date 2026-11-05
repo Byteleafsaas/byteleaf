@@ -39,9 +39,13 @@ describe('parseWebhook', () => {
     const r = parseWebhook(hook([{ id: 'm4', from: '27821234567', type: 'button', button: { payload: 'remind:ok', text: 'Yes, see you' } }]));
     expect(r[0].input).toEqual({ type: 'reply', id: 'remind:ok', title: 'Yes, see you' });
   });
-  it('marks things we cannot read, like a voice note, with no input', () => {
+  it('passes a voice note, photo or sticker on as media so the assistant can steer the customer back', () => {
     const r = parseWebhook(hook([{ id: 'm5', from: '27821234567', type: 'audio', audio: { id: 'a' } }]));
     expect(r).toHaveLength(1);
+    expect(r[0].input).toEqual({ type: 'media', kind: 'audio' });
+  });
+  it('marks message types we know nothing about with no input', () => {
+    const r = parseWebhook(hook([{ id: 'm6', from: '27821234567', type: 'order' }]));
     expect(r[0].input).toBeNull();
   });
   it('ignores delivery receipts and malformed payloads', () => {

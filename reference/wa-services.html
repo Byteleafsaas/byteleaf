@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking assistant — Services</title>
+<!-- REFERENCE BUILD generated from design/WaServices.dc.html. Not production code. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#F4F7FB}
+.bl{font-family:'Geist',system-ui,-apple-system,'Segoe UI',sans-serif;color:#0B1220;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:var(--acc);text-decoration:none}a:hover{color:var(--acc-h)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{font:inherit;cursor:pointer;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+.btn-primary{background:var(--acc);color:#FFFFFF}
+.btn-primary:hover:not(:disabled){background:var(--acc-h);color:#FFFFFF;box-shadow:0 10px 24px -10px var(--acc-ring)}
+.btn-primary:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.btn-ghost{background:#FFFFFF;color:#0B1220;border:1px solid #D5DEEB}
+.btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn-danger{background:#FFFFFF;color:#B42318;border:1px solid #F1C9C5}
+.btn-danger:hover{background:#FEF3F2}
+.btn-ok{background:#0B7A55;color:#FFFFFF}
+.btn-ok:hover:not(:disabled){background:#086545;color:#FFFFFF}
+.btn-ok:disabled{background:#C9D3E3;color:#4B5872;cursor:not-allowed}
+.search{font:inherit;font-size:15px;width:240px;max-width:100%;min-height:44px;box-sizing:border-box;padding:0 14px 0 40px;border:1px solid #E3E9F2;border-radius:12px;background:#F8FAFD;color:#0B1220;transition:border-color .2s,box-shadow .2s,background .2s}
+.search:focus{outline:none;border-color:var(--acc);background:#FFFFFF;box-shadow:0 0 0 4px var(--acc-ring)}
+.search::placeholder{color:#6B7891}
+.field{font:inherit;font-size:15px;color:#0B1220;width:100%;box-sizing:border-box;min-height:46px;padding:11px 14px;border:1px solid #D5DEEB;border-radius:12px;background:#FFFFFF;transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:#A9B8CF}
+.field:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px var(--acc-ring)}
+.field::placeholder{color:#6B7891}
+.lbl{font-size:14px;font-weight:500;color:#33405A}
+.hint{font-size:13px;color:#4B5872}
+.snav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:12px;color:#B7C3D9;font-size:15px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.snav:hover{background:#101E3A;color:#FFFFFF}
+.snav.on{background:var(--acc);color:#FFFFFF}
+.snav.off{opacity:.55;cursor:default}.snav.off:hover{background:transparent;color:#B7C3D9}
+.panel{background:#FFFFFF;border:1px solid #E3E9F2;border-radius:18px}
+.tab{font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:all .2s}
+.row{transition:background .15s}.row:hover{background:#F8FAFD}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.ibtn{font:inherit;cursor:pointer;width:40px;height:40px;border-radius:10px;border:1px solid transparent;background:transparent;color:#4B5872;display:grid;place-items:center;transition:all .15s}
+.ibtn:hover{border-color:#D5DEEB;background:#FFFFFF;color:var(--acc)}
+.sw{font:inherit;cursor:pointer;position:relative;flex:none;width:44px;height:26px;border-radius:999px;border:0;padding:0;transition:background .2s}
+.sw .knob{position:absolute;top:3px;width:20px;height:20px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 3px rgba(11,18,32,.3);transition:left .2s}
+.ai{display:inline-flex;align-items:center;gap:5px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.06em;padding:3px 7px;border-radius:6px;background:#F1ECFE;color:#5B21B6}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+@keyframes slide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.slide{animation:slide .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes toast{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.toast{animation:toast .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.scrim{animation:fadein .2s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.modal{animation:pop .3s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bar{from{background-position:0 0}to{background-position:40px 0}}
+.prog{background-image:linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.25) 50%,rgba(255,255,255,.25) 75%,transparent 75%);background-size:20px 20px;animation:bar 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 var(--acc-ring)}100%{box-shadow:0 0 0 8px transparent}}
+.pulse{animation:pulse 1.8s ease-out infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:#4B5872;animation:dot 1.2s infinite ease-in-out}
+.dot.b{animation-delay:.15s}.dot.c{animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.caret{display:inline-block;width:2px;height:16px;background:var(--acc);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width: 900px){.side{flex:1 1 100%!important;min-width:0;max-width:100%;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;padding:12px 16px!important}.snavs{flex-direction:row!important;overflow-x:auto;width:100%;min-width:0;position:relative}.sfoot,.wscard{display:none!important}.pad{padding-left:16px!important;padding-right:16px!important}}
+@media (max-width: 760px){.hide-sm{display:none!important}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.snav.on{box-shadow:inset 3px 0 0 #FFFFFF}
+.ws-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#B7C3D9}
+.srow{display:grid;grid-template-columns:76px minmax(0,2fr) 110px 90px minmax(0,1fr) 90px 120px;gap:12px;align-items:center;padding:14px 18px;border-top:1px solid #EEF2F8}
+.shead{font-size:12px;color:#4B5872;font-weight:500;padding-top:10px;padding-bottom:10px;border-top:0}
+.mv{font:inherit;cursor:pointer;width:32px;height:32px;border-radius:8px;border:1px solid #E3E9F2;background:#FFFFFF;color:#4B5872;display:grid;place-items:center}
+.mv:disabled{opacity:.35;cursor:not-allowed}
+.mv:hover:not(:disabled){border-color:var(--acc);color:var(--acc)}
+.av{width:28px;height:28px;border-radius:50%;background:var(--acc-soft);color:var(--acc-t);display:inline-grid;place-items:center;font-size:12px;font-weight:700;border:2px solid #FFFFFF;margin-left:-6px}
+.av:first-child{margin-left:0}
+.chk{display:flex;align-items:center;gap:10px;font-size:15px;cursor:pointer;min-height:40px}
+.chk input{width:18px;height:18px;accent-color:var(--acc);margin:0}
+.cnt{font-family:'Geist Mono',ui-monospace,monospace;font-size:12px}
+@media (max-width: 900px){.srow{grid-template-columns:64px minmax(0,1fr) auto auto;column-gap:10px;padding:14px 12px}.srow .c-len,.srow .c-buf,.srow .c-staff{display:none!important}.shead{display:none}}
+@media (max-width: 440px){.srow{grid-template-columns:64px minmax(0,1fr) auto!important}.c-price{display:none!important}}
+.narrow .srow{grid-template-columns:76px minmax(0,1fr) 90px 120px}.narrow .c-len,.narrow .c-buf,.narrow .c-staff{display:none!important}
+@media (max-width: 900px){.srow{grid-template-columns:64px minmax(0,1fr) auto auto;column-gap:10px;padding:14px 12px}.srow .c-len,.srow .c-buf,.srow .c-staff{display:none!important}.shead{display:none}}
+@media (max-width: 1100px){.svc-aside{position:fixed!important;inset:0 0 0 auto;width:min(460px,100%)!important;z-index:45;box-shadow:-20px 0 60px -20px rgba(11,18,32,.4)}}
+@media (max-width: 600px){.svc-aside{width:100%!important}}
+</style>
+
+</head>
+<body>
+<div id="root"></div>
+<template id="dc-template">
+
+<div class="bl" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F7FB; {{brandVars}}">
+<aside class="side" style="flex: 0 0 264px; background: #07101F; color: #FFFFFF; display: flex; flex-direction: column; gap: 22px; padding: 22px 16px; box-sizing: border-box">
+<a href="{{homeHref}}" aria-label="{{brandName}} admin home" style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; font-size: 20px; letter-spacing: -0.04em; padding: 0 8px; min-height: 44px">
+<sc-if value="{{isByteleaf}}" hint-placeholder-val="{{ true }}"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1877F2"></rect><path d="M8 24C8 14 14 8 24 8C24 18 18 24 8 24Z" fill="#FFFFFF"></path><path d="M8.5 23.5L18 14M13 19h4.5M15.5 16.5v-3.5" stroke="#1877F2" stroke-width="1.8" stroke-linecap="round" fill="none"></path><circle cx="18" cy="14" r="1.6" fill="#1877F2"></circle></svg></sc-if>
+<sc-if value="{{notByteleaf}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 30px; height: 30px; border-radius: 9px; background: var(--acc); color: #FFFFFF; display: grid; place-items: center; font-size: 15px; letter-spacing: 0">{{brandMark}}</span></sc-if>
+<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0">{{brandName}}</span>
+<span class="mono" style="font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: #B7C3D9; border: 1px solid #33415E; border-radius: 6px; padding: 2px 6px">ADMIN</span>
+</a>
+<div class="wscard" style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span class="mono" style="font-size: 10px; letter-spacing: 0.08em; color: #8A98B3">BOOKING ASSISTANT</span>
+<div style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border-radius: 10px; border: 1px solid #22345A; background: #07101F">
+<span aria-hidden="true" style="width: 26px; height: 26px; border-radius: 50%; background: {{bizDot}}; color: #FFFFFF; display: grid; place-items: center; flex: none; font-size: 12px; font-weight: 700">{{bizMark}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{bizName}}</span><span style="font-size: 11px; color: #8A98B3">{{bizSub}}</span></span>
+</div>
+<span class="ws-chip" role="status"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{numDot}}"></span>{{numText}}</span>
+</div>
+<nav aria-label="Booking admin" class="snavs" style="display: flex; flex-direction: column; gap: 4px">
+<a class="snav" href="wa-calendar.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18M7 3v4M17 3v4M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path></svg><span style="flex: 1">Calendar</span></a>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path></svg><span style="flex: 1">Inbox</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"></path></svg><span style="flex: 1">Clients</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+<a class="snav on" href="wa-services.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg><span style="flex: 1">Services</span></a>
+<a class="snav" href="wa-hours.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2"></path></svg><span style="flex: 1">Staff &amp; hours</span></a>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v12H5.2L4 17.2zM8 8h8M8 12h5"></path></svg><span style="flex: 1">Messages</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+<span class="snav off" aria-disabled="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg><span style="flex: 1">Booking rules</span><span class="mono" style="font-size: 10px; padding: 2px 6px; border-radius: 6px; border: 1px solid #33415E; color: #8A98B3">SOON</span></span>
+</nav>
+<div class="sfoot" style="margin-top: auto; display: flex; flex-direction: column; gap: 12px">
+<sc-if value="{{isByteleaf}}" hint-placeholder-val="{{ true }}"><a class="snav" href="admin-dashboard.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>byteleaf admin</a></sc-if>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: #0B1730; border: 1px solid #1C2B47">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: var(--acc); display: grid; place-items: center; font-weight: 600; flex: none">{{userMark}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 600">{{userName}}</span><span style="font-size: 12px; color: #8A98B3">{{userRole}}</span></span>
+<a href="admin-login.html" aria-label="Sign out" style="color: #B7C3D9; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></a>
+</div>
+</div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<header class="pad" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 32px; background: #FFFFFF; border-bottom: 1px solid #E3E9F2">
+<div style="display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 12px; color: #4B5872">{{bizName}} / Booking</span><h1 style="margin: 0; font-size: 26px; letter-spacing: -0.03em; font-weight: 600">Services</h1></div>
+<button type="button" class="btn btn-primary" onClick="{{addNew}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add service</button>
+</header>
+<div style="flex: 1; display: flex; min-height: 0">
+<div class="pad" style="flex: 1; min-width: 0; padding: 24px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+<div class="panel rise" style="padding: 48px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px">
+<span aria-hidden="true" style="width: 60px; height: 60px; border-radius: 18px; background: var(--acc-soft); color: var(--acc-t); display: grid; place-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"></path></svg></span>
+<h2 style="margin: 0; font-size: 22px; letter-spacing: -0.02em">Add what clients can book</h2>
+<p style="margin: 0; max-width: 460px; font-size: 15px; line-height: 1.55; color: #4B5872">Each service needs a name, how long it takes and a price. Clients see them as a list in WhatsApp, in the order you set here.</p>
+<span style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center"><button type="button" class="btn btn-primary" onClick="{{addNew}}">Add your first service</button><button type="button" class="btn btn-ghost" onClick="{{useSalon}}">Start from a salon template</button></span>
+<span class="hint">Templates fill in typical services. You can change everything.</span>
+</div>
+</sc-if>
+
+<sc-if value="{{hasList}}" hint-placeholder-val="{{ true }}">
+<div role="note" style="display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 12px 16px; border-radius: 12px; background: var(--acc-soft); color: #0B1220; font-size: 14px; line-height: 1.5">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--acc-t)"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"></path></svg>
+<span style="flex: 1 1 300px"><strong>{{shownCount}} of 9</strong> places used in the WhatsApp service list. A list holds 10 rows and one is kept for “Ask a person”. Order here = order in WhatsApp.</span>
+</div>
+<div class="panel {{listCls}}" style="overflow: hidden">
+<div class="srow shead" aria-hidden="true"><span>Order</span><span>Service</span><span class="c-len">Length</span><span>Price</span><span class="c-staff">Who</span><span class="c-buf">Clean-up</span><span style="text-align: right">On WhatsApp</span></div>
+<ol style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+<li class="srow row" style="{{r.bg}}">
+<span style="display: flex; gap: 4px"><button type="button" class="mv" aria-label="Move {{r.name}} up" onClick="{{r.up}}" disabled="{{r.first}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"></path></svg></button><button type="button" class="mv" aria-label="Move {{r.name}} down" onClick="{{r.down}}" disabled="{{r.last}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button></span>
+<button type="button" onClick="{{r.edit}}" style="font: inherit; cursor: pointer; border: 0; background: transparent; padding: 0; text-align: left; min-width: 0; display: flex; flex-direction: column; gap: 2px; color: #0B1220"><span style="font-weight: 600; font-size: 15px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap">{{r.name}}<sc-if value="{{r.private}}" hint-placeholder-val="{{ false }}"><span class="pill" style="background: #EEF2F8; color: #33405A">PRIVATE IN MESSAGES</span></sc-if></span><span style="font-size: 13px; color: #4B5872">{{r.desc}}</span></button>
+<span class="c-len" style="font-size: 14px">{{r.len}}</span>
+<span class="c-price" style="font-size: 14px; font-weight: 500">{{r.price}}</span>
+<span class="c-staff" style="display: flex" aria-label="{{r.staffAria}}"><sc-for list="{{r.staff}}" as="s" hint-placeholder-count="2"><span class="av" aria-hidden="true">{{s}}</span></sc-for></span>
+<span class="c-buf" style="font-size: 14px; color: #4B5872">{{r.buf}}</span>
+<span style="display: flex; justify-content: flex-end"><button type="button" class="sw" role="switch" aria-checked="{{r.wa}}" aria-label="Show {{r.name}} on WhatsApp" onClick="{{r.toggle}}" style="background: {{r.swBg}}"><span class="knob" style="left: {{r.swL}}"></span></button></span>
+</li>
+</sc-for>
+</ol>
+</div>
+<p class="hint" style="margin: 0">Services switched off are still bookable by hand from the calendar. Changes reach WhatsApp straight away; bookings already made keep their length and price.</p>
+</sc-if>
+</div>
+
+<sc-if value="{{drawer}}" hint-placeholder-val="{{ false }}">
+<aside class="svc-aside panel-x slide" role="dialog" aria-modal="false" aria-labelledby="ed-h" style="flex: 0 0 440px; width: 440px; box-sizing: border-box; background: #FFFFFF; border-left: 1px solid #E3E9F2; display: flex; flex-direction: column; max-height: 100vh; overflow-y: auto">
+<div style="padding: 16px 20px; border-bottom: 1px solid #EEF2F8; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; background: #FFFFFF; z-index: 2">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span class="mono" style="font-size: 11px; color: #4B5872">{{edKicker}}</span><h2 id="ed-h" style="margin: 0; font-size: 20px; letter-spacing: -0.02em">{{edTitle}}</h2></div>
+<sc-if value="{{dirty}}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 12px; color: #8A5200; display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #B45309"></span>Unsaved</span></sc-if>
+<button type="button" class="ibtn" aria-label="Close (Esc)" onClick="{{tryClose}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<form onSubmit="{{save}}" novalidate style="padding: 18px 20px 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; justify-content: space-between"><label class="lbl" for="sn">Name</label><span class="cnt" style="color: {{nameC}}">{{nameCount}}</span></span>
+<input id="sn" class="field" value="{{f.name}}" onInput="{{onName}}" aria-invalid="{{nameBad}}" aria-describedby="sn-h">
+<span id="sn-h" class="hint" role="{{nameRole}}" style="color: {{nameHC}}">{{nameHint}}</span>
+</div>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<div style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 6px"><span class="lbl" id="ln-l">Length</span><span style="display: flex; gap: 6px" role="group" aria-labelledby="ln-l"><select class="field" aria-label="Hours" onChange="{{onH}}"><sc-for list="{{hOpts}}" as="o" hint-placeholder-count="5"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select><select class="field" aria-label="Minutes" onChange="{{onM}}"><sc-for list="{{mOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select></span></div>
+<div style="flex: 1 1 120px; display: flex; flex-direction: column; gap: 6px"><label class="lbl" for="sp">Price (R)</label><input id="sp" class="field" inputmode="numeric" value="{{f.price}}" onInput="{{onPrice}}" aria-invalid="{{priceBad}}" aria-describedby="sp-h"><span id="sp-h" class="hint" role="{{priceRole}}" style="color: #B42318">{{priceErr}}</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label class="lbl" for="sb">Clean-up time after</label><select id="sb" class="field" onChange="{{onBuf}}"><sc-for list="{{bOpts}}" as="o" hint-placeholder-count="5"><option value="{{o.v}}" selected="{{o.s}}">{{o.l}}</option></sc-for></select><span class="hint">Blocked in the calendar after each booking. Clients don’t see it.</span></div>
+<fieldset style="border: 0; margin: 0; padding: 0"><legend class="lbl" style="padding: 0; margin-bottom: 4px">Who can do it</legend>
+<sc-for list="{{staffOpts}}" as="s" hint-placeholder-count="3"><label class="chk"><input type="checkbox" checked="{{s.on}}" onChange="{{s.tog}}"> {{s.l}}</label></sc-for>
+<sc-if value="{{staffErr}}" hint-placeholder-val="{{ false }}"><span role="alert" class="hint" style="color: #B42318">Pick at least one person.</span></sc-if>
+</fieldset>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; justify-content: space-between"><label class="lbl" for="sd">Line under the name in WhatsApp</label><span class="cnt" style="color: {{descC}}">{{descCount}}</span></span>
+<input id="sd" class="field" value="{{descVal}}" onInput="{{onDesc}}" placeholder="{{autoDesc}}">
+<span class="hint">Leave empty to use “{{autoDesc}}”.</span>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 14px"><span style="display: flex; flex-direction: column; gap: 2px"><span id="w-l" style="font-weight: 500">Show on WhatsApp</span><span class="hint">Off = only bookable by hand.</span></span><button type="button" class="sw" role="switch" aria-checked="{{fWa}}" aria-labelledby="w-l" onClick="{{togWa}}" style="background: {{fSwBg}}"><span class="knob" style="left: {{fSwL}}"></span></button></div>
+<label class="chk" style="align-items: flex-start"><input type="checkbox" checked="{{f.priv}}" onChange="{{togPriv}}" style="margin-top: 3px"><span style="display: flex; flex-direction: column; gap: 2px"><span>Keep the service name out of messages</span><span class="hint">For clinics. Reminders say “your appointment with Dr [name]” instead.</span></span></label>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="mono" style="font-size: 11px; color: #4B5872">HOW IT LOOKS IN THE WHATSAPP LIST</span>
+<div style="padding: 12px; border-radius: 14px; background: #ECEFF3"><div style="background: #FFFFFF; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 12px"><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; overflow-wrap: anywhere">{{previewName}}</span><span style="font-size: 13px; color: #4B5872; overflow-wrap: anywhere">{{previewDesc}}</span></span><span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 50%; border: 2px solid #A9B8CF; box-sizing: border-box; flex: none"></span></div></div>
+</div>
+
+<span style="display: flex; gap: 8px; flex-wrap: wrap; padding-top: 4px">
+<button type="submit" class="btn btn-primary" style="flex: 1" disabled="{{saving}}">{{saveLabel}}</button>
+<sc-if value="{{canDelete}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn btn-danger" onClick="{{askDel}}">Delete</button></sc-if>
+</span>
+</form>
+</aside>
+</sc-if>
+</div>
+</main>
+
+<sc-if value="{{dlg}}" hint-placeholder-val="{{ false }}">
+<div class="scrim" style="position: fixed; inset: 0; z-index: 60; background: rgba(11,18,32,.45); display: grid; place-items: center; padding: 16px">
+<div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="dl-h" aria-describedby="dl-d" style="width: 100%; max-width: 440px; box-sizing: border-box; background: #FFFFFF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="dl-h" style="margin: 0; font-size: 20px; letter-spacing: -0.02em">{{dlgTitle}}</h2>
+<p id="dl-d" style="margin: 0; font-size: 15px; line-height: 1.55; color: #33405A">{{dlgText}}</p>
+<span style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" class="btn btn-ghost" onClick="{{dlgNo}}">{{dlgNoL}}</button><button type="button" class="btn" onClick="{{dlgYes}}" style="background: #B42318; color: #FFFFFF">{{dlgYesL}}</button></span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" class="toast" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 70; padding: 12px 18px; border-radius: 14px; background: #0B1220; color: #FFFFFF; font-size: 14px; max-width: calc(100% - 32px); box-sizing: border-box">{{toastText}}</div>
+</sc-if>
+</div>
+</template>
+
+<script>
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(p) { Object.assign(this.state, typeof p === 'function' ? p(this.state) : p); window.__render(); }
+  forceUpdate() { window.__render(); }
+}
+</script>
+<script>
+class Component extends DCLogic {
+brand() {
+const B = {
+byteleaf: { acc: '#166FE5', h: '#0F5FCC', t: '#0F5FCC', soft: '#EEF4FE', ring: 'rgba(22,111,229,.2)', name: 'byteleaf', mark: 'b', biz: "Lerato's Braids & Beauty", bizMark: 'L', bizSub: 'Demo client · Randburg', bizDot: '#8B2F7E', user: 'Gerald', userRole: 'byteleaf admin' },
+plum: { acc: '#8B2F7E', h: '#74256A', t: '#7A2470', soft: '#F7ECF5', ring: 'rgba(139,47,126,.2)', name: "Lerato's", mark: 'L', biz: "Lerato's Braids & Beauty", bizMark: 'L', bizSub: 'Randburg · 3 staff', bizDot: '#8B2F7E', user: 'Lerato', userRole: 'Owner' },
+teal: { acc: '#0E7A6D', h: '#0B6458', t: '#0B6458', soft: '#E7F4F2', ring: 'rgba(14,122,109,.22)', name: 'Mvelo Physio', mark: 'M', biz: 'Mvelo Physio', bizMark: 'M', bizSub: 'Rosebank · 2 practitioners', bizDot: '#0E7A6D', user: 'Dr [name]', userRole: 'Owner' }
+};
+const k = B[this.props.brand] ? this.props.brand : 'byteleaf';
+const b = B[k];
+const num = this.props.number === 'attention';
+return {
+brandVars: '--acc: ' + b.acc + '; --acc-h: ' + b.h + '; --acc-t: ' + b.t + '; --acc-soft: ' + b.soft + '; --acc-ring: ' + b.ring + ';',
+brandKey: k, isByteleaf: k === 'byteleaf', notByteleaf: k !== 'byteleaf', brandName: b.name, brandMark: b.mark,
+homeHref: 'WaCalendar.dc.html', bizName: b.biz, bizMark: b.bizMark, bizSub: b.bizSub, bizDot: b.bizDot,
+userName: b.user, userMark: b.user[0], userRole: b.userRole,
+numBad: num, numDot: num ? '#F79009' : '#12B76A', numText: num ? 'WhatsApp number needs attention' : 'WhatsApp +27 [number] · connected'
+};
+}
+constructor(props) {
+super(props);
+this.seed = [
+{ id: 's1', name: 'Knotless braids', min: 240, price: '650', staff: ['L', 'T'], buf: 15, wa: true, desc: '', priv: false, upcoming: 6 },
+{ id: 's2', name: "Kids' braids", min: 120, price: '350', staff: ['L', 'T'], buf: 0, wa: true, desc: '', priv: false, upcoming: 3 },
+{ id: 's3', name: 'Silk press', min: 90, price: '380', staff: ['L', 'N'], buf: 10, wa: true, desc: '', priv: false, upcoming: 4 },
+{ id: 's4', name: 'Gel nails', min: 60, price: '280', staff: ['N', 'L'], buf: 10, wa: true, desc: '', priv: false, upcoming: 7 },
+{ id: 's5', name: 'Consultation', min: 15, price: '0', staff: ['L'], buf: 0, wa: false, desc: 'Free · for new styles', priv: false, upcoming: 0 }
+];
+this.state = { list: props.empty ? [] : this.seed, edit: '', f: null, orig: '', err: {}, saving: false, dlg: '', toast: '' };
+}
+componentDidMount() { this.onK = (e) => { if (e.key === 'Escape') { if (this.state.dlg) this.setState({ dlg: '' }); else if (this.state.edit) this.tryClose(); } }; document.addEventListener('keydown', this.onK); }
+componentWillUnmount() { document.removeEventListener('keydown', this.onK); clearTimeout(this.tt); clearTimeout(this.ts); }
+flash(t) { clearTimeout(this.tt); this.setState({ toast: t }); this.tt = setTimeout(() => this.setState({ toast: '' }), 3500); }
+tryClose() { const st = this.state; if (st.f && JSON.stringify(st.f) !== st.orig) this.setState({ dlg: 'discard' }); else this.setState({ edit: '', f: null }); }
+renderVals() {
+const st = this.state;
+const br = this.brand();
+const NM = { L: 'Lerato', T: 'Thandeka', N: 'Naledi' };
+const lenTxt = (m) => (m >= 60 ? Math.floor(m / 60) + (Math.floor(m / 60) === 1 ? ' hour' : ' hours') : '') + (m % 60 ? (m >= 60 ? ' ' : '') + (m % 60) + ' min' : '');
+const priceTxt = (p) => (+p ? 'R ' + (+p).toLocaleString('en-ZA').replace(/,/g, ' ') : 'Free');
+const auto = (s) => lenTxt(s.min) + ' · ' + priceTxt(s.price);
+const shown = st.list.filter((s) => s.wa).length;
+const set = (patch) => this.setState({ f: Object.assign({}, st.f, patch), err: {} });
+const f = st.f || { name: '', min: 60, price: '', staff: [], buf: 0, wa: true, desc: '', priv: false };
+const nl = f.name.length, dl = (f.desc || '').length;
+const cnt = (n, max) => n > max ? '#B42318' : n * 1.3 > max ? '#8A5200' : '#4B5872';
+const open = (s) => { const f0 = Object.assign({}, s, { staff: s.staff.slice() }); this.setState({ edit: s.id, f: f0, orig: JSON.stringify(f0), err: {} }); };
+const move = (i, dir) => { const a = st.list.slice(); const j = i + dir; const tmp = a[i]; a[i] = a[j]; a[j] = tmp; this.setState({ list: a }); };
+const dlg = st.dlg;
+return Object.assign(br, {
+isEmpty: !st.list.length, hasList: st.list.length > 0, shownCount: String(shown),
+addNew: () => { const f0 = { id: 'new', name: '', min: 60, price: '', staff: ['L'], buf: 0, wa: shown < 9, desc: '', priv: false, upcoming: 0 }; this.setState({ edit: 'new', f: f0, orig: JSON.stringify(f0), err: {} }); },
+useSalon: () => { this.setState({ list: this.seed }); this.flash('Added 5 typical salon services. Check the prices.'); },
+rows: st.list.map((s, i) => ({ name: s.name, desc: s.desc || auto(s), len: lenTxt(s.min), price: priceTxt(s.price), staff: s.staff.map((k) => NM[k][0]), staffAria: 'Done by ' + s.staff.map((k) => NM[k]).join(' and '), buf: s.buf ? s.buf + ' min' : '—', private: !!s.priv,
+wa: s.wa ? 'true' : 'false', swBg: s.wa ? 'var(--acc)' : '#C9D3E3', swL: s.wa ? '21px' : '3px',
+toggle: () => { if (!s.wa && shown >= 9) { this.flash('The WhatsApp list is full. Switch another service off first.'); return; } this.setState({ list: st.list.map((x) => (x.id === s.id ? Object.assign({}, x, { wa: !x.wa }) : x)) }); },
+first: i === 0, last: i === st.list.length - 1, up: () => move(i, -1), down: () => move(i, 1), edit: () => open(s), bg: st.edit === s.id ? 'background: var(--acc-soft);' : '' })),
+drawer: !!st.edit, listCls: st.edit ? 'narrow' : '', edKicker: st.edit === 'new' ? 'NEW SERVICE' : 'EDIT SERVICE', edTitle: st.edit === 'new' ? (f.name || 'New service') : f.name || 'Untitled',
+dirty: !!st.f && JSON.stringify(st.f) !== st.orig,
+tryClose: () => this.tryClose(),
+f: f, nameCount: nl + ' / 24', nameC: cnt(nl, 24),
+nameBad: st.err.name ? 'true' : 'false', nameRole: st.err.name ? 'alert' : '', nameHC: st.err.name || nl > 24 ? '#B42318' : (nl * 1.3 > 24 ? '#8A5200' : '#4B5872'),
+nameHint: st.err.name || (nl > 24 ? 'Too long for a WhatsApp list row (24 characters).' : nl * 1.3 > 24 ? 'Fits, but may be cut off when translated. Shorter is safer.' : 'Shown to clients in the WhatsApp list.'),
+onName: (e) => set({ name: e.target.value }),
+hOpts: [0, 1, 2, 3, 4, 5, 6].map((h) => ({ v: String(h), l: h + ' h', s: Math.floor(f.min / 60) === h })), mOpts: [0, 15, 30, 45].map((m) => ({ v: String(m), l: m + ' min', s: f.min % 60 === m })),
+onH: (e) => set({ min: +e.target.value * 60 + (f.min % 60) }), onM: (e) => set({ min: Math.floor(f.min / 60) * 60 + +e.target.value }),
+onPrice: (e) => set({ price: e.target.value.replace(/[^0-9]/g, '') }), priceBad: st.err.price ? 'true' : 'false', priceRole: st.err.price ? 'alert' : '', priceErr: st.err.price || '',
+bOpts: [0, 5, 10, 15, 30].map((b) => ({ v: String(b), l: b ? b + ' minutes' : 'None', s: f.buf === b })), onBuf: (e) => set({ buf: +e.target.value }),
+staffOpts: ['L', 'T', 'N'].map((k) => ({ l: NM[k], on: f.staff.indexOf(k) > -1, tog: () => set({ staff: f.staff.indexOf(k) > -1 ? f.staff.filter((x) => x !== k) : f.staff.concat([k]) }) })),
+staffErr: !!st.err.staff,
+descVal: f.desc || '', autoDesc: auto(f), descCount: dl + ' / 72', descC: cnt(dl, 72), onDesc: (e) => set({ desc: e.target.value }),
+fWa: f.wa ? 'true' : 'false', fSwBg: f.wa ? 'var(--acc)' : '#C9D3E3', fSwL: f.wa ? '21px' : '3px', togWa: () => set({ wa: !f.wa }), togPriv: () => set({ priv: !f.priv }),
+previewName: f.priv ? 'Appointment' : (f.name || 'Service name'), previewDesc: f.desc || auto(f),
+saving: st.saving, saveLabel: st.saving ? 'Saving…' : st.edit === 'new' ? 'Add service' : 'Save changes',
+save: (e) => { e.preventDefault(); const er = {}; if (!f.name.trim()) er.name = 'Give the service a name.'; else if (f.name.length > 24) er.name = 'Use 24 characters or fewer so it fits in WhatsApp.'; if (f.price === '') er.price = 'Enter a price, or 0 if it’s free.'; if (!f.staff.length) er.staff = true; if (f.min < 15) er.name = er.name || 'A service needs to be at least 15 minutes.'; if (Object.keys(er).length) { this.setState({ err: er }); return; } this.setState({ saving: true }); clearTimeout(this.ts); this.ts = setTimeout(() => { const s = this.state; const isNew = s.edit === 'new'; const item = Object.assign({}, s.f, { id: isNew ? 'n' + Date.now() : s.edit }); this.setState({ saving: false, edit: '', f: null, list: isNew ? s.list.concat([item]) : s.list.map((x) => (x.id === s.edit ? item : x)) }); this.flash(isNew ? item.name + ' added.' : 'Saved. WhatsApp shows the change straight away.'); }, 700); },
+canDelete: st.edit && st.edit !== 'new', askDel: () => this.setState({ dlg: 'delete' }),
+dlg: !!dlg,
+dlgTitle: dlg === 'delete' ? 'Delete ' + f.name + '?' : 'Discard your changes?',
+dlgText: dlg === 'delete' ? (f.upcoming ? f.upcoming + ' upcoming bookings keep this service. Clients can’t book it any more.' : 'Clients can’t book it any more. This can’t be undone.') : 'You changed this service but didn’t save. Closing now loses those changes.',
+dlgNoL: dlg === 'delete' ? 'Keep it' : 'Keep editing', dlgYesL: dlg === 'delete' ? 'Delete service' : 'Discard changes',
+dlgNo: () => this.setState({ dlg: '' }),
+dlgYes: () => { if (dlg === 'delete') { const nm = f.name; this.setState({ dlg: '', edit: '', f: null, list: st.list.filter((x) => x.id !== st.edit) }); this.flash(nm + ' deleted.'); } else this.setState({ dlg: '', edit: '', f: null }); },
+toast: !!st.toast, toastText: st.toast
+});
+}
+}
+</script>
+<script>
+(function () {
+  const tpl = document.getElementById('dc-template');
+  const root = document.getElementById('root');
+  const qp = {}; new URLSearchParams(location.search).forEach((v, k) => { qp[k] = v === 'true' ? true : v === 'false' ? false : v; }); const comp = new Component(qp);
+  const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  function look(scope, expr) {
+    expr = expr.trim();
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return Number(expr);
+    let v = scope;
+    for (const k of expr.split('.')) { if (v == null) return undefined; v = v[k]; }
+    return v;
+  }
+  function str(v) { return v == null ? '' : String(v); }
+  function walk(node, scope, out) {
+    if (node.nodeType === 3) {
+      out.appendChild(document.createTextNode(node.nodeValue.replace(HOLE, (m, e) => str(look(scope, e)))));
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName.toLowerCase();
+    if (tag === 'sc-for') {
+      const list = look(scope, node.getAttribute('list').replace(/[{}]/g, '')) || [];
+      const as = node.getAttribute('as');
+      list.forEach((item, i) => {
+        const s = Object.assign(Object.create(scope), { [as]: item, $index: i });
+        node.childNodes.forEach((c) => walk(c, s, out));
+      });
+      return;
+    }
+    if (tag === 'sc-if') {
+      if (look(scope, node.getAttribute('value').replace(/[{}]/g, ''))) node.childNodes.forEach((c) => walk(c, scope, out));
+      return;
+    }
+    const el = document.createElement(tag === 'svg' || node.namespaceURI === 'http://www.w3.org/2000/svg' ? tag : tag);
+    let target = node.namespaceURI === 'http://www.w3.org/2000/svg' ? document.createElementNS('http://www.w3.org/2000/svg', node.tagName) : el;
+    for (const a of node.attributes) {
+      const whole = a.value.match(/^\{\{\s*([^}]+?)\s*\}\}$/);
+      if (whole) {
+        const v = look(scope, whole[1]);
+        if (/^on[A-Z]/.test(a.name) || /^on[a-z]/.test(a.name) && typeof v === 'function') {
+          if (typeof v === 'function') target.addEventListener(a.name.slice(2).toLowerCase(), v);
+        } else if (typeof v === 'boolean') { if (v) target.setAttribute(a.name, ''); }
+        else if (v != null) target.setAttribute(a.name, String(v));
+      } else if (a.name.startsWith('hint-')) {
+      } else {
+        target.setAttribute(a.name, a.value.replace(HOLE, (m, e) => str(look(scope, e))));
+      }
+    }
+    const kids = tag === 'template' ? node.content.childNodes : node.childNodes;
+    kids.forEach((c) => walk(c, scope, target));
+    out.appendChild(target);
+  }
+  window.__render = function () {
+    const vals = comp.renderVals();
+    const frag = document.createDocumentFragment();
+    tpl.content.childNodes.forEach((c) => walk(c, vals, frag));
+    root.replaceChildren(frag);
+    if (window.__mounted && comp.componentDidUpdate) comp.componentDidUpdate();
+    if (!window.__mounted) { window.__mounted = true; if (comp.componentDidMount) comp.componentDidMount(); }
+  };
+  window.__render();
+})();
+</script>
+</body>
+</html>

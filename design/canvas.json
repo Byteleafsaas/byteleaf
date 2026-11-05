@@ -16,6 +16,10 @@
   {
    "id": "chatbot",
    "name": "Showcase \u00b7 Knowledge chatbot"
+  },
+  {
+   "id": "whatsapp",
+   "name": "Showcase \u00b7 WhatsApp booking"
   }
  ],
  "boards": {
@@ -308,6 +312,86 @@
    "page": "chatbot",
    "expand": "fill",
    "is_interactive": true
+  },
+  "WaMap.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 2660,
+   "h": 2100,
+   "title": "Conversation map + open questions (P1)",
+   "page": "whatsapp",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "WaBook.dc.html": {
+   "x": 0,
+   "y": 2400,
+   "w": 1440,
+   "h": 5600,
+   "title": "Message library \u00b7 booking (P1)",
+   "page": "whatsapp",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "WaChange.dc.html": {
+   "x": 1520,
+   "y": 2400,
+   "w": 1440,
+   "h": 4700,
+   "title": "Message library \u00b7 change, cancel, reminders (P1)",
+   "page": "whatsapp",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "WaCalendar.dc.html": {
+   "x": 0,
+   "y": 8300,
+   "w": 1440,
+   "h": 1080,
+   "title": "Admin \u00b7 Calendar (P1)",
+   "page": "whatsapp",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "WaServices.dc.html": {
+   "x": 1520,
+   "y": 8300,
+   "w": 1440,
+   "h": 1000,
+   "title": "Admin \u00b7 Services (P1)",
+   "page": "whatsapp",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "WaHours.dc.html": {
+   "x": 3040,
+   "y": 8300,
+   "w": 1440,
+   "h": 1300,
+   "title": "Admin \u00b7 Staff & hours (P1)",
+   "page": "whatsapp",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "WaThemes.dc.html": {
+   "x": 4560,
+   "y": 8300,
+   "w": 1440,
+   "h": 1420,
+   "title": "Admin re-skin \u00b7 tokens + 3 brands (P1)",
+   "page": "whatsapp",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "WaDemo.dc.html": {
+   "x": 0,
+   "y": 10320,
+   "w": 1440,
+   "h": 2800,
+   "title": "byteleaf site \u00b7 Demo page (P1)",
+   "page": "whatsapp",
+   "expand": "fill",
+   "is_interactive": true
   }
  },
  "order": [
@@ -342,7 +426,15 @@
   "CbStaff.dc.html",
   "CbUnanswered.dc.html",
   "CbSettings.dc.html",
-  "CbConversations.dc.html"
+  "CbConversations.dc.html",
+  "WaMap.dc.html",
+  "WaBook.dc.html",
+  "WaChange.dc.html",
+  "WaCalendar.dc.html",
+  "WaServices.dc.html",
+  "WaHours.dc.html",
+  "WaThemes.dc.html",
+  "WaDemo.dc.html"
  ],
  "notes": {
   "title": {
@@ -404,6 +496,38 @@
    "kind": "title1",
    "maxW": 6000,
    "page": "chatbot"
+  },
+  "waT1": {
+   "x": 0,
+   "y": -300,
+   "text": "WhatsApp booking \u2014 conversation map",
+   "kind": "title1",
+   "maxW": 6000,
+   "page": "whatsapp"
+  },
+  "waT2": {
+   "x": 0,
+   "y": 2100,
+   "text": "Message library \u2014 every message, counted against WhatsApp limits",
+   "kind": "title1",
+   "maxW": 6000,
+   "page": "whatsapp"
+  },
+  "waT3": {
+   "x": 0,
+   "y": 8000,
+   "text": "Owner admin (P1) \u2014 calendar, services, staff & hours, re-skin",
+   "kind": "title1",
+   "maxW": 6000,
+   "page": "whatsapp"
+  },
+  "waT4": {
+   "x": 0,
+   "y": 10020,
+   "text": "Demo page on the byteleaf site",
+   "kind": "title1",
+   "maxW": 6000,
+   "page": "whatsapp"
   }
  },
  "designSystems": []
