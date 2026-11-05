@@ -1,7 +1,8 @@
 import 'server-only';
 import { Types } from 'mongoose';
 import { freeStarts, intersect, rangesOn, windowDates, type Busy, type Range, type WeekHours } from '@/lib/whatsapp/slots';
-import { sastToUtc } from '@/lib/server/time';
+import { closedHolidays } from '@/lib/whatsapp/holidays';
+import { sastToUtc, todaySast } from '@/lib/server/time';
 import { connectDB } from '../db';
 import { WaAppointment, WaBusiness, WaService, WaSlotLock, WaStaff } from '../models';
 
@@ -14,16 +15,17 @@ export type Data = { biz: Biz; services: Service[]; staff: Staff[] };
 const GRAIN = 15 * 60000;
 const asHours = (x: unknown): WeekHours => (x && typeof x === 'object' ? (x as WeekHours) : {});
 
-export async function loadData(slug: string): Promise<Data | null> {
+/** Everything the booking engine needs about one business. Services switched off for WhatsApp are left out unless `all` is set (the calendar can still book them by hand). */
+export async function loadData(slug: string, opts: { all?: boolean } = {}): Promise<Data | null> {
   await connectDB();
   const b = await WaBusiness.findOne({ slug, active: true }).lean();
   if (!b) return null;
   const [services, staff] = await Promise.all([
-    WaService.find({ business: slug, active: true, onWhatsApp: { $ne: false } }).sort({ order: 1 }).lean(),
+    WaService.find({ business: slug, active: true, ...(opts.all ? {} : { onWhatsApp: { $ne: false } }) }).sort({ order: 1 }).lean(),
     WaStaff.find({ business: slug, active: true }).sort({ order: 1 }).lean(),
   ]);
   return {
-    biz: { slug, name: b.name, hours: asHours(b.hours), daysOff: b.daysOff ?? [], minNoticeMin: b.minNoticeMin, bufferMin: b.bufferMin, stepMin: b.stepMin, windowDays: b.windowDays, cancelWindowHours: b.cancelWindowHours, replyTime: b.replyTime ?? '[time]', payNote: b.payNote, address: b.address ?? '[Salon address]', privacyUrl: b.privacyUrl ?? '[privacy link]', lateFee: b.lateFee ?? 'R [amount]', brand: b.brand ?? 'byteleaf', clinic: Boolean(b.clinic) },
+    biz: { slug, name: b.name, hours: asHours(b.hours), daysOff: [...(b.daysOff ?? []), ...closedHolidays(todaySast(), b.holidayOpen ?? [])], minNoticeMin: b.minNoticeMin, bufferMin: b.bufferMin, stepMin: b.stepMin, windowDays: b.windowDays, cancelWindowHours: b.cancelWindowHours, replyTime: b.replyTime ?? '[time]', payNote: b.payNote, address: b.address ?? '[Salon address]', privacyUrl: b.privacyUrl ?? '[privacy link]', lateFee: b.lateFee ?? 'R [amount]', brand: b.brand ?? 'byteleaf', clinic: Boolean(b.clinic) },
     services: services.map((s) => ({ id: s._id as Id, name: s.name, minutes: s.minutes, priceCents: s.priceCents, bufferMin: s.bufferMin ?? null, staff: (s.staff ?? []) as Id[], hideName: Boolean(s.hideName) })),
     staff: staff.map((s) => ({ id: s._id as Id, name: s.name, hours: asHours(s.hours), daysOff: s.daysOff ?? [] })),
   };
@@ -89,13 +91,13 @@ export async function daysFor(d: Data, svc: Service, now: Date, exclude?: string
   return out;
 }
 
-const grainsOf = (staffId: Id, start: Date, until: Date) => {
+export const grainsOf = (staffId: Id, start: Date, until: Date) => {
   const out: { staffId: Id; grain: Date }[] = [];
   for (let g = start.getTime(); g < until.getTime(); g += GRAIN) out.push({ staffId, grain: new Date(g) });
   return out;
 };
-const key = (x: { staffId: Id; grain: Date }) => `${x.staffId}|${x.grain.getTime()}`;
-const isDuplicate = (e: unknown) => (e as { code?: number; writeErrors?: unknown })?.code === 11000 || Boolean((e as { writeErrors?: unknown })?.writeErrors);
+export const key = (x: { staffId: Id; grain: Date }) => `${x.staffId}|${x.grain.getTime()}`;
+export const isDuplicate = (e: unknown) => (e as { code?: number; writeErrors?: unknown })?.code === 11000 || Boolean((e as { writeErrors?: unknown })?.writeErrors);
 
 export type Booked = { id: Id; serviceId: Id; serviceName: string; date: string; time: string; startsAt: Date; endsAt: Date; priceCents: number; staffName: string };
 

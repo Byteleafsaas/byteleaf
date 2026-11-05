@@ -57,7 +57,7 @@ function makeCtx(d: Data, client: { id: Types.ObjectId; name: string; phone: str
       if (!own) return { ok: false, reason: 'invalid' };
       const r = await moveSlot(d, apptId, date, time, now);
       if (r === 'taken' || r === 'gone') return { ok: false, reason: r === 'taken' ? 'taken' : 'invalid' };
-      await WaAppointment.updateOne({ _id: apptId }, { $set: { movedByClient: true, confirmedAt: null } });
+      await WaAppointment.updateOne({ _id: apptId }, { $set: { movedByClient: true, movedBy: 'client', confirmedAt: null } });
       return { ok: true, appt: fromBooked(r) };
     },
     cancel: async (apptId) => {

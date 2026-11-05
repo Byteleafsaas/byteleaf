@@ -7,6 +7,7 @@ import { connectDB } from '../db';
 import { env } from '../env';
 import { WaAppointment, WaBusiness, WaClient } from '../models';
 import { todaySast } from '../time';
+import { hasNumber } from '@/lib/whatsapp/calendar-model';
 import { releaseOrphanLocks } from './calendar';
 import { sendOut, sendRaw } from './send';
 
@@ -32,7 +33,7 @@ export async function runReminders(now = new Date()): Promise<ReminderRun> {
         if (!isDue({ startsAt: a.startsAt, createdAt: a.createdAt ?? a.startsAt, now, hours: h, sent })) continue;
         out.checked++;
         const client = await WaClient.findById(a.clientId).lean();
-        if (!client || client.optedOut || client.consent === 'no') { out.skipped++; continue; }
+        if (!client || client.optedOut || client.consent === 'no' || !hasNumber(client.phone)) { out.skipped++; continue; }
         const id = String(a._id);
         // Claim this reminder before sending, so two overlapping scheduler runs can't both send it.
         const kind = kindOf(h);
@@ -48,9 +49,11 @@ export async function runReminders(now = new Date()): Promise<ReminderRun> {
         } else {
           console.warn('[whatsapp] a reminder is due outside the 24-hour window but WHATSAPP_REMINDER_TEMPLATE is not set.');
         }
-        if (ok) out.sent++;
-        else {
-          await WaAppointment.updateOne({ _id: a._id }, { $pull: { reminders: { kind } } }); // let the next run try again
+        if (ok) {
+          out.sent++;
+          await WaAppointment.updateOne({ _id: a._id }, { $set: { reminderFailedAt: null } });
+        } else {
+          await WaAppointment.updateOne({ _id: a._id }, { $pull: { reminders: { kind } }, $set: { reminderFailedAt: now } }); // let the next run try again, and tell the owner
           out.skipped++;
         }
       }

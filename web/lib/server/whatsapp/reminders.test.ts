@@ -48,6 +48,6 @@ describe('runReminders', () => {
     sendRaw.mockResolvedValue(false);
     const r = await runReminders(NOW);
     expect(r.sent).toBe(0);
-    expect(updateOne.mock.calls[1][1]).toEqual({ $pull: { reminders: { kind: '24h' } } });
+    expect(updateOne.mock.calls[1][1]).toMatchObject({ $pull: { reminders: { kind: '24h' } }, $set: { reminderFailedAt: expect.any(Date) } }); // and the calendar can say the reminder failed
   });
 });

@@ -41,7 +41,8 @@ const STARTERS = [
     challenge: 'Bookings run on back-and-forth messages, diaries get double-booked or forgotten, and no-shows cost real money.',
     whatWeDid:
       'Clients message a WhatsApp number they already know, pick a service and a free slot, and get confirmations and reminders automatically. An admin calendar shows availability, bookings and client details, with rules for opening hours, breaks and time off. Optional AI answers common questions like prices and location.',
-    result: 'Demo coming soon, built around a sample salon. Fewer no-shows and less admin time is the goal, and real figures will come from a live client.',
+    result: 'Try the guided demo, built around a sample salon. Fewer no-shows and less admin time is the goal, and real figures will come from a live client.',
+    demoUrl: '/projects/whatsapp-booking',
     featured: false,
     live: false,
   },

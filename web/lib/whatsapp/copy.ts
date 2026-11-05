@@ -174,6 +174,9 @@ export const T = {
   reminderOk: (name: string | undefined, when: string, time: string) => `Thanks${name ? `, ${name}` : ''}. See you ${when} at ${time}!`,
   seeYou: 'Great, see you then!',
   btnSeeYou: 'Yes, see you',
+  // Told to a client when the owner changes their booking by hand
+  movedBySalon: (business: string, service: string, date: string, time: string) => `Hi, ${business} has moved your ${service} to ${fmtMid(date)} at ${time}. Reply here if you need to change it.`,
+  cancelledBySalon: (business: string, service: string, date: string, time: string) => `Hi, ${business} has cancelled your ${service} on ${fmtMid(date)} at ${time}. Message us here to book again.`,
   // Fallbacks
   expired: 'That option has expired. Here is where we were.',
   noService: "I couldn't find that service. Please choose one from the list.",

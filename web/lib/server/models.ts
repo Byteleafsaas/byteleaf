@@ -399,6 +399,8 @@ const waBusinessSchema = new Schema(
     // Whose colours the booking admin wears: byteleaf, plum or teal. Only the accent and the name change.
     brand: { type: String, default: 'byteleaf' },
     clinic: { type: Boolean, default: false },
+    // Public holidays the owner has chosen to open. Every other upcoming holiday is a closed day.
+    holidayOpen: { type: [String], default: [] },
     payNote: { type: String, default: 'paid at the salon' },
     reminderHours: { type: [Number], default: [24, 2] },
     active: { type: Boolean, default: true },
@@ -487,6 +489,10 @@ const waAppointmentSchema = new Schema(
     // Set when the client confirms from a reminder. A booking nobody has confirmed shows as Unconfirmed.
     confirmedAt: { type: Date, default: null },
     movedByClient: { type: Boolean, default: false },
+    // Who moved it last: 'client' or the owner's name.
+    movedBy: { type: String, default: '' },
+    // Set when a reminder could not be sent, so the calendar can say so and offer to try again.
+    reminderFailedAt: { type: Date, default: null },
     noShowAt: { type: Date, default: null },
     // Who made it: the owner's name for a hand-entered booking.
     createdBy: { type: String, default: '' },

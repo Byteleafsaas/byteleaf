@@ -7,6 +7,9 @@ import { connectDB } from '@/lib/server/db';
 import { handleInbound } from '@/lib/server/whatsapp/inbound';
 import { WaAppointment, WaChat, WaClient, WaSlotLock } from '@/lib/server/models';
 import type { Out } from '@/lib/whatsapp/types';
+import { loadData } from '@/lib/server/whatsapp/calendar';
+import { addManualBooking, cancelBooking, moveBooking, restoreBooking } from '@/lib/server/whatsapp/manual';
+import { addDays, todaySast } from '@/lib/server/time';
 
 const SLUG = 'lerato';
 const phone = (n: number) => `2700000${String(n).padStart(4, '0')}`;
@@ -87,7 +90,7 @@ async function main() {
   // Nobody has booked yet, so all ten were shown the same first day and time and are now sitting on the confirm screen.
   const results = await Promise.all(prepared.map((x) => tap(x.p, 'ok')));
   const wins = results.filter((x) => text(x.messages).includes("You're booked")).length;
-  const sorry = results.filter((x) => text(x.messages).includes('was booked by someone else')).length;
+  const sorry = results.filter((x) => /was booked by someone else|just taken/.test(text(x.messages))).length;
   check(wins === 1, `exactly one of ten booked the slot (got ${wins})`);
   check(sorry === 9, `the other nine were told it was taken (got ${sorry})`);
   const locks = await WaSlotLock.countDocuments({ apptId: { $in: (await WaAppointment.find({ business: SLUG, clientPhone: { $in: racers }, status: 'booked' }).lean()).map((x) => x._id) } });
@@ -137,6 +140,39 @@ async function main() {
   r = await say(e, 'hello?');
   check(r.messages.length === 0, 'the assistant stays quiet while a person has the chat');
   check(Boolean((await WaChat.findOne({ business: SLUG, needsHuman: true }).lean())), 'the chat is flagged for the owner');
+
+  console.log('\n8. The owner adding, moving and cancelling by hand');
+  const d = (await loadData(SLUG, { all: true }))!;
+  const lerato = d.staff.find((s) => s.name === 'Lerato')!;
+  const gel = d.services.find((s) => s.name === 'Gel nails')!;
+  // A Tuesday a few weeks out, so nothing else is in the way.
+  let handDay = addDays(todaySast(), 21);
+  while (new Date(`${handDay}T00:00:00Z`).getUTCDay() !== 2) handDay = addDays(handDay, 1);
+  const by = { by: 'Test', now: new Date() };
+  const at = (name: string, time: string, force = false) => addManualBooking(d, { name, service: gel, date: handDay, time, staffId: String(lerato.id), force, ...by });
+  const m1 = await at('Hand One', '10:00');
+  check(m1.ok, 'a booking can be typed in with no phone number');
+  const m2 = await at('Hand Two', '10:30');
+  check(!m2.ok && m2.code === 'taken', 'an overlapping hand booking is refused unless the owner ticks "book it anyway"');
+  const m3 = await at('Hand Three', '10:30', true);
+  check(m3.ok, 'with "book it anyway" the overlap is allowed');
+  const late = await at('Hand Late', '17:30');
+  check(!late.ok && late.code === 'invalid', 'a start that would run past closing is refused');
+  if (m1.ok) {
+    const mv = await moveBooking(d, { apptId: m1.id, date: handDay, time: '14:00', staffId: String(lerato.id), force: false, ...by });
+    check(mv.ok, 'a booking can be moved');
+    const freed = await at('Hand Four', '10:00');
+    check(freed.ok, 'the old time is free again after a move');
+    check((await cancelBooking(SLUG, m1.id)).ok, 'a booking can be cancelled');
+    check((await restoreBooking(d, m1.id)).ok, 'undoing the cancel brings it back while the time is free');
+    await cancelBooking(SLUG, m1.id);
+    const taken = await at('Hand Five', '14:00');
+    check(taken.ok && !(await restoreBooking(d, m1.id)).ok, 'undoing a cancel is refused once someone else has the time');
+  }
+  const mine = await WaAppointment.find({ business: SLUG, clientName: /^Hand / }).lean();
+  await WaSlotLock.deleteMany({ apptId: { $in: mine.map((x) => x._id) } });
+  await WaAppointment.deleteMany({ _id: { $in: mine.map((x) => x._id) } });
+  await WaClient.deleteMany({ business: SLUG, name: /^Hand / });
 
   // Clean up everything this run created.
   const created = await WaClient.find({ business: SLUG, phone: { $regex: '^2700000' } }, { _id: 1 }).lean();

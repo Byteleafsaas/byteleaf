@@ -5,6 +5,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { LogoMark } from '@/components/Logo';
 import { useAssistantCounts } from '@/lib/admin/assistant-counts';
+import { useBookingInfo } from '@/lib/admin/booking-info';
+import { brandVars } from '@/lib/whatsapp/brands';
 import { useAdmin } from '@/lib/admin/store';
 import { logoutAction } from '@/lib/server/actions/auth';
 import { initials } from '@/lib/admin/format';
@@ -32,12 +34,26 @@ const ASSISTANT_NAV = [
   { key: 'settings', label: 'Assistant settings', href: '/admin/assistant/settings', icon: ICON.settings },
 ];
 
+// The WhatsApp booking assistant's workspace (HANDOFF-WHATSAPP §1). The greyed items arrive in a later release.
+const BOOKING_NAV: { key: string; label: string; href?: string; icon: string }[] = [
+  { key: 'calendar', label: 'Calendar', href: '/admin/bookings/calendar', icon: 'M3 9h18M7 3v4M17 3v4M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z' },
+  { key: 'inbox', label: 'Inbox', icon: 'M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z' },
+  { key: 'clients', label: 'Clients', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8' },
+  { key: 'services', label: 'Services', href: '/admin/bookings/services', icon: 'M4 6h16M4 12h16M4 18h10' },
+  { key: 'hours', label: 'Staff & hours', href: '/admin/bookings/hours', icon: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2' },
+  { key: 'messages', label: 'Messages', icon: 'M4 4h16v12H5.2L4 17.2zM8 8h8M8 12h5' },
+  { key: 'rules', label: 'Booking rules', icon: 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6' },
+];
+
 export default function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { bookings, messages, user } = useAdmin();
   const counts = useAssistantCounts();
   const inAssistant = pathname.startsWith('/admin/assistant');
+  const inBooking = /^\/admin\/bookings\/(calendar|services|hours)/.test(pathname);
+  const biz = useBookingInfo();
+  const byteleafBrand = biz.brand === 'byteleaf';
 
   const badges: Record<string, number> = inAssistant ? { review: counts.review, unanswered: counts.unanswered } : {
     bookings: bookings.filter((b) => b.status === 'pending').length,
@@ -45,15 +61,26 @@ export default function AdminShell({ children }: { children: ReactNode }) {
   };
   const isActive = (href: string) => (href === '/admin' ? pathname === '/admin' : pathname.startsWith(href));
   const items = inAssistant ? ASSISTANT_NAV : NAV;
+  const brandName = byteleafBrand ? 'byteleaf' : biz.name.split(/[ ,&]/)[0];
 
   return (
-    <div className={s.shell}>
+    <div className={`${s.shell} ${inBooking ? s.booking : ''}`} style={inBooking ? (brandVars(biz.brand) as React.CSSProperties) : undefined}>
       <aside className={s.side}>
-        <Link href="/admin" className={s.brand} aria-label="byteleaf admin home">
-          <LogoMark size={30} />
-          <span>byteleaf</span>
+        <Link href={inBooking ? '/admin/bookings/calendar' : '/admin'} className={s.brand} aria-label={`${inBooking ? brandName : 'byteleaf'} admin home`}>
+          {inBooking && !byteleafBrand ? <span className={s.brandMark} aria-hidden="true">{biz.mark}</span> : <LogoMark size={30} />}
+          <span className={s.brandName}>{inBooking ? brandName : 'byteleaf'}</span>
           <span className={s.adminPill}>ADMIN</span>
         </Link>
+        {inBooking && (
+          <div className={s.wscard}>
+            <span className={s.wscardLabel}>BOOKING ASSISTANT</span>
+            <div className={s.wsbtn}>
+              <span className={s.wsdot} style={{ background: biz.brand === 'teal' ? '#0E7A6D' : '#8B2F7E', fontSize: 12, fontWeight: 700 }} aria-hidden="true">{biz.mark}</span>
+              <span className={s.wsname}><span>{biz.name}</span><small>{byteleafBrand ? `Demo client · ${biz.sub.split(' · ')[0]}` : biz.sub}</small></span>
+            </div>
+            <span className={s.wsChip} role="status"><span className={s.numDot} style={{ background: biz.numberOk ? '#12B76A' : '#F79009' }} aria-hidden="true" />{biz.numberOk ? biz.numberText : 'WhatsApp number needs attention'}</span>
+          </div>
+        )}
         {inAssistant && (
           <div className={s.wscard}>
             <span className={s.wscardLabel}>KNOWLEDGE ASSISTANT</span>
@@ -63,8 +90,20 @@ export default function AdminShell({ children }: { children: ReactNode }) {
             </div>
           </div>
         )}
-        <nav aria-label={inAssistant ? 'Assistant admin' : 'Admin'} className={s.snavs}>
-          {items.map((n) => (
+        <nav aria-label={inBooking ? 'Booking admin' : inAssistant ? 'Assistant admin' : 'Admin'} className={s.snavs}>
+          {inBooking && BOOKING_NAV.map((n) => n.href ? (
+            <Link key={n.key} href={n.href} className={s.snav} aria-current={pathname.startsWith(n.href) ? 'page' : undefined}>
+              <PathIcon d={n.icon} size={20} />
+              <span className={s.snavLabel}>{n.label}</span>
+            </Link>
+          ) : (
+            <span key={n.key} className={`${s.snav} ${s.snavOff}`} aria-disabled="true">
+              <PathIcon d={n.icon} size={20} />
+              <span className={s.snavLabel}>{n.label}</span>
+              <span className={s.soon}>SOON</span>
+            </span>
+          ))}
+          {!inBooking && items.map((n) => (
             <Link key={n.key} href={n.href} className={s.snav} aria-current={isActive(n.href) ? 'page' : undefined}>
               <PathIcon d={n.icon} size={20} />
               <span className={s.snavLabel}>{n.label}</span>
@@ -78,7 +117,14 @@ export default function AdminShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
         <div className={s.sfoot}>
-          {inAssistant ? (
+          {inBooking ? (
+            byteleafBrand && (
+              <Link className={s.snav} href="/admin">
+                <PathIcon d="M19 12H5M11 18l-6-6 6-6" size={20} />
+                byteleaf admin
+              </Link>
+            )
+          ) : inAssistant ? (
             <Link className={s.snav} href="/admin">
               <PathIcon d="M19 12H5M11 18l-6-6 6-6" size={20} />
               byteleaf admin
@@ -90,10 +136,10 @@ export default function AdminShell({ children }: { children: ReactNode }) {
             </Link>
           )}
           <div className={s.user}>
-            <span className={s.avatarSm} aria-hidden="true">{initials(user.name) || 'A'}</span>
+            <span className={s.avatarSm} style={inBooking ? { background: 'var(--acc)' } : undefined} aria-hidden="true">{initials(user.name) || 'A'}</span>
             <span className={s.userText}>
               <span className={s.userName}>{user.name}</span>
-              <span className={s.userRole}>Administrator</span>
+              <span className={s.userRole}>{inBooking && byteleafBrand ? 'byteleaf admin' : 'Administrator'}</span>
             </span>
             <button type="button" className={s.signout} aria-label="Sign out" onClick={async () => { await logoutAction(); router.push('/admin/login'); router.refresh(); }}>
               <PathIcon d={ICON.signout} />

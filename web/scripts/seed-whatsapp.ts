@@ -39,17 +39,23 @@ async function main() {
     { $set: { hours: { 2: day('09:00', '17:00'), 3: day('09:00', '17:00'), 4: day('09:00', '17:00'), 6: day('09:00', '15:00') }, active: true, order: 1 } },
     { upsert: true, returnDocument: 'after' },
   );
+  const naledi = await WaStaff.findOneAndUpdate(
+    { business: DEMO_SLUG, name: 'Naledi' },
+    { $set: { hours: { 3: day('09:00', '17:00'), 4: day('09:00', '17:00'), 5: day('09:00', '17:00'), 6: day('09:00', '15:00') }, active: true, order: 2 } },
+    { upsert: true, returnDocument: 'after' },
+  );
   // The earlier demo used a different second stylist: switch the old one off so it isn't offered.
   await WaStaff.updateMany({ business: DEMO_SLUG, name: 'Thabo' }, { $set: { active: false } });
 
   const services = [
-    { name: 'Knotless braids', minutes: 240, priceCents: 65000, staff: [lerato._id, thandeka._id], waLine: '' },
-    { name: "Kids' braids", minutes: 120, priceCents: 35000, staff: [lerato._id], waLine: '' },
-    { name: 'Silk press', minutes: 90, priceCents: 38000, staff: [lerato._id, thandeka._id], waLine: '' },
-    { name: 'Gel nails', minutes: 60, priceCents: 28000, staff: [thandeka._id, lerato._id], waLine: '' },
+    { name: 'Knotless braids', minutes: 240, priceCents: 65000, staff: [lerato._id, thandeka._id], bufferMin: 15, onWhatsApp: true, waLine: '' },
+    { name: "Kids' braids", minutes: 120, priceCents: 35000, staff: [lerato._id, thandeka._id], bufferMin: 0, onWhatsApp: true, waLine: '' },
+    { name: 'Silk press', minutes: 90, priceCents: 38000, staff: [lerato._id, naledi._id], bufferMin: 10, onWhatsApp: true, waLine: '' },
+    { name: 'Gel nails', minutes: 60, priceCents: 28000, staff: [naledi._id, lerato._id], bufferMin: 10, onWhatsApp: true, waLine: '' },
+    { name: 'Consultation', minutes: 15, priceCents: 0, staff: [lerato._id], bufferMin: 0, onWhatsApp: false, waLine: 'Free · for new styles' },
   ];
   for (const [order, s] of services.entries()) {
-    await WaService.updateOne({ business: DEMO_SLUG, name: s.name }, { $set: { ...s, active: true, onWhatsApp: true, order } }, { upsert: true });
+    await WaService.updateOne({ business: DEMO_SLUG, name: s.name }, { $set: { ...s, active: true, order } }, { upsert: true });
   }
 
   // Made-up bookings, replaced each run so the calendar always has something to show in the coming days.
@@ -63,6 +69,7 @@ async function main() {
   const by = (name: string) => d.services.find((s) => s.name === name)!;
   // [days from today, start, service]; the salon is closed Sunday and Monday, so those days are skipped when they fall there.
   const plan: [number, string, string][] = [
+    [0, '08:30', 'Gel nails'], [0, '10:00', 'Silk press'], [0, '14:00', 'Knotless braids'], [0, '12:00', "Kids' braids"],
     [1, '08:00', 'Knotless braids'], [1, '09:30', 'Silk press'], [1, '13:00', 'Gel nails'], [2, '08:00', "Kids' braids"], [2, '10:00', 'Gel nails'], [2, '13:30', 'Silk press'],
     [3, '08:00', 'Knotless braids'], [3, '14:00', 'Gel nails'], [4, '09:00', 'Silk press'], [4, '12:00', "Kids' braids"], [5, '08:00', 'Knotless braids'], [6, '10:30', 'Gel nails'],
   ];
