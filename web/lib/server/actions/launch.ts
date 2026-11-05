@@ -7,8 +7,11 @@ import { changeList, discard, publish, undoPublish } from '@/lib/launch/engine';
 import { addPhoto, movePhoto, removePhoto, removeService, reorderServices, updatePhoto, upsertService } from '@/lib/launch/ops';
 import { settingsProblems } from '@/lib/launch/rules';
 import { PAGES, type PageKey, type Settings } from '@/lib/launch/types';
+import { SITE_SLUG } from '@/lib/launch/defaults';
 import { assertAdmin } from '../auth';
+import { connectDB } from '../db';
 import { mutate } from '../launch/store';
+import { SiteEnquiry } from '../models';
 
 type Fail = { ok: false; error: string };
 const refresh = () => { revalidatePath('/admin/website', 'layout'); revalidatePath('/projects/launch-website', 'layout'); };
@@ -158,4 +161,14 @@ export async function discardAction(): Promise<{ ok: true } | Fail> {
   const r = await mutate((s) => ({ state: discard(s), result: null }));
   refresh();
   return r.ok ? { ok: true } : { ok: false, error: r.error };
+}
+
+/** Marks a website enquiry as read or archived. */
+export async function setEnquiryStatusAction(enquiryId: string, status: 'new' | 'read' | 'archived'): Promise<{ ok: true } | Fail> {
+  await assertAdmin();
+  if (!/^[a-f0-9]{24}$/.test(enquiryId) || !['new', 'read', 'archived'].includes(status)) return { ok: false, error: 'That change could not be saved.' };
+  await connectDB();
+  await SiteEnquiry.updateOne({ _id: enquiryId, site: SITE_SLUG }, { $set: { status } });
+  refresh();
+  return { ok: true };
 }

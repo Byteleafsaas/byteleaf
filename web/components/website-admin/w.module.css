@@ -1,0 +1,55 @@
+/* The website admin (HANDOFF-LAUNCH §5). Shared button, field and panel styles come from booking.module.css; these are the new parts. */
+.pubBar { position: sticky; bottom: 0; z-index: 30; margin-top: auto; background: #0B1220; color: #fff; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px max(16px, env(safe-area-inset-left, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -12px 30px -18px rgba(11, 18, 32, .6); }
+.pubText { flex: 1 1 280px; display: flex; flex-direction: column; font-size: 14px; line-height: 1.4; }
+.pubText strong { font-size: 15px; }
+.pubText span { color: #B7C3D9; }
+.pubBtns { display: flex; gap: 8px; flex-wrap: wrap; }
+.pubBar .ghost { background: transparent; color: #fff; border: 1px solid #44536F; }
+.pubBar .ghost:hover:not(:disabled) { border-color: #fff; color: #fff; }
+.pubErr { flex-basis: 100%; background: #FEF3F2; color: #912018; border-radius: 10px; padding: 10px 12px; font-size: 14px; }
+.changeList { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: #33405A; max-height: 260px; overflow-y: auto; }
+.toastBtn { font: inherit; cursor: pointer; border: 0; background: transparent; color: #9CC3FF; font-weight: 600; padding: 6px; }
+.wrapPad { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.statePill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.pillDraft { background: #EAF2FE; color: #0B3A80; }
+.pillLive { background: #E6F6EF; color: #0B6B4B; }
+.pillUnsaved { background: #FFF4E0; color: #8A5200; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: inline-block; }
+.cardPrev { border: 1px solid #E2D8C3; border-radius: 16px; background: #FAF6EC; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.cardPrev .pn { font-weight: 800; font-size: 20px; color: #10261B; }
+.cardPrev .pp { font-weight: 800; font-size: 24px; color: #10261B; }
+.cardPrev .pt { font-size: 13px; color: #4D5A50; }
+.incList { display: flex; flex-direction: column; gap: 6px; }
+.incRow { display: flex; gap: 6px; }
+.srvRow { display: grid; grid-template-columns: 76px minmax(0, 2fr) 120px 100px 110px; gap: 12px; align-items: center; padding: 14px 18px; border-top: 1px solid #EEF2F8; }
+.srvHead { font-size: 12px; color: #4B5872; font-weight: 500; border-top: 0; padding-top: 10px; padding-bottom: 10px; }
+.srvNarrow .srvRow { grid-template-columns: 76px minmax(0, 1fr) 90px 100px; }
+.srvNarrow .cTime { display: none; }
+@media (max-width: 900px) { .srvRow { grid-template-columns: 64px minmax(0, 1fr) auto auto; column-gap: 10px; padding: 14px 12px; } .srvRow .cTime { display: none; } .srvHead { display: none; } }
+@media (max-width: 440px) { .srvRow { grid-template-columns: 64px minmax(0, 1fr) auto; } .cPrice { display: none; } }
+.fieldRow { display: flex; flex-direction: column; gap: 6px; }
+.errTxt { color: #B42318; font-size: 13px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 6px 6px 12px; border-radius: 999px; background: var(--acc-soft); color: var(--acc-t); font-size: 14px; font-weight: 500; }
+.chip button { font: inherit; cursor: pointer; border: 0; background: transparent; color: inherit; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; }
+.chip button:hover { background: rgba(0, 0, 0, .08); }
+.thumb { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; display: block; background: #EEF2F8; }
+.drop { border: 2px dashed #B7C3D9; border-radius: 16px; padding: 28px 16px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; cursor: pointer; background: #fff; }
+.drop:hover, .drop[data-over='true'], .drop:focus-visible { border-color: var(--acc); background: var(--acc-soft); outline: none; }
+.photoGrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.onChip { font: inherit; font-size: 13px; cursor: pointer; padding: 6px 12px; min-height: 32px; border-radius: 999px; border: 1px solid #C9D3E3; background: #fff; color: #33405A; }
+.onChipOn { background: var(--acc-soft); border-color: var(--acc); color: var(--acc-t); font-weight: 600; }
+.lnk { color: var(--acc-t); font-weight: 600; }
+.editSwitch { display: none; gap: 8px; }
+.split { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+.editCol { flex: 1 1 380px; min-width: 0; }
+.prevCol { flex: 1.3 1 420px; min-width: 0; position: sticky; top: 16px; display: flex; flex-direction: column; gap: 8px; }
+.frameBox { border: 1px solid #D7DFEC; border-radius: 14px; overflow: hidden; background: #fff; height: 640px; margin: 0 auto; width: 100%; }
+.frameBox[data-size='phone'] { width: 390px; max-width: 100%; }
+.frame { width: 100%; height: 100%; border: 0; display: block; }
+@media (max-width: 760px) {
+  .editSwitch { display: flex; }
+  .split[data-pane='edit'] .prevCol { display: none; }
+  .split[data-pane='preview'] .editCol { display: none; }
+  .prevCol { position: static; }
+  .frameBox { height: 70vh; }
+}

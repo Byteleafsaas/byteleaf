@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { rands } from '@/lib/launch/rules';
 import { areaSpan, blockOf, blockValue, fromPrice, hasRealWhatsApp, hoursLine, homePhoto, sectionOn, siteHref, waLink, wantsPhotos } from '@/lib/launch/site';
 import { homeServices } from '@/lib/launch/ops';
-import { getLive } from '@/lib/server/launch/store';
+import { getView } from '@/lib/server/launch/store';
 import PhotoFrame from './Photo';
 import s from './site.module.css';
 
@@ -28,7 +28,7 @@ const FAQ = [
 ];
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ photos?: string }> }) {
-  const live = await getLive();
+  const { snap: live } = await getView();
   const q = await searchParams;
   const biz = live.settings;
   const photo = wantsPhotos(q.photos) ? homePhoto(live) : null;

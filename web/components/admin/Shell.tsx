@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { LogoMark } from '@/components/Logo';
 import { useAssistantCounts } from '@/lib/admin/assistant-counts';
 import { useBookingInfo } from '@/lib/admin/booking-info';
+import { useWebsiteInfo } from '@/lib/admin/website-info';
 import { brandVars } from '@/lib/whatsapp/brands';
 import { useAdmin } from '@/lib/admin/store';
 import { logoutAction } from '@/lib/server/actions/auth';
@@ -45,6 +46,17 @@ const BOOKING_NAV: { key: string; label: string; href?: string; icon: string }[]
   { key: 'rules', label: 'Booking rules', icon: 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6' },
 ];
 
+// The launch-website workspace (HANDOFF-LAUNCH §5). Enquiries live here for the demo site; the go-live checklist arrives later.
+const WEBSITE_NAV: { key: string; label: string; href?: string; icon: string }[] = [
+  { key: 'overview', label: 'Overview', href: '/admin/website', icon: 'M3 12l9-8 9 8M5 10v10h14V10' },
+  { key: 'pages', label: 'Pages', href: '/admin/website/pages', icon: 'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5' },
+  { key: 'services', label: 'Services & prices', href: '/admin/website/services', icon: 'M4 6h16M4 12h16M4 18h10' },
+  { key: 'photos', label: 'Photos', href: '/admin/website/photos', icon: 'M3 5h18v14H3zM8 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM21 17l-5-5-9 7' },
+  { key: 'enquiries', label: 'Enquiries', href: '/admin/website/enquiries', icon: 'M4 4h16v12H5.2L4 17.2zM8 8h8M8 12h5' },
+  { key: 'settings', label: 'Site settings', href: '/admin/website/settings', icon: 'M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6' },
+  { key: 'golive', label: 'Go-live checklist', icon: 'M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9' },
+];
+
 export default function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -52,6 +64,8 @@ export default function AdminShell({ children }: { children: ReactNode }) {
   const counts = useAssistantCounts();
   const inAssistant = pathname.startsWith('/admin/assistant');
   const inBooking = /^\/admin\/bookings\/(calendar|inbox|services|hours)/.test(pathname);
+  const inWebsite = pathname.startsWith('/admin/website');
+  const web = useWebsiteInfo();
   const biz = useBookingInfo();
   const byteleafBrand = biz.brand === 'byteleaf';
 
@@ -64,11 +78,11 @@ export default function AdminShell({ children }: { children: ReactNode }) {
   const brandName = byteleafBrand ? 'byteleaf' : biz.name.split(/[ ,&]/)[0];
 
   return (
-    <div className={`${s.shell} ${inBooking ? s.booking : ''}`} style={inBooking ? (brandVars(biz.brand) as React.CSSProperties) : undefined}>
+    <div className={`${s.shell} ${inBooking || inWebsite ? s.booking : ''}`} style={inBooking ? (brandVars(biz.brand) as React.CSSProperties) : inWebsite ? (brandVars('tsela') as React.CSSProperties) : undefined}>
       <aside className={s.side}>
-        <Link href={inBooking ? '/admin/bookings/calendar' : '/admin'} className={s.brand} aria-label={`${inBooking ? brandName : 'byteleaf'} admin home`}>
-          {inBooking && !byteleafBrand ? <span className={s.brandMark} aria-hidden="true">{biz.mark}</span> : <LogoMark size={30} />}
-          <span className={s.brandName}>{inBooking ? brandName : 'byteleaf'}</span>
+        <Link href={inWebsite ? '/admin/website' : inBooking ? '/admin/bookings/calendar' : '/admin'} className={s.brand} aria-label={`${inWebsite ? 'Tsela' : inBooking ? brandName : 'byteleaf'} admin home`}>
+          {inWebsite ? <span className={s.brandMark} aria-hidden="true">t</span> : inBooking && !byteleafBrand ? <span className={s.brandMark} aria-hidden="true">{biz.mark}</span> : <LogoMark size={30} />}
+          <span className={s.brandName}>{inWebsite ? 'Tsela' : inBooking ? brandName : 'byteleaf'}</span>
           <span className={s.adminPill}>ADMIN</span>
         </Link>
         {inBooking && (
@@ -81,6 +95,16 @@ export default function AdminShell({ children }: { children: ReactNode }) {
             <span className={s.wsChip} role="status"><span className={s.numDot} style={{ background: biz.numberOk ? '#12B76A' : '#F79009' }} aria-hidden="true" />{biz.numberOk ? biz.numberText : 'WhatsApp number needs attention'}</span>
           </div>
         )}
+        {inWebsite && (
+          <div className={s.wscard}>
+            <span className={s.wscardLabel}>WEBSITE</span>
+            <div className={s.wsbtn}>
+              <span className={s.wsdot} style={{ background: '#1D6B47', fontSize: 12, fontWeight: 700 }} aria-hidden="true">T</span>
+              <span className={s.wsname}><span>{web.name}</span><small>Demo client · Pretoria</small></span>
+            </div>
+            <span className={s.wsChip} role="status"><span className={s.numDot} style={{ background: web.pending ? '#F79009' : '#12B76A' }} aria-hidden="true" />{web.pending ? `${web.pending} ${web.pending === 1 ? 'change' : 'changes'} not published` : 'Site is live · all changes published'}</span>
+          </div>
+        )}
         {inAssistant && (
           <div className={s.wscard}>
             <span className={s.wscardLabel}>KNOWLEDGE ASSISTANT</span>
@@ -90,7 +114,20 @@ export default function AdminShell({ children }: { children: ReactNode }) {
             </div>
           </div>
         )}
-        <nav aria-label={inBooking ? 'Booking admin' : inAssistant ? 'Assistant admin' : 'Admin'} className={s.snavs}>
+        <nav aria-label={inWebsite ? 'Website admin' : inBooking ? 'Booking admin' : inAssistant ? 'Assistant admin' : 'Admin'} className={s.snavs}>
+          {inWebsite && WEBSITE_NAV.map((n) => n.href ? (
+            <Link key={n.key} href={n.href} className={s.snav} aria-current={(n.href === '/admin/website' ? pathname === n.href : pathname.startsWith(n.href)) ? 'page' : undefined}>
+              <PathIcon d={n.icon} size={20} />
+              <span className={s.snavLabel}>{n.label}</span>
+              {n.key === 'enquiries' && web.enquiries > 0 && <span className={s.badge}>{web.enquiries}<span className={s.sr}> new</span></span>}
+            </Link>
+          ) : (
+            <span key={n.key} className={`${s.snav} ${s.snavOff}`} aria-disabled="true">
+              <PathIcon d={n.icon} size={20} />
+              <span className={s.snavLabel}>{n.label}</span>
+              <span className={s.soon}>SOON</span>
+            </span>
+          ))}
           {inBooking && BOOKING_NAV.map((n) => n.href ? (
             <Link key={n.key} href={n.href} className={s.snav} aria-current={pathname.startsWith(n.href) ? 'page' : undefined}>
               <PathIcon d={n.icon} size={20} />
@@ -104,7 +141,7 @@ export default function AdminShell({ children }: { children: ReactNode }) {
               <span className={s.soon}>SOON</span>
             </span>
           ))}
-          {!inBooking && items.map((n) => (
+          {!inBooking && !inWebsite && items.map((n) => (
             <Link key={n.key} href={n.href} className={s.snav} aria-current={isActive(n.href) ? 'page' : undefined}>
               <PathIcon d={n.icon} size={20} />
               <span className={s.snavLabel}>{n.label}</span>
@@ -118,7 +155,12 @@ export default function AdminShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
         <div className={s.sfoot}>
-          {inBooking ? (
+          {inWebsite ? (
+            <Link className={s.snav} href="/admin">
+              <PathIcon d="M19 12H5M11 18l-6-6 6-6" size={20} />
+              byteleaf admin
+            </Link>
+          ) : inBooking ? (
             byteleafBrand && (
               <Link className={s.snav} href="/admin">
                 <PathIcon d="M19 12H5M11 18l-6-6 6-6" size={20} />

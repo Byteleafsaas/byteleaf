@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { blockValue, closedLine, hasRealWhatsApp, hoursLine, telHref, waLink } from '@/lib/launch/site';
-import { getLive } from '@/lib/server/launch/store';
+import { getView } from '@/lib/server/launch/store';
 import EnquiryForm from './EnquiryForm';
 import s from '../site.module.css';
 
@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'Contact and booking' };
 export const dynamic = 'force-dynamic';
 
 export default async function Contact() {
-  const live = await getLive();
+  const { snap: live } = await getView();
   const biz = live.settings;
   const tel = telHref(biz.phone);
   const wa = waLink(biz);

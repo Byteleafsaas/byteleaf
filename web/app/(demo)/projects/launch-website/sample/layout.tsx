@@ -3,7 +3,7 @@ import { Bricolage_Grotesque, Inter } from 'next/font/google';
 import Link from 'next/link';
 import { logoWord } from '@/lib/launch/rules';
 import { closedLine, hoursLine, siteHref, telHref, waLink } from '@/lib/launch/site';
-import { getLive } from '@/lib/server/launch/store';
+import { getView } from '@/lib/server/launch/store';
 import SiteNav from './SiteNav';
 import s from './site.module.css';
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: { default: 'Tsela Mobile Wash (demo s
 export const dynamic = 'force-dynamic';
 
 export default async function SampleLayout({ children }: { children: React.ReactNode }) {
-  const live = await getLive();
+  const { snap: live, draft } = await getView();
   const biz = live.settings;
   const tel = telHref(biz.phone);
   const word = logoWord(biz.name);
@@ -23,7 +23,7 @@ export default async function SampleLayout({ children }: { children: React.React
   const external = wa.startsWith('http');
   return (
     <div className={`${s.ts} ${display.variable} ${body.variable}`}>
-      <div role="note" className={s.demoStrip}>Demo site by byteleaf · a sample business with made-up details</div>
+      <div role="note" className={s.demoStrip}>{draft ? 'Preview of your saved changes. Customers can’t see this until you publish.' : 'Demo site by byteleaf · a sample business with made-up details'}</div>
       <a href="#main" className={s.sr}>Skip to the content</a>
       <header className={s.header}>
         <div className={`${s.wrap} ${s.headIn}`} style={{ position: 'relative' }}>

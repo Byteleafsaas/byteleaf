@@ -1,6 +1,8 @@
 import 'server-only';
 import { defaultState, SITE_SLUG } from '@/lib/launch/defaults';
 import type { SiteState } from '@/lib/launch/types';
+import { cookies } from 'next/headers';
+import { getAdmin } from '../auth';
 import { connectDB } from '../db';
 import { SiteDoc } from '../models';
 
@@ -36,4 +38,16 @@ export async function mutate<T>(fn: (s: SiteState) => Mutation<T> | Promise<Muta
     if (wrote.modifiedCount) return { ok: true, state: m.state, result: m.result };
   }
   return { ok: false, error: 'The site changed while you were saving. Please try again.' };
+}
+
+export const DRAFT_COOKIE = 'lw_draft';
+
+/**
+ * What the sample pages show: the published version, or the saved draft when the signed-in owner opened the preview
+ * (the preview route sets a short-lived cookie). Anyone else always gets the published version.
+ */
+export async function getView(): Promise<{ snap: SiteState['live']; draft: boolean }> {
+  const { state } = await getSite();
+  if ((await cookies()).get(DRAFT_COOKIE)?.value === '1' && (await getAdmin())) return { snap: state.saved, draft: true };
+  return { snap: state.live, draft: false };
 }

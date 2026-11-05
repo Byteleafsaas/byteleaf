@@ -1,14 +1,17 @@
 // Only these change per client in the booking admin: the five accent tokens, the logo mark and the business name (HANDOFF-WHATSAPP §7).
-export type BrandKey = 'byteleaf' | 'plum' | 'teal';
+export type BrandKey = 'byteleaf' | 'plum' | 'teal' | 'tsela' | 'spark';
 export type Brand = { acc: string; h: string; t: string; soft: string; ring: string };
 
 export const BRANDS: Record<BrandKey, Brand> = {
   byteleaf: { acc: '#166FE5', h: '#0F5FCC', t: '#0F5FCC', soft: '#EEF4FE', ring: 'rgba(22,111,229,.2)' },
   plum: { acc: '#8B2F7E', h: '#74256A', t: '#7A2470', soft: '#F7ECF5', ring: 'rgba(139,47,126,.2)' },
   teal: { acc: '#0E7A6D', h: '#0B6458', t: '#0B6458', soft: '#E7F4F2', ring: 'rgba(14,122,109,.22)' },
+  // The launch-website admin (HANDOFF-LAUNCH §6): Tsela's green, and a sample second client in orange.
+  tsela: { acc: '#1D6B47', h: '#175A3B', t: '#175A3B', soft: '#E8F3EC', ring: 'rgba(29,107,71,.2)' },
+  spark: { acc: '#C2410C', h: '#A3360A', t: '#A3360A', soft: '#FDF0E8', ring: 'rgba(194,65,12,.2)' },
 };
 
-export const brandKey = (k: string | null | undefined): BrandKey => (k === 'plum' || k === 'teal' ? k : 'byteleaf');
+export const brandKey = (k: string | null | undefined): BrandKey => (k === 'plum' || k === 'teal' || k === 'tsela' || k === 'spark' ? k : 'byteleaf');
 
 /** The CSS variables to put on the admin root element. */
 export const brandVars = (k: string | null | undefined): Record<string, string> => {

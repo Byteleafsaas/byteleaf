@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { blockValue, galleryPhotos, hasRealWhatsApp, waLink, wantsPhotos } from '@/lib/launch/site';
-import { getLive } from '@/lib/server/launch/store';
+import { getView } from '@/lib/server/launch/store';
 import s from '../site.module.css';
 
 export const metadata: Metadata = { title: 'Gallery' };
 export const dynamic = 'force-dynamic';
 
 export default async function Gallery({ searchParams }: { searchParams: Promise<{ photos?: string }> }) {
-  const live = await getLive();
+  const { snap: live } = await getView();
   const q = await searchParams;
   const photos = wantsPhotos(q.photos) ? galleryPhotos(live) : [];
   const wa = waLink(live.settings);

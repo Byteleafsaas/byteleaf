@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { rands } from '@/lib/launch/rules';
 import { blockValue, siteHref } from '@/lib/launch/site';
-import { getLive } from '@/lib/server/launch/store';
+import { getView } from '@/lib/server/launch/store';
 import s from '../site.module.css';
 
 export const metadata: Metadata = { title: 'Services and prices' };
@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 const ADD_ONS = [{ n: 'Engine bay clean', p: 'R 150' }, { n: 'Pet hair removal', p: 'R 90' }, { n: 'Headlight restore', p: 'R 200' }];
 
 export default async function Services() {
-  const live = await getLive();
+  const { snap: live } = await getView();
   const items = live.services.filter((x) => x.visible);
   return (
     <>

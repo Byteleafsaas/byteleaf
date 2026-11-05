@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { logoWord } from '@/lib/launch/rules';
 import { aboutPhoto, blockValue, siteHref, wantsPhotos } from '@/lib/launch/site';
-import { getLive } from '@/lib/server/launch/store';
+import { getView } from '@/lib/server/launch/store';
 import PhotoFrame from '../Photo';
 import s from '../site.module.css';
 
@@ -16,7 +16,7 @@ const VALUES = [
 ];
 
 export default async function About({ searchParams }: { searchParams: Promise<{ photos?: string }> }) {
-  const live = await getLive();
+  const { snap: live } = await getView();
   const q = await searchParams;
   const photo = wantsPhotos(q.photos) ? aboutPhoto(live) : null;
   const word = logoWord(live.settings.name);
