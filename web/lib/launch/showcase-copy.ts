@@ -1,6 +1,6 @@
 // The showcase page copy (HANDOFF-LAUNCH §7), from launch/copy.json.
 export const SHOWCASE = {
-  "eyebrow": "Showcase project 3 of 4 · Website and admin",
+  "eyebrow": "Showcase project 3 of 5 · Website and admin",
   "h1": [
     "Look established on day one.",
     "Run it yourself after that."

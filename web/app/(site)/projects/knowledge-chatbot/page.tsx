@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHOWCASE as M, eyebrowFor } from '@/lib/projects-meta';
 import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
 import Footer from '@/components/Footer';
@@ -8,7 +9,7 @@ import DemoClient from './DemoClient';
 import s from './demo.module.css';
 
 export const metadata: Metadata = {
-  title: 'byteleaf — Knowledge chatbot',
+  title: `byteleaf — ${M.chatbot.name}`,
   description: 'An AI assistant that answers customer and staff questions only from your own information, shows its sources, and hands over to a person when it does not know.',
 };
 
@@ -27,8 +28,8 @@ export default async function Page() {
     <main>
       <section className={s.hero}>
         <div className={s.heroIn}>
-          <span className={s.crumb}><Link href="/projects">Projects</Link> / Knowledge chatbot</span>
-          <span className="eyebrow">A CHATBOT THAT KNOWS YOUR BUSINESS</span>
+          <span className={s.crumb}><Link href="/projects">Projects</Link> / {M.chatbot.name}</span>
+          <span className="eyebrow">{eyebrowFor(M.chatbot)}</span>
           <h1 className="h1" style={{ maxWidth: 760 }}>An assistant that only answers from <span className="hl">your own information.</span></h1>
           <div className={s.heroRow}>
             <p className="lead">Ask it anything a customer would. Every answer shows where it came from, and when it doesn&apos;t know, it says so and hands over to a person.</p>

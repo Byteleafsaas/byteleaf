@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHOWCASE as M, eyebrowFor } from '@/lib/projects-meta';
 import Link from 'next/link';
 import QRCode from 'qrcode';
 import CtaBand from '@/components/CtaBand';
@@ -8,7 +9,7 @@ import Story from './Story';
 import s from './demo.module.css';
 
 export const metadata: Metadata = {
-  title: 'byteleaf — WhatsApp booking assistant',
+  title: `byteleaf — ${M.whatsapp.name}`,
   description: 'Clients book, change and cancel appointments in a short guided WhatsApp chat, and the owner sees every booking in a calendar. Tap through a demo with sample data.',
 };
 
@@ -25,9 +26,9 @@ export default async function Page() {
     <main>
       <section className={s.hero}>
         <div className={s.heroIn}>
-          <span className={s.crumb}><Link href="/projects">Projects</Link> / WhatsApp booking assistant</span>
+          <span className={s.crumb}><Link href="/projects">Projects</Link> / {M.whatsapp.name}</span>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 820 }}>
-            <span className="eyebrow">SHOWCASE PROJECT 2 OF 4 · AUTOMATION</span>
+            <span className="eyebrow">{eyebrowFor(M.whatsapp)}</span>
             <h1 className="h1">Clients book in the chat. <span className="hl">You see it in the calendar.</span></h1>
             <p className="lead">A short guided chat on the WhatsApp number your clients already use. Tap through it below, and watch the owner’s side change as you go.</p>
           </div>

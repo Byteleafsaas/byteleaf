@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHOWCASE as M, eyebrowFor } from '@/lib/projects-meta';
 import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
 import Footer from '@/components/Footer';
@@ -7,7 +8,7 @@ import Story from './Story';
 import s from './launch.module.css';
 
 export const metadata: Metadata = {
-  title: 'byteleaf — Launch website with admin',
+  title: `byteleaf — ${M.launch.name}`,
   description: 'A fast five-page website for a new business, and a simple admin to keep it current. Tap through three stories with sample data.',
 };
 
@@ -16,9 +17,9 @@ export default function Page() {
     <main>
       <section className={s.hero}>
         <div className={s.heroIn}>
-          <span className={s.crumb}><Link href="/projects">Projects</Link> / Launch website with admin</span>
+          <span className={s.crumb}><Link href="/projects">Projects</Link> / {M.launch.name}</span>
           <div className={s.heroText}>
-            <span className="eyebrow">{C.eyebrow.toUpperCase()}</span>
+            <span className="eyebrow">{eyebrowFor(M.launch)}</span>
             <h1 className="h1">{C.h1[0]} <span className="hl">{C.h1[1]}</span></h1>
             <p className="lead">{C.intro}</p>
           </div>

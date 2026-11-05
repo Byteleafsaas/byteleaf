@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SHOWCASE as M, eyebrowFor } from '@/lib/projects-meta';
 import { Fraunces, Source_Sans_3 } from 'next/font/google';
 import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
@@ -13,7 +14,7 @@ const serif = Fraunces({ subsets: ['latin'], weight: ['500', '600'], variable: '
 const sans = Source_Sans_3({ subsets: ['latin'], weight: ['400', '600'], variable: '--lf-sans', display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'byteleaf — Law firm website',
+  title: `byteleaf — ${M.law.name}`,
   description: 'A calm, credible website for a small law firm, with the trust work built in. Switch between its pages and see what makes it work. Sample content only.',
 };
 
@@ -22,9 +23,9 @@ export default function Page() {
     <main className={`${serif.variable} ${sans.variable}`}>
       <section className={s.hero}>
         <div className={s.heroIn}>
-          <span className={s.crumb}><Link href="/projects">Projects</Link> / Law firm website</span>
+          <span className={s.crumb}><Link href="/projects">Projects</Link> / {M.law.name}</span>
           <div className={s.heroText}>
-            <span className="eyebrow">SHOWCASE PROJECT 5 · WEBSITE</span>
+            <span className="eyebrow">{eyebrowFor(M.law)}</span>
             <h1 className="h1">Trusted before the first phone call. <span className="hl">That’s the whole job.</span></h1>
             <p className="lead">A site for a small law firm, or any practice people approach when they’re worried: accountants, clinics, consultants. No clever tool to show. The proof is how it reads, how calm it feels, and how quickly someone finds the right door.</p>
           </div>
