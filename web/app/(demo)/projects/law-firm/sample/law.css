@@ -1,0 +1,78 @@
+/* Ravell Ndaba Attorneys: the sample firm's own look (law/site-tokens.css). Every class is prefixed lf- so nothing leaks into byteleaf. */
+.lf-root{min-height:100vh}
+.lf{--ink:#1F1C18;--paper:#F7F4EF;--stone:#ECE5DA;--line:#DCD3C5;--muted:#5B5348;--clay:#9C3D24;--clay-h:#7F301C;--clay-soft:#F4E4DC;--ochre:#E2A73F;font-family:var(--lf-sans),'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;font-size:1.0625rem;line-height:1.6}
+.lf h1,.lf h2,.lf h3,.lf .lf-serif{font-family:var(--lf-serif),Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:-0.015em;line-height:1.12;margin:0;text-wrap:balance}
+.lf p{margin:0}
+.lf a{color:var(--clay);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.lf a:hover{color:var(--clay-h);text-decoration-thickness:2px}
+.lf :focus-visible{outline:3px solid var(--ink);outline-offset:2px;box-shadow:0 0 0 6px var(--ochre)}
+.lf .lf-dark :focus-visible{outline-color:#FFFFFF}
+.lf-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lf-wrap{max-width:1180px;margin:0 auto;padding:0 32px;box-sizing:border-box}
+.lf-eyebrow{font-size:.8125rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--clay)}
+.lf-lead{font-size:1.25rem;line-height:1.55;color:var(--muted);max-width:36em}
+.lf-b{font:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:8px 24px;box-sizing:border-box;border-radius:10px;font-weight:600;font-size:1.0625rem;line-height:1.25;text-align:center;text-decoration:none!important;border:0;transition:background .15s,transform .15s}
+.lf-b:active{transform:translateY(1px)}
+.lf-b-clay{background:var(--clay);color:#FFFFFF!important}.lf-b-clay:hover{background:var(--clay-h)}
+.lf-b-ink{background:var(--ink);color:#FFFFFF!important}.lf-b-ink:hover{background:#3A342C}
+.lf-b-line{background:transparent;color:var(--ink)!important;box-shadow:inset 0 0 0 1.5px var(--ink)}.lf-b-line:hover{background:var(--stone)}
+.lf-b-light{background:#FFFFFF;color:var(--ink)!important}.lf-b-light:hover{background:var(--stone)}
+.lf-nl{font:inherit;cursor:pointer;border:0;background:transparent;color:var(--ink)!important;font-size:1rem;font-weight:600;padding:10px 12px;border-radius:8px;text-decoration:none!important;white-space:nowrap}
+.lf-nl[aria-current="page"]{box-shadow:inset 0 -2px 0 var(--clay);border-radius:0}
+.lf-nl:hover{background:var(--stone)}
+.lf-tlink{font:inherit;cursor:pointer;border:0;background:transparent;padding:0;color:var(--clay);font-weight:600;text-decoration:underline;text-underline-offset:4px;text-align:left}
+.lf-tlink:hover{color:var(--clay-h)}
+.lf-card{background:#FFFFFF;border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box;min-width:0}
+.lf-door{font:inherit;text-align:left;cursor:pointer;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+.lf-door:hover{border-color:var(--clay);box-shadow:0 12px 30px -24px rgba(31,28,24,.6)}
+.lf-door .lf-go{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--clay)}
+.lf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
+.lf-sec{padding:72px 0}
+.lf-sec-h{font-size:2.5rem}
+.lf-tag{align-self:flex-start;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--stone);color:var(--muted)}
+.lf-note{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:12px;font-size:1rem;line-height:1.5}
+.lf-note svg{flex:none;margin-top:2px}
+.lf-urgent{background:#FCEBE5;color:#6E2414;border:1px solid #EBC3B6}
+.lf-urgent a{color:#6E2414!important;font-weight:600}
+.lf-info{background:var(--stone);color:var(--ink)}
+.lf-fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lf-fld label,.lf-fld legend{font-weight:600;font-size:1rem;padding:0}
+.lf-opt{font-weight:400;color:var(--muted)}
+.lf-hint{font-size:.9375rem;color:var(--muted)}
+.lf-err{font-size:.9375rem;color:#A3261A;font-weight:600;display:flex;gap:6px;align-items:flex-start}
+.lf-in{font:inherit;font-size:1.0625rem;color:var(--ink);background:#FFFFFF;min-height:52px;box-sizing:border-box;width:100%;padding:12px 14px;border:1.5px solid #867B6D;border-radius:10px}
+.lf-in:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 4px rgba(226,167,63,.55)}
+.lf-in[aria-invalid="true"]{border-color:#A3261A;border-width:2px}
+.lf-chip{font:inherit;cursor:pointer;min-height:44px;padding:6px 16px;border-radius:999px;border:1.5px solid #867B6D;background:#FFFFFF;color:var(--ink);font-size:1rem;font-weight:600}
+.lf-chip[aria-pressed="true"],.lf-chip[aria-checked="true"]{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.lf-tick{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.lf-tick input{width:24px;height:24px;margin:2px 0 0;flex:none;accent-color:#9C3D24}
+details.lf-fq{border-top:1px solid var(--line)}
+details.lf-fq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:60px;padding:8px 0;font-weight:600;font-size:1.125rem}
+details.lf-fq summary::-webkit-details-marker{display:none}
+details.lf-fq summary::after{content:'+';font-size:1.6rem;font-weight:400;color:var(--clay);transition:transform .2s}
+details.lf-fq[open] summary::after{transform:rotate(45deg)}
+.lf-tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#FFFFFF}
+.lf-tw table{border-collapse:collapse;width:100%;font-size:1rem}
+.lf-tw th,.lf-tw td{text-align:left;vertical-align:top;padding:14px 16px;border-top:1px solid var(--line)}
+.lf-tw thead th{border-top:0;background:var(--stone);font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase}
+.lf-gt{display:flex;flex-direction:column;font-size:1rem}.lf-gr{display:grid;grid-template-columns:var(--cols)}.lf-gr>span{padding:14px 16px;border-top:1px solid var(--line);min-width:0}.lf-gr>span:first-child{font-weight:600}.lf-gh>span{border-top:0;background:var(--stone);font-size:.8125rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.lf-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.lf-steps li{display:flex;gap:18px;padding:0 0 26px;position:relative}
+.lf-steps li::before{content:'';position:absolute;left:19px;top:40px;bottom:0;width:2px;background:var(--line)}
+.lf-steps li:last-child::before{display:none}
+.lf-steps .lf-n{flex:none;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#FFFFFF;display:grid;place-items:center;font-family:var(--lf-serif),Georgia,serif;font-weight:600;position:relative;z-index:1}
+.lf-portrait{position:relative;aspect-ratio:4 / 5;border-radius:12px;overflow:hidden;display:flex;align-items:flex-end}
+.lf-portrait .lf-cap{margin:10px;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:999px;background:rgba(31,28,24,.82);color:#FFFFFF}
+.lf-prose{font-size:1.1875rem;line-height:1.7;max-width:65ch;display:flex;flex-direction:column;gap:20px}
+.lf-prose h2{font-size:1.875rem;margin-top:20px}
+.lf-prose ul,.lf-prose ol{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:8px}
+.lf-mnav,.lf-mbar{display:none}
+.lf-toc a{display:block;padding:8px 12px;border-left:2px solid var(--line);color:var(--muted)!important;text-decoration:none!important;font-size:1rem}
+.lf-toc a:hover{border-left-color:var(--clay);color:var(--ink)!important}
+.lf-spin{width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#FFFFFF;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (max-width: 960px){.lf-dnav,.lf-util{display:none!important}.lf-mnav{display:flex}.lf-mbar{display:flex}.lf{padding-bottom:84px}.lf-side{display:none!important}}
+@media (max-width: 860px){.lf-hero-h{font-size:2.75rem!important}.lf-sec{padding:56px 0}.lf-hero{padding:40px 0 56px!important}.lf-sec-h{font-size:2rem}.lf-prose{font-size:1.0625rem}.lf-prose h2{font-size:1.5rem}}
+@media (max-width: 400px){.lf-loc{display:none}.lf-wrap{padding:0 16px}.lf-hero-h{font-size:2.375rem!important}.lf-card{padding:20px}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
