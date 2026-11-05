@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import QRCode from 'qrcode';
 import CtaBand from '@/components/CtaBand';
 import Footer from '@/components/Footer';
+import { DEMO_LINK, DEMO_NUMBER } from '@/lib/whatsapp/demo';
 import Story from './Story';
 import s from './demo.module.css';
 
@@ -16,7 +18,9 @@ const HOW = [
   { n: '03', t: 'Test it, then go live', d: 'You book, move and cancel from your own phone first. When it feels right, we switch it on.' },
 ];
 
-export default function Page() {
+export default async function Page() {
+  // The code holds the same wa.me link as the button, so scanning it opens a chat with the demo number.
+  const qr = await QRCode.toDataURL(DEMO_LINK, { margin: 1, width: 264, errorCorrectionLevel: 'M' });
   return (
     <main>
       <section className={s.hero}>
@@ -39,10 +43,15 @@ export default function Page() {
       <section className={s.extra}>
         <div className={s.extraIn}>
           <div className={s.tryCard}>
-            <div className={s.qr} role="img" aria-label="QR code placeholder for the demo number">[QR code]</div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className={s.qr} src={qr} width={132} height={132} alt={`QR code that opens a WhatsApp chat with ${DEMO_NUMBER}`} />
             <div className={s.tryText}>
               <h2>Try it on your own phone</h2>
-              <p>Scan the code or message <strong style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink)' }}>[demo WhatsApp number]</strong>. It’s a sandbox: bookings are fake and the diary resets every night. Reply STOP to stop at any time.</p>
+              <p>Scan the code or message <strong style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink)' }}>{DEMO_NUMBER}</strong> on WhatsApp. It’s a test number for now, so we add your phone number to the tester list first. Bookings are made up. Reply STOP to stop at any time.</p>
+              <span style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                <a className="btn btn-primary btn-sm" href={DEMO_LINK} target="_blank" rel="noopener noreferrer">Open in WhatsApp</a>
+                <Link className="btn btn-ghost btn-sm" href="/contact">Ask to be added</Link>
+              </span>
             </div>
           </div>
           <div className={s.real}>
