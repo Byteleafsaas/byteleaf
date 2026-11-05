@@ -58,7 +58,8 @@ const STARTERS = [
     challenge: 'A new business needs to look credible online quickly, but has no developer and no agency budget.',
     whatWeDid:
       "Custom-designed pages built for speed and phones, a contact and booking flow, and a simple admin where the owner updates content, reads messages and manages bookings. It's built so payments, a shop or AI can be added later without starting over.",
-    result: 'Demo site coming soon, built around a sample business. Real results will be added with the first client.',
+    result: 'Try the guided demo, built around a sample car-wash business. Real results will be added with the first client.',
+    demoUrl: '/projects/launch-website',
     featured: false,
     live: false,
   },
