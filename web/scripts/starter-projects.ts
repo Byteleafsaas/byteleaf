@@ -7,9 +7,10 @@ import mongoose from 'mongoose';
 import { connectDB } from '@/lib/server/db';
 import { env } from '@/lib/server/env';
 import { Project } from '@/lib/server/models';
-import { SHOWCASE as M } from '@/lib/projects-meta';
+import { SHOWCASE as M, STANDALONE as S } from '@/lib/projects-meta';
 
 const CONCEPT = 'Concept build (made-up business)';
+const STANDALONE_CLIENT = 'Stand-alone product';
 
 // `live` is only used when a project is first created; flip the rest on from the admin once each demo exists.
 const STARTERS = [
@@ -101,6 +102,42 @@ const STARTERS = [
     demoUrl: M.law.demoUrl,
     featured: false,
     live: false,
+  },
+  {
+    slug: S.yenza.slug,
+    name: S.yenza.name,
+    client: STANDALONE_CLIENT,
+    type: 'Web app',
+    industry: 'Job seekers',
+    categories: ['Design', 'Frontend', 'Backend', 'AI'],
+    stack: ['Next.js', 'Node.js', 'MongoDB', 'LLM API'],
+    summary: 'Build a CV, get AI feedback, pick a template and download a PDF or Word file. R45 a download, no subscription.',
+    challenge:
+      'People applying for jobs often send CVs with missing dates, weak wording and layouts that applicant tracking systems struggle to read. Honest feedback is hard to get, and many CV tools charge a subscription.',
+    whatWeDid:
+      'A web app where people answer a few questions or upload the CV they already have, then choose from six templates, from plain ATS-safe text to an executive banner. YenzaAI scores the CV out of 100 on achievements, clarity, structure, ATS readiness, relevance and professionalism, suggests better wording and fixes grammar, and leaves every decision with the person. Downloads are PDF or editable DOCX, paid per download through PayFast. It runs as three services: the web app, an API with an export worker, and a separate AI service.',
+    result: 'Running in production at yenzaicv.online, where anyone can build a CV and download it for R45. Usage figures are not published here.',
+    demoUrl: S.yenza.demoUrl,
+    featured: false,
+    live: true,
+  },
+  {
+    slug: S.enrollsync.slug,
+    name: S.enrollsync.name,
+    client: STANDALONE_CLIENT,
+    type: 'Web platform',
+    industry: 'Schools',
+    categories: ['Design', 'Frontend', 'Backend'],
+    stack: ['Next.js', 'Node.js', 'MongoDB', 'PWA'],
+    summary: 'School software from online application to daily register: admissions, learner records and attendance in one place.',
+    challenge:
+      'Many schools still run admissions on paper forms, learners on a spreadsheet and attendance in a register book in every classroom. Information gets retyped, goes missing or falls out of date, and nobody sees the whole picture.',
+    whatWeDid:
+      'A platform where each school signs up on its own and invites its staff by email, with screens for the school admin, the registrar and the teacher. Parents apply from a link on their phone in three steps, with no account. The office moves each application through Applied, Reviewed, Pending documents and Accepted, then enrols the learner into a classroom, which creates their record. Teachers mark the register on a phone in about a minute, even when the signal drops, and the office sees attendance trends and flagged classes. It installs as a phone app and runs on its own secure stack with private document storage.',
+    result: 'Running in production at enrollsync.cloudverse.co.za, with a free 30-day trial for schools. Usage figures are not published here.',
+    demoUrl: S.enrollsync.demoUrl,
+    featured: false,
+    live: true,
   },
 ];
 

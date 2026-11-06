@@ -10,10 +10,10 @@ import sharp from 'sharp';
 import { connectDB } from '@/lib/server/db';
 import { processImage } from '@/lib/server/images';
 import { Project } from '@/lib/server/models';
-import { SHOWCASE } from '@/lib/projects-meta';
+import { SHOWCASE, STANDALONE } from '@/lib/projects-meta';
 import { deleteObject, putObject } from '@/lib/server/storage';
 
-const BY_PREFIX: Record<string, string> = { p1: SHOWCASE.chatbot.slug, p2: SHOWCASE.whatsapp.slug, p3: SHOWCASE.launch.slug, p4: SHOWCASE.admin.slug, p5: SHOWCASE.law.slug };
+const BY_PREFIX: Record<string, string> = { p1: SHOWCASE.chatbot.slug, p2: SHOWCASE.whatsapp.slug, p3: SHOWCASE.launch.slug, p4: SHOWCASE.admin.slug, p5: SHOWCASE.law.slug, p6: STANDALONE.yenza.slug, p7: STANDALONE.enrollsync.slug };
 
 type Img = { key: string; width: number; height: number; alt: string };
 
@@ -44,9 +44,11 @@ async function main() {
   const dir = process.argv[2];
   if (!dir) throw new Error('Usage: upload-project-images.ts <folder>');
   const alts = altTexts(dir);
-  const files = readdirSync(dir).filter((f) => /^p[1-5]-.*\.webp$/.test(f)).sort();
+  const files = readdirSync(dir).filter((f) => /^p[1-9]-.*\.webp$/.test(f)).sort();
   await connectDB();
-  for (const prefix of Object.keys(BY_PREFIX)) {
+  // Optional: name the projects to update, for example  p6 p7  (default: all of them).
+  const only = process.argv.slice(3);
+  for (const prefix of Object.keys(BY_PREFIX).filter((p) => !only.length || only.includes(p))) {
     const slug = BY_PREFIX[prefix];
     const mine = files.filter((f) => f.startsWith(prefix + '-'));
     const coverFile = mine.find((f) => f.includes('-cover'));

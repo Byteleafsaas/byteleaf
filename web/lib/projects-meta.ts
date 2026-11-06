@@ -23,3 +23,9 @@ export const SHOWCASE: Record<'chatbot' | 'whatsapp' | 'launch' | 'admin' | 'law
 
 /** "SHOWCASE PROJECT 3 OF 5 · WEBSITE AND ADMIN" */
 export const eyebrowFor = (m: ShowcaseMeta) => `SHOWCASE PROJECT ${m.n} OF ${SHOWCASE_COUNT} · ${m.kind.toUpperCase()}`;
+
+// Two stand-alone products that run on their own addresses. They are not part of the "of 5" showcase series.
+export const STANDALONE = {
+  yenza: { slug: 'yenza-icv', name: 'Yenza’iCV CV builder', demoUrl: 'https://yenzaicv.online' },
+  enrollsync: { slug: 'enrollsync', name: 'EnrollSync school management platform', demoUrl: 'https://enrollsync.cloudverse.co.za' },
+} as const;
