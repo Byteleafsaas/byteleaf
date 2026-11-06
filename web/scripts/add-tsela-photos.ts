@@ -9,9 +9,10 @@ import { randomUUID } from 'node:crypto';
 import mongoose from 'mongoose';
 import sharp from 'sharp';
 import { connectDB } from '@/lib/server/db';
-import { mutate } from '@/lib/server/launch/store';
+import { SITE_SLUG } from '@/lib/launch/defaults';
+import { SiteDoc } from '@/lib/server/models';
 import { deleteObject, putObject } from '@/lib/server/storage';
-import type { Photo } from '@/lib/launch/types';
+import type { Photo, SiteState } from '@/lib/launch/types';
 
 const PICTURES: { file: string; id: string; alt: string }[] = [
   { file: 'home-driveway', id: 'p1', alt: 'Illustration of a freshly washed teal hatchback in a driveway, with the Tsela van parked behind it' },
@@ -44,11 +45,13 @@ async function main() {
       if (ph.kind === 'upload' && ph.key) oldKeys.push(ph.key);
       return { ...ph, kind: 'upload', key: s.key, w: s.w, alt: s.alt };
     });
-  const r = await mutate((state) => ({
-    state: { ...state, live: { ...state.live, photos: swap(state.live.photos) }, saved: { ...state.saved, photos: swap(state.saved.photos) } },
-    result: null,
-  }));
-  if (!r.ok) throw new Error(r.error);
+  // Written straight to the site document (the store module needs the web server's request context). The revision check stops it overwriting an edit made at the same moment.
+  const doc = await SiteDoc.findOne({ slug: SITE_SLUG }).lean();
+  if (!doc) throw new Error('The Tsela site has no saved content yet. Open it once, then run this again.');
+  const state = doc.state as SiteState;
+  const next: SiteState = { ...state, live: { ...state.live, photos: swap(state.live.photos) }, saved: { ...state.saved, photos: swap(state.saved.photos) } };
+  const wrote = await SiteDoc.updateOne({ slug: SITE_SLUG, rev: doc.rev }, { $set: { state: next }, $inc: { rev: 1 } });
+  if (!wrote.modifiedCount) throw new Error('The site changed while this ran. Please run it again.');
   // the draft and live copies point at the same files, so remove each old file once
   for (const k of new Set(oldKeys)) await deleteObject(k).catch(() => undefined);
   console.log(`Tsela photos set: ${stored.size} pictures (removed ${new Set(oldKeys).size} old files).`);
