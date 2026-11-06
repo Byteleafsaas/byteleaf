@@ -157,7 +157,7 @@ export default async function Home() {
             {homeProjects.map((p) => (
               <Link key={p.id} href={p.slug ? `/projects/${p.slug}` : '/projects'} className={`card ${s.proj}`}>
                 <div aria-hidden="true" className={`${s.shot} ${p.cover ? '' : s[`p${p.pattern}`]}`} style={p.cover ? { position: 'relative' } : undefined}>
-                  {p.cover ? <Image src={`/media/${p.cover.key}`} alt="" fill sizes="(max-width: 760px) 100vw, 400px" style={{ objectFit: 'cover' }} /> : <span className={s.shotLabel}>[PROJECT SCREENSHOT]</span>}
+                  {p.cover ? <Image src={`/media/${p.cover.key}`} alt="" fill quality={92} sizes="(max-width: 760px) 100vw, 400px" style={{ objectFit: 'cover' }} /> : <span className={s.shotLabel}>[PROJECT SCREENSHOT]</span>}
                 </div>
                 <div className={s.projBody}>
                   <span className={s.projType}>{p.type}</span>

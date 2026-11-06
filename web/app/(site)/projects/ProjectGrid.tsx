@@ -28,7 +28,7 @@ export default function ProjectGrid({ projects }: { projects: GridProject[] }) {
             <article key={p.id} className={`card ${s.card}`}>
               <div aria-hidden="true" className={s.imgWrap}>
                 <div className={`${s.shot} ${p.cover ? '' : s[`p${p.pattern % 3}`]}`}>
-                  {p.cover ? <Image src={`/media/${p.cover.key}`} alt="" fill sizes="(max-width: 760px) 100vw, 420px" style={{ objectFit: 'cover' }} /> : <span className={s.shotLabel}>[SCREENSHOT]</span>}
+                  {p.cover ? <Image src={`/media/${p.cover.key}`} alt="" fill quality={92} sizes="(max-width: 760px) 100vw, 420px" style={{ objectFit: 'cover' }} /> : <span className={s.shotLabel}>[SCREENSHOT]</span>}
                 </div>
               </div>
               <div className={s.body}>

@@ -52,7 +52,7 @@ export default async function Projects() {
         <article className={`card rise d3 ${s.feat}`}>
           <div aria-hidden="true" className={s.featImg}>
             <div className={s.featShot}>
-              {featured?.cover ? <Image src={`/media/${featured.cover.key}`} alt="" fill sizes="(max-width: 1000px) 100vw, 620px" priority style={{ objectFit: 'cover' }} /> : <span className={s.featLabel}>[FEATURED PROJECT SCREENSHOT]</span>}
+              {featured?.cover ? <Image src={`/media/${featured.cover.key}`} alt="" fill quality={92} sizes="(max-width: 1000px) 100vw, 620px" priority style={{ objectFit: 'cover' }} /> : <span className={s.featLabel}>[FEATURED PROJECT SCREENSHOT]</span>}
             </div>
           </div>
           <div className={s.featBody}>

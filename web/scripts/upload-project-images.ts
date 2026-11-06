@@ -4,7 +4,9 @@
 // Files go through the same checks and storage as admin uploads. Re-running replaces a project's images and removes the old files.
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { randomUUID } from 'node:crypto';
 import mongoose from 'mongoose';
+import sharp from 'sharp';
 import { connectDB } from '@/lib/server/db';
 import { processImage } from '@/lib/server/images';
 import { Project } from '@/lib/server/models';
@@ -25,7 +27,15 @@ function altTexts(dir: string): Map<string, string> {
 }
 
 async function store(dir: string, file: string, alt: string): Promise<Img> {
-  const img = await processImage(readFileSync(join(dir, file)));
+  const body = readFileSync(join(dir, file));
+  const meta = await sharp(body).metadata();
+  // These are our own finished WebP files. Storing them as they are keeps them crisp; the admin's upload path re-encodes at quality 85.
+  if (meta.format === 'webp' && meta.width && meta.height && body.length <= 5 * 1048576) {
+    const key = `projects/${randomUUID()}.webp`;
+    await putObject(key, body, 'image/webp');
+    return { key, width: meta.width, height: meta.height, alt };
+  }
+  const img = await processImage(body);
   await putObject(img.key, img.body, img.contentType);
   return { key: img.key, width: img.width, height: img.height, alt };
 }

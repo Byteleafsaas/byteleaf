@@ -51,7 +51,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
             </div>
           </div>
           <div aria-hidden="true" className={`${s.shot} ${p.cover ? '' : s[`p${p.pattern % 3}`]}`}>
-            {p.cover ? <Image src={`/media/${p.cover.key}`} alt="" fill priority sizes="(max-width: 960px) 100vw, 560px" style={{ objectFit: 'cover' }} /> : <span className={s.shotLabel}>[SCREENSHOT]</span>}
+            {p.cover ? <Image src={`/media/${p.cover.key}`} alt="" fill priority quality={92} sizes="(max-width: 960px) 100vw, 560px" style={{ objectFit: 'cover' }} /> : <span className={s.shotLabel}>[SCREENSHOT]</span>}
           </div>
         </div>
       </section>
@@ -72,7 +72,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
         </div>
         {p.gallery.length > 0 && (
           <div className={s.gallery}>
-            {p.gallery.map((g) => <div key={g.key}><Image src={`/media/${g.key}`} alt={g.alt || ''} fill sizes="(max-width: 700px) 100vw, 400px" style={{ objectFit: 'cover' }} /></div>)}
+            {p.gallery.map((g) => <div key={g.key}><Image src={`/media/${g.key}`} alt={g.alt || ''} fill quality={92} sizes="(max-width: 700px) 100vw, 400px" style={{ objectFit: 'cover' }} /></div>)}
           </div>
         )}
       </section>
