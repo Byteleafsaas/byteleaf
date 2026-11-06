@@ -10,7 +10,7 @@ export default function PhotoFrame({ photo, ratio, art = 'car', sizes }: { photo
   if (photo.kind === 'upload' && photo.key) {
     return (
       <div className={s.phImg} style={{ aspectRatio: ratio }}>
-        <Image src={`/media/${photo.key}`} alt={photo.alt} fill sizes={sizes} style={{ objectFit: 'cover' }} />
+        <Image src={`/media/${photo.key}`} alt={photo.alt} fill quality={92} sizes={sizes} style={{ objectFit: 'cover' }} />
       </div>
     );
   }

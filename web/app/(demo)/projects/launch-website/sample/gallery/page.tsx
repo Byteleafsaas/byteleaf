@@ -28,7 +28,7 @@ export default async function Gallery({ searchParams }: { searchParams: Promise<
               {photos.map((p) => (
                 <li key={p.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {p.kind === 'upload' && p.key ? (
-                    <div className={s.phImg} style={{ aspectRatio: '16 / 10' }}><Image src={`/media/${p.key}`} alt={p.alt} fill sizes="(max-width: 700px) 100vw, 380px" style={{ objectFit: 'cover' }} loading="lazy" /></div>
+                    <div className={s.phImg} style={{ aspectRatio: '16 / 10' }}><Image src={`/media/${p.key}`} alt={p.alt} fill quality={92} sizes="(max-width: 700px) 100vw, 380px" style={{ objectFit: 'cover' }} loading="lazy" /></div>
                   ) : (
                     <div className={s.pair} role="img" aria-label={`${p.caption}, before and after (sample photos)`}>
                       <div className={s.ph} style={{ aspectRatio: '1', background: 'linear-gradient(135deg,#C9BFA8,#A99E86)' }}><span className={s.cap}>Before</span></div>

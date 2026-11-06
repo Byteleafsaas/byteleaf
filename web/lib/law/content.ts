@@ -121,6 +121,7 @@ export const D = {
     {
       "n": "Naledi Ndaba",
       "ini": "NN",
+      "img": "/law/attorneys/naledi-ndaba.webp",
       "r": "Founding partner",
       "bg": "#E9C9B9",
       "areas": "Family law, wills and estates",
@@ -131,6 +132,7 @@ export const D = {
     {
       "n": "David Ravell",
       "ini": "DR",
+      "img": "/law/attorneys/david-ravell.webp",
       "r": "Partner",
       "bg": "#D8D2C2",
       "areas": "Property and conveyancing",
@@ -141,6 +143,7 @@ export const D = {
     {
       "n": "Ayanda Khumalo",
       "ini": "AK",
+      "img": "/law/attorneys/ayanda-khumalo.webp",
       "r": "Associate",
       "bg": "#CFD8CC",
       "areas": "Employment and labour, CCMA",
@@ -151,6 +154,7 @@ export const D = {
     {
       "n": "Priya Govender",
       "ini": "PG",
+      "img": "/law/attorneys/priya-govender.webp",
       "r": "Associate",
       "bg": "#E6D7B8",
       "areas": "Commercial contracts, debt and disputes",
@@ -161,6 +165,7 @@ export const D = {
     {
       "n": "Sipho Mahlangu",
       "ini": "SM",
+      "img": "/law/attorneys/sipho-mahlangu.webp",
       "r": "Candidate attorney",
       "bg": "#D5CFDE",
       "areas": "Supports all practice areas",

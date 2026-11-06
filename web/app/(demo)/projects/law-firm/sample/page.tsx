@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { css } from '@/lib/law/css';
 import { R } from '@/lib/law/routes';
@@ -55,7 +56,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ p
 <div style={css("display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px")}><div style={css("display: flex; flex-direction: column; gap: 10px")}><span className="lf-eyebrow">Our attorneys</span><h2 id="h-team" className="lf-sec-h">The people you will speak to</h2></div><Link className="lf-tlink" href={R.team}>Meet the team</Link></div>
 <div style={css("display: grid; grid-template-columns: repeat(auto-fit, minmax(min(160px, 44%), 1fr)); gap: 20px 14px")}>
 {people.map((p, i) => (<Fragment key={i}><div style={css("display: flex; flex-direction: column; gap: 10px")}>
-<div className="lf-portrait" style={css(`background: ${p.bg}`)}>{photos && (<><svg width="100%" height="100%" viewBox="0 0 100 125" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style={css("position: absolute; inset: 0")}><circle cx="50" cy="48" r="19" fill="rgba(255,255,255,.55)"></circle><path d="M14 125c3-30 18-44 36-44s33 14 36 44z" fill="rgba(255,255,255,.55)"></path></svg><span className="lf-cap" style={css("position: relative")}>Sample portrait</span></>)}{noPhotos && (<><span className="lf-serif" aria-hidden="true" style={css("position: absolute; inset: 0; display: grid; place-items: center; font-size: 3rem; color: #1F1C18")}>{p.ini}</span><span className="lf-cap" style={css("position: relative")}>Photo to come</span></>)}</div>
+<div className="lf-portrait" style={css(`background: ${p.bg}`)}>{photos && (<><Image src={p.img} alt="" fill sizes="(max-width: 600px) 44vw, 220px" quality={92} style={{ objectFit: 'cover' }} /><span className="lf-cap" style={css("position: relative")}>Illustrated portrait</span></>)}{noPhotos && (<><span className="lf-serif" aria-hidden="true" style={css("position: absolute; inset: 0; display: grid; place-items: center; font-size: 3rem; color: #1F1C18")}>{p.ini}</span><span className="lf-cap" style={css("position: relative")}>Photo to come</span></>)}</div>
 <span style={css("display: flex; flex-direction: column")}><strong style={css("font-size: 1.0625rem")}>{p.n}</strong><span style={css("font-size: .9375rem; color: #5B5348")}>{p.r}</span></span></div></Fragment>))}
 </div>
 </div>
