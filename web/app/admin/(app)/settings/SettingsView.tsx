@@ -132,14 +132,14 @@ function Inner() {
             <section className={`${s.panel} ${t.sec}`} aria-labelledby="h-biz">
               <div className={t.secHead}><h2 id="h-biz">Business details</h2><span className={t.hint}>Shown on the Contact page and in the website footer.</span></div>
               <div className={t.grid}>
-                <Field id="b-email" label="Public email"><input id="b-email" className={s.field} type="email" placeholder="hello@yourdomain.co.za" value={b.publicEmail} aria-invalid={!!errs.publicEmail} onChange={(e) => upd((n) => { n.business.publicEmail = e.target.value; })} />{errs.publicEmail && <span className={t.err} role="alert">{errs.publicEmail}</span>}</Field>
+                <Field id="b-email" label="Public email"><input id="b-email" className={s.field} type="email" placeholder="info@byteleaf.dev" value={b.publicEmail} aria-invalid={!!errs.publicEmail} onChange={(e) => upd((n) => { n.business.publicEmail = e.target.value; })} />{errs.publicEmail && <span className={t.err} role="alert">{errs.publicEmail}</span>}</Field>
                 <Field id="b-phone" label="Phone / WhatsApp"><input id="b-phone" className={s.field} type="tel" placeholder="+27 00 000 0000" value={b.phone} onChange={(e) => upd((n) => { n.business.phone = e.target.value; })} /></Field>
                 <Field id="b-addr" label="Studio location"><input id="b-addr" className={s.field} type="text" value={b.location} onChange={(e) => upd((n) => { n.business.location = e.target.value; })} /></Field>
                 <Field id="b-hours" label="Office hours"><input id="b-hours" className={s.field} type="text" placeholder="Mon–Fri · 08:00–17:00 SAST" value={b.hours} onChange={(e) => upd((n) => { n.business.hours = e.target.value; })} /></Field>
                 <Field id="b-reply" label="We reply within"><Select id="b-reply" value={b.replyWithin} options={['4 business hours', '8 business hours', '1 business day', '2 business days']} onChange={(v) => upd((n) => { n.business.replyWithin = v; })} /></Field>
                 <Field id="b-urgent" label="Urgent response time (care contracts)"><Select id="b-urgent" value={b.urgentResponse} options={['2 hours', '4 hours', '8 hours']} onChange={(v) => upd((n) => { n.business.urgentResponse = v; })} /></Field>
               </div>
-              <Field id="b-notify" label="Send new bookings & messages to" hint="You'll get an email the moment someone books or writes in."><input id="b-notify" className={s.field} type="email" placeholder="you@byteleaf.co.za" value={b.notifyEmail} aria-invalid={!!errs.notifyEmail} onChange={(e) => upd((n) => { n.business.notifyEmail = e.target.value; })} />{errs.notifyEmail && <span className={t.err} role="alert">{errs.notifyEmail}</span>}</Field>
+              <Field id="b-notify" label="Send new bookings & messages to" hint="You'll get an email the moment someone books or writes in."><input id="b-notify" className={s.field} type="email" placeholder="info@byteleaf.dev" value={b.notifyEmail} aria-invalid={!!errs.notifyEmail} onChange={(e) => upd((n) => { n.business.notifyEmail = e.target.value; })} />{errs.notifyEmail && <span className={t.err} role="alert">{errs.notifyEmail}</span>}</Field>
             </section>
           )}
 
@@ -279,7 +279,7 @@ function Inner() {
               <div className={t.secHead}><h2 id="h-acc">Your account</h2><span className={t.hint}>Signed in as administrator.</span></div>
               <div className={t.grid}>
                 <Field id="a-name" label="Name"><input id="a-name" className={s.field} type="text" value={ac.name} onChange={(e) => upd((n) => { n.account.name = e.target.value; })} /></Field>
-                <Field id="a-email" label="Sign-in email"><input id="a-email" className={s.field} type="email" placeholder="you@byteleaf.co.za" value={ac.email} aria-invalid={!!errs.accEmail} onChange={(e) => upd((n) => { n.account.email = e.target.value; })} />{errs.accEmail && <span className={t.err} role="alert">{errs.accEmail}</span>}</Field>
+                <Field id="a-email" label="Sign-in email"><input id="a-email" className={s.field} type="email" placeholder="you@byteleaf.dev" value={ac.email} aria-invalid={!!errs.accEmail} onChange={(e) => upd((n) => { n.account.email = e.target.value; })} />{errs.accEmail && <span className={t.err} role="alert">{errs.accEmail}</span>}</Field>
               </div>
               <div className={`${t.card} ${t.cardRow}`} style={{ flexDirection: 'row' }}>
                 <span className={t.cardText}><span>Password</span><span className={t.hint}>Use a long, unique password.</span></span>

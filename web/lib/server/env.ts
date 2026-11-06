@@ -9,7 +9,7 @@ export const env = {
   SMTP_PORT: Number(process.env.SMTP_PORT ?? 587),
   SMTP_USER: process.env.SMTP_USER ?? '',
   SMTP_PASS: process.env.SMTP_PASS ?? '',
-  MAIL_FROM: process.env.MAIL_FROM ?? 'byteleaf <no-reply@yourdomain.co.za>',
+  MAIL_FROM: process.env.MAIL_FROM ?? 'byteleaf <info@byteleaf.dev>',
   // S3-compatible object storage (Garage). With S3_ENDPOINT empty, files go to ./storage on disk (dev fallback).
   S3_ENDPOINT: process.env.S3_ENDPOINT ?? '',
   S3_REGION: process.env.S3_REGION ?? 'garage',

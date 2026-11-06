@@ -2,8 +2,8 @@
 // owner-supplied placeholders (HANDOFF §12): keep them visible until replaced.
 
 export const SITE = {
-  email: '[hello@yourdomain.co.za]',
-  emailHref: 'mailto:hello@yourdomain.co.za',
+  email: 'info@byteleaf.dev',
+  emailHref: 'mailto:info@byteleaf.dev',
   phone: '[+27 00 000 0000]',
   phoneHref: 'tel:+27000000000',
   hours: 'Mon–Fri · [08:00–17:00] SAST',

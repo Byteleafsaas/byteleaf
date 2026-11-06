@@ -1,5 +1,5 @@
 // Create (or reset the password of) an admin user. There is no public sign-up.
-//   npm run create-admin -- --email you@byteleaf.co.za --name Gerald
+//   npm run create-admin -- --email you@byteleaf.dev --name Gerald
 // The password is read from the ADMIN_PASSWORD env var, or prompted for (input is hidden).
 import { createInterface } from 'node:readline';
 import { connectDB } from '@/lib/server/db';

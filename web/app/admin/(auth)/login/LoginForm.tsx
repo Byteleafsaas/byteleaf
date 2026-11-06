@@ -113,7 +113,7 @@ export default function LoginForm() {
       <form className={`${a.rise} ${a.d1} ${a.form}`} onSubmit={submit}>
         <div className={a.fg}>
           <label htmlFor="l-email">Email</label>
-          <input id="l-email" className={`${a.field} ${error ? a.fieldErr : ''}`} name="email" type="email" autoComplete="username" placeholder="you@byteleaf.co.za" required />
+          <input id="l-email" className={`${a.field} ${error ? a.fieldErr : ''}`} name="email" type="email" autoComplete="username" placeholder="you@byteleaf.dev" required />
         </div>
         <div className={a.fg}>
           <div className={a.labelRow}>

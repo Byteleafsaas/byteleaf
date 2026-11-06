@@ -10,7 +10,7 @@ npm install
 cp .env.example .env.local        # then edit if needed
 npm run db:up                     # MongoDB (127.0.0.1:27117) and a dev Garage (127.0.0.1:3910) in Docker
 npm run garage:setup              # one-off: creates the dev bucket + key and writes S3_* to .env.local
-npm run create-admin -- --email you@byteleaf.co.za --name Gerald   # prompts for a password (hidden)
+npm run create-admin -- --email you@byteleaf.dev --name Gerald   # prompts for a password (hidden)
 npm run seed                      # OPTIONAL, dev only: fictional sample data from the designs
 npm run dev                       # http://localhost:3000  ·  admin at /admin
 ```

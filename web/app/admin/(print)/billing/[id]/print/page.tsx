@@ -40,7 +40,7 @@ export default async function PrintPage({ params }: { params: Promise<{ id: stri
               <span className={s.logo}><LogoMark size={36} />byteleaf</span>
               <span className={s.contact}>
                 {settings.business.location || 'Johannesburg, South Africa'}<br />
-                {settings.business.publicEmail || '[hello@yourdomain.co.za]'} · {settings.business.phone || '[+27 00 000 0000]'}<br />
+                {settings.business.publicEmail || 'info@byteleaf.dev'} · {settings.business.phone || '[+27 00 000 0000]'}<br />
                 Reg. no. {inv.regNo || '[Registration number]'}
                 {doc.vatApplied && <><br />VAT no. {inv.vatNumber || '[VAT number]'}</>}
               </span>

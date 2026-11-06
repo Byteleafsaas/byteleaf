@@ -31,7 +31,7 @@ export default function ForgotForm() {
           <form className={`${a.rise} ${a.d1} ${a.form}`} onSubmit={submit}>
             <div className={a.fg}>
               <label htmlFor="f-email">Email</label>
-              <input id="f-email" name="email" className={a.field} type="email" autoComplete="username" placeholder="you@byteleaf.co.za" required />
+              <input id="f-email" name="email" className={a.field} type="email" autoComplete="username" placeholder="you@byteleaf.dev" required />
             </div>
             <button type="submit" className={`${a.btn} ${a.primary} ${a.block}`} disabled={busy}>{busy ? 'Sending…' : 'Send reset link'}</button>
           </form>
