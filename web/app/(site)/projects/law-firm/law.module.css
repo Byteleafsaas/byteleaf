@@ -6,7 +6,7 @@
 .warn { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: #FFF4E0; color: #6B3F00; font-size: 14px; line-height: 1.5; }
 .warn svg { flex: none; margin-top: 1px; }
 .main { padding: 32px var(--gutter) 64px; }
-.mainIn { max-width: var(--container); margin: 0 auto; }
+.mainIn { max-width: var(--container); margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
 .stage { display: flex; flex-direction: column; gap: 20px; }
 .top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
 .seg { display: inline-flex; padding: 4px; border-radius: 999px; background: #EEF2F8; }

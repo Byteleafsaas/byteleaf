@@ -1,7 +1,5 @@
 // The five showcase projects, named once. Each name says what was built and for whom, so a card, a page title and a
 // breadcrumb all refer to the same thing. The slug (and so the project's address) never changes.
-export const SHOWCASE_COUNT = 5;
-
 export type ShowcaseMeta = {
   n: number;
   slug: string;
@@ -21,10 +19,10 @@ export const SHOWCASE: Record<'chatbot' | 'whatsapp' | 'launch' | 'admin' | 'law
   law: { n: 5, slug: 'law-firm-website', name: 'Ravell Ndaba Attorneys website', kind: 'Website', sample: 'Ravell Ndaba Attorneys', demoUrl: '/projects/law-firm' },
 };
 
-/** "SHOWCASE PROJECT 3 OF 5 · WEBSITE AND ADMIN" */
-export const eyebrowFor = (m: ShowcaseMeta) => `SHOWCASE PROJECT ${m.n} OF ${SHOWCASE_COUNT} · ${m.kind.toUpperCase()}`;
+/** The eyebrow above a showcase page's heading: its type in capitals, like the other project pages ("AI CHATBOT"). */
+export const eyebrowFor = (m: ShowcaseMeta) => m.kind.toUpperCase();
 
-// Two stand-alone products that run on their own addresses. They are not part of the "of 5" showcase series.
+// Two stand-alone products that run on their own addresses. They are separate from the five showcase demos.
 export const STANDALONE = {
   yenza: { slug: 'yenza-icv', name: 'Yenza’iCV CV builder', demoUrl: 'https://yenzaicv.online' },
   enrollsync: { slug: 'enrollsync', name: 'EnrollSync school management platform', demoUrl: 'https://enrollsync.cloudverse.co.za' },
