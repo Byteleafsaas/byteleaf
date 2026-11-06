@@ -23,6 +23,7 @@ export default function ProjectGrid({ projects }: { projects: GridProject[] }) {
             </button>
           ))}
         </div>
+        {shown.length === 0 && <p className={s.empty} role="status">No projects in this category yet.</p>}
         <div className={s.grid}>
           {shown.map((p) => (
             <article key={p.id} className={`card ${s.card}`}>

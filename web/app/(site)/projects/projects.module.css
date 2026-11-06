@@ -5,12 +5,16 @@
 @media (max-width: 640px) { .hero { padding-top: 56px; } }
 
 .featWrap { padding: 0 var(--gutter) 72px; }
-.feat { max-width: var(--container); margin: 0 auto; border: 1px solid var(--line); border-radius: var(--r-3xl); overflow: hidden; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(480px, 100%), 1fr)); background: #fff; }
-.featImg { min-height: 420px; overflow: hidden; background: var(--navy-900); }
-.featShot { position: relative; height: 100%; min-height: 420px; background-color: var(--navy-900); background-image: radial-gradient(rgba(111, 174, 255, .3) 1.2px, transparent 1.2px); background-size: 20px 20px; display: grid; place-items: center; transition: transform .6s var(--ease-out); }
-.feat:hover .featShot, .card:hover .shot { transform: scale(1.05); }
+.feat { max-width: var(--container); margin: 0 auto; border: 1px solid var(--line); border-radius: var(--r-3xl); overflow: hidden; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(480px, 100%), 1fr)); align-items: center; background: #fff; }
+@media (min-width: 1001px) { .feat { grid-template-columns: 1.15fr 1fr; } }
+/* The picture keeps its own 16:11 shape (the same as the cover image), so it is never stretched to the height of the text beside it. */
+.featImg { padding: clamp(16px, 2vw, 24px); display: flex; align-items: center; background: #fff; }
+.featShot { position: relative; width: 100%; aspect-ratio: 16 / 11; border-radius: var(--r-xl); overflow: hidden; border: 1px solid var(--line); background-color: var(--navy-900); background-image: radial-gradient(rgba(111, 174, 255, .3) 1.2px, transparent 1.2px); background-size: 20px 20px; display: grid; place-items: center; }
+.featShot img { transition: transform .6s var(--ease-out); }
+.feat:hover .featShot img { transform: scale(1.04); }
+.card:hover .shot { transform: scale(1.05); }
 .featLabel { font-family: var(--font-mono); font-size: 14px; color: #fff; border: 1px dashed rgba(255, 255, 255, .6); padding: 10px 16px; border-radius: 10px; }
-.featBody { padding: clamp(28px, 4vw, 56px); display: flex; flex-direction: column; gap: 24px; }
+.featBody { padding: clamp(24px, 3vw, 44px); display: flex; flex-direction: column; gap: 18px; }
 .badges { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--font-mono); font-size: 12px; }
 .badges span { padding: 6px 12px; border-radius: var(--r-pill); background: var(--surface-3); color: var(--ink-2); }
 .badges .on { background: var(--blue-600); color: #fff; }
@@ -18,7 +22,7 @@
 .facts { display: flex; flex-direction: column; gap: 18px; }
 .fact { display: flex; flex-direction: column; gap: 6px; }
 .fact span { font-family: var(--font-mono); font-size: 12px; color: var(--blue-600); }
-.fact p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--muted); }
+.fact p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
 .filters { display: flex; flex-wrap: wrap; gap: 10px; }
 .fchip { font: inherit; cursor: pointer; min-height: 44px; padding: 0 18px; border-radius: var(--r-pill); font-size: 15px; font-weight: 500; transition: all .2s; background: #fff; color: var(--ink-2); border: 1px solid var(--line-2); }
@@ -26,7 +30,9 @@
 .fchip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
 .count { margin-left: 8px; font-family: var(--font-mono); font-size: 12px; opacity: .8; }
 .col { max-width: var(--container); margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 24px; }
+/* auto-fill keeps the empty columns, so a lone card stays card-sized instead of stretching across the page */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr)); gap: 24px; }
+.empty { margin: 0; padding: 32px 0; color: var(--muted); }
 
 .card { border: 1px solid var(--line); border-radius: var(--r-xl); overflow: hidden; background: #fff; display: flex; flex-direction: column; animation: popcard .5s var(--ease-out) both; }
 @keyframes popcard { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
