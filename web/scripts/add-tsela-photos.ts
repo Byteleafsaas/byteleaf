@@ -49,7 +49,17 @@ async function main() {
   const doc = await SiteDoc.findOne({ slug: SITE_SLUG }).lean();
   if (!doc) throw new Error('The Tsela site has no saved content yet. Open it once, then run this again.');
   const state = doc.state as SiteState;
-  const next: SiteState = { ...state, live: { ...state.live, photos: swap(state.live.photos) }, saved: { ...state.saved, photos: swap(state.saved.photos) } };
+  // The gallery intro used to say "Real cars from around Pretoria", which is no longer true of drawn pictures.
+  const INTRO = 'A few of the washes we do, drawn for this demo. Tap a picture to see it bigger.';
+  const fixIntro = (pages: SiteState['live']['pages']): SiteState['live']['pages'] => ({
+    ...pages,
+    gallery: pages.gallery.map((b) => (b.id === 'g2' && b.type === 'text' && /^Real cars/.test(b.value) ? { ...b, value: INTRO } : b)),
+  });
+  const next: SiteState = {
+    ...state,
+    live: { ...state.live, photos: swap(state.live.photos), pages: fixIntro(state.live.pages) },
+    saved: { ...state.saved, photos: swap(state.saved.photos), pages: fixIntro(state.saved.pages) },
+  };
   const wrote = await SiteDoc.updateOne({ slug: SITE_SLUG, rev: doc.rev }, { $set: { state: next }, $inc: { rev: 1 } });
   if (!wrote.modifiedCount) throw new Error('The site changed while this ran. Please run it again.');
   // the draft and live copies point at the same files, so remove each old file once

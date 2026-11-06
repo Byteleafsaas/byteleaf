@@ -54,7 +54,7 @@ export const defaultPages = (): Snapshot['pages'] => ({
   ],
   gallery: [
     { id: 'g1', type: 'heading', label: 'Page heading', value: 'Before and after', max: 60, help: '' },
-    { id: 'g2', type: 'text', label: 'Intro', value: 'Real cars from around Pretoria. Tap a photo to see it bigger.', max: 220, help: '' },
+    { id: 'g2', type: 'text', label: 'Intro', value: 'A few of the washes we do, drawn for this demo. Tap a picture to see it bigger.', max: 220, help: '' },
     { id: 'g3', type: 'link', label: 'Gallery photos', desc: 'Your before-and-after photos, from Photos.', to: 'photos', toLabel: 'Manage photos' },
   ],
   contact: [
