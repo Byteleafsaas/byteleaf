@@ -23,7 +23,7 @@ export default async function SampleLayout({ children }: { children: React.React
   const external = wa.startsWith('http');
   return (
     <div className={`${s.ts} ${display.variable} ${body.variable}`}>
-      <div role="note" className={s.demoStrip}>{draft ? 'Preview of your saved changes. Customers can’t see this until you publish.' : 'Demo site by byteleaf · a sample business with made-up details'}</div>
+      <div role="note" className={s.demoStrip}>{draft ? 'Preview of your saved changes. Customers can’t see this until you publish.' : 'Demo site by byteleaf for a fictional mobile car wash. Please use sample details in the form.'}</div>
       <a href="#main" className={s.sr}>Skip to the content</a>
       <header className={s.header}>
         <div className={`${s.wrap} ${s.headIn}`} style={{ position: 'relative' }}>

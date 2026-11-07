@@ -9,7 +9,7 @@ import s from './launch.module.css';
 
 export const metadata: Metadata = {
   title: `byteleaf — ${M.launch.name}`,
-  description: 'A fast five-page website for a new business, and a simple admin to keep it current. Tap through three stories with sample data.',
+  description: 'Explore a service business website and try updating prices, publishing photos and managing enquiries in the admin walkthrough.',
 };
 
 export default function Page() {
@@ -25,7 +25,7 @@ export default function Page() {
           </div>
           <div className={s.warn} role="note">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
-            <span><strong>This is a demo with sample data.</strong> {C.demoNote.replace('This is a demo with sample data. ', '')}</span>
+            <span><strong>Interactive demo.</strong> {C.demoNote}</span>
           </div>
         </div>
       </section>
@@ -37,13 +37,11 @@ export default function Page() {
           <div className={s.real}>
             <h2>What’s included</h2>
             <ul>{C.included.map((x) => <li key={x}>{x}</li>)}</ul>
-            <p className={s.facts}><span><b>Live in</b> {C.liveIn}</span><span><b>From</b> {C.from}</span></p>
-            <p className={s.muted}>{C.notIncluded}</p>
           </div>
           <div className={s.tryCard}>
-            <h2>See the real thing</h2>
-            <p>The sample site is live and you can click around it. The admin is the part you’d use every week, so the stories above show it.</p>
-            <span className={s.row}><Link className="btn btn-primary btn-sm" href="/projects/launch-website/sample">Open the sample site</Link></span>
+            <h2>See what customers see</h2>
+            <p>Browse Tsela’s services, prices and gallery, then see how a customer would send an enquiry.</p>
+            <span className={s.row}><Link className="btn btn-primary btn-sm" href="/projects/launch-website/sample">Explore the demo site</Link></span>
           </div>
         </div>
       </section>

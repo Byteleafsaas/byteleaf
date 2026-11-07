@@ -4,13 +4,14 @@ import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
 import Footer from '@/components/Footer';
 import { PROJECTS } from '@/lib/content';
+import { projectLabel } from '@/lib/projects-meta';
 import { getLiveProjects } from '@/lib/server/public';
 import ProjectGrid, { type GridProject } from './ProjectGrid';
 import s from './projects.module.css';
 
 export const metadata: Metadata = {
   title: 'byteleaf — Projects',
-  description: "A selection of things we've designed, built, fixed and looked after.",
+  description: 'Explore the software byteleaf builds, from interactive demos and standalone products to the admin we use to run our studio.',
 };
 
 // Project cards come from the database, so refresh the page every minute.
@@ -21,15 +22,16 @@ export default async function Projects() {
   // The featured project gets the large case-study card; the rest go in the filterable grid.
   // With nothing live yet, the design placeholders stay on show.
   const featured = live.find((p) => p.featured) ?? live[0];
+  const featuredLabel = featured && projectLabel(featured.slug);
   const rest: GridProject[] = live.length
-    ? live.filter((p) => p !== featured).map((p) => ({ id: p.id, slug: p.slug, type: p.type, name: p.name, text: p.summary, tags: p.stack, cats: p.categories, pattern: p.pattern, cover: p.cover }))
+    ? live.filter((p) => p !== featured).map((p) => ({ id: p.id, slug: p.slug, type: [p.type, projectLabel(p.slug)].filter(Boolean).join(' · '), name: p.name, text: p.summary, tags: p.stack, cats: p.categories, pattern: p.pattern, cover: p.cover }))
     : PROJECTS.map((p, i) => ({ id: String(i), type: p.type, name: '[PROJECT NAME]', text: p.text, tags: p.tags, cats: p.cats, pattern: i }));
 
   const facts = featured
     ? [
         { k: 'THE CHALLENGE', v: featured.challenge },
         { k: 'WHAT WE DID', v: featured.whatWeDid },
-        { k: 'THE RESULT', v: featured.result },
+        { k: featuredLabel === 'Interactive demo' ? 'WHAT YOU CAN TRY' : featuredLabel === 'Standalone product' ? 'EXPLORE THE PRODUCT' : 'THE RESULT', v: featured.result },
       ].filter((f) => f.v)
     : [
         { k: 'THE CHALLENGE', v: "[What wasn't working for the client before byteleaf.]" },
@@ -44,7 +46,7 @@ export default async function Projects() {
         <div className={s.heroIn}>
           <span className="rise eyebrow">PROJECTS</span>
           <h1 className="rise d1 h1">Work that keeps businesses <span className="hl">moving.</span></h1>
-          <p className="rise d2 lead">A selection of things we&apos;ve designed, built, fixed and looked after.</p>
+          <p className="rise d2 lead">Explore the products we’ve built, the tools we use to run byteleaf and interactive demos you can try for your own business.</p>
         </div>
       </section>
 
@@ -56,7 +58,7 @@ export default async function Projects() {
             </div>
           </div>
           <div className={s.featBody}>
-            <div className={s.badges}><span className="on">Featured</span><span>{featured ? featured.industry : '[Industry]'}</span></div>
+            <div className={s.badges}><span className={s.on}>Featured</span>{featuredLabel && <span>{featuredLabel}</span>}<span>{featured ? featured.industry : '[Industry]'}</span></div>
             <h2>{featured ? <Link href={`/projects/${featured.slug}`} className={s.cardLink}>{featured.name}</Link> : '[PROJECT NAME]'}</h2>
             <div className={s.facts}>
               {facts.map((f) => (

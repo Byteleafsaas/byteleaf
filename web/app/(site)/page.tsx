@@ -8,6 +8,7 @@ import HeroVisual from '@/components/home/HeroVisual';
 import TechMarquee from '@/components/home/TechMarquee';
 import { getLiveProjects } from '@/lib/server/public';
 import { HOME_PROJECTS, HOME_SERVICES, HOME_STEPS, HOME_WORK_WITH_YOU, WHY } from '@/lib/content';
+import { projectLabel } from '@/lib/projects-meta';
 import s from './home.module.css';
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default async function Home() {
   // Selected work: the first three live projects (featured first); the design placeholders show until there are some.
   const live = (await getLiveProjects()).slice(0, 3);
   const homeProjects = live.length
-    ? live.map((p) => ({ id: p.id, slug: p.slug as string | null, type: [p.type, p.categories.join(' + ')].filter(Boolean).join(' · '), name: p.name, text: p.summary, pattern: p.pattern, cover: p.cover }))
+    ? live.map((p) => ({ id: p.id, slug: p.slug as string | null, type: [p.type, projectLabel(p.slug) ?? p.categories.join(' + ')].filter(Boolean).join(' · '), name: p.name, text: p.summary, pattern: p.pattern, cover: p.cover }))
     : HOME_PROJECTS.map((p) => ({ id: p.type, slug: null as string | null, type: p.type, name: '[PROJECT NAME]', text: '[One line on what you built and the outcome for the client.]', pattern: p.pattern, cover: null as null }));
   return (
     <main>

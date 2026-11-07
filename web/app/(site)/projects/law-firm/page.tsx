@@ -15,7 +15,7 @@ const sans = Source_Sans_3({ subsets: ['latin'], weight: ['400', '600'], variabl
 
 export const metadata: Metadata = {
   title: `byteleaf — ${M.law.name}`,
-  description: 'A calm, credible website for a small law firm, with the trust work built in. Switch between its pages and see what makes it work. Sample content only.',
+  description: 'Explore a law firm website demo with plain-language practice pages, consultation fees and a clear way to ask for help.',
 };
 
 export default function Page() {
@@ -26,12 +26,12 @@ export default function Page() {
           <span className={s.crumb}><Link href="/projects">Projects</Link> / {M.law.name}</span>
           <div className={s.heroText}>
             <span className="eyebrow">{eyebrowFor(M.law)}</span>
-            <h1 className="h1">Trusted before the first phone call. <span className="hl">That’s the whole job.</span></h1>
-            <p className="lead">A site for a small law firm, or any practice people approach when they’re worried: accountants, clinics, consultants. No clever tool to show. The proof is how it reads, how calm it feels, and how quickly someone finds the right door.</p>
+            <h1 className="h1">Help clients know <span className="hl">where to start.</span></h1>
+            <p className="lead">A law firm website that helps prospective clients find the right practice area, see what a consultation costs and decide how to get in touch.</p>
           </div>
           <div className={s.warn} role="note">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
-            <span><strong>This is a demo with sample content.</strong> Ravell Ndaba Attorneys is a made-up firm. Its attorneys, fees and client words are invented, and its form sends nothing. The browser and phone are our own drawings.</span>
+            <span><strong>Interactive demo.</strong> Ravell Ndaba Attorneys is a fictional firm. Its people and fees are sample content. The consultation form doesn’t send or store your details.</span>
           </div>
         </div>
       </section>
@@ -47,12 +47,9 @@ export default function Page() {
             <ul>{SC.included.map((x) => <li key={x}>{x}</li>)}</ul>
           </div>
           <div className={s.tryCard} style={{ background: '#F4F7FB' }}>
-            <p className={s.facts} style={{ flexDirection: 'column', gap: 14 }}>
-              <span style={{ display: 'flex', flexDirection: 'column', gap: 4 }}><span style={{ fontSize: 12, letterSpacing: '.06em' }}>LIVE IN</span><b style={{ fontFamily: 'var(--font-sans)', fontSize: 30, letterSpacing: '-.03em' }}>[delivery time]</b></span>
-              <span style={{ display: 'flex', flexDirection: 'column', gap: 4 }}><span style={{ fontSize: 12, letterSpacing: '.06em' }}>FROM</span><b style={{ fontFamily: 'var(--font-sans)', fontSize: 30, letterSpacing: '-.03em' }}>[from price]</b></span>
-            </p>
-            <p className={s.muted}>Not included yet: an admin to edit pages, online booking, payments, a client portal and more than one language. Each can be added later without starting again.</p>
-            <span className={s.row}><Link className="btn btn-primary btn-sm" href={BASE}>Open the full site</Link></span>
+            <h2>Follow a client’s first visit</h2>
+            <p>Start on the family law page, check the consultation fees and try the form with sample details.</p>
+            <span className={s.row}><Link className="btn btn-primary btn-sm" href={BASE}>Explore the demo site</Link></span>
           </div>
         </div>
       </section>

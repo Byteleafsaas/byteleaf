@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import CtaBand from '@/components/CtaBand';
 import Footer from '@/components/Footer';
 import { ArrowIcon } from '@/components/Icon';
+import { projectLabel } from '@/lib/projects-meta';
 import { getLiveProjects } from '@/lib/server/public';
 import s from './detail.module.css';
 
@@ -27,7 +28,12 @@ export default async function ProjectPage({ params }: { params: Params }) {
   const p = all.find((x) => x.slug === slug);
   if (!p) notFound();
   const others = all.filter((x) => x.id !== p.id).slice(0, 3);
-  const parts = [{ k: 'THE CHALLENGE', v: p.challenge }, { k: 'WHAT WE DID', v: p.whatWeDid }, { k: 'THE RESULT', v: p.result }].filter((x) => x.v);
+  const label = projectLabel(p.slug);
+  const isDemo = label === 'Interactive demo';
+  const isProduct = label === 'Standalone product';
+  const client = isDemo || isProduct ? '' : p.client;
+  const resultHeading = isDemo ? 'WHAT YOU CAN TRY' : isProduct ? 'EXPLORE THE PRODUCT' : 'THE RESULT';
+  const parts = [{ k: 'THE CHALLENGE', v: p.challenge }, { k: 'WHAT WE DID', v: p.whatWeDid }, { k: resultHeading, v: p.result }].filter((x) => x.v);
 
   return (
     <main>
@@ -39,14 +45,14 @@ export default async function ProjectPage({ params }: { params: Params }) {
             <h1 className="h1">{p.name}</h1>
             {p.summary && <p className="lead">{p.summary}</p>}
             <div className={s.meta}>
-              {p.client && <span className="on">{p.client}</span>}
+              {(label || client) && <span className={s.on}>{label || client}</span>}
               {p.industry && p.industry !== 'Other' && <span>{p.industry}</span>}
               {p.categories.map((c) => <span key={c}>{c}</span>)}
             </div>
             <div className={s.btns}>
               {p.demoUrl && (external(p.demoUrl)
-                ? <a className="btn btn-primary" href={p.demoUrl} target="_blank" rel="noopener noreferrer">Try it live<ArrowIcon /></a>
-                : <Link className="btn btn-primary" href={p.demoUrl}>Try it live<ArrowIcon /></Link>)}
+                ? <a className="btn btn-primary" href={p.demoUrl} target="_blank" rel="noopener noreferrer">{isProduct ? 'Open the product' : 'Try it live'}<ArrowIcon /></a>
+                : <Link className="btn btn-primary" href={p.demoUrl}>{isDemo ? 'Try the demo' : 'Try it live'}<ArrowIcon /></Link>)}
               <Link className={`btn ${p.demoUrl ? 'btn-ghost' : 'btn-primary'}`} href="/book">Talk to us about yours{!p.demoUrl && <ArrowIcon />}</Link>
             </div>
           </div>
@@ -63,7 +69,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
           </div>
           <aside className={s.aside} aria-label="Project details">
             <dl>
-              {p.client && <div><dt>Client</dt><dd>{p.client}</dd></div>}
+              {client && <div><dt>{label === 'Built in-house' ? 'Built for' : 'Client'}</dt><dd>{client}</dd></div>}
               {p.industry && p.industry !== 'Other' && <div><dt>Industry</dt><dd>{p.industry}</dd></div>}
               {p.categories.length > 0 && <div><dt>Services</dt><dd>{p.categories.join(' · ')}</dd></div>}
             </dl>
@@ -82,7 +88,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
           <div className={s.moreIn}>
             <h2 className="h2-sub">More projects</h2>
             <div className={s.moreGrid}>
-              {others.map((o) => <Link key={o.id} href={`/projects/${o.slug}`} className={s.card}><span>{o.type}</span><b>{o.name}</b><p>{o.summary}</p></Link>)}
+            {others.map((o) => <Link key={o.id} href={`/projects/${o.slug}`} className={s.card}><span>{[o.type, projectLabel(o.slug)].filter(Boolean).join(' · ')}</span><b>{o.name}</b><p>{o.summary}</p></Link>)}
             </div>
           </div>
         </section>

@@ -18,7 +18,7 @@ export default function LawSampleLayout({ children }: { children: React.ReactNod
   return (
     <div className={`lf lf-root ${serif.variable} ${sans.variable}`} style={{ colorScheme: 'light' }}>
       <div role="note" style={{ background: '#1F1C18', color: '#F7F4EF', fontSize: '.875rem', textAlign: 'center', padding: '8px 16px', lineHeight: 1.4 }}>
-        Demo site by byteleaf · a made-up law firm. Nothing you type here is sent to anyone.
+        Demo site by byteleaf for a fictional law firm. The consultation form doesn’t send or store your details.
       </div>
       <SiteHeader />
       <main id="main">{children}</main>

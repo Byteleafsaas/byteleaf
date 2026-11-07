@@ -1,17 +1,17 @@
-// The showcase page copy (HANDOFF-LAUNCH §7), from launch/copy.json.
+// Copy for the website and admin showcase.
 export const SHOWCASE = {
   "eyebrow": "Website and admin",
   "h1": [
-    "Look established on day one.",
-    "Run it yourself after that."
+    "Launch your business website.",
+    "Keep it current yourself."
   ],
-  "intro": "A fast site for a brand-new business, and a simple admin to keep it current. Switch between the two below, or play one of the stories.",
-  "demoNote": "This is a demo with sample data. Tsela Mobile Wash is a made-up business, and its prices, reviews and enquiries are invented. The browser and phone are our own drawings.",
+  "intro": "Give customers a place to check your services, see prices and get in touch. Use the admin to update your site and manage enquiries.",
+  "demoNote": "Tsela Mobile Wash is a fictional business. The walkthrough uses sample prices, photos and enquiries.",
   "views": [
     "What your customers see",
     "What you manage"
   ],
-  "idleCaption": "Two views of one business. Customers see a calm, quick site. You see a few clear screens to keep it current.",
+  "idleCaption": "Switch between the customer site and the admin, or follow a task from start to finish.",
   "stories": {
     "enquiry": {
       "tab": "A customer sends an enquiry",
@@ -26,14 +26,14 @@ export const SHOWCASE = {
         },
         {
           "view": "site",
-          "caption": "She knows what happens next. The sent message says you’ll confirm within [reply time]."
+          "caption": "The confirmation tells her what to expect next and when she’ll hear back."
         },
         {
           "view": "admin",
-          "caption": "It lands in your admin, and your email. Everything she typed, ready for a reply on WhatsApp or email."
+          "caption": "Her request appears in the enquiry inbox with the details you need to follow up."
         }
       ],
-      "done": "No missed customers. Every enquiry is in one place, with a reply button."
+      "done": "See incoming enquiries in one place and reply from the inbox."
     },
     "price": {
       "tab": "You change a price",
@@ -55,7 +55,7 @@ export const SHOWCASE = {
           "caption": "Your site is updated. The new price shows everywhere it appears. You could undo for 10 seconds."
         }
       ],
-      "done": "Two minutes, no developer. You changed it, checked it and published it yourself."
+      "done": "You’ve saved, checked and published a price change from the admin."
     },
     "photos": {
       "tab": "You add photos",
@@ -66,28 +66,24 @@ export const SHOWCASE = {
         },
         {
           "view": "admin",
-          "caption": "Three photos from your phone. They upload, get a short description, and wait for you to publish."
+          "caption": "Upload photos from your phone, add descriptions and publish when you’re ready."
         },
         {
           "view": "site",
           "caption": "Your gallery fills in. Before-and-after pairs, sized to load quickly on any phone."
         }
       ],
-      "done": "Photos whenever you have them. The site looked finished before, and better after."
+      "done": "The new photos are on the site. You can update the gallery whenever you have more work to show."
     }
   },
   "offPathHint": "This story follows one path. Tap the highlighted button, or use Next step.",
   "included": [
-    "A five-page site with your own look: a name-based logo, colours and type",
-    "Built for phones and weak data, with call and WhatsApp buttons always in reach",
-    "An enquiry form that lands in your admin and your email",
-    "Your admin: pages, prices, photos, details, enquiries and bookings",
-    "Your web address, secure hosting and renewals looked after",
-    "Room to add bookings, payments or a shop later, without starting again"
+    "Five pages with your branding, including services, pricing and a photo gallery",
+    "A mobile-friendly layout with quick access to phone and WhatsApp",
+    "An enquiry form connected to an admin inbox, with optional email notifications",
+    "An admin to edit pages, services, prices, photos and business details",
+    "Drafts and previews so you can check updates before publishing"
   ],
-  "liveIn": "[delivery time]",
-  "from": "[from price]",
-  "notIncluded": "Not included yet: online payments, a shop, a blog and more than one language. Each can be added later.",
   "howTitle": "How we set it up for you",
   "how": [
     {
@@ -96,7 +92,7 @@ export const SHOWCASE = {
     },
     {
       "t": "See it before it’s live",
-      "d": "You get a working version on your phone within [delivery time]. Change anything you like."
+      "d": "Review a working version on your phone and give us feedback on the design and copy."
     },
     {
       "t": "Go live, then run it yourself",

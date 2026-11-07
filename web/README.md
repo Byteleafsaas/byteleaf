@@ -61,6 +61,8 @@ is needed to get a session. Codes can't be replayed, attempts are rate limited, 
 
 ## Scripts
 
+From `web/`, run `npm run starter-projects -- --copy-only` to refresh the portfolio text for the seven existing starter projects in the configured database. It skips missing and deleted projects and leaves images and publishing settings in place.
+
 `npm test` (unit tests) · `npm run lint` · `npm run build` · `npm run seed -- --reset` (wipes and reseeds, dev only) ·
 `npx tsx --env-file=.env.local --conditions=react-server scripts/check-numbering.ts` (concurrency check for numbering)
 

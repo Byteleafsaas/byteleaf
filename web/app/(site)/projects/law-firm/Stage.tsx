@@ -45,7 +45,7 @@ export default function Stage() {
 <div className="ld-frame ld-bframe" style={css("flex: 1 1 680px; min-width: 0")}>
 <div className="ld-chrome" aria-hidden="true"><i></i><i></i><i></i><span className="ld-url">[ravellndaba.co.za]{path}</span></div>
 <div className="ld-mf" style={css("height: 540px; overflow: hidden")}>
-<div style={css("background: #1F1C18; color: #F7F4EF; font-size: 9px; text-align: center; padding: 4px")}>Demo site by byteleaf · a made-up law firm</div>
+<div style={css("background: #1F1C18; color: #F7F4EF; font-size: 9px; text-align: center; padding: 4px")}>Demo site by byteleaf · fictional law firm</div>
 <div style={css("display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 22px; border-bottom: 1px solid #DCD3C5; position: relative")}>
 <span style={css("display: flex; align-items: center; gap: 7px")}><span aria-hidden="true" style={css("width: 20px; height: 20px; border-radius: 5px; background: #9C3D24; color: #FFFFFF; display: grid; place-items: center; font-size: 11px; font-weight: 600")}>R</span><span className="ld-s" style={css("font-size: 15px; font-weight: 600")}>Ravell Ndaba</span></span>
 <span style={css("display: flex; gap: 12px; align-items: center; font-size: 11px; font-weight: 600")}>{mnav.map((n, i) => (<Fragment key={i}><span style={css(`${n.st}`)}>{n.l}</span></Fragment>))}<span className={btnCls} style={css("background: #9C3D24; color: #FFFFFF")}>Request a consultation</span></span>

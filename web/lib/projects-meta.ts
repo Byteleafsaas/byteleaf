@@ -6,7 +6,7 @@ export type ShowcaseMeta = {
   name: string;
   /** Short label used after the number in each page's eyebrow. */
   kind: string;
-  /** The made-up business the demo is built around. */
+  /** The business used in the showcase. */
   sample: string;
   demoUrl: string;
 };
@@ -22,8 +22,14 @@ export const SHOWCASE: Record<'chatbot' | 'whatsapp' | 'launch' | 'admin' | 'law
 /** The eyebrow above a showcase page's heading: its type in capitals, like the other project pages ("AI CHATBOT"). */
 export const eyebrowFor = (m: ShowcaseMeta) => m.kind.toUpperCase();
 
-// Two stand-alone products that run on their own addresses. They are separate from the five showcase demos.
+// Standalone products that run on their own addresses.
 export const STANDALONE = {
   yenza: { slug: 'yenza-icv', name: 'Yenza’iCV CV builder', demoUrl: 'https://yenzaicv.online' },
   enrollsync: { slug: 'enrollsync', name: 'EnrollSync school management platform', demoUrl: 'https://enrollsync.cloudverse.co.za' },
 } as const;
+
+export function projectLabel(slug: string) {
+  if (slug === SHOWCASE.admin.slug) return 'Built in-house';
+  if (Object.values(SHOWCASE).some((project) => project.slug === slug)) return 'Interactive demo';
+  if (Object.values(STANDALONE).some((project) => project.slug === slug)) return 'Standalone product';
+}

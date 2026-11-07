@@ -6,7 +6,7 @@ import s from './widget.module.css';
 
 export const metadata: Metadata = {
   title: 'byteleaf — Chat widget on a sample website',
-  description: 'The knowledge chatbot installed on a made-up client website, so you can see how it looks to a customer.',
+  description: 'Try the knowledge chatbot as a website widget on the fictional Khumalo Home Solar demo site.',
   robots: { index: false },
 };
 

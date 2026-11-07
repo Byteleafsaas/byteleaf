@@ -10,16 +10,16 @@ import s from './demo.module.css';
 
 export const metadata: Metadata = {
   title: `byteleaf — ${M.chatbot.name}`,
-  description: 'An AI assistant that answers customer and staff questions only from your own information, shows its sources, and hands over to a person when it does not know.',
+  description: 'Try an AI chatbot that answers repeat customer questions from approved business information and shows the sources it uses.',
 };
 
 // Always read the latest published knowledge and settings.
 export const dynamic = 'force-dynamic';
 
 const STEPS = [
-  { t: 'Add what you already have', d: 'Upload documents, paste text or point it at your website. Nothing needs to be rewritten first.' },
-  { t: 'Check what AI cleaned up', d: 'AI organises everything into short, clear items. You approve, edit or reject each one before anything goes live.' },
-  { t: 'Customers and staff get answers', d: 'Every answer shows its source. Questions it cannot answer come back to you to fill the gap.' },
+  { t: 'Add what you already have', d: 'Upload price lists and policies, paste your FAQs or import pages from your website.' },
+  { t: 'Review before you publish', d: 'AI organises your material into short entries. You can edit and approve each one before publishing it.' },
+  { t: 'See where customers need help', d: 'Customers can check the sources behind an answer. Review unanswered questions to see what to add next.' },
 ];
 
 export default async function Page() {
@@ -30,14 +30,14 @@ export default async function Page() {
         <div className={s.heroIn}>
           <span className={s.crumb}><Link href="/projects">Projects</Link> / {M.chatbot.name}</span>
           <span className="eyebrow">{eyebrowFor(M.chatbot)}</span>
-          <h1 className="h1" style={{ maxWidth: 760 }}>An assistant that only answers from <span className="hl">your own information.</span></h1>
+          <h1 className="h1" style={{ maxWidth: 760 }}>Answer repeat questions with <span className="hl">your own information.</span></h1>
           <div className={s.heroRow}>
-            <p className="lead">Ask it anything a customer would. Every answer shows where it came from, and when it doesn&apos;t know, it says so and hands over to a person.</p>
+            <p className="lead">Try a question about installation costs or warranties. Check the source it cites, or see how it offers to connect you with a person when it can’t answer.</p>
             <Link className="btn btn-ghost" href="/projects/knowledge-chatbot/widget">See it as a website widget</Link>
           </div>
           <div className={s.warn} role="note">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
-            <span><strong>This is a demo with sample data.</strong> {workspace.business} is a made-up business, and every price and policy here is invented. Please don&apos;t type personal details.</span>
+            <span><strong>Interactive demo.</strong> The chat uses sample prices and policies for {workspace.business}, a fictional solar installer. Please use sample details.</span>
           </div>
         </div>
       </section>
@@ -64,7 +64,7 @@ export default async function Page() {
         </div>
       </section>
 
-      <CtaBand title="Want one trained on your business?" text="We'll set it up with your information, your colours and your team's contact details." />
+      <CtaBand title="Want a chatbot for your business?" text="We’ll set it up with your approved content, match it to your site and route handovers to your team." />
       <Footer />
     </main>
   );

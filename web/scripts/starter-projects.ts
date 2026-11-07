@@ -2,6 +2,7 @@
 //   npm run starter-projects
 // Safe to re-run: projects are matched by slug and their copy is refreshed, but `live`, `featured`
 // and any images set in the admin are left alone once a project exists.
+// Pass --copy-only to refresh the portfolio text on existing projects without creating records.
 // Names, sample businesses and demo links come from lib/projects-meta.ts so the cards, page titles and breadcrumbs agree.
 import mongoose from 'mongoose';
 import { connectDB } from '@/lib/server/db';
@@ -9,25 +10,25 @@ import { env } from '@/lib/server/env';
 import { Project } from '@/lib/server/models';
 import { SHOWCASE as M, STANDALONE as S } from '@/lib/projects-meta';
 
-const CONCEPT = 'Concept build (made-up business)';
-const STANDALONE_CLIENT = 'Stand-alone product';
+const DEMO = 'Interactive demo';
+const PRODUCT = 'Standalone product';
 
 // `live` is only used when a project is first created; flip the rest on from the admin once each demo exists.
 const STARTERS = [
   {
     slug: M.chatbot.slug,
     name: M.chatbot.name,
-    client: CONCEPT,
+    client: DEMO,
     type: 'AI chatbot',
     industry: 'Home solar',
     categories: ['Design', 'Frontend', 'Backend', 'AI'],
     stack: ['Next.js', 'Node.js', 'MongoDB', 'LLM API'],
-    summary: 'A chatbot for Khumalo Home Solar, a made-up installer. It answers only from the business’s own prices, policies and FAQs.',
+    summary: 'Answer repeat customer questions using your own prices, policies and FAQs, with sources people can check.',
     challenge:
-      'Khumalo Home Solar gets the same questions all day: what a system costs, what is included, how long an install takes. Staff lose time answering them, and the answers are scattered across a website, price lists and PDFs.',
+      'Customers ask about prices, what’s included and how long a job takes. When the answers are spread across price lists, PDFs and web pages, the team has to find and repeat the same information.',
     whatWeDid:
-      'We load the business’s information by upload, by typing it in, or by reading its website. AI tidies it into short items the owner approves, edits or rejects. The chatbot then answers only from those items, shows the source of every answer, and says so when it does not know. Staff-only items stay private, and questions it could not answer come back to the owner. It runs as a public chat or as a widget on the business’s own site.',
-    result: 'Ask Khumalo Home Solar’s chatbot on the demo page, or see it as a widget on a sample website. Figures such as time saved will come from a live client.',
+      'Upload documents, paste text or import web pages. AI turns the material into entries your team can review and publish. The chatbot cites the approved sources it uses and offers a handover when it can’t answer. Your team can review unanswered questions to see what the knowledge base is missing.',
+    result: 'Ask the Khumalo Home Solar demo about installation costs or warranties, check the sources it cites, and try the chat as a widget on the sample website.',
     demoUrl: M.chatbot.demoUrl,
     featured: true,
     live: false,
@@ -35,17 +36,17 @@ const STARTERS = [
   {
     slug: M.whatsapp.slug,
     name: M.whatsapp.name,
-    client: CONCEPT,
+    client: DEMO,
     type: 'WhatsApp bookings',
     industry: 'Salons, clinics and tutors',
     categories: ['Frontend', 'Backend', 'AI'],
     stack: ['Next.js', 'Node.js', 'MongoDB', 'WhatsApp'],
-    summary: 'Clients of Lerato’s Braids & Beauty, a made-up salon, book, change and cancel on WhatsApp. The owner sees it all in one calendar.',
+    summary: 'Let clients book, reschedule and cancel on WhatsApp. See every appointment in one calendar.',
     challenge:
-      'Lerato’s Braids & Beauty takes bookings by back-and-forth messages. Diaries get double-booked or forgotten, and no-shows cost real money.',
+      'Booking by chat can mean several messages just to agree on a time. Staff still have to update the diary, remember to send reminders and handle changes.',
     whatWeDid:
-      'Clients message the WhatsApp number they already know, pick a service and a free time, and get a confirmation. A time is held for a few minutes while they confirm, so two people never get the same slot, and a reminder goes out the evening before. The owner has a calendar and an inbox for messages that need a person, with rules for opening hours, breaks, time off and how many bookings one client can hold. Clients are asked for consent first, and STOP always works.',
-    result: 'Tap through the guided demo, or message the test number to book a made-up appointment. Fewer no-shows and less admin time is the goal, and real figures will come from a live client.',
+      'Clients choose a service and an available time in WhatsApp. The assistant holds the slot while they confirm, sends reminders and handles changes. Staff manage hours, breaks and time off in the admin, with a calendar for appointments and an inbox for chats that need a person.',
+    result: 'Book, move or cancel a sample appointment in the guided Lerato’s Braids & Beauty demo and see the calendar update alongside the chat.',
     demoUrl: M.whatsapp.demoUrl,
     featured: false,
     live: false,
@@ -53,17 +54,17 @@ const STARTERS = [
   {
     slug: M.launch.slug,
     name: M.launch.name,
-    client: CONCEPT,
+    client: DEMO,
     type: 'Website and admin',
     industry: 'New businesses',
     categories: ['Design', 'Frontend', 'Backend'],
     stack: ['Next.js', 'Node.js', 'MongoDB'],
-    summary: 'A fast five-page site for Tsela Mobile Wash, a made-up car-wash business, plus the admin its owner uses to keep it current.',
+    summary: 'A business website with an admin to update prices, add photos and manage enquiries yourself.',
     challenge:
-      'Tsela Mobile Wash is a new business with no developer and no agency budget, but it needs to look credible online quickly and stay up to date without help.',
+      'A new service business needs somewhere customers can check prices and get in touch. The owner needs to make everyday changes without waiting for a developer.',
     whatWeDid:
-      'A five-page site built for phones and weak data: home, services and prices, about, gallery and contact, with an enquiry form that lands in the admin and the owner’s email. The owner’s admin edits page words in fixed blocks with a live preview, services and prices, photos and business details, and reads enquiries. Changes are saved as drafts, published together, and can be undone for ten seconds. Payments, a shop or AI can be added later without starting over.',
-    result: 'Browse the Tsela Mobile Wash site, and play three short stories to see the admin in use: an enquiry arrives, a price changes, photos are added. Real results will come with the first client.',
+      'We built a five-page site for phones, with services, pricing, a gallery and an enquiry form. The admin brings enquiries, page copy, prices and photos together. Owners can save changes as a draft, preview the site and publish when they’re ready.',
+    result: 'Browse the Tsela Mobile Wash site, then follow a customer enquiry from the form to the inbox or try publishing a price change and a set of gallery photos.',
     demoUrl: M.launch.demoUrl,
     featured: false,
     live: false,
@@ -76,29 +77,29 @@ const STARTERS = [
     industry: 'Services',
     categories: ['Frontend', 'Backend'],
     stack: ['Next.js', 'Node.js', 'MongoDB', 'Docker'],
-    summary: 'The admin byteleaf runs on: bookings, messages, clients, quotes, invoices and projects, behind two-step login. Real, not a concept.',
+    summary: 'We use it to run byteleaf. Bookings, enquiries, clients, quotes and invoices all live in one place.',
     challenge:
-      'Running a small studio out of inboxes and spreadsheets meant bookings in one place, quotes in another and invoices in a third.',
+      'We wanted one place to handle the work that starts with a website enquiry and ends with a paid invoice.',
     whatWeDid:
-      'We built our own. It covers availability and bookings, a messages inbox, clients, quotes and invoices with PDFs and payment tracking, the project showcase you are looking at, and two-factor login. The WhatsApp booking and website admins above reuse its screens and patterns.',
-    result: 'It runs byteleaf day to day in production, and the same foundations can be tailored to your business. There is no public demo, because it holds real client data.',
+      'We built an admin for managing availability, responding to enquiries, sending PDF quotes and invoices, recording payments and publishing portfolio projects. Two-step sign-in is available for the owner account.',
+    result: 'It powers byteleaf’s own contact and booking workflows. We use the same admin to publish the portfolio you’re browsing.',
     featured: false,
     live: true,
   },
   {
     slug: M.law.slug,
     name: M.law.name,
-    client: CONCEPT,
+    client: DEMO,
     type: 'Website',
     industry: 'Legal',
     categories: ['Design', 'Frontend'],
     stack: ['Next.js', 'TypeScript', 'CSS'],
-    summary: 'A calm seven-page site for Ravell Ndaba Attorneys, a made-up Johannesburg firm, with fees, privacy and urgent-matter wording built in.',
+    summary: 'Help prospective clients find the right practice area, understand fees and see how to request a consultation.',
     challenge:
-      'People come to a law firm worried and short of time. They need to know quickly whether the firm handles their matter, what it costs and how to start, and they need to trust it before the first call.',
+      'Someone looking for legal help needs to know whether the firm handles their matter, what a first consultation costs and what to do if their matter is urgent.',
     whatWeDid:
-      'A seven-page site with its own identity: home, practice areas, a full family law page, attorneys, fees, guides and contact. It has a consultation request form that behaves like the real thing, plain-language wording, a fees page, not-legal-advice notes, privacy wording and an urgent-matters note where people need it.',
-    result: 'Browse the Ravell Ndaba Attorneys sample site. It is frontend only for now, and nothing you type is sent. An admin, enquiry inbox and booking can be added later.',
+      'We designed a visual identity and a site with plain-language practice pages, attorney profiles, consultation fees and guides. The contact page explains how to request a consultation and puts urgent contact options where visitors can find them.',
+    result: 'Explore the Ravell Ndaba Attorneys demo, from the family law page to the fees and consultation form. The demo form doesn’t send or store your details.',
     demoUrl: M.law.demoUrl,
     featured: false,
     live: false,
@@ -106,17 +107,17 @@ const STARTERS = [
   {
     slug: S.yenza.slug,
     name: S.yenza.name,
-    client: STANDALONE_CLIENT,
+    client: PRODUCT,
     type: 'Web app',
     industry: 'Job seekers',
     categories: ['Design', 'Frontend', 'Backend', 'AI'],
     stack: ['Next.js', 'Node.js', 'MongoDB', 'LLM API'],
-    summary: 'Build a CV, get AI feedback, pick a template and download a PDF or Word file. R45 a download, no subscription.',
+    summary: 'Build or improve your CV with AI feedback, choose a template and download it as a PDF or editable Word file.',
     challenge:
-      'People applying for jobs often send CVs with missing dates, weak wording and layouts that applicant tracking systems struggle to read. Honest feedback is hard to get, and many CV tools charge a subscription.',
+      'Writing a CV means figuring out what to include, how to describe your work and which layout to use. Feedback is especially useful when you’re editing it on your own.',
     whatWeDid:
-      'A web app where people answer a few questions or upload the CV they already have, then choose from six templates, from plain ATS-safe text to an executive banner. YenzaAI scores the CV out of 100 on achievements, clarity, structure, ATS readiness, relevance and professionalism, suggests better wording and fixes grammar, and leaves every decision with the person. Downloads are PDF or editable DOCX, paid per download through PayFast. It runs as three services: the web app, an API with an export worker, and a separate AI service.',
-    result: 'Running in production at yenzaicv.online, where anyone can build a CV and download it for R45. Usage figures are not published here.',
+      'Start with a guided builder or upload an existing CV. Yenza’iCV gives feedback on clarity, achievements and structure, suggests wording you can edit, and offers six templates. Download the finished CV as a PDF or editable Word document.',
+    result: 'Open Yenza’iCV to build or improve a CV, preview a template and export a file ready to send with a job application.',
     demoUrl: S.yenza.demoUrl,
     featured: false,
     live: true,
@@ -124,17 +125,17 @@ const STARTERS = [
   {
     slug: S.enrollsync.slug,
     name: S.enrollsync.name,
-    client: STANDALONE_CLIENT,
+    client: PRODUCT,
     type: 'Web platform',
     industry: 'Schools',
     categories: ['Design', 'Frontend', 'Backend'],
     stack: ['Next.js', 'Node.js', 'MongoDB', 'PWA'],
-    summary: 'School software from online application to daily register: admissions, learner records and attendance in one place.',
+    summary: 'Manage school admissions, learner records and daily attendance in one place, from application to classroom.',
     challenge:
-      'Many schools still run admissions on paper forms, learners on a spreadsheet and attendance in a register book in every classroom. Information gets retyped, goes missing or falls out of date, and nobody sees the whole picture.',
+      'When admissions, learner records and class registers live in separate places, school staff have to re-enter details and check several records to see what’s up to date.',
     whatWeDid:
-      'A platform where each school signs up on its own and invites its staff by email, with screens for the school admin, the registrar and the teacher. Parents apply from a link on their phone in three steps, with no account. The office moves each application through Applied, Reviewed, Pending documents and Accepted, then enrols the learner into a classroom, which creates their record. Teachers mark the register on a phone in about a minute, even when the signal drops, and the office sees attendance trends and flagged classes. It installs as a phone app and runs on its own secure stack with private document storage.',
-    result: 'Running in production at enrollsync.cloudverse.co.za, with a free 30-day trial for schools. Usage figures are not published here.',
+      'Parents apply from a link on their phones. Office staff review applications, track outstanding documents and enrol accepted learners into a class. Teachers can mark attendance on a phone, even when the signal drops, and the office can review attendance by class.',
+    result: 'Explore EnrollSync to see how one application becomes a learner record and how class registers feed into the school’s attendance view.',
     demoUrl: S.enrollsync.demoUrl,
     featured: false,
     live: true,
@@ -147,6 +148,13 @@ for (const p of STARTERS) {
 
 async function main() {
   await connectDB();
+  if (process.argv.includes('--copy-only')) {
+    for (const { slug, summary, challenge, whatWeDid, result } of STARTERS) {
+      const update = await Project.updateOne({ slug, deletedAt: null }, { $set: { summary, challenge, whatWeDid, result } });
+      console.log(`${update.matchedCount ? 'synced ' : 'skipped'}   ${slug}`);
+    }
+    return;
+  }
   const count = await Project.countDocuments();
   let order = count;
   for (const { live, featured, ...copy } of STARTERS) {

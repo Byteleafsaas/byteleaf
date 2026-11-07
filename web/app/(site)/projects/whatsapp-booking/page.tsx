@@ -30,11 +30,11 @@ export default async function Page() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 820 }}>
             <span className="eyebrow">{eyebrowFor(M.whatsapp)}</span>
             <h1 className="h1">Clients book in the chat. <span className="hl">You see it in the calendar.</span></h1>
-            <p className="lead">A short guided chat on the WhatsApp number your clients already use. Tap through it below, and watch the owner’s side change as you go.</p>
+            <p className="lead">Clients can book, reschedule and cancel from WhatsApp. Try a booking below and watch the appointment appear in the owner’s calendar.</p>
           </div>
           <div className={s.warn} role="note">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
-            <span><strong>This is a demo with sample data.</strong> Lerato’s Braids &amp; Beauty is a made-up salon. Nothing here sends a real message or books a real appointment. The phone is our own drawing of a chat app, not WhatsApp itself.</span>
+            <span><strong>Interactive demo.</strong> The guided walkthrough uses sample appointments for Lerato’s Braids &amp; Beauty, a fictional salon. It runs in your browser and sends no WhatsApp messages.</span>
           </div>
         </div>
       </section>
@@ -48,7 +48,7 @@ export default async function Page() {
             <img className={s.qr} src={qr} width={132} height={132} alt={`QR code that opens a WhatsApp chat with ${DEMO_NUMBER}`} />
             <div className={s.tryText}>
               <h2>Try it on your own phone</h2>
-              <p>Scan the code or message <strong style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink)' }}>{DEMO_NUMBER}</strong> on WhatsApp. It’s a test number for now, so we add your phone number to the tester list first. Bookings are made up. Reply STOP to stop at any time.</p>
+              <p>Ask us to add your number to the tester list, then scan the code or message <strong style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink)' }}>{DEMO_NUMBER}</strong> on WhatsApp to try a test booking. Reply STOP to opt out.</p>
               <span style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 <a className="btn btn-primary btn-sm" href={DEMO_LINK} target="_blank" rel="noopener noreferrer">Open in WhatsApp</a>
                 <Link className="btn btn-ghost btn-sm" href="/contact">Ask to be added</Link>
@@ -58,10 +58,10 @@ export default async function Page() {
           <div className={s.real}>
             <h2>Built for how bookings really go</h2>
             <ul>
-              <li>Never double-books: a time is held while the client confirms.</li>
+              <li>Holds the chosen time while the client confirms.</li>
               <li>Reminders the day before, with confirm, change and cancel.</li>
               <li>A person can step in at any moment, and hand back.</li>
-              <li>Asks consent first, and STOP always works (POPIA).</li>
+              <li>Asks for consent and lets clients opt out by replying STOP.</li>
             </ul>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default async function Page() {
         </div>
       </section>
 
-      <CtaBand title="Want bookings to run themselves?" text="We’ll connect your number, load your services and hours, and test it with you before it goes live." />
+      <CtaBand title="Want clients to book on WhatsApp?" text="We’ll connect your number, set up your services and hours, and test the booking flow with you." />
       <Footer />
     </main>
   );
